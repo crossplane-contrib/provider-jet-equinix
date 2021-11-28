@@ -24,7 +24,7 @@ import (
 	"os"
 	"path/filepath"
 
-	tf "github.com/hashicorp/terraform-provider-hashicups/hashicups"
+	tf "github.com/hashicorp/terraform-provider-equinix/equinix"
 
 	"github.com/crossplane-contrib/terrajet/pkg/pipeline"
 
