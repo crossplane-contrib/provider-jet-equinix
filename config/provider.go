@@ -22,8 +22,8 @@ import (
 )
 
 const (
-	resourcePrefix = "template"
-	modulePath     = "github.com/crossplane-contrib/provider-tf-template"
+	resourcePrefix = "equinix"
+	modulePath     = "github.com/crossplane-contrib/provider-tf-equinix"
 )
 
 // GetProvider returns provider configuration

@@ -1,4 +1,4 @@
-module github.com/crossplane-contrib/provider-tf-template
+module github.com/crossplane-contrib/provider-tf-equinix
 
 go 1.16
 
