@@ -1,14 +1,14 @@
 # ====================================================================================
 # Setup Project
 
-PROJECT_NAME := provider-tf-template
+PROJECT_NAME := provider-tf-equinix
 PROJECT_REPO := github.com/crossplane-contrib/$(PROJECT_NAME)
 
 export TERRAFORM_VERSION := 1.0.11
-export TERRAFORM_PROVIDER_SOURCE :=
-export TERRAFORM_PROVIDER_VERSION :=
-export TERRAFORM_PROVIDER_DOWNLOAD_NAME :=
-export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX :=
+export TERRAFORM_PROVIDER_SOURCE := equinix/equinix
+export TERRAFORM_PROVIDER_VERSION := 1.3.0
+export TERRAFORM_PROVIDER_DOWNLOAD_NAME := terraform-provider-equinix
+export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX := https://releases.hashicorp.com/terraform-provider-equinix/1.3.0
 
 PLATFORMS ?= linux_amd64 linux_arm64
 
@@ -50,7 +50,7 @@ GO111MODULE = on
 # Setup Images
 
 DOCKER_REGISTRY := crossplane
-IMAGES = provider-tf-template provider-tf-template-controller
+IMAGES = provider-tf-equinix provider-tf-equinix-controller
 -include build/makelib/image.mk
 
 # ====================================================================================
@@ -71,7 +71,7 @@ fallthrough: submodules
 # - generated file
 cobertura:
 	@cat $(GO_TEST_OUTPUT)/coverage.txt | \
-		grep -v zz_generated.deepcopy | \
+		grep -v zz_ | \
 		$(GOCOVER_COBERTURA) > $(GO_TEST_OUTPUT)/cobertura-coverage.xml
 
 crds.clean:
@@ -80,20 +80,7 @@ crds.clean:
 	@find package/crds -name '*.yaml.sed' -delete || $(FAIL)
 	@$(OK) cleaned generated CRDs
 
-terrajet.run:
-	@go run cmd/generator/main.go
-
-generate.init: terrajet.run
 generate.done: crds.clean
-
-# todo(turkenh): clean up whole apis and internal/control directories once we
-# figured out where to keep non generated files inside there dirs
-terrajet.clean:
-	@rm -f apis/zz_*.go
-	@rm -f apis/*/zz_*.go
-	@rm -f apis/*/*/zz_*.go
-	@rm -f internal/controller/zz_*.go
-	@rm -f internal/controller/*/*/zz_*.go
 
 # Update the submodules, such as the common build scripts.
 submodules:
