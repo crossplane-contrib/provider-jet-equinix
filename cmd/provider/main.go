@@ -23,15 +23,15 @@ import (
 	"github.com/crossplane-contrib/terrajet/pkg/terraform"
 	"github.com/crossplane/crossplane-runtime/pkg/logging"
 	"github.com/crossplane/crossplane-runtime/pkg/ratelimiter"
-	tf "github.com/hashicorp/terraform-provider-equinix/equinix"
+	tf "github.com/equinix/terraform-provider-equinix/equinix"
 	"gopkg.in/alecthomas/kingpin.v2"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	"github.com/crossplane-contrib/provider-jet-equinix/apis"
-	pconfig "github.com/crossplane-contrib/provider-jet-equinix/config"
-	"github.com/crossplane-contrib/provider-jet-equinix/internal/clients"
-	"github.com/crossplane-contrib/provider-jet-equinix/internal/controller"
+	"github.com/crossplane-contrib/provider-tf-equinix/apis"
+	pconfig "github.com/crossplane-contrib/provider-tf-equinix/config"
+	"github.com/crossplane-contrib/provider-tf-equinix/internal/clients"
+	"github.com/crossplane-contrib/provider-tf-equinix/internal/controller"
 )
 
 func main() {

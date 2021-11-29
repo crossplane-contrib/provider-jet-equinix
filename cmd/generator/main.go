@@ -24,11 +24,11 @@ import (
 	"os"
 	"path/filepath"
 
-	tf "github.com/hashicorp/terraform-provider-equinix/equinix"
+	tf "github.com/equinix/terraform-provider-equinix/equinix"
 
 	"github.com/crossplane-contrib/terrajet/pkg/pipeline"
 
-	"github.com/crossplane-contrib/provider-jet-equinix/config"
+	"github.com/crossplane-contrib/provider-tf-equinix/config"
 )
 
 func main() {

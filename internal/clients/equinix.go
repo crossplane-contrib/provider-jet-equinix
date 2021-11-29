@@ -31,13 +31,15 @@ import (
 )
 
 const (
-	keyUsername = "username"
-	keyPassword = "password"
-	keyHost     = "host"
+	keyClientID            = "client_id"
+	keyClientSecret        = "client_secret"
+	keyEndpoint            = "endpoint"
+	keyRequestTimeout      = "request_timeout"
+	keyResponseMaxPageSize = "response_max_page_size"
 
 	// Equinix credentials environment variable names
-	envUsername = "HASHICUPS_USERNAME"
-	envPassword = "HASHICUPS_PASSWORD"
+	envClientID     = "EQUINIX_API_CLIENTID"
+	envClientSecret = "EQUINIX_API_CLIENTSECRET"
 )
 
 const (
@@ -87,13 +89,14 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		}
 
 		// set provider configuration
-		ps.Configuration = map[string]interface{}{
-			"host": equinixCreds[keyHost],
+		ps.Configuration = map[string]interface{}{}
+		for _, key := range []string{keyEndpoint, keyRequestTimeout, keyResponseMaxPageSize} {
+			ps.Configuration[key] = equinixCreds[key]
 		}
 		// set environment variables for sensitive provider configuration
 		ps.Env = []string{
-			fmt.Sprintf(fmtEnvVar, envUsername, equinixCreds[keyUsername]),
-			fmt.Sprintf(fmtEnvVar, envPassword, equinixCreds[keyPassword]),
+			fmt.Sprintf(fmtEnvVar, envClientID, equinixCreds[keyClientID]),
+			fmt.Sprintf(fmtEnvVar, envClientSecret, equinixCreds[keyClientSecret]),
 		}
 		return ps, nil
 	}

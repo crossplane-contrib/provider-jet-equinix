@@ -40,7 +40,11 @@ func GetProvider(tf *schema.Provider) *tjconfig.Provider {
 	}
 
 	pc := tjconfig.NewProvider(tf.ResourcesMap, resourcePrefix, modulePath,
-		tjconfig.WithDefaultResourceFn(defaultResourceFn))
+		tjconfig.WithDefaultResourceFn(defaultResourceFn),
+	    tjconfig.WithIncludeList([]string{
+			".*",
+		}))
+	)
 
 	for _, configure := range []func(provider *tjconfig.Provider){
 		// add custom config functions
