@@ -4,18 +4,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.6.2
   creationTimestamp: null
-  name: orders.hashicups.hashicups.tf.crossplane.io
+  name: sshkeys.network.equinix.jet.crossplane.io
 spec:
-  group: hashicups.hashicups.tf.crossplane.io
+  group: network.equinix.jet.crossplane.io
   names:
     categories:
     - crossplane
     - managed
-    - tfhashicups
-    kind: Order
-    listKind: OrderList
-    plural: orders
-    singular: order
+    - equinixjet
+    kind: SshKey
+    listKind: SshKeyList
+    plural: sshkeys
+    singular: sshkey
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,7 +34,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Order is the Schema for the Orders API
+        description: SshKey is the Schema for the SshKeys API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -49,7 +49,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: OrderSpec defines the desired state of Order
+            description: SshKeySpec defines the desired state of SshKey
             properties:
               deletionPolicy:
                 default: Delete
@@ -62,31 +62,16 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  items:
-                    items:
-                      properties:
-                        coffee:
-                          items:
-                            properties:
-                              id:
-                                format: int64
-                                type: integer
-                            required:
-                            - id
-                            type: object
-                          type: array
-                        quantity:
-                          format: int64
-                          type: integer
-                      required:
-                      - coffee
-                      - quantity
-                      type: object
-                    type: array
-                  lastUpdated:
+                  name:
+                    description: The name of SSH key used for identification
+                    type: string
+                  publicKey:
+                    description: The SSH public key. If this is a file, it can be
+                      read using the file interpolation function
                     type: string
                 required:
-                - items
+                - name
+                - publicKey
                 type: object
               providerConfigRef:
                 default:
@@ -133,9 +118,12 @@ spec:
             - forProvider
             type: object
           status:
-            description: OrderStatus defines the observed state of Order.
+            description: SshKeyStatus defines the observed state of SshKey.
             properties:
               atProvider:
+                properties:
+                  uuid:
+                    type: string
                 type: object
               conditions:
                 description: Conditions of the resource.
