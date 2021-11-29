@@ -18,6 +18,7 @@ package config
 
 import (
 	tjconfig "github.com/crossplane-contrib/terrajet/pkg/config"
+	"github.com/crossplane-contrib/provider-tf-equinix/config/ecx/l2connection"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
@@ -48,6 +49,7 @@ func GetProvider(tf *schema.Provider) *tjconfig.Provider {
 
 	for _, configure := range []func(provider *tjconfig.Provider){
 		// add custom config functions
+		l2connection.Customize,
 	} {
 		configure(pc)
 	}

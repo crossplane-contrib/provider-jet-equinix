@@ -86,8 +86,15 @@ type L2ConnectionParameters struct {
 	PortUUID *string `json:"portUuid,omitempty" tf:"port_uuid,omitempty"`
 
 	// Unique identifier of the service provider's service profile
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-tf-equinix/apis/ecx/v1alpha1.L2Serviceprofile
 	// +kubebuilder:validation:Optional
 	ProfileUUID *string `json:"profileUuid,omitempty" tf:"profile_uuid,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	ProfileUUIDRef *v1.Reference `json:"profileUuidRef,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	ProfileUUIDSelector *v1.Selector `json:"profileUuidSelector,omitempty" tf:"-"`
 
 	// Connection's purchase order number to reflect on the invoice
 	// +kubebuilder:validation:Optional

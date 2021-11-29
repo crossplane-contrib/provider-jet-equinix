@@ -409,6 +409,16 @@ func (in *L2ConnectionParameters) DeepCopyInto(out *L2ConnectionParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ProfileUUIDRef != nil {
+		in, out := &in.ProfileUUIDRef, &out.ProfileUUIDRef
+		*out = new(v1.Reference)
+		**out = **in
+	}
+	if in.ProfileUUIDSelector != nil {
+		in, out := &in.ProfileUUIDSelector, &out.ProfileUUIDSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.PurchaseOrderNumber != nil {
 		in, out := &in.PurchaseOrderNumber, &out.PurchaseOrderNumber
 		*out = new(string)
