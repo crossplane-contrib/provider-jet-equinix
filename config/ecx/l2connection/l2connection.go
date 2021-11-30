@@ -16,13 +16,15 @@ limitations under the License.
 
 package l2connection
 
-import "github.com/crossplane-contrib/terrajet/pkg/config"
+import (
+	"github.com/crossplane-contrib/terrajet/pkg/config"
+)
 
 // Customize the device group with references to other resources
 func Customize(p *config.Provider) {
 	p.AddResourceConfigurator("equinix_ecx_l2_connection", func(r *config.Resource) {
 		r.References["profile_uuid"] = config.Reference{
-			Type: "github.com/crossplane-contrib/provider-tf-equinix/apis/ecx/v1alpha1.L2Serviceprofile",
+			Type: "L2Serviceprofile",
 		}
 	})
 }

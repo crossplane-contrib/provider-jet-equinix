@@ -19,7 +19,6 @@ package v1alpha1
 
 import (
 	"context"
-	v1alpha1 "github.com/crossplane-contrib/provider-tf-equinix/apis/ecx/v1alpha1"
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
 	errors "github.com/pkg/errors"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
@@ -38,8 +37,8 @@ func (mg *L2Connection) ResolveReferences(ctx context.Context, c client.Reader) 
 		Reference:    mg.Spec.ForProvider.ProfileUUIDRef,
 		Selector:     mg.Spec.ForProvider.ProfileUUIDSelector,
 		To: reference.To{
-			List:    &v1alpha1.L2ServiceprofileList{},
-			Managed: &v1alpha1.L2Serviceprofile{},
+			List:    &L2ServiceprofileList{},
+			Managed: &L2Serviceprofile{},
 		},
 	})
 	if err != nil {
