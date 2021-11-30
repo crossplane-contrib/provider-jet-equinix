@@ -1,3 +1,19 @@
+/*
+Copyright 2021 The Crossplane Authors.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package clients
 
 import (
@@ -11,17 +27,19 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/crossplane-contrib/provider-tf-template/apis/v1alpha1"
+	"github.com/crossplane-contrib/provider-tf-equinix/apis/v1alpha1"
 )
 
 const (
-	keyUsername = "username"
-	keyPassword = "password"
-	keyHost     = "host"
+	keyClientID            = "client_id"
+	keyClientSecret        = "client_secret"
+	keyEndpoint            = "endpoint"
+	keyRequestTimeout      = "request_timeout"
+	keyResponseMaxPageSize = "response_max_page_size"
 
-	// Template credentials environment variable names
-	envUsername = "HASHICUPS_USERNAME"
-	envPassword = "HASHICUPS_PASSWORD"
+	// Equinix credentials environment variable names
+	envClientID     = "EQUINIX_API_CLIENTID"
+	envClientSecret = "EQUINIX_API_CLIENTSECRET"
 )
 
 const (
@@ -32,7 +50,7 @@ const (
 	errGetProviderConfig    = "cannot get referenced ProviderConfig"
 	errTrackUsage           = "cannot track ProviderConfig usage"
 	errExtractCredentials   = "cannot extract credentials"
-	errUnmarshalCredentials = "cannot unmarshal template credentials as JSON"
+	errUnmarshalCredentials = "cannot unmarshal equinix credentials as JSON"
 )
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
@@ -65,19 +83,20 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		if err != nil {
 			return ps, errors.Wrap(err, errExtractCredentials)
 		}
-		templateCreds := map[string]string{}
-		if err := json.Unmarshal(data, &templateCreds); err != nil {
+		equinixCreds := map[string]string{}
+		if err := json.Unmarshal(data, &equinixCreds); err != nil {
 			return ps, errors.Wrap(err, errUnmarshalCredentials)
 		}
 
 		// set provider configuration
-		ps.Configuration = map[string]interface{}{
-			"host": templateCreds[keyHost],
+		ps.Configuration = map[string]interface{}{}
+		for _, key := range []string{keyEndpoint, keyRequestTimeout, keyResponseMaxPageSize} {
+			ps.Configuration[key] = equinixCreds[key]
 		}
 		// set environment variables for sensitive provider configuration
 		ps.Env = []string{
-			fmt.Sprintf(fmtEnvVar, envUsername, templateCreds[keyUsername]),
-			fmt.Sprintf(fmtEnvVar, envPassword, templateCreds[keyPassword]),
+			fmt.Sprintf(fmtEnvVar, envClientID, equinixCreds[keyClientID]),
+			fmt.Sprintf(fmtEnvVar, envClientSecret, equinixCreds[keyClientSecret]),
 		}
 		return ps, nil
 	}
