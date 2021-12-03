@@ -90,8 +90,14 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 
 		// set provider configuration
 		ps.Configuration = map[string]interface{}{}
-		for _, key := range []string{keyEndpoint, keyRequestTimeout, keyResponseMaxPageSize} {
-			ps.Configuration[key] = equinixCreds[key]
+		for _, key := range []string{
+			keyEndpoint,
+			keyRequestTimeout,
+			keyResponseMaxPageSize,
+		} {
+			if equinixCreds[key] != "" {
+				ps.Configuration[key] = equinixCreds[key]
+			}
 		}
 		// set environment variables for sensitive provider configuration
 		ps.Env = []string{
