@@ -25,8 +25,10 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type BgpObservation struct {
+type BGPObservation struct {
 	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
+
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	ProvisioningStatus *string `json:"provisioningStatus,omitempty" tf:"provisioning_status,omitempty"`
 
@@ -35,7 +37,7 @@ type BgpObservation struct {
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
-type BgpParameters struct {
+type BGPParameters struct {
 
 	// Shared key used for BGP peer authentication
 	// +kubebuilder:validation:Optional
@@ -47,7 +49,7 @@ type BgpParameters struct {
 
 	// Local ASN number
 	// +kubebuilder:validation:Required
-	LocalAsn *int64 `json:"localAsn" tf:"local_asn,omitempty"`
+	LocalAsn *float64 `json:"localAsn" tf:"local_asn,omitempty"`
 
 	// IP address in CIDR format of a local device
 	// +kubebuilder:validation:Required
@@ -55,58 +57,58 @@ type BgpParameters struct {
 
 	// Remote ASN number
 	// +kubebuilder:validation:Required
-	RemoteAsn *int64 `json:"remoteAsn" tf:"remote_asn,omitempty"`
+	RemoteAsn *float64 `json:"remoteAsn" tf:"remote_asn,omitempty"`
 
 	// IP address of remote peer
 	// +kubebuilder:validation:Required
 	RemoteIPAddress *string `json:"remoteIpAddress" tf:"remote_ip_address,omitempty"`
 }
 
-// BgpSpec defines the desired state of Bgp
-type BgpSpec struct {
+// BGPSpec defines the desired state of BGP
+type BGPSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     BgpParameters `json:"forProvider"`
+	ForProvider     BGPParameters `json:"forProvider"`
 }
 
-// BgpStatus defines the observed state of Bgp.
-type BgpStatus struct {
+// BGPStatus defines the observed state of BGP.
+type BGPStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        BgpObservation `json:"atProvider,omitempty"`
+	AtProvider        BGPObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// Bgp is the Schema for the Bgps API
+// BGP is the Schema for the BGPs API
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinixjet}
-type Bgp struct {
+type BGP struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              BgpSpec   `json:"spec"`
-	Status            BgpStatus `json:"status,omitempty"`
+	Spec              BGPSpec   `json:"spec"`
+	Status            BGPStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// BgpList contains a list of Bgps
-type BgpList struct {
+// BGPList contains a list of BGPs
+type BGPList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []Bgp `json:"items"`
+	Items           []BGP `json:"items"`
 }
 
 // Repository type metadata.
 var (
-	Bgp_Kind             = "Bgp"
-	Bgp_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: Bgp_Kind}.String()
-	Bgp_KindAPIVersion   = Bgp_Kind + "." + CRDGroupVersion.String()
-	Bgp_GroupVersionKind = CRDGroupVersion.WithKind(Bgp_Kind)
+	BGP_Kind             = "BGP"
+	BGP_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: BGP_Kind}.String()
+	BGP_KindAPIVersion   = BGP_Kind + "." + CRDGroupVersion.String()
+	BGP_GroupVersionKind = CRDGroupVersion.WithKind(BGP_Kind)
 )
 
 func init() {
-	SchemeBuilder.Register(&Bgp{}, &BgpList{})
+	SchemeBuilder.Register(&BGP{}, &BGPList{})
 }

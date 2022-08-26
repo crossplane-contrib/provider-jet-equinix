@@ -35,11 +35,13 @@ type FeaturesParameters struct {
 	AllowRemoteConnections *bool `json:"allowRemoteConnections" tf:"allow_remote_connections,omitempty"`
 
 	// Indicates whether or not this profile can be used for test connections
-	// +kubebuilder:validation:Required
-	TestProfile *bool `json:"testProfile" tf:"test_profile,omitempty"`
+	// +kubebuilder:validation:Optional
+	TestProfile *bool `json:"testProfile,omitempty" tf:"test_profile,omitempty"`
 }
 
 type L2ServiceprofileObservation struct {
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
 
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
@@ -169,7 +171,7 @@ type SpeedBandParameters struct {
 
 	// Speed/bandwidth supported by given service profile
 	// +kubebuilder:validation:Required
-	Speed *int64 `json:"speed" tf:"speed,omitempty"`
+	Speed *float64 `json:"speed" tf:"speed,omitempty"`
 
 	// Unit of the speed/bandwidth supported by given service profile
 	// +kubebuilder:validation:Required

@@ -19,115 +19,135 @@ package v1alpha1
 
 import xpv1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 
-// GetCondition of this AclTemplate.
-func (mg *AclTemplate) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+// GetCondition of this ACLTemplate.
+func (mg *ACLTemplate) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
-// GetDeletionPolicy of this AclTemplate.
-func (mg *AclTemplate) GetDeletionPolicy() xpv1.DeletionPolicy {
+// GetDeletionPolicy of this ACLTemplate.
+func (mg *ACLTemplate) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetProviderConfigReference of this AclTemplate.
-func (mg *AclTemplate) GetProviderConfigReference() *xpv1.Reference {
+// GetProviderConfigReference of this ACLTemplate.
+func (mg *ACLTemplate) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
 /*
-GetProviderReference of this AclTemplate.
+GetProviderReference of this ACLTemplate.
 Deprecated: Use GetProviderConfigReference.
 */
-func (mg *AclTemplate) GetProviderReference() *xpv1.Reference {
+func (mg *ACLTemplate) GetProviderReference() *xpv1.Reference {
 	return mg.Spec.ProviderReference
 }
 
-// GetWriteConnectionSecretToReference of this AclTemplate.
-func (mg *AclTemplate) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+// GetPublishConnectionDetailsTo of this ACLTemplate.
+func (mg *ACLTemplate) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+	return mg.Spec.PublishConnectionDetailsTo
+}
+
+// GetWriteConnectionSecretToReference of this ACLTemplate.
+func (mg *ACLTemplate) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
-// SetConditions of this AclTemplate.
-func (mg *AclTemplate) SetConditions(c ...xpv1.Condition) {
+// SetConditions of this ACLTemplate.
+func (mg *ACLTemplate) SetConditions(c ...xpv1.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
-// SetDeletionPolicy of this AclTemplate.
-func (mg *AclTemplate) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+// SetDeletionPolicy of this ACLTemplate.
+func (mg *ACLTemplate) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetProviderConfigReference of this AclTemplate.
-func (mg *AclTemplate) SetProviderConfigReference(r *xpv1.Reference) {
+// SetProviderConfigReference of this ACLTemplate.
+func (mg *ACLTemplate) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 /*
-SetProviderReference of this AclTemplate.
+SetProviderReference of this ACLTemplate.
 Deprecated: Use SetProviderConfigReference.
 */
-func (mg *AclTemplate) SetProviderReference(r *xpv1.Reference) {
+func (mg *ACLTemplate) SetProviderReference(r *xpv1.Reference) {
 	mg.Spec.ProviderReference = r
 }
 
-// SetWriteConnectionSecretToReference of this AclTemplate.
-func (mg *AclTemplate) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+// SetPublishConnectionDetailsTo of this ACLTemplate.
+func (mg *ACLTemplate) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+	mg.Spec.PublishConnectionDetailsTo = r
+}
+
+// SetWriteConnectionSecretToReference of this ACLTemplate.
+func (mg *ACLTemplate) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
-// GetCondition of this Bgp.
-func (mg *Bgp) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+// GetCondition of this BGP.
+func (mg *BGP) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
-// GetDeletionPolicy of this Bgp.
-func (mg *Bgp) GetDeletionPolicy() xpv1.DeletionPolicy {
+// GetDeletionPolicy of this BGP.
+func (mg *BGP) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetProviderConfigReference of this Bgp.
-func (mg *Bgp) GetProviderConfigReference() *xpv1.Reference {
+// GetProviderConfigReference of this BGP.
+func (mg *BGP) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
 /*
-GetProviderReference of this Bgp.
+GetProviderReference of this BGP.
 Deprecated: Use GetProviderConfigReference.
 */
-func (mg *Bgp) GetProviderReference() *xpv1.Reference {
+func (mg *BGP) GetProviderReference() *xpv1.Reference {
 	return mg.Spec.ProviderReference
 }
 
-// GetWriteConnectionSecretToReference of this Bgp.
-func (mg *Bgp) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+// GetPublishConnectionDetailsTo of this BGP.
+func (mg *BGP) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+	return mg.Spec.PublishConnectionDetailsTo
+}
+
+// GetWriteConnectionSecretToReference of this BGP.
+func (mg *BGP) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
-// SetConditions of this Bgp.
-func (mg *Bgp) SetConditions(c ...xpv1.Condition) {
+// SetConditions of this BGP.
+func (mg *BGP) SetConditions(c ...xpv1.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
-// SetDeletionPolicy of this Bgp.
-func (mg *Bgp) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+// SetDeletionPolicy of this BGP.
+func (mg *BGP) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetProviderConfigReference of this Bgp.
-func (mg *Bgp) SetProviderConfigReference(r *xpv1.Reference) {
+// SetProviderConfigReference of this BGP.
+func (mg *BGP) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 /*
-SetProviderReference of this Bgp.
+SetProviderReference of this BGP.
 Deprecated: Use SetProviderConfigReference.
 */
-func (mg *Bgp) SetProviderReference(r *xpv1.Reference) {
+func (mg *BGP) SetProviderReference(r *xpv1.Reference) {
 	mg.Spec.ProviderReference = r
 }
 
-// SetWriteConnectionSecretToReference of this Bgp.
-func (mg *Bgp) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+// SetPublishConnectionDetailsTo of this BGP.
+func (mg *BGP) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+	mg.Spec.PublishConnectionDetailsTo = r
+}
+
+// SetWriteConnectionSecretToReference of this BGP.
+func (mg *BGP) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
@@ -152,6 +172,11 @@ Deprecated: Use GetProviderConfigReference.
 */
 func (mg *Device) GetProviderReference() *xpv1.Reference {
 	return mg.Spec.ProviderReference
+}
+
+// GetPublishConnectionDetailsTo of this Device.
+func (mg *Device) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+	return mg.Spec.PublishConnectionDetailsTo
 }
 
 // GetWriteConnectionSecretToReference of this Device.
@@ -182,6 +207,11 @@ func (mg *Device) SetProviderReference(r *xpv1.Reference) {
 	mg.Spec.ProviderReference = r
 }
 
+// SetPublishConnectionDetailsTo of this Device.
+func (mg *Device) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+	mg.Spec.PublishConnectionDetailsTo = r
+}
+
 // SetWriteConnectionSecretToReference of this Device.
 func (mg *Device) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
@@ -208,6 +238,11 @@ Deprecated: Use GetProviderConfigReference.
 */
 func (mg *DeviceLink) GetProviderReference() *xpv1.Reference {
 	return mg.Spec.ProviderReference
+}
+
+// GetPublishConnectionDetailsTo of this DeviceLink.
+func (mg *DeviceLink) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+	return mg.Spec.PublishConnectionDetailsTo
 }
 
 // GetWriteConnectionSecretToReference of this DeviceLink.
@@ -238,119 +273,144 @@ func (mg *DeviceLink) SetProviderReference(r *xpv1.Reference) {
 	mg.Spec.ProviderReference = r
 }
 
+// SetPublishConnectionDetailsTo of this DeviceLink.
+func (mg *DeviceLink) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+	mg.Spec.PublishConnectionDetailsTo = r
+}
+
 // SetWriteConnectionSecretToReference of this DeviceLink.
 func (mg *DeviceLink) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
-// GetCondition of this SshKey.
-func (mg *SshKey) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+// GetCondition of this SSHKey.
+func (mg *SSHKey) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
-// GetDeletionPolicy of this SshKey.
-func (mg *SshKey) GetDeletionPolicy() xpv1.DeletionPolicy {
+// GetDeletionPolicy of this SSHKey.
+func (mg *SSHKey) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetProviderConfigReference of this SshKey.
-func (mg *SshKey) GetProviderConfigReference() *xpv1.Reference {
+// GetProviderConfigReference of this SSHKey.
+func (mg *SSHKey) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
 /*
-GetProviderReference of this SshKey.
+GetProviderReference of this SSHKey.
 Deprecated: Use GetProviderConfigReference.
 */
-func (mg *SshKey) GetProviderReference() *xpv1.Reference {
+func (mg *SSHKey) GetProviderReference() *xpv1.Reference {
 	return mg.Spec.ProviderReference
 }
 
-// GetWriteConnectionSecretToReference of this SshKey.
-func (mg *SshKey) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+// GetPublishConnectionDetailsTo of this SSHKey.
+func (mg *SSHKey) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+	return mg.Spec.PublishConnectionDetailsTo
+}
+
+// GetWriteConnectionSecretToReference of this SSHKey.
+func (mg *SSHKey) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
-// SetConditions of this SshKey.
-func (mg *SshKey) SetConditions(c ...xpv1.Condition) {
+// SetConditions of this SSHKey.
+func (mg *SSHKey) SetConditions(c ...xpv1.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
-// SetDeletionPolicy of this SshKey.
-func (mg *SshKey) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+// SetDeletionPolicy of this SSHKey.
+func (mg *SSHKey) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetProviderConfigReference of this SshKey.
-func (mg *SshKey) SetProviderConfigReference(r *xpv1.Reference) {
+// SetProviderConfigReference of this SSHKey.
+func (mg *SSHKey) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 /*
-SetProviderReference of this SshKey.
+SetProviderReference of this SSHKey.
 Deprecated: Use SetProviderConfigReference.
 */
-func (mg *SshKey) SetProviderReference(r *xpv1.Reference) {
+func (mg *SSHKey) SetProviderReference(r *xpv1.Reference) {
 	mg.Spec.ProviderReference = r
 }
 
-// SetWriteConnectionSecretToReference of this SshKey.
-func (mg *SshKey) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+// SetPublishConnectionDetailsTo of this SSHKey.
+func (mg *SSHKey) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+	mg.Spec.PublishConnectionDetailsTo = r
+}
+
+// SetWriteConnectionSecretToReference of this SSHKey.
+func (mg *SSHKey) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
-// GetCondition of this SshUser.
-func (mg *SshUser) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+// GetCondition of this SSHUser.
+func (mg *SSHUser) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
-// GetDeletionPolicy of this SshUser.
-func (mg *SshUser) GetDeletionPolicy() xpv1.DeletionPolicy {
+// GetDeletionPolicy of this SSHUser.
+func (mg *SSHUser) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetProviderConfigReference of this SshUser.
-func (mg *SshUser) GetProviderConfigReference() *xpv1.Reference {
+// GetProviderConfigReference of this SSHUser.
+func (mg *SSHUser) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
 /*
-GetProviderReference of this SshUser.
+GetProviderReference of this SSHUser.
 Deprecated: Use GetProviderConfigReference.
 */
-func (mg *SshUser) GetProviderReference() *xpv1.Reference {
+func (mg *SSHUser) GetProviderReference() *xpv1.Reference {
 	return mg.Spec.ProviderReference
 }
 
-// GetWriteConnectionSecretToReference of this SshUser.
-func (mg *SshUser) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+// GetPublishConnectionDetailsTo of this SSHUser.
+func (mg *SSHUser) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+	return mg.Spec.PublishConnectionDetailsTo
+}
+
+// GetWriteConnectionSecretToReference of this SSHUser.
+func (mg *SSHUser) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
-// SetConditions of this SshUser.
-func (mg *SshUser) SetConditions(c ...xpv1.Condition) {
+// SetConditions of this SSHUser.
+func (mg *SSHUser) SetConditions(c ...xpv1.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
-// SetDeletionPolicy of this SshUser.
-func (mg *SshUser) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+// SetDeletionPolicy of this SSHUser.
+func (mg *SSHUser) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetProviderConfigReference of this SshUser.
-func (mg *SshUser) SetProviderConfigReference(r *xpv1.Reference) {
+// SetProviderConfigReference of this SSHUser.
+func (mg *SSHUser) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 /*
-SetProviderReference of this SshUser.
+SetProviderReference of this SSHUser.
 Deprecated: Use SetProviderConfigReference.
 */
-func (mg *SshUser) SetProviderReference(r *xpv1.Reference) {
+func (mg *SSHUser) SetProviderReference(r *xpv1.Reference) {
 	mg.Spec.ProviderReference = r
 }
 
-// SetWriteConnectionSecretToReference of this SshUser.
-func (mg *SshUser) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+// SetPublishConnectionDetailsTo of this SSHUser.
+func (mg *SSHUser) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+	mg.Spec.PublishConnectionDetailsTo = r
+}
+
+// SetWriteConnectionSecretToReference of this SSHUser.
+func (mg *SSHUser) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }

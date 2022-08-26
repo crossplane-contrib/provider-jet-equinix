@@ -34,8 +34,8 @@ type DeviceLinkDeviceObservation struct {
 type DeviceLinkDeviceParameters struct {
 
 	// Device ASN number
-	// +kubebuilder:validation:Required
-	Asn *int64 `json:"asn" tf:"asn,omitempty"`
+	// +kubebuilder:validation:Optional
+	Asn *float64 `json:"asn,omitempty" tf:"asn,omitempty"`
 
 	// Device identifier
 	// +kubebuilder:validation:Required
@@ -43,10 +43,14 @@ type DeviceLinkDeviceParameters struct {
 
 	// Device network interface identifier to use for device link connection
 	// +kubebuilder:validation:Optional
-	InterfaceID *int64 `json:"interfaceId,omitempty" tf:"interface_id,omitempty"`
+	InterfaceID *float64 `json:"interfaceId,omitempty" tf:"interface_id,omitempty"`
 }
 
 type DeviceLinkObservation struct {
+	Device []DeviceLinkDeviceObservation `json:"device,omitempty" tf:"device,omitempty"`
+
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
@@ -66,8 +70,8 @@ type DeviceLinkParameters struct {
 	Name *string `json:"name" tf:"name,omitempty"`
 
 	// subnet
-	// +kubebuilder:validation:Required
-	Subnet *string `json:"subnet" tf:"subnet,omitempty"`
+	// +kubebuilder:validation:Optional
+	Subnet *string `json:"subnet,omitempty" tf:"subnet,omitempty"`
 }
 
 type LinkObservation struct {
@@ -84,16 +88,16 @@ type LinkParameters struct {
 	DstMetroCode *string `json:"dstMetroCode" tf:"dst_metro_code,omitempty"`
 
 	// Connection destination zone code
-	// +kubebuilder:validation:Required
-	DstZoneCode *string `json:"dstZoneCode" tf:"dst_zone_code,omitempty"`
+	// +kubebuilder:validation:Optional
+	DstZoneCode *string `json:"dstZoneCode,omitempty" tf:"dst_zone_code,omitempty"`
 
 	// Connection source metro code
 	// +kubebuilder:validation:Required
 	SrcMetroCode *string `json:"srcMetroCode" tf:"src_metro_code,omitempty"`
 
 	// Connection source zone code
-	// +kubebuilder:validation:Required
-	SrcZoneCode *string `json:"srcZoneCode" tf:"src_zone_code,omitempty"`
+	// +kubebuilder:validation:Optional
+	SrcZoneCode *string `json:"srcZoneCode,omitempty" tf:"src_zone_code,omitempty"`
 
 	// Connection throughput
 	// +kubebuilder:validation:Required

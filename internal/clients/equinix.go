@@ -21,25 +21,14 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/crossplane-contrib/terrajet/pkg/terraform"
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 	"github.com/pkg/errors"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/crossplane-contrib/provider-tf-equinix/apis/v1alpha1"
-)
+	"github.com/crossplane/terrajet/pkg/terraform"
 
-const (
-	keyClientID            = "client_id"
-	keyClientSecret        = "client_secret"
-	keyEndpoint            = "endpoint"
-	keyRequestTimeout      = "request_timeout"
-	keyResponseMaxPageSize = "response_max_page_size"
-
-	// Equinix credentials environment variable names
-	envClientID     = "EQUINIX_API_CLIENTID"
-	envClientSecret = "EQUINIX_API_CLIENTSECRET"
+	"github.com/crossplane-contrib/provider-jet-equinix/apis/v1alpha1"
 )
 
 const (
@@ -51,6 +40,16 @@ const (
 	errTrackUsage           = "cannot track ProviderConfig usage"
 	errExtractCredentials   = "cannot extract credentials"
 	errUnmarshalCredentials = "cannot unmarshal equinix credentials as JSON"
+
+	keyClientID            = "client_id"
+	keyClientSecret        = "client_secret"
+	keyEndpoint            = "endpoint"
+	keyRequestTimeout      = "request_timeout"
+	keyResponseMaxPageSize = "response_max_page_size"
+
+	// Equinix credentials environment variable names
+	envClientID     = "EQUINIX_API_CLIENTID"
+	envClientSecret = "EQUINIX_API_CLIENTSECRET"
 )
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
@@ -88,7 +87,15 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			return ps, errors.Wrap(err, errUnmarshalCredentials)
 		}
 
-		// set provider configuration
+		// set environment variables for sensitive provider configuration
+		// Deprecated: In shared gRPC mode we do not support injecting
+		// credentials via the environment variables. You should specify
+		// credentials via the Terraform main.tf.json instead.
+		ps.Env = []string{
+			fmt.Sprintf(fmtEnvVar, envClientID, equinixCreds[keyClientID]),
+			fmt.Sprintf(fmtEnvVar, envClientSecret, equinixCreds[keyClientSecret]),
+		}
+		// set credentials in Terraform provider configuration
 		ps.Configuration = map[string]interface{}{}
 		for _, key := range []string{
 			keyEndpoint,
@@ -98,11 +105,6 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			if equinixCreds[key] != "" {
 				ps.Configuration[key] = equinixCreds[key]
 			}
-		}
-		// set environment variables for sensitive provider configuration
-		ps.Env = []string{
-			fmt.Sprintf(fmtEnvVar, envClientID, equinixCreds[keyClientID]),
-			fmt.Sprintf(fmtEnvVar, envClientSecret, equinixCreds[keyClientSecret]),
 		}
 		return ps, nil
 	}

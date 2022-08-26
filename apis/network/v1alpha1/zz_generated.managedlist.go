@@ -19,8 +19,8 @@ package v1alpha1
 
 import resource "github.com/crossplane/crossplane-runtime/pkg/resource"
 
-// GetItems of this AclTemplateList.
-func (l *AclTemplateList) GetItems() []resource.Managed {
+// GetItems of this ACLTemplateList.
+func (l *ACLTemplateList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
@@ -28,8 +28,8 @@ func (l *AclTemplateList) GetItems() []resource.Managed {
 	return items
 }
 
-// GetItems of this BgpList.
-func (l *BgpList) GetItems() []resource.Managed {
+// GetItems of this BGPList.
+func (l *BGPList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
@@ -55,8 +55,8 @@ func (l *DeviceList) GetItems() []resource.Managed {
 	return items
 }
 
-// GetItems of this SshKeyList.
-func (l *SshKeyList) GetItems() []resource.Managed {
+// GetItems of this SSHKeyList.
+func (l *SSHKeyList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
@@ -64,8 +64,8 @@ func (l *SshKeyList) GetItems() []resource.Managed {
 	return items
 }
 
-// GetItems of this SshUserList.
-func (l *SshUserList) GetItems() []resource.Managed {
+// GetItems of this SSHUserList.
+func (l *SSHUserList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]

@@ -17,23 +17,27 @@ limitations under the License.
 package config
 
 import (
-	tjconfig "github.com/crossplane-contrib/terrajet/pkg/config"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	// Note(turkenh): we are importing this to embed provider schema document
+	_ "embed"
 
-	"github.com/crossplane-contrib/provider-tf-equinix/config/ecx/l2connection"
+	"github.com/crossplane-contrib/provider-jet-equinix/config/ecx/l2connection"
+	"github.com/crossplane-contrib/provider-jet-equinix/config/metal/connection"
+	"github.com/crossplane-contrib/provider-jet-equinix/config/metal/device"
+	"github.com/crossplane-contrib/provider-jet-equinix/config/metal/project"
+	tjconfig "github.com/crossplane/terrajet/pkg/config"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 const (
 	resourcePrefix = "equinix"
-	modulePath     = "github.com/crossplane-contrib/provider-tf-equinix"
+	modulePath     = "github.com/crossplane-contrib/provider-jet-equinix"
 )
 
-// GetProvider returns provider configuration
-func GetProvider(tf *schema.Provider) *tjconfig.Provider {
-	// Comment out the line below instead of the above, if your Terraform
-	// provider uses an old version (<v2) of github.com/hashicorp/terraform-plugin-sdk.
-	// resourceMap := conversion.GetV2ResourceMap(tf.Provider())
+//go:embed schema.json
+var providerSchema string
 
+// GetProvider returns provider configuration
+func GetProvider() *tjconfig.Provider {
 	defaultResourceFn := func(name string, terraformResource *schema.Resource, opts ...tjconfig.ResourceOption) *tjconfig.Resource {
 		r := tjconfig.DefaultResource(name, terraformResource)
 		// Add any provider-specific defaulting here. For example:
@@ -41,7 +45,7 @@ func GetProvider(tf *schema.Provider) *tjconfig.Provider {
 		return r
 	}
 
-	pc := tjconfig.NewProvider(tf.ResourcesMap, resourcePrefix, modulePath,
+	pc := tjconfig.NewProviderWithSchema([]byte(providerSchema), resourcePrefix, modulePath,
 		tjconfig.WithDefaultResourceFn(defaultResourceFn),
 		tjconfig.WithIncludeList([]string{
 			".*",
@@ -50,7 +54,10 @@ func GetProvider(tf *schema.Provider) *tjconfig.Provider {
 
 	for _, configure := range []func(provider *tjconfig.Provider){
 		// add custom config functions
-		l2connection.Customize,
+		connection.Configure,
+		device.Configure,
+		project.Configure,
+		l2connection.Configure,
 	} {
 		configure(pc)
 	}
