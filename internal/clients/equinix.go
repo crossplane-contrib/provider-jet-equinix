@@ -43,6 +43,7 @@ const (
 
 	keyClientID            = "client_id"
 	keyClientSecret        = "client_secret"
+	keyAuthToken           = "auth_token"
 	keyEndpoint            = "endpoint"
 	keyRequestTimeout      = "request_timeout"
 	keyResponseMaxPageSize = "response_max_page_size"
@@ -50,6 +51,7 @@ const (
 	// Equinix credentials environment variable names
 	envClientID     = "EQUINIX_API_CLIENTID"
 	envClientSecret = "EQUINIX_API_CLIENTSECRET"
+	envAuthToken    = "METAL_AUTH_TOKEN"
 )
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
@@ -94,6 +96,7 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		ps.Env = []string{
 			fmt.Sprintf(fmtEnvVar, envClientID, equinixCreds[keyClientID]),
 			fmt.Sprintf(fmtEnvVar, envClientSecret, equinixCreds[keyClientSecret]),
+			fmt.Sprintf(fmtEnvVar, envAuthToken, equinixCreds[keyAuthToken]),
 		}
 		// set credentials in Terraform provider configuration
 		ps.Configuration = map[string]interface{}{}
