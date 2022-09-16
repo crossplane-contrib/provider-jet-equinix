@@ -5,12 +5,12 @@ PROJECT_NAME := provider-jet-equinix
 PROJECT_REPO := github.com/crossplane-contrib/$(PROJECT_NAME)
 GOLANGCILINT_VERSION ?= 1.48.0
 
-export TERRAFORM_VERSION := 1.1.6
+export TERRAFORM_VERSION := 1.2.9
 
 export TERRAFORM_PROVIDER_SOURCE := equinix/equinix
-export TERRAFORM_PROVIDER_VERSION := 1.8.0
+export TERRAFORM_PROVIDER_VERSION := 1.9.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME := terraform-provider-equinix
-export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX := https://releases.hashicorp.com/terraform-provider-equinix/1.8.0
+export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX := https://releases.hashicorp.com/terraform-provider-equinix/1.9.0
 #export TERRAFORM_NATIVE_PROVIDER_BINARY := terraform-provider-null_v3.1.0_x5
 
 PLATFORMS ?= linux_amd64 linux_arm64
