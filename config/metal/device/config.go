@@ -16,13 +16,24 @@ limitations under the License.
 
 package device
 
-import "github.com/crossplane/terrajet/pkg/config"
+import (
+	"github.com/crossplane/terrajet/pkg/config"
+)
 
 // Configure the device group with references to other resources
 func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("equinix_metal_device", func(r *config.Resource) {
 		r.References["project_id"] = config.Reference{
-			Type: "github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Project",
+			Type: "Project",
+		}
+
+		r.LateInitializer = config.LateInitializer{
+			// NOTE(displague): These are ignored because they conflict with each other.
+			// See the following for more details: https://github.com/crossplane/terrajet/issues/107
+			IgnoredFields: []string{
+				"metro",
+				"facilities",
+			},
 		}
 	})
 }
