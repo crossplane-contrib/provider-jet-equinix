@@ -25,17 +25,23 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type AclTemplateObservation struct {
+type ACLTemplateObservation struct {
 	DeviceACLStatus *string `json:"deviceAclStatus,omitempty" tf:"device_acl_status,omitempty"`
 
+	DeviceDetails []DeviceDetailsObservation `json:"deviceDetails,omitempty" tf:"device_details,omitempty"`
+
 	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
+
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	InboundRule []InboundRuleObservation `json:"inboundRule,omitempty" tf:"inbound_rule,omitempty"`
 
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
-type AclTemplateParameters struct {
+type ACLTemplateParameters struct {
 
-	// ACL template description
+	// ACL template description, up to 200 characters
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
@@ -44,21 +50,36 @@ type AclTemplateParameters struct {
 	InboundRule []InboundRuleParameters `json:"inboundRule" tf:"inbound_rule,omitempty"`
 
 	// ACL template location metro code
-	// +kubebuilder:validation:Required
-	MetroCode *string `json:"metroCode" tf:"metro_code,omitempty"`
+	// +kubebuilder:validation:Optional
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
 
 	// ACL template name
 	// +kubebuilder:validation:Required
 	Name *string `json:"name" tf:"name,omitempty"`
 }
 
+type DeviceDetailsObservation struct {
+	ACLStatus *string `json:"aclStatus,omitempty" tf:"acl_status,omitempty"`
+
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
+type DeviceDetailsParameters struct {
+}
+
 type InboundRuleObservation struct {
-	SequenceNumber *int64 `json:"sequenceNumber,omitempty" tf:"sequence_number,omitempty"`
+	SequenceNumber *float64 `json:"sequenceNumber,omitempty" tf:"sequence_number,omitempty"`
 
 	SourceType *string `json:"sourceType,omitempty" tf:"source_type,omitempty"`
 }
 
 type InboundRuleParameters struct {
+
+	// Inbound rule description, up to 200 characters
+	// +kubebuilder:validation:Optional
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// Inbound traffic destination ports. Either up to 10, comma separated ports or port range or any word
 	// +kubebuilder:validation:Required
@@ -72,56 +93,60 @@ type InboundRuleParameters struct {
 	// +kubebuilder:validation:Required
 	SrcPort *string `json:"srcPort" tf:"src_port,omitempty"`
 
+	// Inbound traffic source IP subnet in CIDR format
+	// +kubebuilder:validation:Optional
+	Subnet *string `json:"subnet,omitempty" tf:"subnet,omitempty"`
+
 	// Inbound traffic source IP subnets in CIDR format
-	// +kubebuilder:validation:Required
-	Subnets []*string `json:"subnets" tf:"subnets,omitempty"`
+	// +kubebuilder:validation:Optional
+	Subnets []*string `json:"subnets,omitempty" tf:"subnets,omitempty"`
 }
 
-// AclTemplateSpec defines the desired state of AclTemplate
-type AclTemplateSpec struct {
+// ACLTemplateSpec defines the desired state of ACLTemplate
+type ACLTemplateSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     AclTemplateParameters `json:"forProvider"`
+	ForProvider     ACLTemplateParameters `json:"forProvider"`
 }
 
-// AclTemplateStatus defines the observed state of AclTemplate.
-type AclTemplateStatus struct {
+// ACLTemplateStatus defines the observed state of ACLTemplate.
+type ACLTemplateStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        AclTemplateObservation `json:"atProvider,omitempty"`
+	AtProvider        ACLTemplateObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// AclTemplate is the Schema for the AclTemplates API
+// ACLTemplate is the Schema for the ACLTemplates API
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinixjet}
-type AclTemplate struct {
+type ACLTemplate struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              AclTemplateSpec   `json:"spec"`
-	Status            AclTemplateStatus `json:"status,omitempty"`
+	Spec              ACLTemplateSpec   `json:"spec"`
+	Status            ACLTemplateStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// AclTemplateList contains a list of AclTemplates
-type AclTemplateList struct {
+// ACLTemplateList contains a list of ACLTemplates
+type ACLTemplateList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []AclTemplate `json:"items"`
+	Items           []ACLTemplate `json:"items"`
 }
 
 // Repository type metadata.
 var (
-	AclTemplate_Kind             = "AclTemplate"
-	AclTemplate_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: AclTemplate_Kind}.String()
-	AclTemplate_KindAPIVersion   = AclTemplate_Kind + "." + CRDGroupVersion.String()
-	AclTemplate_GroupVersionKind = CRDGroupVersion.WithKind(AclTemplate_Kind)
+	ACLTemplate_Kind             = "ACLTemplate"
+	ACLTemplate_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: ACLTemplate_Kind}.String()
+	ACLTemplate_KindAPIVersion   = ACLTemplate_Kind + "." + CRDGroupVersion.String()
+	ACLTemplate_GroupVersionKind = CRDGroupVersion.WithKind(ACLTemplate_Kind)
 )
 
 func init() {
-	SchemeBuilder.Register(&AclTemplate{}, &AclTemplateList{})
+	SchemeBuilder.Register(&ACLTemplate{}, &ACLTemplateList{})
 }

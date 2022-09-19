@@ -1,8 +1,9 @@
+---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.6.2
+    controller-gen.kubebuilder.io/version: v0.8.0
   creationTimestamp: null
   name: devices.network.equinix.jet.crossplane.io
 spec:
@@ -71,24 +72,270 @@ spec:
                   additionalBandwidth:
                     description: Additional Internet bandwidth, in Mbps, that will
                       be allocated to the device
-                    format: int64
-                    type: integer
+                    type: number
                   byol:
                     description: 'Boolean value that determines device licensing mode:
                       bring your own license or subscription (default)'
                     type: boolean
+                  clusterDetails:
+                    description: An object that has the cluster details
+                    items:
+                      properties:
+                        clusterName:
+                          description: The name of the cluster device
+                          type: string
+                        node0:
+                          description: An object that has node0 details
+                          items:
+                            properties:
+                              licenseFileIdSecretRef:
+                                description: License file id. This is necessary for
+                                  Fortinet and Juniper clusters
+                                properties:
+                                  key:
+                                    description: The key to select.
+                                    type: string
+                                  name:
+                                    description: Name of the secret.
+                                    type: string
+                                  namespace:
+                                    description: Namespace of the secret.
+                                    type: string
+                                required:
+                                - key
+                                - name
+                                - namespace
+                                type: object
+                              licenseTokenSecretRef:
+                                description: License token. This is necessary for
+                                  Palo Alto clusters
+                                properties:
+                                  key:
+                                    description: The key to select.
+                                    type: string
+                                  name:
+                                    description: Name of the secret.
+                                    type: string
+                                  namespace:
+                                    description: Namespace of the secret.
+                                    type: string
+                                required:
+                                - key
+                                - name
+                                - namespace
+                                type: object
+                              vendorConfiguration:
+                                description: An object that has fields relevant to
+                                  the vendor of the cluster device
+                                items:
+                                  properties:
+                                    activationKeySecretRef:
+                                      description: Activation key. This is required
+                                        for Velocloud clusters
+                                      properties:
+                                        key:
+                                          description: The key to select.
+                                          type: string
+                                        name:
+                                          description: Name of the secret.
+                                          type: string
+                                        namespace:
+                                          description: Namespace of the secret.
+                                          type: string
+                                      required:
+                                      - key
+                                      - name
+                                      - namespace
+                                      type: object
+                                    adminPasswordSecretRef:
+                                      description: The administrative password of
+                                        the device. You can use it to log in to the
+                                        console. This field is not available for all
+                                        device types
+                                      properties:
+                                        key:
+                                          description: The key to select.
+                                          type: string
+                                        name:
+                                          description: Name of the secret.
+                                          type: string
+                                        namespace:
+                                          description: Namespace of the secret.
+                                          type: string
+                                      required:
+                                      - key
+                                      - name
+                                      - namespace
+                                      type: object
+                                    controller1:
+                                      description: System IP Address. Mandatory for
+                                        the Fortinet SDWAN cluster device
+                                      type: string
+                                    controllerFqdn:
+                                      description: Controller fqdn. This is required
+                                        for Velocloud clusters
+                                      type: string
+                                    hostname:
+                                      description: Hostname. This is necessary for
+                                        Palo Alto, Juniper, and Fortinet clusters
+                                      type: string
+                                    rootPasswordSecretRef:
+                                      description: The CLI password of the device.
+                                        This field is relevant only for the Velocloud
+                                        SDWAN cluster
+                                      properties:
+                                        key:
+                                          description: The key to select.
+                                          type: string
+                                        name:
+                                          description: Name of the secret.
+                                          type: string
+                                        namespace:
+                                          description: Namespace of the secret.
+                                          type: string
+                                      required:
+                                      - key
+                                      - name
+                                      - namespace
+                                      type: object
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                        node1:
+                          description: An object that has node1 details
+                          items:
+                            properties:
+                              licenseFileIdSecretRef:
+                                description: License file id. This is necessary for
+                                  Fortinet and Juniper clusters
+                                properties:
+                                  key:
+                                    description: The key to select.
+                                    type: string
+                                  name:
+                                    description: Name of the secret.
+                                    type: string
+                                  namespace:
+                                    description: Namespace of the secret.
+                                    type: string
+                                required:
+                                - key
+                                - name
+                                - namespace
+                                type: object
+                              licenseTokenSecretRef:
+                                description: License token. This is necessary for
+                                  Palo Alto clusters
+                                properties:
+                                  key:
+                                    description: The key to select.
+                                    type: string
+                                  name:
+                                    description: Name of the secret.
+                                    type: string
+                                  namespace:
+                                    description: Namespace of the secret.
+                                    type: string
+                                required:
+                                - key
+                                - name
+                                - namespace
+                                type: object
+                              vendorConfiguration:
+                                description: An object that has fields relevant to
+                                  the vendor of the cluster device
+                                items:
+                                  properties:
+                                    activationKeySecretRef:
+                                      description: Activation key. This is required
+                                        for Velocloud clusters
+                                      properties:
+                                        key:
+                                          description: The key to select.
+                                          type: string
+                                        name:
+                                          description: Name of the secret.
+                                          type: string
+                                        namespace:
+                                          description: Namespace of the secret.
+                                          type: string
+                                      required:
+                                      - key
+                                      - name
+                                      - namespace
+                                      type: object
+                                    adminPasswordSecretRef:
+                                      description: The administrative password of
+                                        the device. You can use it to log in to the
+                                        console. This field is not available for all
+                                        device types
+                                      properties:
+                                        key:
+                                          description: The key to select.
+                                          type: string
+                                        name:
+                                          description: Name of the secret.
+                                          type: string
+                                        namespace:
+                                          description: Namespace of the secret.
+                                          type: string
+                                      required:
+                                      - key
+                                      - name
+                                      - namespace
+                                      type: object
+                                    controller1:
+                                      description: System IP Address. Mandatory for
+                                        the Fortinet SDWAN cluster device
+                                      type: string
+                                    controllerFqdn:
+                                      description: Controller fqdn. This is required
+                                        for Velocloud clusters
+                                      type: string
+                                    hostname:
+                                      description: Hostname. This is necessary for
+                                        Palo Alto, Juniper, and Fortinet clusters
+                                      type: string
+                                    rootPasswordSecretRef:
+                                      description: The CLI password of the device.
+                                        This field is relevant only for the Velocloud
+                                        SDWAN cluster
+                                      properties:
+                                        key:
+                                          description: The key to select.
+                                          type: string
+                                        name:
+                                          description: Name of the secret.
+                                          type: string
+                                        namespace:
+                                          description: Namespace of the secret.
+                                          type: string
+                                      required:
+                                      - key
+                                      - name
+                                      - namespace
+                                      type: object
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                      required:
+                      - clusterName
+                      - node0
+                      - node1
+                      type: object
+                    type: array
                   coreCount:
                     description: Number of CPU cores used by device
-                    format: int64
-                    type: integer
+                    type: number
                   hostname:
                     description: Device hostname prefix
                     type: string
                   interfaceCount:
                     description: Number of network interfaces on a device. If not
                       specified, default number for a given device type will be used
-                    format: int64
-                    type: integer
+                    type: number
                   licenseFile:
                     description: Path to the license file that will be uploaded and
                       applied on a device, applicable for some device types in BYOL
@@ -100,6 +347,9 @@ spec:
                     type: string
                   metroCode:
                     description: Device location metro code
+                    type: string
+                  mgmtAclTemplateUuid:
+                    description: Unique identifier of applied MGMT ACL template
                     type: string
                   name:
                     description: Device name
@@ -134,8 +384,7 @@ spec:
                         additionalBandwidth:
                           description: Additional Internet bandwidth, in Mbps, that
                             will be allocated to the device
-                          format: int64
-                          type: integer
+                          type: number
                         hostname:
                           description: Device hostname prefix
                           type: string
@@ -150,6 +399,9 @@ spec:
                           type: string
                         metroCode:
                           description: Device location metro code
+                          type: string
+                        mgmtAclTemplateUuid:
+                          description: Unique identifier of applied MGMT ACL template
                           type: string
                         name:
                           description: Device name
@@ -181,7 +433,8 @@ spec:
                           additionalProperties:
                             type: string
                           description: Map of vendor specific configuration parameters
-                            for a device
+                            for a device (controller1, activationKey, managementType,
+                            siteId, systemIpAddress)
                           type: object
                         wanInterfaceId:
                           description: device interface id picked for WAN
@@ -216,12 +469,10 @@ spec:
                     type: array
                   termLength:
                     description: Device term length
-                    format: int64
-                    type: integer
+                    type: number
                   throughput:
                     description: Device license throughput
-                    format: int64
-                    type: integer
+                    type: number
                   throughputUnit:
                     description: Device license throughput unit (Mbps or Gbps)
                     type: string
@@ -232,7 +483,8 @@ spec:
                     additionalProperties:
                       type: string
                     description: Map of vendor specific configuration parameters for
-                      a device
+                      a device (controller1, activationKey, managementType, siteId,
+                      systemIpAddress)
                     type: object
                   version:
                     description: Device software software version
@@ -275,12 +527,64 @@ spec:
                 required:
                 - name
                 type: object
+              publishConnectionDetailsTo:
+                description: PublishConnectionDetailsTo specifies the connection secret
+                  config which contains a name, metadata and a reference to secret
+                  store config to which any connection details for this managed resource
+                  should be written. Connection details frequently include the endpoint,
+                  username, and password required to connect to the managed resource.
+                properties:
+                  configRef:
+                    default:
+                      name: default
+                    description: SecretStoreConfigRef specifies which secret store
+                      config should be used for this ConnectionSecret.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                    required:
+                    - name
+                    type: object
+                  metadata:
+                    description: Metadata is the metadata for connection secret.
+                    properties:
+                      annotations:
+                        additionalProperties:
+                          type: string
+                        description: Annotations are the annotations to be added to
+                          connection secret. - For Kubernetes secrets, this will be
+                          used as "metadata.annotations". - It is up to Secret Store
+                          implementation for others store types.
+                        type: object
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: Labels are the labels/tags to be added to connection
+                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store
+                          types.
+                        type: object
+                      type:
+                        description: Type is the SecretType for the connection secret.
+                          - Only valid for Kubernetes Secret Stores.
+                        type: string
+                    type: object
+                  name:
+                    description: Name is the name of the connection secret.
+                    type: string
+                required:
+                - name
+                type: object
               writeConnectionSecretToRef:
                 description: WriteConnectionSecretToReference specifies the namespace
                   and name of a Secret to which any connection details for this managed
                   resource should be written. Connection details frequently include
                   the endpoint, username, and password required to connect to the
-                  managed resource.
+                  managed resource. This field is planned to be replaced in a future
+                  release in favor of PublishConnectionDetailsTo. Currently, both
+                  could be set independently and connection details would be published
+                  to both without affecting each other.
                 properties:
                   name:
                     description: Name of the secret.
@@ -301,9 +605,37 @@ spec:
               atProvider:
                 properties:
                   asn:
-                    format: int64
-                    type: integer
+                    type: number
+                  clusterDetails:
+                    items:
+                      properties:
+                        clusterId:
+                          type: string
+                        node0:
+                          items:
+                            properties:
+                              name:
+                                type: string
+                              uuid:
+                                type: string
+                            type: object
+                          type: array
+                        node1:
+                          items:
+                            properties:
+                              name:
+                                type: string
+                              uuid:
+                                type: string
+                            type: object
+                          type: array
+                        numOfNodes:
+                          type: number
+                      type: object
+                    type: array
                   ibx:
+                    type: string
+                  id:
                     type: string
                   interface:
                     items:
@@ -311,8 +643,7 @@ spec:
                         assignedType:
                           type: string
                         id:
-                          format: int64
-                          type: integer
+                          type: number
                         ipAddress:
                           type: string
                         macAddress:
@@ -337,6 +668,56 @@ spec:
                     type: string
                   region:
                     type: string
+                  secondaryDevice:
+                    items:
+                      properties:
+                        asn:
+                          type: number
+                        ibx:
+                          type: string
+                        interface:
+                          items:
+                            properties:
+                              assignedType:
+                                type: string
+                              id:
+                                type: number
+                              ipAddress:
+                                type: string
+                              macAddress:
+                                type: string
+                              name:
+                                type: string
+                              operationalStatus:
+                                type: string
+                              status:
+                                type: string
+                              type:
+                                type: string
+                            type: object
+                          type: array
+                        licenseFileId:
+                          type: string
+                        licenseStatus:
+                          type: string
+                        redundancyType:
+                          type: string
+                        redundantId:
+                          type: string
+                        region:
+                          type: string
+                        sshIpAddress:
+                          type: string
+                        sshIpFqdn:
+                          type: string
+                        status:
+                          type: string
+                        uuid:
+                          type: string
+                        zoneCode:
+                          type: string
+                      type: object
+                    type: array
                   sshIpAddress:
                     type: string
                   sshIpFqdn:

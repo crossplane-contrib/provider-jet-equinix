@@ -1,3 +1,5 @@
+//go:build generate
+
 /*
 Copyright 2021 The Crossplane Authors.
 
@@ -21,11 +23,9 @@ import (
 	"os"
 	"path/filepath"
 
-	tf "github.com/equinix/terraform-provider-equinix/equinix"
+	"github.com/crossplane/terrajet/pkg/pipeline"
 
-	"github.com/crossplane-contrib/terrajet/pkg/pipeline"
-
-	"github.com/crossplane-contrib/provider-tf-equinix/config"
+	"github.com/crossplane-contrib/provider-jet-equinix/config"
 )
 
 func main() {
@@ -36,5 +36,5 @@ func main() {
 	if err != nil {
 		panic(fmt.Sprintf("cannot calculate the absolute path of %s", os.Args[1]))
 	}
-	pipeline.Run(config.GetProvider(tf.Provider()), absRootDir)
+	pipeline.Run(config.GetProvider(), absRootDir)
 }

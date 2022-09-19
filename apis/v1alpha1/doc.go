@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// Package v1alpha1 contains the core resources of the tf equinix provider.
+// Package v1alpha1 contains the core resources of the equinix jet provider.
 // +kubebuilder:object:generate=true
 // +groupName=equinix.jet.crossplane.io
 // +versionName=v1alpha1

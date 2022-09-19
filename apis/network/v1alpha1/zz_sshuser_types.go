@@ -25,11 +25,13 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type SshUserObservation struct {
+type SSHUserObservation struct {
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
-type SshUserParameters struct {
+type SSHUserParameters struct {
 
 	// list of device identifiers to which user will have access
 	// +kubebuilder:validation:Required
@@ -44,51 +46,51 @@ type SshUserParameters struct {
 	Username *string `json:"username" tf:"username,omitempty"`
 }
 
-// SshUserSpec defines the desired state of SshUser
-type SshUserSpec struct {
+// SSHUserSpec defines the desired state of SSHUser
+type SSHUserSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     SshUserParameters `json:"forProvider"`
+	ForProvider     SSHUserParameters `json:"forProvider"`
 }
 
-// SshUserStatus defines the observed state of SshUser.
-type SshUserStatus struct {
+// SSHUserStatus defines the observed state of SSHUser.
+type SSHUserStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        SshUserObservation `json:"atProvider,omitempty"`
+	AtProvider        SSHUserObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// SshUser is the Schema for the SshUsers API
+// SSHUser is the Schema for the SSHUsers API
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinixjet}
-type SshUser struct {
+type SSHUser struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              SshUserSpec   `json:"spec"`
-	Status            SshUserStatus `json:"status,omitempty"`
+	Spec              SSHUserSpec   `json:"spec"`
+	Status            SSHUserStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// SshUserList contains a list of SshUsers
-type SshUserList struct {
+// SSHUserList contains a list of SSHUsers
+type SSHUserList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []SshUser `json:"items"`
+	Items           []SSHUser `json:"items"`
 }
 
 // Repository type metadata.
 var (
-	SshUser_Kind             = "SshUser"
-	SshUser_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: SshUser_Kind}.String()
-	SshUser_KindAPIVersion   = SshUser_Kind + "." + CRDGroupVersion.String()
-	SshUser_GroupVersionKind = CRDGroupVersion.WithKind(SshUser_Kind)
+	SSHUser_Kind             = "SSHUser"
+	SSHUser_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: SSHUser_Kind}.String()
+	SSHUser_KindAPIVersion   = SSHUser_Kind + "." + CRDGroupVersion.String()
+	SSHUser_GroupVersionKind = CRDGroupVersion.WithKind(SSHUser_Kind)
 )
 
 func init() {
-	SchemeBuilder.Register(&SshUser{}, &SshUserList{})
+	SchemeBuilder.Register(&SSHUser{}, &SSHUserList{})
 }

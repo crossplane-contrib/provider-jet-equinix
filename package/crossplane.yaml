@@ -1,7 +1,7 @@
 apiVersion: meta.pkg.crossplane.io/v1alpha1
 kind: Provider
 metadata:
-  name: provider-tf-equinix
+  name: provider-jet-equinix
 spec:
   controller:
-    image: DOCKER_REGISTRY/provider-tf-equinix-controller:VERSION
+    image: DOCKER_REGISTRY/provider-jet-equinix-controller:VERSION

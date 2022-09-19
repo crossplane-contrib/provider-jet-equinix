@@ -1,0 +1,464 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.8.0
+  creationTimestamp: null
+  name: devices.metal.equinix.jet.crossplane.io
+spec:
+  group: metal.equinix.jet.crossplane.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - equinixjet
+    kind: Device
+    listKind: DeviceList
+    plural: devices
+    singular: device
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Device is the Schema for the Devices API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DeviceSpec defines the desired state of Device
+            properties:
+              deletionPolicy:
+                default: Delete
+                description: DeletionPolicy specifies what will happen to the underlying
+                  external when this managed resource is deleted - either "Delete"
+                  or "Orphan" the external resource.
+                enum:
+                - Orphan
+                - Delete
+                type: string
+              forProvider:
+                properties:
+                  alwaysPxe:
+                    description: If true, a device with OS custom_ipxe will
+                    type: boolean
+                  billingCycle:
+                    description: monthly or hourly
+                    type: string
+                  customDataSecretRef:
+                    description: A string of the desired Custom Data for the device
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
+                  description:
+                    description: Description string for the device
+                    type: string
+                  facilities:
+                    description: List of facility codes with deployment preferences.
+                      Equinix Metal API will go through the list and will deploy your
+                      device to first facility with free capacity. List items must
+                      be facility codes or any (a wildcard). To find the facility
+                      code, visit [Facilities API docs](https://metal.equinix.com/developers/api/facilities/),
+                      set your API auth token in the top of the page and see JSON
+                      from the API response. Conflicts with metro
+                    items:
+                      type: string
+                    type: array
+                  forceDetachVolumes:
+                    description: Delete device even if it has volumes attached. Only
+                      applies for destroy action
+                    type: boolean
+                  hardwareReservationId:
+                    description: The UUID of the hardware reservation where you want
+                      this device deployed, or next-available if you want to pick
+                      your next available reservation automatically
+                    type: string
+                  hostname:
+                    description: The device hostname used in deployments taking advantage
+                      of Layer3 DHCP or metadata service configuration.
+                    type: string
+                  ipAddress:
+                    description: A list of IP address types for the device (structure
+                      is documented below)
+                    items:
+                      properties:
+                        cidr:
+                          description: CIDR suffix for IP block assigned to this device
+                          type: number
+                        reservationIds:
+                          description: IDs of reservations to pick the blocks from
+                          items:
+                            type: string
+                          type: array
+                        type:
+                          description: one of public_ipv4,private_ipv4,public_ipv6
+                          type: string
+                      required:
+                      - type
+                      type: object
+                    type: array
+                  ipxeScriptUrl:
+                    description: URL pointing to a hosted iPXE script. More
+                    type: string
+                  metro:
+                    description: Metro area for the new device. Conflicts with facilities
+                    type: string
+                  operatingSystem:
+                    description: The operating system slug. To find the slug, or visit
+                      [Operating Systems API docs](https://metal.equinix.com/developers/api/operatingsystems),
+                      set your API auth token in the top of the page and see JSON
+                      from the API response
+                    type: string
+                  plan:
+                    description: The device plan slug. To find the plan slug, visit
+                      [Device plans API docs](https://metal.equinix.com/developers/api/plans),
+                      set your auth token in the top of the page and see JSON from
+                      the API response
+                    type: string
+                  projectId:
+                    description: The ID of the project in which to create the device
+                    type: string
+                  projectIdRef:
+                    description: A Reference to a named object.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                    required:
+                    - name
+                    type: object
+                  projectIdSelector:
+                    description: A Selector selects an object.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                    type: object
+                  projectSshKeyIds:
+                    description: Array of IDs of the project SSH keys which should
+                      be added to the device. If you omit this, SSH keys of all the
+                      members of the parent project will be added to the device. If
+                      you specify this array, only the listed project SSH keys (and
+                      any user_ssh_key_ids) will be added. Project SSH keys can be
+                      created with the [equinix_metal_project_ssh_key](equinix_metal_project_ssh_key.md)
+                      resource
+                    items:
+                      type: string
+                    type: array
+                  reinstall:
+                    items:
+                      properties:
+                        deprovisionFast:
+                          description: Whether the OS disk should be filled with `00h`
+                            bytes before reinstall
+                          type: boolean
+                        enabled:
+                          description: Whether the device should be reinstalled instead
+                            of destroyed
+                          type: boolean
+                        preserveData:
+                          description: Whether the non-OS disks should be kept or
+                            wiped during reinstall
+                          type: boolean
+                      type: object
+                    type: array
+                  storage:
+                    description: JSON for custom partitioning. Only usable on reserved
+                      hardware. More information in in the [Custom Partitioning and
+                      RAID](https://metal.equinix.com/developers/docs/servers/custom-partitioning-raid/)
+                      doc
+                    type: string
+                  tags:
+                    description: Tags attached to the device
+                    items:
+                      type: string
+                    type: array
+                  terminationTime:
+                    description: Timestamp for device termination. For example "2021-09-03T16:32:00+03:00".
+                      If you don't supply timezone info, timestamp is assumed to be
+                      in UTC.
+                    type: string
+                  userDataSecretRef:
+                    description: A string of the desired User Data for the device
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
+                  userSshKeyIds:
+                    description: Array of IDs of the user SSH keys which should be
+                      added to the device. If you omit this, SSH keys of all the members
+                      of the parent project will be added to the device. If you specify
+                      this array, only the listed user SSH keys (and any project_ssh_key_ids)
+                      will be added. User SSH keys can be created with the [equinix_metal_ssh_key](equinix_metal_ssh_key.md)
+                      resource
+                    items:
+                      type: string
+                    type: array
+                  waitForReservationDeprovision:
+                    description: Only used for devices in reserved hardware. If set,
+                      the deletion of this device will block until the hardware reservation
+                      is marked provisionable (about 4 minutes in August 2019)
+                    type: boolean
+                required:
+                - operatingSystem
+                - plan
+                type: object
+              providerConfigRef:
+                default:
+                  name: default
+                description: ProviderConfigReference specifies how the provider that
+                  will be used to create, observe, update, and delete this managed
+                  resource should be configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                required:
+                - name
+                type: object
+              providerRef:
+                description: 'ProviderReference specifies the provider that will be
+                  used to create, observe, update, and delete this managed resource.
+                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                required:
+                - name
+                type: object
+              publishConnectionDetailsTo:
+                description: PublishConnectionDetailsTo specifies the connection secret
+                  config which contains a name, metadata and a reference to secret
+                  store config to which any connection details for this managed resource
+                  should be written. Connection details frequently include the endpoint,
+                  username, and password required to connect to the managed resource.
+                properties:
+                  configRef:
+                    default:
+                      name: default
+                    description: SecretStoreConfigRef specifies which secret store
+                      config should be used for this ConnectionSecret.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                    required:
+                    - name
+                    type: object
+                  metadata:
+                    description: Metadata is the metadata for connection secret.
+                    properties:
+                      annotations:
+                        additionalProperties:
+                          type: string
+                        description: Annotations are the annotations to be added to
+                          connection secret. - For Kubernetes secrets, this will be
+                          used as "metadata.annotations". - It is up to Secret Store
+                          implementation for others store types.
+                        type: object
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: Labels are the labels/tags to be added to connection
+                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store
+                          types.
+                        type: object
+                      type:
+                        description: Type is the SecretType for the connection secret.
+                          - Only valid for Kubernetes Secret Stores.
+                        type: string
+                    type: object
+                  name:
+                    description: Name is the name of the connection secret.
+                    type: string
+                required:
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: WriteConnectionSecretToReference specifies the namespace
+                  and name of a Secret to which any connection details for this managed
+                  resource should be written. Connection details frequently include
+                  the endpoint, username, and password required to connect to the
+                  managed resource. This field is planned to be replaced in a future
+                  release in favor of PublishConnectionDetailsTo. Currently, both
+                  could be set independently and connection details would be published
+                  to both without affecting each other.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                  namespace:
+                    description: Namespace of the secret.
+                    type: string
+                required:
+                - name
+                - namespace
+                type: object
+            required:
+            - forProvider
+            type: object
+          status:
+            description: DeviceStatus defines the observed state of Device.
+            properties:
+              atProvider:
+                properties:
+                  accessPrivateIpv4:
+                    type: string
+                  accessPublicIpv4:
+                    type: string
+                  accessPublicIpv6:
+                    type: string
+                  created:
+                    type: string
+                  deployedFacility:
+                    type: string
+                  deployedHardwareReservationId:
+                    type: string
+                  id:
+                    type: string
+                  locked:
+                    type: boolean
+                  network:
+                    items:
+                      properties:
+                        address:
+                          type: string
+                        cidr:
+                          type: number
+                        family:
+                          type: number
+                        gateway:
+                          type: string
+                        public:
+                          type: boolean
+                      type: object
+                    type: array
+                  networkType:
+                    type: string
+                  ports:
+                    items:
+                      properties:
+                        bonded:
+                          type: boolean
+                        id:
+                          type: string
+                        mac:
+                          type: string
+                        name:
+                          type: string
+                        type:
+                          type: string
+                      type: object
+                    type: array
+                  sshKeyIds:
+                    items:
+                      type: string
+                    type: array
+                  state:
+                    type: string
+                  updated:
+                    type: string
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: LastTransitionTime is the last time this condition
+                        transitioned from one status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A Message containing details about this condition's
+                        last transition from one status to another, if any.
+                      type: string
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: Type of this condition. At most one of each condition
+                        type may apply to a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

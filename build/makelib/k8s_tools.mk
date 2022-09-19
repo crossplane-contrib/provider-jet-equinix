@@ -29,7 +29,7 @@ KIND_VERSION ?= v0.11.1
 KIND := $(TOOLS_HOST_DIR)/kind-$(KIND_VERSION)
 
 # the version of kubectl to use
-KUBECTL_VERSION ?= v1.17.11
+KUBECTL_VERSION ?= v1.22.2
 KUBECTL := $(TOOLS_HOST_DIR)/kubectl-$(KUBECTL_VERSION)
 
 # the version of kustomize to use
@@ -40,9 +40,13 @@ KUSTOMIZE := $(TOOLS_HOST_DIR)/kustomize-$(KUSTOMIZE_VERSION)
 OLMBUNDLE_VERSION ?= v0.4.0
 OLMBUNDLE := $(TOOLS_HOST_DIR)/olm-bundle-$(OLMBUNDLE_VERSION)
 
+# the version of up to use
+UP_VERSION ?= v0.10.0
+UP := $(TOOLS_HOST_DIR)/up-$(UP_VERSION)
+
 # the version of helm 3 to use
 USE_HELM3 ?= false
-HELM3_VERSION ?= v3.5.3
+HELM3_VERSION ?= v3.7.1
 HELM3 := $(TOOLS_HOST_DIR)/helm-$(HELM3_VERSION)
 
 # If we enable HELM3 we alias HELM to be HELM3
@@ -50,7 +54,7 @@ ifeq ($(USE_HELM3),true)
 HELM_VERSION ?= $(HELM3_VERSION)
 HELM := $(HELM3)
 else
-HELM_VERSION ?= v2.16.7
+HELM_VERSION ?= v2.17.0
 HELM := $(TOOLS_HOST_DIR)/helm-$(HELM_VERSION)
 endif
 
@@ -61,6 +65,8 @@ k8s_tools.buildvars:
 	@echo KIND=$(KIND)
 	@echo KUBECTL=$(KUBECTL)
 	@echo KUSTOMIZE=$(KUSTOMIZE)
+	@echo OLM_BUNDLE=$(OLM_BUNDLE)
+	@echo UP=$(UP)
 	@echo HELM=$(HELM)
 	@echo HELM3=$(HELM3)
 
@@ -89,7 +95,7 @@ $(KIND):
 # kubectl download and install
 $(KUBECTL):
 	@$(INFO) installing kubectl $(KUBECTL_VERSION)
-	@curl -fsSLo $(KUBECTL) https://storage.googleapis.com/kubernetes-release/release/$(KUBECTL_VERSION)/bin/$(HOSTOS)/$(SAFEHOSTARCH)/kubectl || $(FAIL)
+	@curl -fsSLo $(KUBECTL) --create-dirs https://storage.googleapis.com/kubernetes-release/release/$(KUBECTL_VERSION)/bin/$(HOSTOS)/$(SAFEHOSTARCH)/kubectl || $(FAIL)
 	@chmod +x $(KUBECTL)
 	@$(OK) installing kubectl $(KUBECTL_VERSION)
 
@@ -109,12 +115,19 @@ $(OLMBUNDLE):
 	@chmod +x $(OLMBUNDLE)
 	@$(OK) installing olm-bundle $(OLMBUNDLE_VERSION)
 
+# up download and install
+$(UP):
+	@$(INFO) installing up $(UP_VERSION)
+	@curl -fsSLo $(UP) --create-dirs https://cli.upbound.io/stable/$(UP_VERSION)/bin/$(SAFEHOST_PLATFORM)/up?source=build || $(FAIL)
+	@chmod +x $(UP)
+	@$(OK) installing up $(UP_VERSION)
+
 # helm download and install only if helm3 not enabled
 ifeq ($(USE_HELM3),false)
 $(HELM):
 	@$(INFO) installing helm $(HELM_VERSION)
 	@mkdir -p $(TOOLS_HOST_DIR)/tmp-helm
-	@curl -fsSL https://storage.googleapis.com/kubernetes-helm/helm-$(HELM_VERSION)-$(SAFEHOSTPLATFORM).tar.gz | tar -xz -C $(TOOLS_HOST_DIR)/tmp-helm
+	@curl -fsSL https://get.helm.sh/helm-$(HELM_VERSION)-$(SAFEHOSTPLATFORM).tar.gz | tar -xz -C $(TOOLS_HOST_DIR)/tmp-helm
 	@mv $(TOOLS_HOST_DIR)/tmp-helm/$(SAFEHOSTPLATFORM)/helm $(HELM)
 	@rm -fr $(TOOLS_HOST_DIR)/tmp-helm
 	@$(OK) installing helm $(HELM_VERSION)

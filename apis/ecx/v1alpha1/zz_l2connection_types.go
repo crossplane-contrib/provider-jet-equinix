@@ -25,6 +25,34 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ActionsObservation struct {
+	Message *string `json:"message,omitempty" tf:"message,omitempty"`
+
+	OperationID *string `json:"operationId,omitempty" tf:"operation_id,omitempty"`
+
+	RequiredData []RequiredDataObservation `json:"requiredData,omitempty" tf:"required_data,omitempty"`
+
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type ActionsParameters struct {
+}
+
+type ActionsRequiredDataObservation struct {
+	Editable *bool `json:"editable,omitempty" tf:"editable,omitempty"`
+
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	Label *string `json:"label,omitempty" tf:"label,omitempty"`
+
+	ValidationPattern *string `json:"validationPattern,omitempty" tf:"validation_pattern,omitempty"`
+
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type ActionsRequiredDataParameters struct {
+}
+
 type AdditionalInfoObservation struct {
 }
 
@@ -40,15 +68,25 @@ type AdditionalInfoParameters struct {
 }
 
 type L2ConnectionObservation struct {
+	Actions []ActionsObservation `json:"actions,omitempty" tf:"actions,omitempty"`
+
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
 	ProviderStatus *string `json:"providerStatus,omitempty" tf:"provider_status,omitempty"`
+
+	RedundancyGroup *string `json:"redundancyGroup,omitempty" tf:"redundancy_group,omitempty"`
 
 	RedundancyType *string `json:"redundancyType,omitempty" tf:"redundancy_type,omitempty"`
 
 	RedundantUUID *string `json:"redundantUuid,omitempty" tf:"redundant_uuid,omitempty"`
 
+	SecondaryConnection []SecondaryConnectionObservation `json:"secondaryConnection,omitempty" tf:"secondary_connection,omitempty"`
+
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+
+	VendorToken *string `json:"vendorToken,omitempty" tf:"vendor_token,omitempty"`
 }
 
 type L2ConnectionParameters struct {
@@ -63,7 +101,7 @@ type L2ConnectionParameters struct {
 
 	// Identifier of network interface on a given device, used for a connection. If not specified then first available interface will be selected
 	// +kubebuilder:validation:Optional
-	DeviceInterfaceID *int64 `json:"deviceInterfaceId,omitempty" tf:"device_interface_id,omitempty"`
+	DeviceInterfaceID *float64 `json:"deviceInterfaceId,omitempty" tf:"device_interface_id,omitempty"`
 
 	// Unique identifier of the Network Edge virtual device from which the connection would originate
 	// +kubebuilder:validation:Optional
@@ -73,7 +111,7 @@ type L2ConnectionParameters struct {
 	// +kubebuilder:validation:Required
 	Name *string `json:"name" tf:"name,omitempty"`
 
-	// The type of peering to set up in case when connecting to Azure Express Route. One of Public, Private, Microsoft, Manual
+	// The type of peering to set up in case when connecting to Azure Express Route. One of PRIVATE, MICROSOFT, MANUAL, PUBLIC (MANUAL and PUBLIC are deprecated and not available for new connections)
 	// +kubebuilder:validation:Optional
 	NamedTag *string `json:"namedTag,omitempty" tf:"named_tag,omitempty"`
 
@@ -104,7 +142,7 @@ type L2ConnectionParameters struct {
 	// +kubebuilder:validation:Optional
 	SecondaryConnection []SecondaryConnectionParameters `json:"secondaryConnection,omitempty" tf:"secondary_connection,omitempty"`
 
-	// The metro code that denotes the connection’s remote side (z-side)
+	// The metro code that denotes the connection's remote side (z-side)
 	// +kubebuilder:validation:Optional
 	SellerMetroCode *string `json:"sellerMetroCode,omitempty" tf:"seller_metro_code,omitempty"`
 
@@ -112,9 +150,13 @@ type L2ConnectionParameters struct {
 	// +kubebuilder:validation:Optional
 	SellerRegion *string `json:"sellerRegion,omitempty" tf:"seller_region,omitempty"`
 
+	// Unique Equinix Fabric key given by a provider that grants you authorization to enable connectivity from a shared multi-tenant port (a-side)
+	// +kubebuilder:validation:Optional
+	ServiceToken *string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+
 	// Speed/Bandwidth to be allocated to the connection
 	// +kubebuilder:validation:Required
-	Speed *int64 `json:"speed" tf:"speed,omitempty"`
+	Speed *float64 `json:"speed" tf:"speed,omitempty"`
 
 	// Unit of the speed/bandwidth to be allocated to the connection
 	// +kubebuilder:validation:Required
@@ -122,27 +164,63 @@ type L2ConnectionParameters struct {
 
 	// C-Tag/Inner-Tag of the connection, a numeric character ranging from 2 - 4094
 	// +kubebuilder:validation:Optional
-	VlanCtag *int64 `json:"vlanCtag,omitempty" tf:"vlan_ctag,omitempty"`
+	VlanCtag *float64 `json:"vlanCtag,omitempty" tf:"vlan_ctag,omitempty"`
 
 	// S-Tag/Outer-Tag of the connection, a numeric character ranging from 2 - 4094
 	// +kubebuilder:validation:Optional
-	VlanStag *int64 `json:"vlanStag,omitempty" tf:"vlan_stag,omitempty"`
+	VlanStag *float64 `json:"vlanStag,omitempty" tf:"vlan_stag,omitempty"`
 
 	// Unique identifier of the port on the remote side (z-side)
 	// +kubebuilder:validation:Optional
 	ZsidePortUUID *string `json:"zsidePortUuid,omitempty" tf:"zside_port_uuid,omitempty"`
 
+	// Unique Equinix Fabric key given by a provider that grants you authorization to enable connectivity to a shared multi-tenant port (z-side)
+	// +kubebuilder:validation:Optional
+	ZsideServiceToken *string `json:"zsideServiceToken,omitempty" tf:"zside_service_token,omitempty"`
+
 	// C-Tag/Inner-Tag of the connection on the remote side (z-side)
 	// +kubebuilder:validation:Optional
-	ZsideVlanCtag *int64 `json:"zsideVlanCtag,omitempty" tf:"zside_vlan_ctag,omitempty"`
+	ZsideVlanCtag *float64 `json:"zsideVlanCtag,omitempty" tf:"zside_vlan_ctag,omitempty"`
 
 	// S-Tag/Outer-Tag of the connection on the remote side (z-side)
 	// +kubebuilder:validation:Optional
-	ZsideVlanStag *int64 `json:"zsideVlanStag,omitempty" tf:"zside_vlan_stag,omitempty"`
+	ZsideVlanStag *float64 `json:"zsideVlanStag,omitempty" tf:"zside_vlan_stag,omitempty"`
+}
+
+type RequiredDataObservation struct {
+	Editable *bool `json:"editable,omitempty" tf:"editable,omitempty"`
+
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	Label *string `json:"label,omitempty" tf:"label,omitempty"`
+
+	ValidationPattern *string `json:"validationPattern,omitempty" tf:"validation_pattern,omitempty"`
+
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type RequiredDataParameters struct {
+}
+
+type SecondaryConnectionActionsObservation struct {
+	Message *string `json:"message,omitempty" tf:"message,omitempty"`
+
+	OperationID *string `json:"operationId,omitempty" tf:"operation_id,omitempty"`
+
+	RequiredData []ActionsRequiredDataObservation `json:"requiredData,omitempty" tf:"required_data,omitempty"`
+
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type SecondaryConnectionActionsParameters struct {
 }
 
 type SecondaryConnectionObservation struct {
+	Actions []SecondaryConnectionActionsObservation `json:"actions,omitempty" tf:"actions,omitempty"`
+
 	ProviderStatus *string `json:"providerStatus,omitempty" tf:"provider_status,omitempty"`
+
+	RedundancyGroup *string `json:"redundancyGroup,omitempty" tf:"redundancy_group,omitempty"`
 
 	RedundancyType *string `json:"redundancyType,omitempty" tf:"redundancy_type,omitempty"`
 
@@ -152,11 +230,13 @@ type SecondaryConnectionObservation struct {
 
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 
+	VendorToken *string `json:"vendorToken,omitempty" tf:"vendor_token,omitempty"`
+
 	ZsidePortUUID *string `json:"zsidePortUuid,omitempty" tf:"zside_port_uuid,omitempty"`
 
-	ZsideVlanCtag *int64 `json:"zsideVlanCtag,omitempty" tf:"zside_vlan_ctag,omitempty"`
+	ZsideVlanCtag *float64 `json:"zsideVlanCtag,omitempty" tf:"zside_vlan_ctag,omitempty"`
 
-	ZsideVlanStag *int64 `json:"zsideVlanStag,omitempty" tf:"zside_vlan_stag,omitempty"`
+	ZsideVlanStag *float64 `json:"zsideVlanStag,omitempty" tf:"zside_vlan_stag,omitempty"`
 }
 
 type SecondaryConnectionParameters struct {
@@ -167,7 +247,7 @@ type SecondaryConnectionParameters struct {
 
 	// Identifier of network interface on a given device, used for a connection. If not specified then first available interface will be selected
 	// +kubebuilder:validation:Optional
-	DeviceInterfaceID *int64 `json:"deviceInterfaceId,omitempty" tf:"device_interface_id,omitempty"`
+	DeviceInterfaceID *float64 `json:"deviceInterfaceId,omitempty" tf:"device_interface_id,omitempty"`
 
 	// Unique identifier of the Network Edge virtual device from which the connection would originate
 	// +kubebuilder:validation:Optional
@@ -185,7 +265,7 @@ type SecondaryConnectionParameters struct {
 	// +kubebuilder:validation:Optional
 	ProfileUUID *string `json:"profileUuid,omitempty" tf:"profile_uuid,omitempty"`
 
-	// The metro code that denotes the connection’s remote side (z-side)
+	// The metro code that denotes the connection's remote side (z-side)
 	// +kubebuilder:validation:Optional
 	SellerMetroCode *string `json:"sellerMetroCode,omitempty" tf:"seller_metro_code,omitempty"`
 
@@ -193,9 +273,13 @@ type SecondaryConnectionParameters struct {
 	// +kubebuilder:validation:Optional
 	SellerRegion *string `json:"sellerRegion,omitempty" tf:"seller_region,omitempty"`
 
+	// Unique Equinix Fabric key given by a provider that grants you authorization to enable connectivity from a shared multi-tenant port (a-side)
+	// +kubebuilder:validation:Optional
+	ServiceToken *string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+
 	// Speed/Bandwidth to be allocated to the connection
 	// +kubebuilder:validation:Optional
-	Speed *int64 `json:"speed,omitempty" tf:"speed,omitempty"`
+	Speed *float64 `json:"speed,omitempty" tf:"speed,omitempty"`
 
 	// Unit of the speed/bandwidth to be allocated to the connection
 	// +kubebuilder:validation:Optional
@@ -203,11 +287,11 @@ type SecondaryConnectionParameters struct {
 
 	// C-Tag/Inner-Tag of the connection, a numeric character ranging from 2 - 4094
 	// +kubebuilder:validation:Optional
-	VlanCtag *int64 `json:"vlanCtag,omitempty" tf:"vlan_ctag,omitempty"`
+	VlanCtag *float64 `json:"vlanCtag,omitempty" tf:"vlan_ctag,omitempty"`
 
 	// S-Tag/Outer-Tag of the connection, a numeric character ranging from 2 - 4094
 	// +kubebuilder:validation:Optional
-	VlanStag *int64 `json:"vlanStag,omitempty" tf:"vlan_stag,omitempty"`
+	VlanStag *float64 `json:"vlanStag,omitempty" tf:"vlan_stag,omitempty"`
 }
 
 // L2ConnectionSpec defines the desired state of L2Connection

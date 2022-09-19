@@ -1,25 +1,32 @@
 # Terrajet Equinix Provider
 
-`provider-tf-equinix` is a [Crossplane](https://crossplane.io/) provider that
-is built using [Terrajet](https://github.com/crossplane-contrib/terrajet) code
-generation tools and exposes XRM-conformant managed resources for the 
+`provider-jet-equinix` is a [Crossplane](https://crossplane.io/) provider that
+is built using [Terrajet](https://github.com/crossplane/terrajet) code
+generation tools and exposes XRM-conformant managed resources for the
 Equinix API.
 
 ## Getting Started
 
 Install the provider by using the following command after changing the image tag
-to the [latest release](https://github.com/crossplane-contrib/provider-tf-equinix/releases):
+to the [latest release](https://github.com/crossplane-contrib/provider-jet-equinix/releases):
 ```
-kubectl crossplane install provider crossplane/provider-tf-equinix:v0.1.0
+kubectl crossplane install provider crossplane/provider-jet-equinix:v0.1.0
 ```
 
-You can see the API reference [here](https://doc.crds.dev/github.com/crossplane-contrib/provider-tf-equinix).
+Alternatively, you can use declarative installation:
+```
+kubectl apply -f examples/install.yaml
+```
+
+Notice that in this example Provider resource is referencing ControllerConfig with debug enabled.
+
+You can see the API reference [here](https://doc.crds.dev/github.com/crossplane-contrib/provider-jet-equinix).
 
 ## Developing
 
 Run code-generation pipeline:
 ```console
-go run cmd/generator/main.go
+go run cmd/generator/main.go "$PWD"
 ```
 
 Run against a Kubernetes cluster:
@@ -34,18 +41,6 @@ Build, push, and install:
 make all
 ```
 
-Build image:
-
-```console
-make image
-```
-
-Push image:
-
-```console
-make push
-```
-
 Build binary:
 
 ```console
@@ -55,7 +50,7 @@ make build
 ## Report a Bug
 
 For filing bugs, suggesting improvements, or requesting new features, please
-open an [issue](https://github.com/crossplane-contrib/provider-tf-equinix/issues).
+open an [issue](https://github.com/crossplane-contrib/provider-jet-equinix/issues).
 
 ## Contact
 
@@ -69,17 +64,17 @@ Please use the following to reach members of the community:
 
 ## Governance and Owners
 
-provider-tf-equinix is run according to the same
+provider-jet-equinix is run according to the same
 [Governance](https://github.com/crossplane/crossplane/blob/master/GOVERNANCE.md)
 and [Ownership](https://github.com/crossplane/crossplane/blob/master/OWNERS.md)
 structure as the core Crossplane project.
 
 ## Code of Conduct
 
-provider-tf-equinix adheres to the same [Code of
+provider-jet-equinix adheres to the same [Code of
 Conduct](https://github.com/crossplane/crossplane/blob/master/CODE_OF_CONDUCT.md)
 as the core Crossplane project.
 
 ## Licensing
 
-provider-tf-equinix is under the Apache 2.0 license.
+provider-jet-equinix is under the Apache 2.0 license.

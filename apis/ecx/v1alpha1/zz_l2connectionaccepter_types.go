@@ -27,6 +27,8 @@ import (
 
 type L2ConnectionAccepterObservation struct {
 	AwsConnectionID *string `json:"awsConnectionId,omitempty" tf:"aws_connection_id,omitempty"`
+
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type L2ConnectionAccepterParameters struct {

@@ -1,8 +1,9 @@
+---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.6.2
+    controller-gen.kubebuilder.io/version: v0.8.0
   creationTimestamp: null
   name: sshusers.network.equinix.jet.crossplane.io
 spec:
@@ -12,8 +13,8 @@ spec:
     - crossplane
     - managed
     - equinixjet
-    kind: SshUser
-    listKind: SshUserList
+    kind: SSHUser
+    listKind: SSHUserList
     plural: sshusers
     singular: sshuser
   scope: Cluster
@@ -34,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: SshUser is the Schema for the SshUsers API
+        description: SSHUser is the Schema for the SSHUsers API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -49,7 +50,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: SshUserSpec defines the desired state of SshUser
+            description: SSHUserSpec defines the desired state of SSHUser
             properties:
               deletionPolicy:
                 default: Delete
@@ -117,12 +118,64 @@ spec:
                 required:
                 - name
                 type: object
+              publishConnectionDetailsTo:
+                description: PublishConnectionDetailsTo specifies the connection secret
+                  config which contains a name, metadata and a reference to secret
+                  store config to which any connection details for this managed resource
+                  should be written. Connection details frequently include the endpoint,
+                  username, and password required to connect to the managed resource.
+                properties:
+                  configRef:
+                    default:
+                      name: default
+                    description: SecretStoreConfigRef specifies which secret store
+                      config should be used for this ConnectionSecret.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                    required:
+                    - name
+                    type: object
+                  metadata:
+                    description: Metadata is the metadata for connection secret.
+                    properties:
+                      annotations:
+                        additionalProperties:
+                          type: string
+                        description: Annotations are the annotations to be added to
+                          connection secret. - For Kubernetes secrets, this will be
+                          used as "metadata.annotations". - It is up to Secret Store
+                          implementation for others store types.
+                        type: object
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: Labels are the labels/tags to be added to connection
+                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store
+                          types.
+                        type: object
+                      type:
+                        description: Type is the SecretType for the connection secret.
+                          - Only valid for Kubernetes Secret Stores.
+                        type: string
+                    type: object
+                  name:
+                    description: Name is the name of the connection secret.
+                    type: string
+                required:
+                - name
+                type: object
               writeConnectionSecretToRef:
                 description: WriteConnectionSecretToReference specifies the namespace
                   and name of a Secret to which any connection details for this managed
                   resource should be written. Connection details frequently include
                   the endpoint, username, and password required to connect to the
-                  managed resource.
+                  managed resource. This field is planned to be replaced in a future
+                  release in favor of PublishConnectionDetailsTo. Currently, both
+                  could be set independently and connection details would be published
+                  to both without affecting each other.
                 properties:
                   name:
                     description: Name of the secret.
@@ -138,10 +191,12 @@ spec:
             - forProvider
             type: object
           status:
-            description: SshUserStatus defines the observed state of SshUser.
+            description: SSHUserStatus defines the observed state of SSHUser.
             properties:
               atProvider:
                 properties:
+                  id:
+                    type: string
                   uuid:
                     type: string
                 type: object

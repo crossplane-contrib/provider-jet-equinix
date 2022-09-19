@@ -21,38 +21,40 @@ package sshkey
 import (
 	"time"
 
-	"k8s.io/client-go/util/workqueue"
-	ctrl "sigs.k8s.io/controller-runtime"
-
+	"github.com/crossplane/crossplane-runtime/pkg/connection"
 	"github.com/crossplane/crossplane-runtime/pkg/event"
-	"github.com/crossplane/crossplane-runtime/pkg/logging"
+	"github.com/crossplane/crossplane-runtime/pkg/ratelimiter"
 	"github.com/crossplane/crossplane-runtime/pkg/reconciler/managed"
 	xpresource "github.com/crossplane/crossplane-runtime/pkg/resource"
-	"sigs.k8s.io/controller-runtime/pkg/controller"
+	tjcontroller "github.com/crossplane/terrajet/pkg/controller"
+	"github.com/crossplane/terrajet/pkg/terraform"
+	ctrl "sigs.k8s.io/controller-runtime"
 
-	tjconfig "github.com/crossplane-contrib/terrajet/pkg/config"
-	tjcontroller "github.com/crossplane-contrib/terrajet/pkg/controller"
-	"github.com/crossplane-contrib/terrajet/pkg/terraform"
-
-	v1alpha1 "github.com/crossplane-contrib/provider-tf-equinix/apis/network/v1alpha1"
+	v1alpha1 "github.com/crossplane-contrib/provider-jet-equinix/apis/network/v1alpha1"
 )
 
-// Setup adds a controller that reconciles SshKey managed resources.
-func Setup(mgr ctrl.Manager, l logging.Logger, rl workqueue.RateLimiter, s terraform.SetupFn, ws *terraform.WorkspaceStore, cfg *tjconfig.Provider, concurrency int) error {
-	name := managed.ControllerName(v1alpha1.SshKey_GroupVersionKind.String())
+// Setup adds a controller that reconciles SSHKey managed resources.
+func Setup(mgr ctrl.Manager, o tjcontroller.Options) error {
+	name := managed.ControllerName(v1alpha1.SSHKey_GroupVersionKind.String())
+	var initializers managed.InitializerChain
+	cps := []managed.ConnectionPublisher{managed.NewAPISecretPublisher(mgr.GetClient(), mgr.GetScheme())}
+	if o.SecretStoreConfigGVK != nil {
+		cps = append(cps, connection.NewDetailsManager(mgr.GetClient(), *o.SecretStoreConfigGVK))
+	}
 	r := managed.NewReconciler(mgr,
-		xpresource.ManagedKind(v1alpha1.SshKey_GroupVersionKind),
-		managed.WithExternalConnecter(tjcontroller.NewConnector(mgr.GetClient(), ws, s, cfg.Resources["equinix_network_ssh_key"])),
-		managed.WithLogger(l.WithValues("controller", name)),
+		xpresource.ManagedKind(v1alpha1.SSHKey_GroupVersionKind),
+		managed.WithExternalConnecter(tjcontroller.NewConnector(mgr.GetClient(), o.WorkspaceStore, o.SetupFn, o.Provider.Resources["equinix_network_ssh_key"])),
+		managed.WithLogger(o.Logger.WithValues("controller", name)),
 		managed.WithRecorder(event.NewAPIRecorder(mgr.GetEventRecorderFor(name))),
-		managed.WithFinalizer(terraform.NewWorkspaceFinalizer(ws, xpresource.NewAPIFinalizer(mgr.GetClient(), managed.FinalizerName))),
+		managed.WithFinalizer(terraform.NewWorkspaceFinalizer(o.WorkspaceStore, xpresource.NewAPIFinalizer(mgr.GetClient(), managed.FinalizerName))),
 		managed.WithTimeout(3*time.Minute),
-		managed.WithInitializers(),
+		managed.WithInitializers(initializers),
+		managed.WithConnectionPublishers(cps...),
 	)
 
 	return ctrl.NewControllerManagedBy(mgr).
 		Named(name).
-		WithOptions(controller.Options{RateLimiter: rl, MaxConcurrentReconciles: concurrency}).
-		For(&v1alpha1.SshKey{}).
-		Complete(r)
+		WithOptions(o.ForControllerRuntime()).
+		For(&v1alpha1.SSHKey{}).
+		Complete(ratelimiter.NewReconciler(name, r, o.GlobalRateLimiter))
 }

@@ -42,6 +42,11 @@ func (mg *L2Connection) GetProviderReference() *xpv1.Reference {
 	return mg.Spec.ProviderReference
 }
 
+// GetPublishConnectionDetailsTo of this L2Connection.
+func (mg *L2Connection) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+	return mg.Spec.PublishConnectionDetailsTo
+}
+
 // GetWriteConnectionSecretToReference of this L2Connection.
 func (mg *L2Connection) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
@@ -68,6 +73,11 @@ Deprecated: Use SetProviderConfigReference.
 */
 func (mg *L2Connection) SetProviderReference(r *xpv1.Reference) {
 	mg.Spec.ProviderReference = r
+}
+
+// SetPublishConnectionDetailsTo of this L2Connection.
+func (mg *L2Connection) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+	mg.Spec.PublishConnectionDetailsTo = r
 }
 
 // SetWriteConnectionSecretToReference of this L2Connection.
@@ -98,6 +108,11 @@ func (mg *L2ConnectionAccepter) GetProviderReference() *xpv1.Reference {
 	return mg.Spec.ProviderReference
 }
 
+// GetPublishConnectionDetailsTo of this L2ConnectionAccepter.
+func (mg *L2ConnectionAccepter) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+	return mg.Spec.PublishConnectionDetailsTo
+}
+
 // GetWriteConnectionSecretToReference of this L2ConnectionAccepter.
 func (mg *L2ConnectionAccepter) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
@@ -124,6 +139,11 @@ Deprecated: Use SetProviderConfigReference.
 */
 func (mg *L2ConnectionAccepter) SetProviderReference(r *xpv1.Reference) {
 	mg.Spec.ProviderReference = r
+}
+
+// SetPublishConnectionDetailsTo of this L2ConnectionAccepter.
+func (mg *L2ConnectionAccepter) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+	mg.Spec.PublishConnectionDetailsTo = r
 }
 
 // SetWriteConnectionSecretToReference of this L2ConnectionAccepter.
@@ -154,6 +174,11 @@ func (mg *L2Serviceprofile) GetProviderReference() *xpv1.Reference {
 	return mg.Spec.ProviderReference
 }
 
+// GetPublishConnectionDetailsTo of this L2Serviceprofile.
+func (mg *L2Serviceprofile) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+	return mg.Spec.PublishConnectionDetailsTo
+}
+
 // GetWriteConnectionSecretToReference of this L2Serviceprofile.
 func (mg *L2Serviceprofile) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
@@ -180,6 +205,11 @@ Deprecated: Use SetProviderConfigReference.
 */
 func (mg *L2Serviceprofile) SetProviderReference(r *xpv1.Reference) {
 	mg.Spec.ProviderReference = r
+}
+
+// SetPublishConnectionDetailsTo of this L2Serviceprofile.
+func (mg *L2Serviceprofile) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+	mg.Spec.PublishConnectionDetailsTo = r
 }
 
 // SetWriteConnectionSecretToReference of this L2Serviceprofile.

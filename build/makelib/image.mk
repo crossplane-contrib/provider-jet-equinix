@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+# DEPRECATED: this module has been replaced by imagelight.mk and may be removed
+# in the future.
+
 # ====================================================================================
 # Options
 
@@ -31,12 +35,12 @@ endif
 # supported platform.
 ifeq ($(origin OSBASEIMAGE),undefined)
 OSBASE ?= alpine:3.13
-ifeq ($(TARGETARCH),$(filter $(TARGETARCH),amd64 ppc64le))
+ifeq ($(ARCH),$(filter $(ARCH),amd64 ppc64le))
 OSBASEIMAGE = $(OSBASE)
-else ifeq ($(TARGETARCH),arm64)
+else ifeq ($(ARCH),arm64)
 OSBASEIMAGE = arm64v8/$(OSBASE)
 else
-$(error unsupported architecture $(TARGETARCH))
+$(error unsupported architecture $(ARCH))
 endif
 endif
 
@@ -48,7 +52,7 @@ ifeq ($(origin BUILD_REGISTRY), undefined)
 BUILD_REGISTRY := build-$(shell echo $(HOSTNAME)-$(ROOT_DIR) | shasum -a 256 | cut -c1-8)
 endif
 
-MANIFEST_TOOL_VERSION=v0.7.0
+MANIFEST_TOOL_VERSION=v1.0.3
 MANIFEST_TOOL := $(TOOLS_HOST_DIR)/manifest-tool-$(MANIFEST_TOOL_VERSION)
 
 # In order to reduce built time especially on jenkins, we maintain a cache
@@ -259,6 +263,8 @@ endif
 prune: img.prune
 
 define IMAGE_HELPTEXT
+DEPRECATED: this module has been replaced by imagelight.mk and may be removed in the future. 
+
 Image Targets:
     prune        Prune orphaned and cached images.
 
