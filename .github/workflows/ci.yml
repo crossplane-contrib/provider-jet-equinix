@@ -22,7 +22,7 @@ env:
 
 jobs:
   detect-noop:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     outputs:
       noop: ${{ steps.noop.outputs.should_skip }}
     steps:
@@ -36,7 +36,7 @@ jobs:
 
 
   lint:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     needs: detect-noop
     if: needs.detect-noop.outputs.noop != 'true'
 
@@ -85,7 +85,7 @@ jobs:
           args: --timeout 10m0s
 
   check-diff:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     needs: detect-noop
     if: needs.detect-noop.outputs.noop != 'true'
 
@@ -128,7 +128,7 @@ jobs:
         run: make check-diff
 
   unit-tests:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     needs: detect-noop
     if: needs.detect-noop.outputs.noop != 'true'
 
@@ -177,7 +177,7 @@ jobs:
           file: _output/tests/linux_amd64/coverage.txt
 
   e2e-tests:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     needs: detect-noop
     if: needs.detect-noop.outputs.noop != 'true'
 
@@ -239,7 +239,7 @@ jobs:
         run: make e2e USE_HELM3=true
 
   publish-artifacts:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     needs: detect-noop
     if: needs.detect-noop.outputs.noop != 'true'
 
