@@ -2,6 +2,18 @@ apiVersion: meta.pkg.crossplane.io/v1alpha1
 kind: Provider
 metadata:
   name: provider-jet-equinix
-spec:
-  controller:
-    image: DOCKER_REGISTRY/provider-jet-equinix-controller:VERSION
+  annotations:
+    meta.crossplane.io/maintainer: Crossplane Maintainers <info@crossplane.io>
+    meta.crossplane.io/source: github.com/crossplane-contrib/provider-jet-equinix
+    meta.crossplane.io/license: Apache-2.0
+    meta.crossplane.io/description: |
+      The Equinix Crossplane provider adds support for
+      managing Equinix resources in Kubernetes.
+
+    meta.crossplane.io/readme: |
+      `provider-jet-equinix` is the Crossplane infrastructure provider for the [Equinix](https://equinix.com/).
+
+      If you encounter an issue please reach out on
+      [slack.crossplane.io](https://slack.crossplane.io) and create an issue in
+      the [crossplane/provider-jet-equinix](https://github.com/crossplane/provider-jet-equinix)
+      repo.
