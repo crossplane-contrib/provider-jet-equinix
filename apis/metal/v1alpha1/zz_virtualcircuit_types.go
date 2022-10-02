@@ -38,8 +38,15 @@ type VirtualCircuitObservation struct {
 type VirtualCircuitParameters struct {
 
 	// UUID of Connection where the VC is scoped to
-	// +kubebuilder:validation:Required
-	ConnectionID *string `json:"connectionId" tf:"connection_id,omitempty"`
+	// +crossplane:generate:reference:type=Connection
+	// +kubebuilder:validation:Optional
+	ConnectionID *string `json:"connectionId,omitempty" tf:"connection_id,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	ConnectionIDRef *v1.Reference `json:"connectionIdRef,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	ConnectionIDSelector *v1.Selector `json:"connectionIdSelector,omitempty" tf:"-"`
 
 	// The Customer IP address which the CSR switch will peer with. Will default to the other usable IP in the subnet.
 	// +kubebuilder:validation:Optional
@@ -74,8 +81,15 @@ type VirtualCircuitParameters struct {
 	PortID *string `json:"portId" tf:"port_id,omitempty"`
 
 	// UUID of the Project where the VC is scoped to
-	// +kubebuilder:validation:Required
-	ProjectID *string `json:"projectId" tf:"project_id,omitempty"`
+	// +crossplane:generate:reference:type=Project
+	// +kubebuilder:validation:Optional
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
 	// Description of the Virtual Circuit speed. This is for information purposes and is computed when the connection type is shared.
 	// +kubebuilder:validation:Optional
@@ -92,12 +106,26 @@ type VirtualCircuitParameters struct {
 	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
 
 	// UUID of the VLAN to associate
+	// +crossplane:generate:reference:type=Vlan
 	// +kubebuilder:validation:Optional
 	VlanID *string `json:"vlanId,omitempty" tf:"vlan_id,omitempty"`
 
+	// +kubebuilder:validation:Optional
+	VlanIDRef *v1.Reference `json:"vlanIdRef,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	VlanIDSelector *v1.Selector `json:"vlanIdSelector,omitempty" tf:"-"`
+
 	// UUID of the VRF to associate
+	// +crossplane:generate:reference:type=Vrf
 	// +kubebuilder:validation:Optional
 	VrfID *string `json:"vrfId,omitempty" tf:"vrf_id,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	VrfIDRef *v1.Reference `json:"vrfIdRef,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	VrfIDSelector *v1.Selector `json:"vrfIdSelector,omitempty" tf:"-"`
 }
 
 // VirtualCircuitSpec defines the desired state of VirtualCircuit

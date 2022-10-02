@@ -24,6 +24,32 @@ import (
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+// ResolveReferences of this BGPSession.
+func (mg *BGPSession) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.DeviceID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.DeviceIDRef,
+		Selector:     mg.Spec.ForProvider.DeviceIDSelector,
+		To: reference.To{
+			List:    &DeviceList{},
+			Managed: &Device{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.DeviceID")
+	}
+	mg.Spec.ForProvider.DeviceID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.DeviceIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
 // ResolveReferences of this Connection.
 func (mg *Connection) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
@@ -92,6 +118,194 @@ func (mg *Device) ResolveReferences(ctx context.Context, c client.Reader) error 
 	return nil
 }
 
+// ResolveReferences of this DeviceNetworkType.
+func (mg *DeviceNetworkType) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.DeviceID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.DeviceIDRef,
+		Selector:     mg.Spec.ForProvider.DeviceIDSelector,
+		To: reference.To{
+			List:    &DeviceList{},
+			Managed: &Device{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.DeviceID")
+	}
+	mg.Spec.ForProvider.DeviceID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.DeviceIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this Gateway.
+func (mg *Gateway) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.IPReservationID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.IPReservationIDRef,
+		Selector:     mg.Spec.ForProvider.IPReservationIDSelector,
+		To: reference.To{
+			List:    &ReservedIPBlockList{},
+			Managed: &ReservedIPBlock{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.IPReservationID")
+	}
+	mg.Spec.ForProvider.IPReservationID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.IPReservationIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ProjectID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ProjectIDRef,
+		Selector:     mg.Spec.ForProvider.ProjectIDSelector,
+		To: reference.To{
+			List:    &ProjectList{},
+			Managed: &Project{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ProjectID")
+	}
+	mg.Spec.ForProvider.ProjectID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ProjectIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.VlanID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.VlanIDRef,
+		Selector:     mg.Spec.ForProvider.VlanIDSelector,
+		To: reference.To{
+			List:    &VlanList{},
+			Managed: &Vlan{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.VlanID")
+	}
+	mg.Spec.ForProvider.VlanID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.VlanIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this IPAttachment.
+func (mg *IPAttachment) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.DeviceID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.DeviceIDRef,
+		Selector:     mg.Spec.ForProvider.DeviceIDSelector,
+		To: reference.To{
+			List:    &DeviceList{},
+			Managed: &Device{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.DeviceID")
+	}
+	mg.Spec.ForProvider.DeviceID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.DeviceIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this OrganizationMember.
+func (mg *OrganizationMember) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.OrganizationID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.OrganizationIDRef,
+		Selector:     mg.Spec.ForProvider.OrganizationIDSelector,
+		To: reference.To{
+			List:    &OrganizationList{},
+			Managed: &Organization{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.OrganizationID")
+	}
+	mg.Spec.ForProvider.OrganizationID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.OrganizationIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this Port.
+func (mg *Port) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.NativeVlanID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.NativeVlanIDRef,
+		Selector:     mg.Spec.ForProvider.NativeVlanIDSelector,
+		To: reference.To{
+			List:    &VlanList{},
+			Managed: &Vlan{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.NativeVlanID")
+	}
+	mg.Spec.ForProvider.NativeVlanID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.NativeVlanIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this PortVlanAttachment.
+func (mg *PortVlanAttachment) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.DeviceID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.DeviceIDRef,
+		Selector:     mg.Spec.ForProvider.DeviceIDSelector,
+		To: reference.To{
+			List:    &DeviceList{},
+			Managed: &Device{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.DeviceID")
+	}
+	mg.Spec.ForProvider.DeviceID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.DeviceIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
 // ResolveReferences of this Project.
 func (mg *Project) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
@@ -114,6 +328,252 @@ func (mg *Project) ResolveReferences(ctx context.Context, c client.Reader) error
 	}
 	mg.Spec.ForProvider.OrganizationID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.OrganizationIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this ProjectAPIKey.
+func (mg *ProjectAPIKey) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ProjectID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ProjectIDRef,
+		Selector:     mg.Spec.ForProvider.ProjectIDSelector,
+		To: reference.To{
+			List:    &ProjectList{},
+			Managed: &Project{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ProjectID")
+	}
+	mg.Spec.ForProvider.ProjectID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ProjectIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this ProjectSSHKey.
+func (mg *ProjectSSHKey) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ProjectID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ProjectIDRef,
+		Selector:     mg.Spec.ForProvider.ProjectIDSelector,
+		To: reference.To{
+			List:    &ProjectList{},
+			Managed: &Project{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ProjectID")
+	}
+	mg.Spec.ForProvider.ProjectID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ProjectIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this ReservedIPBlock.
+func (mg *ReservedIPBlock) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ProjectID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ProjectIDRef,
+		Selector:     mg.Spec.ForProvider.ProjectIDSelector,
+		To: reference.To{
+			List:    &ProjectList{},
+			Managed: &Project{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ProjectID")
+	}
+	mg.Spec.ForProvider.ProjectID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ProjectIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.VrfID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.VrfIDRef,
+		Selector:     mg.Spec.ForProvider.VrfIDSelector,
+		To: reference.To{
+			List:    &VrfList{},
+			Managed: &Vrf{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.VrfID")
+	}
+	mg.Spec.ForProvider.VrfID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.VrfIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this SpotMarketRequest.
+func (mg *SpotMarketRequest) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ProjectID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ProjectIDRef,
+		Selector:     mg.Spec.ForProvider.ProjectIDSelector,
+		To: reference.To{
+			List:    &ProjectList{},
+			Managed: &Project{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ProjectID")
+	}
+	mg.Spec.ForProvider.ProjectID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ProjectIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this VirtualCircuit.
+func (mg *VirtualCircuit) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ConnectionID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ConnectionIDRef,
+		Selector:     mg.Spec.ForProvider.ConnectionIDSelector,
+		To: reference.To{
+			List:    &ConnectionList{},
+			Managed: &Connection{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ConnectionID")
+	}
+	mg.Spec.ForProvider.ConnectionID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ConnectionIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ProjectID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ProjectIDRef,
+		Selector:     mg.Spec.ForProvider.ProjectIDSelector,
+		To: reference.To{
+			List:    &ProjectList{},
+			Managed: &Project{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ProjectID")
+	}
+	mg.Spec.ForProvider.ProjectID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ProjectIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.VlanID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.VlanIDRef,
+		Selector:     mg.Spec.ForProvider.VlanIDSelector,
+		To: reference.To{
+			List:    &VlanList{},
+			Managed: &Vlan{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.VlanID")
+	}
+	mg.Spec.ForProvider.VlanID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.VlanIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.VrfID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.VrfIDRef,
+		Selector:     mg.Spec.ForProvider.VrfIDSelector,
+		To: reference.To{
+			List:    &VrfList{},
+			Managed: &Vrf{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.VrfID")
+	}
+	mg.Spec.ForProvider.VrfID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.VrfIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this Vlan.
+func (mg *Vlan) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ProjectID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ProjectIDRef,
+		Selector:     mg.Spec.ForProvider.ProjectIDSelector,
+		To: reference.To{
+			List:    &ProjectList{},
+			Managed: &Project{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ProjectID")
+	}
+	mg.Spec.ForProvider.ProjectID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ProjectIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this Vrf.
+func (mg *Vrf) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ProjectID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ProjectIDRef,
+		Selector:     mg.Spec.ForProvider.ProjectIDSelector,
+		To: reference.To{
+			List:    &ProjectList{},
+			Managed: &Project{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ProjectID")
+	}
+	mg.Spec.ForProvider.ProjectID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ProjectIDRef = rsp.ResolvedReference
 
 	return nil
 }

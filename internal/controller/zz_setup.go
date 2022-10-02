@@ -31,6 +31,7 @@ import (
 	gateway "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/metal/gateway"
 	ipattachment "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/metal/ipattachment"
 	organization "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/metal/organization"
+	organizationmember "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/metal/organizationmember"
 	port "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/metal/port"
 	portvlanattachment "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/metal/portvlanattachment"
 	project "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/metal/project"
@@ -66,6 +67,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		gateway.Setup,
 		ipattachment.Setup,
 		organization.Setup,
+		organizationmember.Setup,
 		port.Setup,
 		portvlanattachment.Setup,
 		project.Setup,

@@ -36,20 +36,41 @@ type GatewayObservation struct {
 type GatewayParameters struct {
 
 	// UUID of the Public or VRF IP Reservation to associate, must be in the same metro as the VLAN
+	// +crossplane:generate:reference:type=ReservedIPBlock
 	// +kubebuilder:validation:Optional
 	IPReservationID *string `json:"ipReservationId,omitempty" tf:"ip_reservation_id,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	IPReservationIDRef *v1.Reference `json:"ipReservationIdRef,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	IPReservationIDSelector *v1.Selector `json:"ipReservationIdSelector,omitempty" tf:"-"`
 
 	// Size of the private IPv4 subnet to create for this gateway, one of [8 16 32 64 128]
 	// +kubebuilder:validation:Optional
 	PrivateIPv4SubnetSize *float64 `json:"privateIpv4SubnetSize,omitempty" tf:"private_ipv4_subnet_size,omitempty"`
 
 	// UUID of the Project where the Gateway is scoped to
-	// +kubebuilder:validation:Required
-	ProjectID *string `json:"projectId" tf:"project_id,omitempty"`
+	// +crossplane:generate:reference:type=Project
+	// +kubebuilder:validation:Optional
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
 	// UUID of the VLAN to associate
-	// +kubebuilder:validation:Required
-	VlanID *string `json:"vlanId" tf:"vlan_id,omitempty"`
+	// +crossplane:generate:reference:type=Vlan
+	// +kubebuilder:validation:Optional
+	VlanID *string `json:"vlanId,omitempty" tf:"vlan_id,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	VlanIDRef *v1.Reference `json:"vlanIdRef,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	VlanIDSelector *v1.Selector `json:"vlanIdSelector,omitempty" tf:"-"`
 }
 
 // GatewaySpec defines the desired state of Gateway

@@ -5,7 +5,7 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.8.0
   creationTimestamp: null
-  name: ports.metal.equinix.jet.crossplane.io
+  name: organizationmembers.metal.equinix.jet.crossplane.io
 spec:
   group: metal.equinix.jet.crossplane.io
   names:
@@ -13,10 +13,10 @@ spec:
     - crossplane
     - managed
     - equinixjet
-    kind: Port
-    listKind: PortList
-    plural: ports
-    singular: port
+    kind: OrganizationMember
+    listKind: OrganizationMemberList
+    plural: organizationmembers
+    singular: organizationmember
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,7 +35,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Port is the Schema for the Ports API
+        description: OrganizationMember is the Schema for the OrganizationMembers
+          API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -50,7 +51,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: PortSpec defines the desired state of Port
+            description: OrganizationMemberSpec defines the desired state of OrganizationMember
             properties:
               deletionPolicy:
                 default: Delete
@@ -63,17 +64,17 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  bonded:
-                    description: Flag indicating whether the port should be bonded
-                    type: boolean
-                  layer2:
-                    description: Flag indicating whether the port is in layer2 (or
-                      layer3) mode
-                    type: boolean
-                  nativeVlanId:
-                    description: UUID of native VLAN of the port
+                  invitee:
+                    description: The email address of the user to invite
                     type: string
-                  nativeVlanIdRef:
+                  message:
+                    description: A message to the invitee (only used during the invitation
+                      stage)
+                    type: string
+                  organizationId:
+                    description: The organization to invite the user to
+                    type: string
+                  organizationIdRef:
                     description: A Reference to a named object.
                     properties:
                       name:
@@ -82,7 +83,7 @@ spec:
                     required:
                     - name
                     type: object
-                  nativeVlanIdSelector:
+                  organizationIdSelector:
                     description: A Selector selects an object.
                     properties:
                       matchControllerRef:
@@ -96,28 +97,22 @@ spec:
                           is selected.
                         type: object
                     type: object
-                  portId:
-                    description: UUID of the port to lookup
-                    type: string
-                  resetOnDelete:
-                    description: Behavioral setting to reset the port to default settings.
-                      For a bond port it means layer3 without vlans attached, eth
-                      ports will be bonded without native vlan and vlans attached
-                    type: boolean
-                  vlanIds:
-                    description: UUIDs VLANs to attach. To avoid jitter, use the UUID
-                      and not the VXLAN
+                  projectsIds:
+                    description: Project IDs the member has access to within the organization.
+                      If the member is an 'owner', the projects list should be empty.
                     items:
                       type: string
                     type: array
-                  vxlanIds:
-                    description: 'VLAN VXLAN ids to attach (example: [1000])'
+                  roles:
+                    description: Organization roles (owner, collaborator, limited_collaborator,
+                      billing)
                     items:
-                      type: number
+                      type: string
                     type: array
                 required:
-                - bonded
-                - portId
+                - invitee
+                - projectsIds
+                - roles
                 type: object
               providerConfigRef:
                 default:
@@ -216,25 +211,21 @@ spec:
             - forProvider
             type: object
           status:
-            description: PortStatus defines the observed state of Port.
+            description: OrganizationMemberStatus defines the observed state of OrganizationMember.
             properties:
               atProvider:
                 properties:
-                  bondId:
+                  created:
                     type: string
-                  bondName:
-                    type: string
-                  disbondSupported:
-                    type: boolean
                   id:
                     type: string
-                  mac:
+                  invitedBy:
                     type: string
-                  name:
+                  nonce:
                     type: string
-                  networkType:
+                  state:
                     type: string
-                  type:
+                  updated:
                     type: string
                 type: object
               conditions:

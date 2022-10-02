@@ -32,8 +32,15 @@ type DeviceNetworkTypeObservation struct {
 type DeviceNetworkTypeParameters struct {
 
 	// The ID of the device on which the network type should be set
-	// +kubebuilder:validation:Required
-	DeviceID *string `json:"deviceId" tf:"device_id,omitempty"`
+	// +crossplane:generate:reference:type=Device
+	// +kubebuilder:validation:Optional
+	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	DeviceIDRef *v1.Reference `json:"deviceIdRef,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	DeviceIDSelector *v1.Selector `json:"deviceIdSelector,omitempty" tf:"-"`
 
 	// Network type to set. Must be one of layer3, hybrid, hybrid-bonded, layer2-individual, layer2-bonded
 	// +kubebuilder:validation:Required

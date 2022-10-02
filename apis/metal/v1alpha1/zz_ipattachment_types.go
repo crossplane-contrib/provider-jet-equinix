@@ -56,8 +56,15 @@ type IPAttachmentParameters struct {
 	// +kubebuilder:validation:Required
 	CidrNotation *string `json:"cidrNotation" tf:"cidr_notation,omitempty"`
 
-	// +kubebuilder:validation:Required
-	DeviceID *string `json:"deviceId" tf:"device_id,omitempty"`
+	// +crossplane:generate:reference:type=Device
+	// +kubebuilder:validation:Optional
+	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	DeviceIDRef *v1.Reference `json:"deviceIdRef,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	DeviceIDSelector *v1.Selector `json:"deviceIdSelector,omitempty" tf:"-"`
 }
 
 // IPAttachmentSpec defines the desired state of IPAttachment
