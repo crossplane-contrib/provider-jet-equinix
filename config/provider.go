@@ -20,9 +20,11 @@ import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
 
+	tjconfig "github.com/crossplane/terrajet/pkg/config"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
 	"github.com/crossplane-contrib/provider-jet-equinix/config/ecx/l2connection"
 	"github.com/crossplane-contrib/provider-jet-equinix/config/metal/device"
-	tjconfig "github.com/crossplane/terrajet/pkg/config"
 )
 
 const (
@@ -60,5 +62,7 @@ func GetProvider() *tjconfig.Provider {
 // DefaultResource returns a DefaultResourceFn that makes sure the original
 // DefaultResource call is made with given options here.
 func DefaultResource(opts ...tjconfig.ResourceOption) tjconfig.DefaultResourceFn {
-	return tjconfig.DefaultResource
+	return func(name string, terraformResource *schema.Resource, orgOpts ...tjconfig.ResourceOption) *tjconfig.Resource { //nolint:gocritic
+		return tjconfig.DefaultResource(name, terraformResource, append(orgOpts, opts...)...)
+	}
 }

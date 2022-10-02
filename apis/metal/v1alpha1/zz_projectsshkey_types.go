@@ -44,8 +44,15 @@ type ProjectSSHKeyParameters struct {
 	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The ID of parent project
-	// +kubebuilder:validation:Required
-	ProjectID *string `json:"projectId" tf:"project_id,omitempty"`
+	// +crossplane:generate:reference:type=Project
+	// +kubebuilder:validation:Optional
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
 	// The public key. If this is a file, it
 	// +kubebuilder:validation:Required

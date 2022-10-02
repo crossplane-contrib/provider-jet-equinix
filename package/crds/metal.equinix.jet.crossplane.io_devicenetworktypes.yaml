@@ -67,12 +67,34 @@ spec:
                     description: The ID of the device on which the network type should
                       be set
                     type: string
+                  deviceIdRef:
+                    description: A Reference to a named object.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                    required:
+                    - name
+                    type: object
+                  deviceIdSelector:
+                    description: A Selector selects an object.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                    type: object
                   type:
                     description: Network type to set. Must be one of layer3, hybrid,
                       hybrid-bonded, layer2-individual, layer2-bonded
                     type: string
                 required:
-                - deviceId
                 - type
                 type: object
               providerConfigRef:

@@ -43,39 +43,38 @@ func KnownReferencers() tjconfig.ResourceOption { //nolint:gocyclo
 			if (s.Computed && !s.Optional) || s.Sensitive {
 				continue
 			}
-			if r.ShortGroup != "metal" {
-				continue
-			}
-			switch {
-			case strings.HasSuffix(k, "project_id"):
-				r.References[k] = tjconfig.Reference{
-					// github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Project
-					Type: "Project",
-				}
-			case strings.HasSuffix(k, "organization_id"):
-				r.References[k] = tjconfig.Reference{
-					Type: "Organization",
-				}
-			case strings.HasSuffix(k, "connection_id"):
-				r.References[k] = tjconfig.Reference{
-					Type: "Connection",
-				}
-			case strings.HasSuffix(k, "device_id"):
-				r.References[k] = tjconfig.Reference{
-					Type: "Device",
-				}
-			case strings.HasSuffix(k, "vlan_id"):
-				// vlan_vnid is ignored because it is an int type
-				r.References[k] = tjconfig.Reference{
-					Type: "Vlan",
-				}
-			case strings.HasSuffix(k, "vrf_id"):
-				r.References[k] = tjconfig.Reference{
-					Type: "Vrf",
-				}
-			case strings.HasSuffix(k, "ip_reservation_id"):
-				r.References[k] = tjconfig.Reference{
-					Type: "ReservedIPBlock",
+			if r.ShortGroup == "metal" {
+				switch {
+				case strings.HasSuffix(k, "project_id"):
+					r.References[k] = tjconfig.Reference{
+						// github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Project
+						Type: "Project",
+					}
+				case strings.HasSuffix(k, "organization_id"):
+					r.References[k] = tjconfig.Reference{
+						Type: "Organization",
+					}
+				case strings.HasSuffix(k, "connection_id"):
+					r.References[k] = tjconfig.Reference{
+						Type: "Connection",
+					}
+				case strings.HasSuffix(k, "device_id"):
+					r.References[k] = tjconfig.Reference{
+						Type: "Device",
+					}
+				case strings.HasSuffix(k, "vlan_id"):
+					// vlan_vnid is ignored because it is an int type
+					r.References[k] = tjconfig.Reference{
+						Type: "Vlan",
+					}
+				case strings.HasSuffix(k, "vrf_id"):
+					r.References[k] = tjconfig.Reference{
+						Type: "Vrf",
+					}
+				case strings.HasSuffix(k, "ip_reservation_id"):
+					r.References[k] = tjconfig.Reference{
+						Type: "ReservedIPBlock",
+					}
 				}
 			}
 		}

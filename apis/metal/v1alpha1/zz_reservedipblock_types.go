@@ -74,8 +74,15 @@ type ReservedIPBlockParameters struct {
 	Network *string `json:"network,omitempty" tf:"network,omitempty"`
 
 	// The metal project ID where to allocate the address block
-	// +kubebuilder:validation:Required
-	ProjectID *string `json:"projectId" tf:"project_id,omitempty"`
+	// +crossplane:generate:reference:type=Project
+	// +kubebuilder:validation:Optional
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
 	// The number of allocated /32 addresses, a power of 2
 	// +kubebuilder:validation:Optional
@@ -90,8 +97,15 @@ type ReservedIPBlockParameters struct {
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// VRF ID for type=vrf reservations
+	// +crossplane:generate:reference:type=Vrf
 	// +kubebuilder:validation:Optional
 	VrfID *string `json:"vrfId,omitempty" tf:"vrf_id,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	VrfIDRef *v1.Reference `json:"vrfIdRef,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	VrfIDSelector *v1.Selector `json:"vrfIdSelector,omitempty" tf:"-"`
 
 	// Wait for the IP reservation block to reach a desired state on resource creation. One of: `pending`, `created`. The `created` state is default and recommended if the addresses are needed within the configuration. An error will be returned if a timeout or the `denied` state is encountered.
 	// +kubebuilder:validation:Optional

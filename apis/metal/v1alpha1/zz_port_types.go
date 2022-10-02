@@ -54,8 +54,15 @@ type PortParameters struct {
 	Layer2 *bool `json:"layer2,omitempty" tf:"layer2,omitempty"`
 
 	// UUID of native VLAN of the port
+	// +crossplane:generate:reference:type=Vlan
 	// +kubebuilder:validation:Optional
 	NativeVlanID *string `json:"nativeVlanId,omitempty" tf:"native_vlan_id,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	NativeVlanIDRef *v1.Reference `json:"nativeVlanIdRef,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	NativeVlanIDSelector *v1.Selector `json:"nativeVlanIdSelector,omitempty" tf:"-"`
 
 	// UUID of the port to lookup
 	// +kubebuilder:validation:Required

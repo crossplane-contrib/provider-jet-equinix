@@ -95,6 +95,29 @@ spec:
                     description: The metal project ID where to allocate the address
                       block
                     type: string
+                  projectIdRef:
+                    description: A Reference to a named object.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                    required:
+                    - name
+                    type: object
+                  projectIdSelector:
+                    description: A Selector selects an object.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                    type: object
                   quantity:
                     description: The number of allocated /32 addresses, a power of
                       2
@@ -111,6 +134,29 @@ spec:
                   vrfId:
                     description: VRF ID for type=vrf reservations
                     type: string
+                  vrfIdRef:
+                    description: A Reference to a named object.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                    required:
+                    - name
+                    type: object
+                  vrfIdSelector:
+                    description: A Selector selects an object.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                    type: object
                   waitForState:
                     description: 'Wait for the IP reservation block to reach a desired
                       state on resource creation. One of: `pending`, `created`. The
@@ -118,8 +164,6 @@ spec:
                       are needed within the configuration. An error will be returned
                       if a timeout or the `denied` state is encountered.'
                     type: string
-                required:
-                - projectId
                 type: object
               providerConfigRef:
                 default:

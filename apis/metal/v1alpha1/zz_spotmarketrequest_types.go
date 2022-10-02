@@ -107,8 +107,15 @@ type SpotMarketRequestParameters struct {
 	Metro *string `json:"metro,omitempty" tf:"metro,omitempty"`
 
 	// Project ID
-	// +kubebuilder:validation:Required
-	ProjectID *string `json:"projectId" tf:"project_id,omitempty"`
+	// +crossplane:generate:reference:type=Project
+	// +kubebuilder:validation:Optional
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
 	// On resource creation - wait until all desired devices are active, on resource destruction - wait until devices are removed
 	// +kubebuilder:validation:Optional

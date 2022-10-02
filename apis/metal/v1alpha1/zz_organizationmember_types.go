@@ -50,8 +50,15 @@ type OrganizationMemberParameters struct {
 	Message *string `json:"message,omitempty" tf:"message,omitempty"`
 
 	// The organization to invite the user to
-	// +kubebuilder:validation:Required
-	OrganizationID *string `json:"organizationId" tf:"organization_id,omitempty"`
+	// +crossplane:generate:reference:type=Organization
+	// +kubebuilder:validation:Optional
+	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	OrganizationIDRef *v1.Reference `json:"organizationIdRef,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	OrganizationIDSelector *v1.Selector `json:"organizationIdSelector,omitempty" tf:"-"`
 
 	// Project IDs the member has access to within the organization. If the member is an 'owner', the projects list should be empty.
 	// +kubebuilder:validation:Required

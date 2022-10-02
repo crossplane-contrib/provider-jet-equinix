@@ -36,8 +36,15 @@ type PortVlanAttachmentObservation struct {
 type PortVlanAttachmentParameters struct {
 
 	// ID of device to be assigned to the VLAN
-	// +kubebuilder:validation:Required
-	DeviceID *string `json:"deviceId" tf:"device_id,omitempty"`
+	// +crossplane:generate:reference:type=Device
+	// +kubebuilder:validation:Optional
+	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	DeviceIDRef *v1.Reference `json:"deviceIdRef,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	DeviceIDSelector *v1.Selector `json:"deviceIdSelector,omitempty" tf:"-"`
 
 	// Add port back to the bond when this resource is removed. Default is false
 	// +kubebuilder:validation:Optional

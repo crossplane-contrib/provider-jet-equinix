@@ -42,8 +42,15 @@ type BGPSessionParameters struct {
 	DefaultRoute *bool `json:"defaultRoute,omitempty" tf:"default_route,omitempty"`
 
 	// ID of device
-	// +kubebuilder:validation:Required
-	DeviceID *string `json:"deviceId" tf:"device_id,omitempty"`
+	// +crossplane:generate:reference:type=Device
+	// +kubebuilder:validation:Optional
+	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	DeviceIDRef *v1.Reference `json:"deviceIdRef,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	DeviceIDSelector *v1.Selector `json:"deviceIdSelector,omitempty" tf:"-"`
 }
 
 // BGPSessionSpec defines the desired state of BGPSession

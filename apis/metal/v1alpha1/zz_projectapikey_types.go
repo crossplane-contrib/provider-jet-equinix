@@ -36,8 +36,15 @@ type ProjectAPIKeyParameters struct {
 	Description *string `json:"description" tf:"description,omitempty"`
 
 	// UUID of project which the new API key is scoped to
-	// +kubebuilder:validation:Required
-	ProjectID *string `json:"projectId" tf:"project_id,omitempty"`
+	// +crossplane:generate:reference:type=Project
+	// +kubebuilder:validation:Optional
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
 	// Flag indicating whether the API key shoud be read-only
 	// +kubebuilder:validation:Required
