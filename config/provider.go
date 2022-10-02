@@ -21,11 +21,8 @@ import (
 	_ "embed"
 
 	"github.com/crossplane-contrib/provider-jet-equinix/config/ecx/l2connection"
-	"github.com/crossplane-contrib/provider-jet-equinix/config/metal/connection"
 	"github.com/crossplane-contrib/provider-jet-equinix/config/metal/device"
-	"github.com/crossplane-contrib/provider-jet-equinix/config/metal/project"
 	tjconfig "github.com/crossplane/terrajet/pkg/config"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 const (
@@ -38,15 +35,11 @@ var providerSchema string
 
 // GetProvider returns provider configuration
 func GetProvider() *tjconfig.Provider {
-	defaultResourceFn := func(name string, terraformResource *schema.Resource, opts ...tjconfig.ResourceOption) *tjconfig.Resource {
-		r := tjconfig.DefaultResource(name, terraformResource)
-		// Add any provider-specific defaulting here. For example:
-		r.ExternalName = tjconfig.IdentifierFromProvider
-		return r
-	}
-
 	pc := tjconfig.NewProviderWithSchema([]byte(providerSchema), resourcePrefix, modulePath,
-		tjconfig.WithDefaultResourceFn(defaultResourceFn),
+		tjconfig.WithDefaultResourceFn(DefaultResource(
+			KnownReferencers(),
+			IdentifierAssignedByEquinix(),
+		)),
 		tjconfig.WithIncludeList([]string{
 			".*",
 		}),
@@ -54,9 +47,7 @@ func GetProvider() *tjconfig.Provider {
 
 	for _, configure := range []func(provider *tjconfig.Provider){
 		// add custom config functions
-		connection.Configure,
 		device.Configure,
-		project.Configure,
 		l2connection.Configure,
 	} {
 		configure(pc)
@@ -64,4 +55,10 @@ func GetProvider() *tjconfig.Provider {
 
 	pc.ConfigureResources()
 	return pc
+}
+
+// DefaultResource returns a DefaultResourceFn that makes sure the original
+// DefaultResource call is made with given options here.
+func DefaultResource(opts ...tjconfig.ResourceOption) tjconfig.DefaultResourceFn {
+	return tjconfig.DefaultResource
 }
