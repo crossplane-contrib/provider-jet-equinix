@@ -6,7 +6,7 @@ metadata:
   labels:
     app: crossplane-provider-jet-equinix
 spec:
-  image: crossplane/provider-jet-equinix-controller:v0.1.0
+  image: crossplane/provider-jet-equinix-controller:v0.2.0
   args: ["-d"]
 ---
 apiVersion: pkg.crossplane.io/v1
@@ -14,6 +14,6 @@ kind: Provider
 metadata:
   name: crossplane-provider-jet-equinix
 spec:
-  package: crossplane/provider-jet-equinix:v0.1.0
+  package: crossplane/provider-jet-equinix:v0.2.0
   controllerConfigRef:
     name: jet-equinix-config
