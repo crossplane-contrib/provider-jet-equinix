@@ -27,9 +27,13 @@ spec:
                 k3stoken:
                   type: string
                   description: K3s Token
+                secretNamespace:
+                  type: string
+                  description: Secret Namespace
               required:
                 - metro
                 - k3stoken
+                - secretNamespace
             status:
               type: object
               properties:

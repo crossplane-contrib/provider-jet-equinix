@@ -5,3 +5,4 @@ metadata:
 spec:
   metro: sv
   k3stoken: t09s3cr37 # This is an example token.
+  secretNamespace: crossplane-system
