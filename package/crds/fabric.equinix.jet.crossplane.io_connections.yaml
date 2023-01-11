@@ -1,0 +1,951 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.8.0
+  creationTimestamp: null
+  name: connections.fabric.equinix.jet.crossplane.io
+spec:
+  group: fabric.equinix.jet.crossplane.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - equinixjet
+    kind: Connection
+    listKind: ConnectionList
+    plural: connections
+    singular: connection
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Connection is the Schema for the Connections API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ConnectionSpec defines the desired state of Connection
+            properties:
+              deletionPolicy:
+                default: Delete
+                description: DeletionPolicy specifies what will happen to the underlying
+                  external when this managed resource is deleted - either "Delete"
+                  or "Orphan" the external resource.
+                enum:
+                - Orphan
+                - Delete
+                type: string
+              forProvider:
+                properties:
+                  aSide:
+                    description: Requester or Customer side connection configuration
+                      object of the multi-segment connection
+                    items:
+                      properties:
+                        accessPoint:
+                          description: Point of access details
+                          items:
+                            properties:
+                              authenticationKey:
+                                description: Authentication key for provider based
+                                  connections
+                                type: string
+                              gateway:
+                                description: Gateway access point information
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: Equinix-assigned virtual gateway
+                                        identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              interface:
+                                description: Virtual device interface
+                                items:
+                                  properties:
+                                    type:
+                                      description: Interface type
+                                      type: string
+                                    uuid:
+                                      description: Equinix-assigned interface identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              linkProtocol:
+                                description: Connection link protocol
+                                items:
+                                  properties:
+                                    type:
+                                      description: Type of the link protocol - UNTAGGED,
+                                        DOT1Q, QINQ, EVPN_VXLAN
+                                      type: string
+                                    vlanCTag:
+                                      description: Vlan Customer Tag information,
+                                        vlanCTag value specified for QINQ connections
+                                      type: number
+                                    vlanSTag:
+                                      description: Vlan Provider Tag information,
+                                        vlanSTag value specified for QINQ connections
+                                      type: number
+                                    vlanTag:
+                                      description: Vlan Tag information, vlanTag value
+                                        specified for DOT1Q connections
+                                      type: number
+                                  type: object
+                                type: array
+                              location:
+                                description: Access point location
+                                items:
+                                  properties:
+                                    ibx:
+                                      description: IBX Code
+                                      type: string
+                                    metroCode:
+                                      description: Access point metro code
+                                      type: string
+                                    metroName:
+                                      description: Access point metro name
+                                      type: string
+                                    region:
+                                      description: Access point region
+                                      type: string
+                                  type: object
+                                type: array
+                              peeringType:
+                                description: Peering Type- PRIVATE,MICROSOFT,PUBLIC,
+                                  MANUAL
+                                type: string
+                              port:
+                                description: Port access point information
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: Equinix-assigned Port identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              profile:
+                                description: Service Profile
+                                items:
+                                  properties:
+                                    type:
+                                      description: Service profile type - L2_PROFILE,
+                                        L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                                      type: string
+                                    uuid:
+                                      description: Equinix assigned service profile
+                                        identifier
+                                      type: string
+                                  required:
+                                  - type
+                                  - uuid
+                                  type: object
+                                type: array
+                              providerConnectionId:
+                                description: Provider assigned Connection Id
+                                type: string
+                              routingProtocols:
+                                description: Access point routing protocols configuration
+                                items:
+                                  properties:
+                                    state:
+                                      description: Routing protocol instance state
+                                      type: string
+                                    type:
+                                      description: Routing Protocol type
+                                      type: string
+                                    uuid:
+                                      description: Equinix-assigned Routing protocol
+                                        identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              sellerRegion:
+                                description: Access point seller region
+                                type: string
+                              type:
+                                description: Access point type - COLO, VD, VG, SP,
+                                  IGW, SUBNET, GW
+                                type: string
+                              virtualDevice:
+                                description: Virtual device
+                                items:
+                                  properties:
+                                    type:
+                                      description: Virtual Device type
+                                      type: string
+                                    uuid:
+                                      description: Equinix-assigned Virtual Device
+                                        identifier
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                        additionalInfo:
+                          description: Connection side additional information
+                          items:
+                            properties:
+                              key:
+                                description: Additional information key
+                                type: string
+                              value:
+                                description: Additional information value
+                                type: string
+                            type: object
+                          type: array
+                        serviceToken:
+                          description: For service token based connections, Service
+                            tokens authorize users to access protected resources and
+                            services. Resource owners can distribute the tokens to
+                            trusted partners and vendors, allowing selected third
+                            parties to work directly with Equinix network assets
+                          items:
+                            properties:
+                              type:
+                                description: Token type - VC_TOKEN
+                                type: string
+                              uuid:
+                                description: Equinix-assigned service token identifier
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  additionalInfo:
+                    description: Connection additional information
+                    items:
+                      properties:
+                        key:
+                          description: Additional information key
+                          type: string
+                        value:
+                          description: Additional information value
+                          type: string
+                      type: object
+                    type: array
+                  bandwidth:
+                    description: Connection bandwidth in Mbps
+                    type: number
+                  name:
+                    description: Connection name. An alpha-numeric 24 characters string
+                      which can include only hyphens and underscores
+                    type: string
+                  notifications:
+                    description: Preferences for notifications on connection configuration
+                      or status changes
+                    items:
+                      properties:
+                        emails:
+                          description: Array of contact emails
+                          items:
+                            type: string
+                          type: array
+                        sendInterval:
+                          description: Send interval
+                          type: string
+                        type:
+                          description: Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS,
+                            NOTIFICATIONS
+                          type: string
+                      required:
+                      - emails
+                      - type
+                      type: object
+                    type: array
+                  order:
+                    description: Order related to this connection information
+                    items:
+                      properties:
+                        billingTier:
+                          description: Billing tier for connection bandwidth
+                          type: string
+                        purchaseOrderNumber:
+                          description: Purchase order number
+                          type: string
+                      type: object
+                    type: array
+                  project:
+                    description: Project information
+                    items:
+                      type: object
+                    type: array
+                  redundancy:
+                    description: Redundancy Information
+                    items:
+                      properties:
+                        priority:
+                          description: Priority type- PRIMARY, SECONDARY
+                          type: string
+                      type: object
+                    type: array
+                  type:
+                    description: Defines the connection type like VG_VC, EVPL_VC,
+                      EPL_VC, EC_VC, GW_VC, ACCESS_EPL_VC
+                    type: string
+                  zSide:
+                    description: Destination or Provider side connection configuration
+                      object of the multi-segment connection
+                    items:
+                      properties:
+                        accessPoint:
+                          description: Point of access details
+                          items:
+                            properties:
+                              authenticationKey:
+                                description: Authentication key for provider based
+                                  connections
+                                type: string
+                              gateway:
+                                description: Gateway access point information
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: Equinix-assigned virtual gateway
+                                        identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              interface:
+                                description: Virtual device interface
+                                items:
+                                  properties:
+                                    type:
+                                      description: Interface type
+                                      type: string
+                                    uuid:
+                                      description: Equinix-assigned interface identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              linkProtocol:
+                                description: Connection link protocol
+                                items:
+                                  properties:
+                                    type:
+                                      description: Type of the link protocol - UNTAGGED,
+                                        DOT1Q, QINQ, EVPN_VXLAN
+                                      type: string
+                                    vlanCTag:
+                                      description: Vlan Customer Tag information,
+                                        vlanCTag value specified for QINQ connections
+                                      type: number
+                                    vlanSTag:
+                                      description: Vlan Provider Tag information,
+                                        vlanSTag value specified for QINQ connections
+                                      type: number
+                                    vlanTag:
+                                      description: Vlan Tag information, vlanTag value
+                                        specified for DOT1Q connections
+                                      type: number
+                                  type: object
+                                type: array
+                              location:
+                                description: Access point location
+                                items:
+                                  properties:
+                                    ibx:
+                                      description: IBX Code
+                                      type: string
+                                    metroCode:
+                                      description: Access point metro code
+                                      type: string
+                                    metroName:
+                                      description: Access point metro name
+                                      type: string
+                                    region:
+                                      description: Access point region
+                                      type: string
+                                  type: object
+                                type: array
+                              peeringType:
+                                description: Peering Type- PRIVATE,MICROSOFT,PUBLIC,
+                                  MANUAL
+                                type: string
+                              port:
+                                description: Port access point information
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: Equinix-assigned Port identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              profile:
+                                description: Service Profile
+                                items:
+                                  properties:
+                                    type:
+                                      description: Service profile type - L2_PROFILE,
+                                        L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                                      type: string
+                                    uuid:
+                                      description: Equinix assigned service profile
+                                        identifier
+                                      type: string
+                                  required:
+                                  - type
+                                  - uuid
+                                  type: object
+                                type: array
+                              providerConnectionId:
+                                description: Provider assigned Connection Id
+                                type: string
+                              routingProtocols:
+                                description: Access point routing protocols configuration
+                                items:
+                                  properties:
+                                    state:
+                                      description: Routing protocol instance state
+                                      type: string
+                                    type:
+                                      description: Routing Protocol type
+                                      type: string
+                                    uuid:
+                                      description: Equinix-assigned Routing protocol
+                                        identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              sellerRegion:
+                                description: Access point seller region
+                                type: string
+                              type:
+                                description: Access point type - COLO, VD, VG, SP,
+                                  IGW, SUBNET, GW
+                                type: string
+                              virtualDevice:
+                                description: Virtual device
+                                items:
+                                  properties:
+                                    type:
+                                      description: Virtual Device type
+                                      type: string
+                                    uuid:
+                                      description: Equinix-assigned Virtual Device
+                                        identifier
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                        additionalInfo:
+                          description: Connection side additional information
+                          items:
+                            properties:
+                              key:
+                                description: Additional information key
+                                type: string
+                              value:
+                                description: Additional information value
+                                type: string
+                            type: object
+                          type: array
+                        serviceToken:
+                          description: For service token based connections, Service
+                            tokens authorize users to access protected resources and
+                            services. Resource owners can distribute the tokens to
+                            trusted partners and vendors, allowing selected third
+                            parties to work directly with Equinix network assets
+                          items:
+                            properties:
+                              type:
+                                description: Token type - VC_TOKEN
+                                type: string
+                              uuid:
+                                description: Equinix-assigned service token identifier
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                required:
+                - aSide
+                - bandwidth
+                - name
+                - notifications
+                - type
+                - zSide
+                type: object
+              providerConfigRef:
+                default:
+                  name: default
+                description: ProviderConfigReference specifies how the provider that
+                  will be used to create, observe, update, and delete this managed
+                  resource should be configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                required:
+                - name
+                type: object
+              providerRef:
+                description: 'ProviderReference specifies the provider that will be
+                  used to create, observe, update, and delete this managed resource.
+                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                required:
+                - name
+                type: object
+              publishConnectionDetailsTo:
+                description: PublishConnectionDetailsTo specifies the connection secret
+                  config which contains a name, metadata and a reference to secret
+                  store config to which any connection details for this managed resource
+                  should be written. Connection details frequently include the endpoint,
+                  username, and password required to connect to the managed resource.
+                properties:
+                  configRef:
+                    default:
+                      name: default
+                    description: SecretStoreConfigRef specifies which secret store
+                      config should be used for this ConnectionSecret.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                    required:
+                    - name
+                    type: object
+                  metadata:
+                    description: Metadata is the metadata for connection secret.
+                    properties:
+                      annotations:
+                        additionalProperties:
+                          type: string
+                        description: Annotations are the annotations to be added to
+                          connection secret. - For Kubernetes secrets, this will be
+                          used as "metadata.annotations". - It is up to Secret Store
+                          implementation for others store types.
+                        type: object
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: Labels are the labels/tags to be added to connection
+                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store
+                          types.
+                        type: object
+                      type:
+                        description: Type is the SecretType for the connection secret.
+                          - Only valid for Kubernetes Secret Stores.
+                        type: string
+                    type: object
+                  name:
+                    description: Name is the name of the connection secret.
+                    type: string
+                required:
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: WriteConnectionSecretToReference specifies the namespace
+                  and name of a Secret to which any connection details for this managed
+                  resource should be written. Connection details frequently include
+                  the endpoint, username, and password required to connect to the
+                  managed resource. This field is planned to be replaced in a future
+                  release in favor of PublishConnectionDetailsTo. Currently, both
+                  could be set independently and connection details would be published
+                  to both without affecting each other.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                  namespace:
+                    description: Namespace of the secret.
+                    type: string
+                required:
+                - name
+                - namespace
+                type: object
+            required:
+            - forProvider
+            type: object
+          status:
+            description: ConnectionStatus defines the observed state of Connection.
+            properties:
+              atProvider:
+                properties:
+                  aSide:
+                    items:
+                      properties:
+                        accessPoint:
+                          items:
+                            properties:
+                              account:
+                                items:
+                                  properties:
+                                    accountName:
+                                      type: string
+                                    accountNumber:
+                                      type: number
+                                    globalCustId:
+                                      type: string
+                                    globalOrgId:
+                                      type: string
+                                    globalOrganizationName:
+                                      type: string
+                                    orgId:
+                                      type: number
+                                    organizationName:
+                                      type: string
+                                  type: object
+                                type: array
+                              gateway:
+                                items:
+                                  properties:
+                                    href:
+                                      type: string
+                                  type: object
+                                type: array
+                              interface:
+                                items:
+                                  properties:
+                                    id:
+                                      type: string
+                                  type: object
+                                type: array
+                              port:
+                                items:
+                                  properties:
+                                    href:
+                                      type: string
+                                    name:
+                                      type: string
+                                    redundancy:
+                                      items:
+                                        properties:
+                                          priority:
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                              profile:
+                                items:
+                                  properties:
+                                    accessPointTypeConfigs:
+                                      items:
+                                        properties:
+                                          type:
+                                            type: string
+                                          uuid:
+                                            type: string
+                                        type: object
+                                      type: array
+                                    description:
+                                      type: string
+                                    href:
+                                      type: string
+                                    name:
+                                      type: string
+                                  type: object
+                                type: array
+                              virtualDevice:
+                                items:
+                                  properties:
+                                    href:
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                        serviceToken:
+                          items:
+                            properties:
+                              description:
+                                type: string
+                              href:
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  account:
+                    items:
+                      properties:
+                        accountName:
+                          type: string
+                        accountNumber:
+                          type: number
+                        globalCustId:
+                          type: string
+                        globalOrgId:
+                          type: string
+                        globalOrganizationName:
+                          type: string
+                        orgId:
+                          type: number
+                        organizationName:
+                          type: string
+                      type: object
+                    type: array
+                  changeLog:
+                    items:
+                      properties:
+                        createdBy:
+                          type: string
+                        createdByEmail:
+                          type: string
+                        createdByFullName:
+                          type: string
+                        createdDateTime:
+                          type: string
+                        deletedBy:
+                          type: string
+                        deletedByEmail:
+                          type: string
+                        deletedByFullName:
+                          type: string
+                        deletedDateTime:
+                          type: string
+                        updatedBy:
+                          type: string
+                        updatedByEmail:
+                          type: string
+                        updatedByFullName:
+                          type: string
+                        updatedDateTime:
+                          type: string
+                      type: object
+                    type: array
+                  direction:
+                    type: string
+                  href:
+                    type: string
+                  id:
+                    type: string
+                  isRemote:
+                    type: boolean
+                  operation:
+                    items:
+                      properties:
+                        equinixStatus:
+                          type: string
+                        errors:
+                          items:
+                            properties:
+                              additionalInfo:
+                                items:
+                                  properties:
+                                    property:
+                                      type: string
+                                    reason:
+                                      type: string
+                                  type: object
+                                type: array
+                              correlationId:
+                                type: string
+                              details:
+                                type: string
+                              errorCode:
+                                type: string
+                              errorMessage:
+                                type: string
+                              help:
+                                type: string
+                            type: object
+                          type: array
+                        providerStatus:
+                          type: string
+                      type: object
+                    type: array
+                  order:
+                    items:
+                      properties:
+                        orderId:
+                          type: string
+                        orderNumber:
+                          type: string
+                      type: object
+                    type: array
+                  project:
+                    items:
+                      properties:
+                        href:
+                          type: string
+                        projectId:
+                          type: string
+                      type: object
+                    type: array
+                  redundancy:
+                    items:
+                      properties:
+                        group:
+                          type: string
+                      type: object
+                    type: array
+                  state:
+                    type: string
+                  zSide:
+                    items:
+                      properties:
+                        accessPoint:
+                          items:
+                            properties:
+                              account:
+                                items:
+                                  properties:
+                                    accountName:
+                                      type: string
+                                    accountNumber:
+                                      type: number
+                                    globalCustId:
+                                      type: string
+                                    globalOrgId:
+                                      type: string
+                                    globalOrganizationName:
+                                      type: string
+                                    orgId:
+                                      type: number
+                                    organizationName:
+                                      type: string
+                                  type: object
+                                type: array
+                              gateway:
+                                items:
+                                  properties:
+                                    href:
+                                      type: string
+                                  type: object
+                                type: array
+                              interface:
+                                items:
+                                  properties:
+                                    id:
+                                      type: string
+                                  type: object
+                                type: array
+                              port:
+                                items:
+                                  properties:
+                                    href:
+                                      type: string
+                                    name:
+                                      type: string
+                                    redundancy:
+                                      items:
+                                        properties:
+                                          priority:
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                              profile:
+                                items:
+                                  properties:
+                                    accessPointTypeConfigs:
+                                      items:
+                                        properties:
+                                          type:
+                                            type: string
+                                          uuid:
+                                            type: string
+                                        type: object
+                                      type: array
+                                    description:
+                                      type: string
+                                    href:
+                                      type: string
+                                    name:
+                                      type: string
+                                  type: object
+                                type: array
+                              virtualDevice:
+                                items:
+                                  properties:
+                                    href:
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                        serviceToken:
+                          items:
+                            properties:
+                              description:
+                                type: string
+                              href:
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: LastTransitionTime is the last time this condition
+                        transitioned from one status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A Message containing details about this condition's
+                        last transition from one status to another, if any.
+                      type: string
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: Type of this condition. At most one of each condition
+                        type may apply to a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

@@ -49,7 +49,7 @@ type PortParameters struct {
 	// +kubebuilder:validation:Required
 	Bonded *bool `json:"bonded" tf:"bonded,omitempty"`
 
-	// Flag indicating whether the port is in layer2 (or layer3) mode
+	// Flag indicating whether the port is in layer2 (or layer3) mode. The `layer2` flag can be set only for bond ports.
 	// +kubebuilder:validation:Optional
 	Layer2 *bool `json:"layer2,omitempty" tf:"layer2,omitempty"`
 
@@ -68,7 +68,7 @@ type PortParameters struct {
 	// +kubebuilder:validation:Required
 	PortID *string `json:"portId" tf:"port_id,omitempty"`
 
-	// Behavioral setting to reset the port to default settings. For a bond port it means layer3 without vlans attached, eth ports will be bonded without native vlan and vlans attached
+	// Behavioral setting to reset the port to default settings (layer3 bonded mode without any vlan attached) before delete/destroy
 	// +kubebuilder:validation:Optional
 	ResetOnDelete *bool `json:"resetOnDelete,omitempty" tf:"reset_on_delete,omitempty"`
 

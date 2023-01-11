@@ -68,7 +68,7 @@ spec:
                     type: boolean
                   layer2:
                     description: Flag indicating whether the port is in layer2 (or
-                      layer3) mode
+                      layer3) mode. The `layer2` flag can be set only for bond ports.
                     type: boolean
                   nativeVlanId:
                     description: UUID of native VLAN of the port
@@ -100,9 +100,8 @@ spec:
                     description: UUID of the port to lookup
                     type: string
                   resetOnDelete:
-                    description: Behavioral setting to reset the port to default settings.
-                      For a bond port it means layer3 without vlans attached, eth
-                      ports will be bonded without native vlan and vlans attached
+                    description: Behavioral setting to reset the port to default settings
+                      (layer3 bonded mode without any vlan attached) before delete/destroy
                     type: boolean
                   vlanIds:
                     description: UUIDs VLANs to attach. To avoid jitter, use the UUID

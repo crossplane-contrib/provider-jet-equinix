@@ -24,8 +24,10 @@ import (
 	l2connection "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/ecx/l2connection"
 	l2connectionaccepter "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/ecx/l2connectionaccepter"
 	l2serviceprofile "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/ecx/l2serviceprofile"
+	connection "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/fabric/connection"
+	serviceprofile "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/fabric/serviceprofile"
 	bgpsession "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/metal/bgpsession"
-	connection "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/metal/connection"
+	connectionmetal "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/metal/connection"
 	device "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/metal/device"
 	devicenetworktype "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/metal/devicenetworktype"
 	gateway "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/metal/gateway"
@@ -60,8 +62,10 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		l2connection.Setup,
 		l2connectionaccepter.Setup,
 		l2serviceprofile.Setup,
-		bgpsession.Setup,
 		connection.Setup,
+		serviceprofile.Setup,
+		bgpsession.Setup,
+		connectionmetal.Setup,
 		device.Setup,
 		devicenetworktype.Setup,
 		gateway.Setup,
