@@ -1,0 +1,629 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.8.0
+  creationTimestamp: null
+  name: serviceprofiles.fabric.equinix.jet.crossplane.io
+spec:
+  group: fabric.equinix.jet.crossplane.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - equinixjet
+    kind: ServiceProfile
+    listKind: ServiceProfileList
+    plural: serviceprofiles
+    singular: serviceprofile
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ServiceProfile is the Schema for the ServiceProfiles API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ServiceProfileSpec defines the desired state of ServiceProfile
+            properties:
+              deletionPolicy:
+                default: Delete
+                description: DeletionPolicy specifies what will happen to the underlying
+                  external when this managed resource is deleted - either "Delete"
+                  or "Orphan" the external resource.
+                enum:
+                - Orphan
+                - Delete
+                type: string
+              forProvider:
+                properties:
+                  accessPointTypeConfigs:
+                    description: Access point config information
+                    items:
+                      properties:
+                        allowBandwidthAutoApproval:
+                          description: Setting to enable or disable the ability of
+                            the buyer to change connection bandwidth without approval
+                            of the seller
+                          type: boolean
+                        allowBandwidthUpgrade:
+                          description: Availability of a bandwidth upgrade. The default
+                            is false
+                          type: boolean
+                        allowCustomBandwidth:
+                          description: Setting to enable or disable the ability of
+                            the buyer to customize the bandwidth
+                          type: boolean
+                        allowRemoteConnections:
+                          description: Setting to allow or prohibit remote connections
+                            to the service profile
+                          type: boolean
+                        apiConfig:
+                          description: Api configuration details
+                          items:
+                            properties:
+                              allowOverSubscription:
+                                description: Setting showing that oversubscription
+                                  support is available (true) or not (false). The
+                                  default is false
+                                type: boolean
+                              apiAvailable:
+                                description: Setting indicating whether the API is
+                                  available (true) or not (false)
+                                type: boolean
+                              bandwidthFromApi:
+                                description: Bandwidth from api
+                                type: boolean
+                              equinixManagedPort:
+                                description: Setting indicating that the port is managed
+                                  by Equinix (true) or not (false)
+                                type: boolean
+                              equinixManagedVlan:
+                                description: Setting indicating that the VLAN is managed
+                                  by Equinix (true) or not (false)
+                                type: boolean
+                              integrationId:
+                                description: Integration id
+                                type: string
+                              overSubscriptionLimit:
+                                description: A cap on over subscription
+                                type: number
+                            type: object
+                          type: array
+                        authenticationKey:
+                          description: Authentication key details
+                          items:
+                            properties:
+                              description:
+                                description: Description
+                                type: string
+                              label:
+                                description: Label
+                                type: string
+                              required:
+                                description: Required
+                                type: boolean
+                            type: object
+                          type: array
+                        bandwidthAlertThreshold:
+                          description: Percentage of port bandwidth at which an allocation
+                            alert is generated
+                          type: number
+                        connectionLabel:
+                          description: Custom name for Connection
+                          type: string
+                        connectionRedundancyRequired:
+                          description: Mandate redundant connections
+                          type: boolean
+                        enableAutoGenerateServiceKey:
+                          description: Enable auto generate service key
+                          type: boolean
+                        linkProtocolConfig:
+                          description: Link protocol configuration details
+                          items:
+                            properties:
+                              encapsulation:
+                                description: Port Encapsulation
+                                type: string
+                              encapsulationStrategy:
+                                description: Encapsulation strategy
+                                type: string
+                              reuseVlanSTag:
+                                description: Reuse vlan sTag
+                                type: boolean
+                            type: object
+                          type: array
+                        supportedBandwidths:
+                          description: Supported bandwidths
+                          items:
+                            type: number
+                          type: array
+                        type:
+                          description: Type of access point type config - VD, COLO
+                          type: string
+                      required:
+                      - type
+                      type: object
+                    type: array
+                  account:
+                    description: Account
+                    items:
+                      properties:
+                        accountName:
+                          description: Account Name
+                          type: string
+                        accountNumber:
+                          description: Account Number
+                          type: number
+                        globalCustId:
+                          description: Global Customer organization identifier
+                          type: string
+                        globalOrgId:
+                          description: Global organization identifier
+                          type: string
+                        globalOrganizationName:
+                          description: Global organization name
+                          type: string
+                        orgId:
+                          description: Customer organization identifier
+                          type: number
+                        organizationName:
+                          description: Customer organization name
+                          type: string
+                        ucmId:
+                          description: Enterprise datastore id
+                          type: string
+                      type: object
+                    type: array
+                  allowedEmails:
+                    description: Array of contact emails
+                    items:
+                      type: string
+                    type: array
+                  customFields:
+                    description: Custom Fields
+                    items:
+                      properties:
+                        captureInEmail:
+                          description: Required field
+                          type: boolean
+                        dataType:
+                          description: Data type
+                          type: string
+                        description:
+                          description: Description
+                          type: string
+                        label:
+                          description: Label
+                          type: string
+                        options:
+                          description: Options
+                          items:
+                            type: string
+                          type: array
+                        required:
+                          description: Required field
+                          type: boolean
+                      required:
+                      - dataType
+                      - label
+                      - required
+                      type: object
+                    type: array
+                  description:
+                    description: User-provided service description
+                    type: string
+                  marketingInfo:
+                    description: Marketing Info
+                    items:
+                      properties:
+                        logo:
+                          description: Logo
+                          type: string
+                        processStep:
+                          description: Process Step
+                          items:
+                            properties:
+                              description:
+                                description: Description
+                                type: string
+                              subTitle:
+                                description: Sub Title
+                                type: string
+                              title:
+                                description: Title
+                                type: string
+                            type: object
+                          type: array
+                        promotion:
+                          description: Promotion
+                          type: boolean
+                      type: object
+                    type: array
+                  metros:
+                    description: Access point config information
+                    items:
+                      properties:
+                        code:
+                          description: Metro Code - Example SV
+                          type: string
+                        displayName:
+                          description: Display Name
+                          type: string
+                        ibxs:
+                          description: IBX- Equinix International Business Exchange
+                            list
+                          items:
+                            type: string
+                          type: array
+                        inTrail:
+                          description: In Trail
+                          type: boolean
+                        name:
+                          description: Metro Name
+                          type: string
+                        sellerRegions:
+                          additionalProperties:
+                            type: string
+                          description: Seller Regions
+                          type: object
+                      type: object
+                    type: array
+                  name:
+                    description: Customer-assigned service profile name
+                    type: string
+                  notifications:
+                    description: Preferences for notifications on connection configuration
+                      or status changes
+                    items:
+                      properties:
+                        emails:
+                          description: Array of contact emails
+                          items:
+                            type: string
+                          type: array
+                        sendInterval:
+                          description: Send interval
+                          type: string
+                        type:
+                          description: Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS,
+                            NOTIFICATIONS
+                          type: string
+                      required:
+                      - emails
+                      - type
+                      type: object
+                    type: array
+                  ports:
+                    description: Ports
+                    items:
+                      properties:
+                        crossConnectId:
+                          description: Cross Connect Id
+                          type: string
+                        location:
+                          description: Colo/Port Location
+                          items:
+                            properties:
+                              ibx:
+                                description: IBX Code
+                                type: string
+                              metroCode:
+                                description: Access point metro code
+                                type: string
+                              metroName:
+                                description: Access point metro name
+                                type: string
+                              region:
+                                description: Access point region
+                                type: string
+                            type: object
+                          type: array
+                        sellerRegion:
+                          description: Seller Region
+                          type: string
+                        sellerRegionDescription:
+                          description: Seller Region details
+                          type: string
+                        type:
+                          description: Colo/Port Type
+                          type: string
+                        uuid:
+                          description: Colo/Port Uuid
+                          type: string
+                      required:
+                      - type
+                      - uuid
+                      type: object
+                    type: array
+                  project:
+                    description: Project information
+                    items:
+                      type: object
+                    type: array
+                  selfProfile:
+                    description: Self Profile
+                    type: boolean
+                  state:
+                    description: Service profile state - ACTIVE, PENDING_APPROVAL,
+                      DELETED, REJECTED
+                    type: string
+                  tags:
+                    description: Tags attached to the connection
+                    items:
+                      type: string
+                    type: array
+                  type:
+                    description: Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE,
+                      ECMC_PROFILE
+                    type: string
+                  virtualDevices:
+                    description: Virtual Devices
+                    items:
+                      properties:
+                        interfaceUuid:
+                          description: Device Interface Uuid
+                          type: string
+                        location:
+                          description: Device Location
+                          items:
+                            properties:
+                              ibx:
+                                description: IBX Code
+                                type: string
+                              metroCode:
+                                description: Access point metro code
+                                type: string
+                              metroName:
+                                description: Access point metro name
+                                type: string
+                              region:
+                                description: Access point region
+                                type: string
+                            type: object
+                          type: array
+                        type:
+                          description: Virtual Device Type
+                          type: string
+                        uuid:
+                          description: Virtual Device Uuid
+                          type: string
+                      required:
+                      - type
+                      - uuid
+                      type: object
+                    type: array
+                  visibility:
+                    description: Service profile visibility - PUBLIC, PRIVATE
+                    type: string
+                required:
+                - description
+                - name
+                - type
+                type: object
+              providerConfigRef:
+                default:
+                  name: default
+                description: ProviderConfigReference specifies how the provider that
+                  will be used to create, observe, update, and delete this managed
+                  resource should be configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                required:
+                - name
+                type: object
+              providerRef:
+                description: 'ProviderReference specifies the provider that will be
+                  used to create, observe, update, and delete this managed resource.
+                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                required:
+                - name
+                type: object
+              publishConnectionDetailsTo:
+                description: PublishConnectionDetailsTo specifies the connection secret
+                  config which contains a name, metadata and a reference to secret
+                  store config to which any connection details for this managed resource
+                  should be written. Connection details frequently include the endpoint,
+                  username, and password required to connect to the managed resource.
+                properties:
+                  configRef:
+                    default:
+                      name: default
+                    description: SecretStoreConfigRef specifies which secret store
+                      config should be used for this ConnectionSecret.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                    required:
+                    - name
+                    type: object
+                  metadata:
+                    description: Metadata is the metadata for connection secret.
+                    properties:
+                      annotations:
+                        additionalProperties:
+                          type: string
+                        description: Annotations are the annotations to be added to
+                          connection secret. - For Kubernetes secrets, this will be
+                          used as "metadata.annotations". - It is up to Secret Store
+                          implementation for others store types.
+                        type: object
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: Labels are the labels/tags to be added to connection
+                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store
+                          types.
+                        type: object
+                      type:
+                        description: Type is the SecretType for the connection secret.
+                          - Only valid for Kubernetes Secret Stores.
+                        type: string
+                    type: object
+                  name:
+                    description: Name is the name of the connection secret.
+                    type: string
+                required:
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: WriteConnectionSecretToReference specifies the namespace
+                  and name of a Secret to which any connection details for this managed
+                  resource should be written. Connection details frequently include
+                  the endpoint, username, and password required to connect to the
+                  managed resource. This field is planned to be replaced in a future
+                  release in favor of PublishConnectionDetailsTo. Currently, both
+                  could be set independently and connection details would be published
+                  to both without affecting each other.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                  namespace:
+                    description: Namespace of the secret.
+                    type: string
+                required:
+                - name
+                - namespace
+                type: object
+            required:
+            - forProvider
+            type: object
+          status:
+            description: ServiceProfileStatus defines the observed state of ServiceProfile.
+            properties:
+              atProvider:
+                properties:
+                  accessPointTypeConfigs:
+                    items:
+                      properties:
+                        uuid:
+                          type: string
+                      type: object
+                    type: array
+                  changeLog:
+                    items:
+                      properties:
+                        createdBy:
+                          type: string
+                        createdByEmail:
+                          type: string
+                        createdByFullName:
+                          type: string
+                        createdDateTime:
+                          type: string
+                        deletedBy:
+                          type: string
+                        deletedByEmail:
+                          type: string
+                        deletedByFullName:
+                          type: string
+                        deletedDateTime:
+                          type: string
+                        updatedBy:
+                          type: string
+                        updatedByEmail:
+                          type: string
+                        updatedByFullName:
+                          type: string
+                        updatedDateTime:
+                          type: string
+                      type: object
+                    type: array
+                  href:
+                    type: string
+                  id:
+                    type: string
+                  project:
+                    items:
+                      properties:
+                        href:
+                          type: string
+                        projectId:
+                          type: string
+                      type: object
+                    type: array
+                  uuid:
+                    type: string
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: LastTransitionTime is the last time this condition
+                        transitioned from one status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A Message containing details about this condition's
+                        last transition from one status to another, if any.
+                      type: string
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: Type of this condition. At most one of each condition
+                        type may apply to a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
