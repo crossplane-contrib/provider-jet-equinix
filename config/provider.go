@@ -20,8 +20,7 @@ import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
 
-	tjconfig "github.com/crossplane/terrajet/pkg/config"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	upconfig "github.com/upbound/upjet/pkg/config"
 
 	"github.com/crossplane-contrib/provider-jet-equinix/config/ecx/l2connection"
 	"github.com/crossplane-contrib/provider-jet-equinix/config/metal/device"
@@ -35,19 +34,32 @@ const (
 //go:embed schema.json
 var providerSchema string
 
+//go:embed provider-metadata.yaml
+var providerMetadata string
+
 // GetProvider returns provider configuration
-func GetProvider() *tjconfig.Provider {
-	pc := tjconfig.NewProviderWithSchema([]byte(providerSchema), resourcePrefix, modulePath,
-		tjconfig.WithDefaultResourceFn(DefaultResource(
+func GetProvider() *upconfig.Provider {
+	pc := upconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
+		upconfig.WithDefaultResourceOptions(
 			KnownReferencers(),
 			IdentifierAssignedByEquinix(),
-		)),
-		tjconfig.WithIncludeList([]string{
+		),
+		upconfig.WithIncludeList([]string{
 			".*",
+		}),
+		upconfig.WithBasePackages(upconfig.BasePackages{
+			APIVersion: []string{
+				// Default package for ProviderConfig APIs
+				"apis/v1alpha1",
+			},
+			Controller: []string{
+				// Default package for ProviderConfig controllers
+				"internal/controller/providerconfig",
+			},
 		}),
 	)
 
-	for _, configure := range []func(provider *tjconfig.Provider){
+	for _, configure := range []func(provider *upconfig.Provider){
 		// add custom config functions
 		device.Configure,
 		l2connection.Configure,
@@ -57,12 +69,4 @@ func GetProvider() *tjconfig.Provider {
 
 	pc.ConfigureResources()
 	return pc
-}
-
-// DefaultResource returns a DefaultResourceFn that makes sure the original
-// DefaultResource call is made with given options here.
-func DefaultResource(opts ...tjconfig.ResourceOption) tjconfig.DefaultResourceFn {
-	return func(name string, terraformResource *schema.Resource, orgOpts ...tjconfig.ResourceOption) *tjconfig.Resource { //nolint:gocritic
-		return tjconfig.DefaultResource(name, terraformResource, append(orgOpts, opts...)...)
-	}
 }

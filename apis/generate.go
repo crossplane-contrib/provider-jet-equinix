@@ -29,7 +29,9 @@ limitations under the License.
 //go:generate bash -c "find ../internal/controller -iname 'zz_*' -delete"
 //go:generate bash -c "find ../internal/controller -type d -empty -delete"
 
-// Run Terrajet generator
+//go:generate go run github.com/upbound/upjet/cmd/scraper -n ${TERRAFORM_PROVIDER_SOURCE} -r ../.work/${TERRAFORM_PROVIDER_SOURCE}/${TERRAFORM_DOCS_PATH} -o ../config/provider-metadata.yaml
+
+// Run Upjet generator
 //go:generate go run -tags generate ../cmd/generator/main.go .. "${TERRAFORM_PROVIDER_SOURCE}"
 
 // Generate deepcopy methodsets and CRD manifests
