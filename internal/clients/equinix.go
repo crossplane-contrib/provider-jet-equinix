@@ -31,8 +31,6 @@ import (
 )
 
 const (
-	fmtEnvVar = "%s=%s"
-
 	// error messages
 	errNoProviderConfig     = "no providerConfigRef provided"
 	errGetProviderConfig    = "cannot get referenced ProviderConfig"
@@ -40,17 +38,9 @@ const (
 	errExtractCredentials   = "cannot extract credentials"
 	errUnmarshalCredentials = "cannot unmarshal equinix credentials as JSON"
 
-	keyClientID            = "client_id"
-	keyClientSecret        = "client_secret"
-	keyAuthToken           = "auth_token"
 	keyEndpoint            = "endpoint"
 	keyRequestTimeout      = "request_timeout"
 	keyResponseMaxPageSize = "response_max_page_size"
-
-	// Equinix credentials environment variable names
-	envClientID     = "EQUINIX_API_CLIENTID"
-	envClientSecret = "EQUINIX_API_CLIENTSECRET"
-	envAuthToken    = "METAL_AUTH_TOKEN"
 )
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
