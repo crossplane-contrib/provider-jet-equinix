@@ -12,7 +12,7 @@ spec:
     categories:
     - crossplane
     - managed
-    - equinixjet
+    - equinix
     kind: Device
     listKind: DeviceList
     plural: devices
@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Device is the Schema for the Devices API
+        description: Device is the Schema for the Devices API. <no value>
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -155,16 +155,41 @@ spec:
                     description: The ID of the project in which to create the device
                     type: string
                   projectIdRef:
-                    description: A Reference to a named object.
+                    description: Reference to a Project to populate projectId.
                     properties:
                       name:
                         description: Name of the referenced object.
                         type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
                     required:
                     - name
                     type: object
                   projectIdSelector:
-                    description: A Selector selects an object.
+                    description: Selector for a Project to populate projectId.
                     properties:
                       matchControllerRef:
                         description: MatchControllerRef ensures an object with the
@@ -175,6 +200,31 @@ spec:
                           type: string
                         description: MatchLabels ensures an object with matching labels
                           is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
                         type: object
                     type: object
                   projectSshKeyIds:
@@ -267,6 +317,31 @@ spec:
                   name:
                     description: Name of the referenced object.
                     type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
                 required:
                 - name
                 type: object
@@ -278,6 +353,31 @@ spec:
                   name:
                     description: Name of the referenced object.
                     type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
                 required:
                 - name
                 type: object
@@ -297,6 +397,31 @@ spec:
                       name:
                         description: Name of the referenced object.
                         type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
                     required:
                     - name
                     type: object
@@ -359,22 +484,35 @@ spec:
               atProvider:
                 properties:
                   accessPrivateIpv4:
+                    description: The ipv4 private IP assigned to the device
                     type: string
                   accessPublicIpv4:
+                    description: The ipv4 maintenance IP assigned to the device
                     type: string
                   accessPublicIpv6:
+                    description: The ipv6 maintenance IP assigned to the device
                     type: string
                   created:
+                    description: The timestamp for when the device was created
                     type: string
                   deployedFacility:
+                    description: The facility where the device is deployed
                     type: string
                   deployedHardwareReservationId:
+                    description: ID of hardware reservation where this device was
+                      deployed. It is useful when using the next-available hardware
+                      reservation
                     type: string
                   id:
                     type: string
                   locked:
+                    description: Whether the device is locked
                     type: boolean
                   network:
+                    description: 'The device''s private and public IP (v4 and v6)
+                      network details. When a device is run without any special network
+                      configuration, it will have 3 addresses: public ipv4, private
+                      ipv4 and ipv6'
                     items:
                       properties:
                         address:
@@ -390,8 +528,12 @@ spec:
                       type: object
                     type: array
                   networkType:
+                    description: Network type of a device, used in [Layer 2 networking](https://metal.equinix.com/developers/docs/networking/layer2/).
+                      Will be one of layer3, hybrid, hybrid-bonded, layer2-individual,
+                      layer2-bonded
                     type: string
                   ports:
+                    description: Ports assigned to the device
                     items:
                       properties:
                         bonded:
@@ -407,12 +549,16 @@ spec:
                       type: object
                     type: array
                   sshKeyIds:
+                    description: List of IDs of SSH keys deployed in the device, can
+                      be both user and project SSH keys
                     items:
                       type: string
                     type: array
                   state:
+                    description: The status of the device
                     type: string
                   updated:
+                    description: The timestamp for the last time the device was updated
                     type: string
                 type: object
               conditions:

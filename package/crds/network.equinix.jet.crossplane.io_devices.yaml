@@ -12,7 +12,7 @@ spec:
     categories:
     - crossplane
     - managed
-    - equinixjet
+    - equinix
     kind: Device
     listKind: DeviceList
     plural: devices
@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Device is the Schema for the Devices API
+        description: Device is the Schema for the Devices API. <no value>
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -513,6 +513,31 @@ spec:
                   name:
                     description: Name of the referenced object.
                     type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
                 required:
                 - name
                 type: object
@@ -524,6 +549,31 @@ spec:
                   name:
                     description: Name of the referenced object.
                     type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
                 required:
                 - name
                 type: object
@@ -543,6 +593,31 @@ spec:
                       name:
                         description: Name of the referenced object.
                         type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
                     required:
                     - name
                     type: object
@@ -605,39 +680,51 @@ spec:
               atProvider:
                 properties:
                   asn:
+                    description: Autonomous system number
                     type: number
                   clusterDetails:
+                    description: An object that has the cluster details
                     items:
                       properties:
                         clusterId:
+                          description: The id of the cluster
                           type: string
                         node0:
+                          description: An object that has node0 details
                           items:
                             properties:
                               name:
+                                description: The name of the node
                                 type: string
                               uuid:
+                                description: The unique id of the node
                                 type: string
                             type: object
                           type: array
                         node1:
+                          description: An object that has node1 details
                           items:
                             properties:
                               name:
+                                description: The name of the node
                                 type: string
                               uuid:
+                                description: The unique id of the node
                                 type: string
                             type: object
                           type: array
                         numOfNodes:
+                          description: The number of nodes in the cluster
                           type: number
                       type: object
                     type: array
                   ibx:
+                    description: Device location Equinix Business Exchange name
                     type: string
                   id:
                     type: string
                   interface:
+                    description: List of device interfaces
                     items:
                       properties:
                         assignedType:
@@ -659,23 +746,35 @@ spec:
                       type: object
                     type: array
                   licenseFileId:
+                    description: Unique identifier of applied license file
                     type: string
                   licenseStatus:
+                    description: Device license registration status
                     type: string
                   redundancyType:
+                    description: Device redundancy type applicable for HA devices,
+                      either primary or secondary
                     type: string
                   redundantId:
+                    description: Unique identifier for a redundant device, applicable
+                      for HA device
                     type: string
                   region:
+                    description: Device location region
                     type: string
                   secondaryDevice:
+                    description: Definition of secondary device applicable for HA
+                      setup
                     items:
                       properties:
                         asn:
+                          description: Autonomous system number
                           type: number
                         ibx:
+                          description: Device location Equinix Business Exchange name
                           type: string
                         interface:
+                          description: List of device interfaces
                           items:
                             properties:
                               assignedType:
@@ -697,36 +796,54 @@ spec:
                             type: object
                           type: array
                         licenseFileId:
+                          description: Unique identifier of applied license file
                           type: string
                         licenseStatus:
+                          description: Device license registration status
                           type: string
                         redundancyType:
+                          description: Device redundancy type applicable for HA devices,
+                            either primary or secondary
                           type: string
                         redundantId:
+                          description: Unique identifier for a redundant device, applicable
+                            for HA device
                           type: string
                         region:
+                          description: Device location region
                           type: string
                         sshIpAddress:
+                          description: IP address of SSH enabled interface on the
+                            device
                           type: string
                         sshIpFqdn:
+                          description: FQDN of SSH enabled interface on the device
                           type: string
                         status:
+                          description: Device provisioning status
                           type: string
                         uuid:
+                          description: Device unique identifier
                           type: string
                         zoneCode:
+                          description: Device location zone code
                           type: string
                       type: object
                     type: array
                   sshIpAddress:
+                    description: IP address of SSH enabled interface on the device
                     type: string
                   sshIpFqdn:
+                    description: FQDN of SSH enabled interface on the device
                     type: string
                   status:
+                    description: Device provisioning status
                     type: string
                   uuid:
+                    description: Device unique identifier
                     type: string
                   zoneCode:
+                    description: Device location zone code
                     type: string
                 type: object
               conditions:

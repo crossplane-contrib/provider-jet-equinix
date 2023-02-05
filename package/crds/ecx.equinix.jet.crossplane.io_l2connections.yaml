@@ -12,7 +12,7 @@ spec:
     categories:
     - crossplane
     - managed
-    - equinixjet
+    - equinix
     kind: L2Connection
     listKind: L2ConnectionList
     plural: l2connections
@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: L2Connection is the Schema for the L2Connections API
+        description: L2Connection is the Schema for the L2Connections API. <no value>
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -116,16 +116,41 @@ spec:
                       profile
                     type: string
                   profileUuidRef:
-                    description: A Reference to a named object.
+                    description: Reference to a L2Serviceprofile to populate profileUuid.
                     properties:
                       name:
                         description: Name of the referenced object.
                         type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
                     required:
                     - name
                     type: object
                   profileUuidSelector:
-                    description: A Selector selects an object.
+                    description: Selector for a L2Serviceprofile to populate profileUuid.
                     properties:
                       matchControllerRef:
                         description: MatchControllerRef ensures an object with the
@@ -136,6 +161,31 @@ spec:
                           type: string
                         description: MatchLabels ensures an object with matching labels
                           is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
                         type: object
                     type: object
                   purchaseOrderNumber:
@@ -264,6 +314,31 @@ spec:
                   name:
                     description: Name of the referenced object.
                     type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
                 required:
                 - name
                 type: object
@@ -275,6 +350,31 @@ spec:
                   name:
                     description: Name of the referenced object.
                     type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
                 required:
                 - name
                 type: object
@@ -294,6 +394,31 @@ spec:
                       name:
                         description: Name of the referenced object.
                         type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
                     required:
                     - name
                     type: object
@@ -356,6 +481,8 @@ spec:
               atProvider:
                 properties:
                   actions:
+                    description: One or more pending actions to complete connection
+                      provisioning
                     items:
                       properties:
                         message:
@@ -384,17 +511,29 @@ spec:
                   id:
                     type: string
                   providerStatus:
+                    description: Connection provisioning status on service provider's
+                      side
                     type: string
                   redundancyGroup:
+                    description: Unique identifier of group containing a primary and
+                      secondary connection
                     type: string
                   redundancyType:
+                    description: Connection redundancy type, applicable for HA connections.
+                      Either primary or secondary
                     type: string
                   redundantUuid:
+                    description: Unique identifier of the redundant connection, applicable
+                      for HA connections
                     type: string
                   secondaryConnection:
+                    description: Definition of secondary connection for redundant,
+                      HA connectivity
                     items:
                       properties:
                         actions:
+                          description: One or more pending actions to complete connection
+                            provisioning
                           items:
                             properties:
                               message:
@@ -421,32 +560,58 @@ spec:
                             type: object
                           type: array
                         providerStatus:
+                          description: Connection provisioning status on service provider's
+                            side
                           type: string
                         redundancyGroup:
+                          description: Unique identifier of group containing a primary
+                            and secondary connection
                           type: string
                         redundancyType:
+                          description: Connection redundancy type, applicable for
+                            HA connections. Either primary or secondary
                           type: string
                         redundantUuid:
+                          description: Unique identifier of the redundant connection,
+                            applicable for HA connections
                           type: string
                         status:
+                          description: Connection provisioning status on Equinix Fabric
+                            side
                           type: string
                         uuid:
+                          description: Unique identifier of the connection
                           type: string
                         vendorToken:
+                          description: The Equinix Fabric Token the connection was
+                            created with. Applicable if the connection was created
+                            with a ServiceToken (a-side) or ZSideServiceToken (z-side)
                           type: string
                         zsidePortUuid:
+                          description: Unique identifier of the port on the remote
+                            side (z-side)
                           type: string
                         zsideVlanCtag:
+                          description: C-Tag/Inner-Tag of the connection on the remote
+                            side (z-side)
                           type: number
                         zsideVlanStag:
+                          description: S-Tag/Outer-Tag of the connection on the remote
+                            side (z-side)
                           type: number
                       type: object
                     type: array
                   status:
+                    description: Connection provisioning status on Equinix Fabric
+                      side
                     type: string
                   uuid:
+                    description: Unique identifier of the connection
                     type: string
                   vendorToken:
+                    description: The Equinix Fabric Token the connection was created
+                      with. Applicable if the connection was created with a ServiceToken
+                      (a-side) or ZSideServiceToken (z-side)
                     type: string
                 type: object
               conditions:
