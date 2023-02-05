@@ -553,7 +553,7 @@ func (in *L2ConnectionParameters) DeepCopyInto(out *L2ConnectionParameters) {
 	if in.ProfileUUIDRef != nil {
 		in, out := &in.ProfileUUIDRef, &out.ProfileUUIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ProfileUUIDSelector != nil {
 		in, out := &in.ProfileUUIDSelector, &out.ProfileUUIDSelector

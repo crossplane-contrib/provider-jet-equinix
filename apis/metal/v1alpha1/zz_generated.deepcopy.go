@@ -241,7 +241,7 @@ func (in *BGPSessionParameters) DeepCopyInto(out *BGPSessionParameters) {
 	if in.DeviceIDRef != nil {
 		in, out := &in.DeviceIDRef, &out.DeviceIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.DeviceIDSelector != nil {
 		in, out := &in.DeviceIDSelector, &out.DeviceIDSelector
@@ -433,7 +433,7 @@ func (in *ConnectionParameters) DeepCopyInto(out *ConnectionParameters) {
 	if in.OrganizationIDRef != nil {
 		in, out := &in.OrganizationIDRef, &out.OrganizationIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.OrganizationIDSelector != nil {
 		in, out := &in.OrganizationIDSelector, &out.OrganizationIDSelector
@@ -448,7 +448,7 @@ func (in *ConnectionParameters) DeepCopyInto(out *ConnectionParameters) {
 	if in.ProjectIDRef != nil {
 		in, out := &in.ProjectIDRef, &out.ProjectIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ProjectIDSelector != nil {
 		in, out := &in.ProjectIDSelector, &out.ProjectIDSelector
@@ -692,7 +692,7 @@ func (in *DeviceNetworkTypeParameters) DeepCopyInto(out *DeviceNetworkTypeParame
 	if in.DeviceIDRef != nil {
 		in, out := &in.DeviceIDRef, &out.DeviceIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.DeviceIDSelector != nil {
 		in, out := &in.DeviceIDSelector, &out.DeviceIDSelector
@@ -929,7 +929,7 @@ func (in *DeviceParameters) DeepCopyInto(out *DeviceParameters) {
 	if in.ProjectIDRef != nil {
 		in, out := &in.ProjectIDRef, &out.ProjectIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ProjectIDSelector != nil {
 		in, out := &in.ProjectIDSelector, &out.ProjectIDSelector
@@ -1197,7 +1197,7 @@ func (in *GatewayParameters) DeepCopyInto(out *GatewayParameters) {
 	if in.IPReservationIDRef != nil {
 		in, out := &in.IPReservationIDRef, &out.IPReservationIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.IPReservationIDSelector != nil {
 		in, out := &in.IPReservationIDSelector, &out.IPReservationIDSelector
@@ -1217,7 +1217,7 @@ func (in *GatewayParameters) DeepCopyInto(out *GatewayParameters) {
 	if in.ProjectIDRef != nil {
 		in, out := &in.ProjectIDRef, &out.ProjectIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ProjectIDSelector != nil {
 		in, out := &in.ProjectIDSelector, &out.ProjectIDSelector
@@ -1232,7 +1232,7 @@ func (in *GatewayParameters) DeepCopyInto(out *GatewayParameters) {
 	if in.VlanIDRef != nil {
 		in, out := &in.VlanIDRef, &out.VlanIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.VlanIDSelector != nil {
 		in, out := &in.VlanIDSelector, &out.VlanIDSelector
@@ -1486,7 +1486,7 @@ func (in *IPAttachmentParameters) DeepCopyInto(out *IPAttachmentParameters) {
 	if in.DeviceIDRef != nil {
 		in, out := &in.DeviceIDRef, &out.DeviceIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.DeviceIDSelector != nil {
 		in, out := &in.DeviceIDSelector, &out.DeviceIDSelector
@@ -1907,7 +1907,7 @@ func (in *OrganizationMemberParameters) DeepCopyInto(out *OrganizationMemberPara
 	if in.OrganizationIDRef != nil {
 		in, out := &in.OrganizationIDRef, &out.OrganizationIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.OrganizationIDSelector != nil {
 		in, out := &in.OrganizationIDSelector, &out.OrganizationIDSelector
@@ -2228,7 +2228,7 @@ func (in *PortParameters) DeepCopyInto(out *PortParameters) {
 	if in.NativeVlanIDRef != nil {
 		in, out := &in.NativeVlanIDRef, &out.NativeVlanIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.NativeVlanIDSelector != nil {
 		in, out := &in.NativeVlanIDSelector, &out.NativeVlanIDSelector
@@ -2413,7 +2413,7 @@ func (in *PortVlanAttachmentParameters) DeepCopyInto(out *PortVlanAttachmentPara
 	if in.DeviceIDRef != nil {
 		in, out := &in.DeviceIDRef, &out.DeviceIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.DeviceIDSelector != nil {
 		in, out := &in.DeviceIDSelector, &out.DeviceIDSelector
@@ -2679,7 +2679,7 @@ func (in *ProjectAPIKeyParameters) DeepCopyInto(out *ProjectAPIKeyParameters) {
 	if in.ProjectIDRef != nil {
 		in, out := &in.ProjectIDRef, &out.ProjectIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ProjectIDSelector != nil {
 		in, out := &in.ProjectIDSelector, &out.ProjectIDSelector
@@ -2834,7 +2834,7 @@ func (in *ProjectParameters) DeepCopyInto(out *ProjectParameters) {
 	if in.OrganizationIDRef != nil {
 		in, out := &in.OrganizationIDRef, &out.OrganizationIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.OrganizationIDSelector != nil {
 		in, out := &in.OrganizationIDSelector, &out.OrganizationIDSelector
@@ -2973,7 +2973,7 @@ func (in *ProjectSSHKeyParameters) DeepCopyInto(out *ProjectSSHKeyParameters) {
 	if in.ProjectIDRef != nil {
 		in, out := &in.ProjectIDRef, &out.ProjectIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ProjectIDSelector != nil {
 		in, out := &in.ProjectIDSelector, &out.ProjectIDSelector
@@ -3275,7 +3275,7 @@ func (in *ReservedIPBlockParameters) DeepCopyInto(out *ReservedIPBlockParameters
 	if in.ProjectIDRef != nil {
 		in, out := &in.ProjectIDRef, &out.ProjectIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ProjectIDSelector != nil {
 		in, out := &in.ProjectIDSelector, &out.ProjectIDSelector
@@ -3311,7 +3311,7 @@ func (in *ReservedIPBlockParameters) DeepCopyInto(out *ReservedIPBlockParameters
 	if in.VrfIDRef != nil {
 		in, out := &in.VrfIDRef, &out.VrfIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.VrfIDSelector != nil {
 		in, out := &in.VrfIDSelector, &out.VrfIDSelector
@@ -3722,7 +3722,7 @@ func (in *SpotMarketRequestParameters) DeepCopyInto(out *SpotMarketRequestParame
 	if in.ProjectIDRef != nil {
 		in, out := &in.ProjectIDRef, &out.ProjectIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ProjectIDSelector != nil {
 		in, out := &in.ProjectIDSelector, &out.ProjectIDSelector
@@ -4028,7 +4028,7 @@ func (in *VirtualCircuitParameters) DeepCopyInto(out *VirtualCircuitParameters) 
 	if in.ConnectionIDRef != nil {
 		in, out := &in.ConnectionIDRef, &out.ConnectionIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ConnectionIDSelector != nil {
 		in, out := &in.ConnectionIDSelector, &out.ConnectionIDSelector
@@ -4083,7 +4083,7 @@ func (in *VirtualCircuitParameters) DeepCopyInto(out *VirtualCircuitParameters) 
 	if in.ProjectIDRef != nil {
 		in, out := &in.ProjectIDRef, &out.ProjectIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ProjectIDSelector != nil {
 		in, out := &in.ProjectIDSelector, &out.ProjectIDSelector
@@ -4119,7 +4119,7 @@ func (in *VirtualCircuitParameters) DeepCopyInto(out *VirtualCircuitParameters) 
 	if in.VlanIDRef != nil {
 		in, out := &in.VlanIDRef, &out.VlanIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.VlanIDSelector != nil {
 		in, out := &in.VlanIDSelector, &out.VlanIDSelector
@@ -4134,7 +4134,7 @@ func (in *VirtualCircuitParameters) DeepCopyInto(out *VirtualCircuitParameters) 
 	if in.VrfIDRef != nil {
 		in, out := &in.VrfIDRef, &out.VrfIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.VrfIDSelector != nil {
 		in, out := &in.VrfIDSelector, &out.VrfIDSelector
@@ -4292,7 +4292,7 @@ func (in *VlanParameters) DeepCopyInto(out *VlanParameters) {
 	if in.ProjectIDRef != nil {
 		in, out := &in.ProjectIDRef, &out.ProjectIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ProjectIDSelector != nil {
 		in, out := &in.ProjectIDSelector, &out.ProjectIDSelector
@@ -4471,7 +4471,7 @@ func (in *VrfParameters) DeepCopyInto(out *VrfParameters) {
 	if in.ProjectIDRef != nil {
 		in, out := &in.ProjectIDRef, &out.ProjectIDRef
 		*out = new(v1.Reference)
-		**out = **in
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ProjectIDSelector != nil {
 		in, out := &in.ProjectIDSelector, &out.ProjectIDSelector
