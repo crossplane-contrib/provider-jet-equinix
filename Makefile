@@ -13,6 +13,10 @@ export TERRAFORM_PROVIDER_VERSION := 1.11.1
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME := terraform-provider-equinix
 export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX := https://releases.hashicorp.com/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}/${TERRAFORM_PROVIDER_VERSION}
 export TERRAFORM_NATIVE_PROVIDER_BINARY := ${TERRAFORM_PROVIDER_DOWNLOAD_NAME}_v${TERRAFORM_PROVIDER_VERSION}
+export TERRAFORM_PROVIDER_REPO ?= https://github.com/equinix/terraform-provider-equinix
+export TERRAFORM_DOCS_PATH ?= docs/resources
+
+
 
 PLATFORMS ?= linux_amd64 linux_arm64
 
@@ -109,16 +113,17 @@ $(TERRAFORM_PROVIDER_SCHEMA): $(TERRAFORM)
 	@$(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) providers schema -json=true > $(TERRAFORM_PROVIDER_SCHEMA) 2>> $(TERRAFORM_WORKDIR)/terraform-logs.txt
 	@$(OK) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
 
+
 pull-docs:
 	@if [ ! -d "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" ]; then \
-  		mkdir -p "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" && \
-		git clone -c advice.detachedHead=false --depth 1 --filter=blob:none --branch "v$(TERRAFORM_PROVIDER_VERSION)" --sparse "$(TERRAFORM_PROVIDER_REPO)" "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)"; \
+			mkdir -p "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" && \
+			git clone -c advice.detachedHead=false --depth 1 --filter=blob:none --branch "v$(TERRAFORM_PROVIDER_VERSION)" --sparse "$(TERRAFORM_PROVIDER_REPO)" "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)"; \
 	fi
 	@git -C "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" sparse-checkout set "$(TERRAFORM_DOCS_PATH)"
 
-generate.init: $(TERRAFORM_PROVIDER_SCHEMA)
+generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
 
-.PHONY: $(TERRAFORM_PROVIDER_SCHEMA)
+.PHONY: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
 # ====================================================================================
 # Targets
 
