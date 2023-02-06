@@ -40,6 +40,9 @@ var providerMetadata string
 // GetProvider returns provider configuration
 func GetProvider() *upconfig.Provider {
 	pc := upconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
+		upconfig.WithShortName("equinix"),
+		upconfig.WithRootGroup("equinix.jet.crossplane.io"),
+		// upconfig.WithReferenceInjectors([]config.ReferenceInjector{reference.NewInjector("github.com/crossplane-contrib/provider-jet-equinix")}),
 		upconfig.WithDefaultResourceOptions(
 			KnownReferencers(),
 			IdentifierAssignedByEquinix(),
