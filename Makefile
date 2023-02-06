@@ -116,9 +116,9 @@ pull-docs:
 	fi
 	@git -C "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" sparse-checkout set "$(TERRAFORM_DOCS_PATH)"
 
-generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
+generate.init: $(TERRAFORM_PROVIDER_SCHEMA)
 
-.PHONY: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
+.PHONY: $(TERRAFORM_PROVIDER_SCHEMA)
 # ====================================================================================
 # Targets
 
