@@ -27,6 +27,8 @@ import (
 
 type L2ConnectionAccepterObservation struct {
 
+	// Identifier of a hosted Direct Connect connection on AWS side,
+	// applicable for accepter resource with connections to AWS only.
 	// Identifier of a hosted Direct Connect connection on AWS side, applicable for accepter resource with connections to AWS only
 	AwsConnectionID *string `json:"awsConnectionId,omitempty" tf:"aws_connection_id,omitempty"`
 
@@ -35,18 +37,22 @@ type L2ConnectionAccepterObservation struct {
 
 type L2ConnectionAccepterParameters struct {
 
+	// and secret_key resource arguments
 	// Access Key used to accept connection on provider side
 	// +kubebuilder:validation:Optional
 	AccessKeySecretRef *v1.SecretKeySelector `json:"accessKeySecretRef,omitempty" tf:"-"`
 
+	// argument or AWS_PROFILE environmental variable
 	// AWS Profile Name for retrieving credentials from shared credentials file
 	// +kubebuilder:validation:Optional
 	AwsProfile *string `json:"awsProfile,omitempty" tf:"aws_profile,omitempty"`
 
+	// Identifier of Layer 2 connection that will be accepted.
 	// Identifier of layer 2 connection that will be accepted
 	// +kubebuilder:validation:Required
 	ConnectionID *string `json:"connectionId" tf:"connection_id,omitempty"`
 
+	// Secret Key used to accept connection on provider side.
 	// Secret Key used to accept connection on provider side
 	// +kubebuilder:validation:Optional
 	SecretKeySecretRef *v1.SecretKeySelector `json:"secretKeySecretRef,omitempty" tf:"-"`
@@ -66,7 +72,7 @@ type L2ConnectionAccepterStatus struct {
 
 // +kubebuilder:object:root=true
 
-// L2ConnectionAccepter is the Schema for the L2ConnectionAccepters API. <no value>
+// L2ConnectionAccepter is the Schema for the L2ConnectionAccepters API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

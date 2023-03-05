@@ -27,27 +27,34 @@ import (
 
 type ProjectSSHKeyObservation struct {
 
+	// The timestamp for when the SSH key was created.
 	// The timestamp for when the SSH key was created
 	Created *string `json:"created,omitempty" tf:"created,omitempty"`
 
+	// The fingerprint of the SSH key.
 	// The fingerprint of the SSH key
 	Fingerprint *string `json:"fingerprint,omitempty" tf:"fingerprint,omitempty"`
 
+	// The unique ID of the key.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The ID of parent project (same as project_id).
 	// The UUID of the Equinix Metal API User who owns this key
 	OwnerID *string `json:"ownerId,omitempty" tf:"owner_id,omitempty"`
 
+	// The timestamp for the last time the SSH key was updated.
 	// The timestamp for the last time the SSH key was updated
 	Updated *string `json:"updated,omitempty" tf:"updated,omitempty"`
 }
 
 type ProjectSSHKeyParameters struct {
 
+	// The name of the SSH key for identification.
 	// The name of the SSH key for identification
 	// +kubebuilder:validation:Required
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// The ID of parent project.
 	// The ID of parent project
 	// +crossplane:generate:reference:type=Project
 	// +kubebuilder:validation:Optional
@@ -61,6 +68,7 @@ type ProjectSSHKeyParameters struct {
 	// +kubebuilder:validation:Optional
 	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
+	// The public key. If this is a file, it can be read using the file interpolation function.
 	// The public key. If this is a file, it
 	// +kubebuilder:validation:Required
 	PublicKey *string `json:"publicKey" tf:"public_key,omitempty"`
@@ -80,7 +88,7 @@ type ProjectSSHKeyStatus struct {
 
 // +kubebuilder:object:root=true
 
-// ProjectSSHKey is the Schema for the ProjectSSHKeys API. <no value>
+// ProjectSSHKey is the Schema for the ProjectSSHKeys API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

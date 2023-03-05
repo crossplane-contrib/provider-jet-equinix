@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Project is the Schema for the Projects API. <no value>
+        description: Project is the Schema for the Projects API.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -104,7 +104,8 @@ spec:
                       type: object
                     type: array
                   name:
-                    description: The name of the project
+                    description: User-supplied name of the VRF, unique to the project
+                      The name of the project
                     type: string
                   organizationId:
                     description: The UUID of organization under which you want to

@@ -31,10 +31,12 @@ type ProjectAPIKeyObservation struct {
 
 type ProjectAPIKeyParameters struct {
 
+	// Description string for the Project API Key resource.
 	// Description string for the API key
 	// +kubebuilder:validation:Required
 	Description *string `json:"description" tf:"description,omitempty"`
 
+	// UUID of the project where the API key is scoped to.
 	// UUID of project which the new API key is scoped to
 	// +crossplane:generate:reference:type=Project
 	// +kubebuilder:validation:Optional
@@ -67,7 +69,7 @@ type ProjectAPIKeyStatus struct {
 
 // +kubebuilder:object:root=true
 
-// ProjectAPIKey is the Schema for the ProjectAPIKeys API. <no value>
+// ProjectAPIKey is the Schema for the ProjectAPIKeys API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

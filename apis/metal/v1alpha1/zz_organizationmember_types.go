@@ -28,19 +28,25 @@ import (
 type OrganizationMemberObservation struct {
 
 	// When the invitation was created (only known in the invitation stage)
+	// When the invitation was created (only known in the invitation stage)
 	Created *string `json:"created,omitempty" tf:"created,omitempty"`
 
+	// The unique ID of the membership.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The user_id of the user that sent the invitation (only known in the invitation stage)
 	// The user id of the user that sent the invitation (only known in the invitation stage)
 	InvitedBy *string `json:"invitedBy,omitempty" tf:"invited_by,omitempty"`
 
 	// The nonce for the invitation (only known in the invitation stage)
+	// The nonce for the invitation (only known in the invitation stage)
 	Nonce *string `json:"nonce,omitempty" tf:"nonce,omitempty"`
 
 	// The state of the membership ('invited' when an invitation is open, 'active' when the user is an organization member)
+	// The state of the membership ('invited' when an invitation is open, 'active' when the user is an organization member)
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
 
+	// When the invitation was updated (only known in the invitation stage)
 	// When the invitation was updated (only known in the invitation stage)
 	Updated *string `json:"updated,omitempty" tf:"updated,omitempty"`
 }
@@ -48,13 +54,16 @@ type OrganizationMemberObservation struct {
 type OrganizationMemberParameters struct {
 
 	// The email address of the user to invite
+	// The email address of the user to invite
 	// +kubebuilder:validation:Required
 	Invitee *string `json:"invitee" tf:"invitee,omitempty"`
 
+	// A message to include in the emailed invitation.
 	// A message to the invitee (only used during the invitation stage)
 	// +kubebuilder:validation:Optional
 	Message *string `json:"message,omitempty" tf:"message,omitempty"`
 
+	// The organization to invite the user to
 	// The organization to invite the user to
 	// +crossplane:generate:reference:type=Organization
 	// +kubebuilder:validation:Optional
@@ -68,10 +77,12 @@ type OrganizationMemberParameters struct {
 	// +kubebuilder:validation:Optional
 	OrganizationIDSelector *v1.Selector `json:"organizationIdSelector,omitempty" tf:"-"`
 
+	// Project IDs the member has access to within the organization. If the member is an 'admin', the projects list should be empty.
 	// Project IDs the member has access to within the organization. If the member is an 'owner', the projects list should be empty.
 	// +kubebuilder:validation:Required
 	ProjectsIds []*string `json:"projectsIds" tf:"projects_ids,omitempty"`
 
+	// Organization roles (admin, collaborator, limited_collaborator, billing)
 	// Organization roles (owner, collaborator, limited_collaborator, billing)
 	// +kubebuilder:validation:Required
 	Roles []*string `json:"roles" tf:"roles,omitempty"`
@@ -91,7 +102,7 @@ type OrganizationMemberStatus struct {
 
 // +kubebuilder:object:root=true
 
-// OrganizationMember is the Schema for the OrganizationMembers API. <no value>
+// OrganizationMember is the Schema for the OrganizationMembers API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

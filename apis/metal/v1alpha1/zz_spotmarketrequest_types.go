@@ -52,6 +52,7 @@ type InstanceParametersParameters struct {
 	// +kubebuilder:validation:Optional
 	IpxeScriptURL *string `json:"ipxeScriptUrl,omitempty" tf:"ipxe_script_url,omitempty"`
 
+	// Blocks deletion of the SpotMarketRequest device until the lock is disabled.
 	// +kubebuilder:validation:Optional
 	Locked *bool `json:"locked,omitempty" tf:"locked,omitempty"`
 
@@ -75,8 +76,15 @@ type InstanceParametersParameters struct {
 }
 
 type SpotMarketRequestObservation struct {
+
+	// The ID of the Spot Market Request.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Key/Value pairs of parameters for devices provisioned from
+	// this request. Valid keys are: billing_cycle, plan, operating_system, hostname,
+	// termintation_time, always_pxe, description, features, locked, project_ssh_keys,
+	// user_ssh_keys, userdata, customdata, ipxe_script_url, tags. You can find each parameter
+	// description in equinix_metal_device docs.
 	// Parameters for devices provisioned from this request. You can find the parameter description from the [equinix_metal_device doc](device.md)
 	// +kubebuilder:validation:Required
 	InstanceParameters []InstanceParametersObservation `json:"instanceParameters,omitempty" tf:"instance_parameters,omitempty"`
@@ -84,30 +92,41 @@ type SpotMarketRequestObservation struct {
 
 type SpotMarketRequestParameters struct {
 
+	// Maximum number devices to be created.
 	// Maximum number devices to be created
 	// +kubebuilder:validation:Required
 	DevicesMax *float64 `json:"devicesMax" tf:"devices_max,omitempty"`
 
+	// Miniumum number devices to be created.
 	// Miniumum number devices to be created
 	// +kubebuilder:validation:Required
 	DevicesMin *float64 `json:"devicesMin" tf:"devices_min,omitempty"`
 
+	// Facility IDs where devices should be created.
 	// Facility IDs where devices should be created
 	// +kubebuilder:validation:Optional
 	Facilities []*string `json:"facilities,omitempty" tf:"facilities,omitempty"`
 
+	// Key/Value pairs of parameters for devices provisioned from
+	// this request. Valid keys are: billing_cycle, plan, operating_system, hostname,
+	// termintation_time, always_pxe, description, features, locked, project_ssh_keys,
+	// user_ssh_keys, userdata, customdata, ipxe_script_url, tags. You can find each parameter
+	// description in equinix_metal_device docs.
 	// Parameters for devices provisioned from this request. You can find the parameter description from the [equinix_metal_device doc](device.md)
 	// +kubebuilder:validation:Required
 	InstanceParameters []InstanceParametersParameters `json:"instanceParameters" tf:"instance_parameters,omitempty"`
 
+	// Maximum price user is willing to pay per hour per device.
 	// Maximum price user is willing to pay per hour per device
 	// +kubebuilder:validation:Required
 	MaxBidPrice *float64 `json:"maxBidPrice" tf:"max_bid_price,omitempty"`
 
+	// Metro where devices should be created.
 	// Metro where devices should be created
 	// +kubebuilder:validation:Optional
 	Metro *string `json:"metro,omitempty" tf:"metro,omitempty"`
 
+	// Project ID.
 	// Project ID
 	// +crossplane:generate:reference:type=Project
 	// +kubebuilder:validation:Optional
@@ -121,6 +140,8 @@ type SpotMarketRequestParameters struct {
 	// +kubebuilder:validation:Optional
 	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
+	// On resource creation wait until all desired devices are active.
+	// On resource destruction wait until devices are removed.
 	// On resource creation - wait until all desired devices are active, on resource destruction - wait until devices are removed
 	// +kubebuilder:validation:Optional
 	WaitForDevices *bool `json:"waitForDevices,omitempty" tf:"wait_for_devices,omitempty"`
@@ -140,7 +161,7 @@ type SpotMarketRequestStatus struct {
 
 // +kubebuilder:object:root=true
 
-// SpotMarketRequest is the Schema for the SpotMarketRequests API. <no value>
+// SpotMarketRequest is the Schema for the SpotMarketRequests API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

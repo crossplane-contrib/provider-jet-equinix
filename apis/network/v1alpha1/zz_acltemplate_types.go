@@ -27,49 +27,66 @@ import (
 
 type ACLTemplateObservation struct {
 
+	// Status of ACL template provisioning process, where template was applied.
+	// One of PROVISIONING, PROVISIONED.
 	// Status of ACL template provisioning process on a device, where template was applied
 	DeviceACLStatus *string `json:"deviceAclStatus,omitempty" tf:"device_acl_status,omitempty"`
 
+	// List of the devices where the ACL template is applied.
 	// Device Details to which ACL template is assigned to.
 	DeviceDetails []DeviceDetailsObservation `json:"deviceDetails,omitempty" tf:"device_details,omitempty"`
 
+	// (Deprecated) Identifier of a network device where template was applied.
 	// Identifier of a network device where template was applied
 	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// One or more rules to specify allowed inbound traffic.
+	// Rules are ordered, matching traffic rule stops processing subsequent ones.
 	// One or more rules to specify allowed inbound traffic. Rules are ordered, matching traffic rule stops processing subsequent ones.
 	// +kubebuilder:validation:Required
 	InboundRule []InboundRuleObservation `json:"inboundRule,omitempty" tf:"inbound_rule,omitempty"`
 
+	// Unique identifier of ACL template resource.
 	// Unique identifier of ACL template resource
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type ACLTemplateParameters struct {
 
+	// ACL template description, up to 200 characters.
 	// ACL template description, up to 200 characters
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// One or more rules to specify allowed inbound traffic.
+	// Rules are ordered, matching traffic rule stops processing subsequent ones.
 	// One or more rules to specify allowed inbound traffic. Rules are ordered, matching traffic rule stops processing subsequent ones.
 	// +kubebuilder:validation:Required
 	InboundRule []InboundRuleParameters `json:"inboundRule" tf:"inbound_rule,omitempty"`
 
+	// (Deprecated) ACL template location metro code.
 	// ACL template location metro code
 	// +kubebuilder:validation:Optional
 	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
 
+	// ACL template name.
 	// ACL template name
 	// +kubebuilder:validation:Required
 	Name *string `json:"name" tf:"name,omitempty"`
 }
 
 type DeviceDetailsObservation struct {
+
+	// Device ACL provisioning status where template was applied. One of PROVISIONING,
+	// PROVISIONED.
 	ACLStatus *string `json:"aclStatus,omitempty" tf:"acl_status,omitempty"`
 
+	// Device name.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Device uuid.
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
@@ -87,26 +104,34 @@ type InboundRuleObservation struct {
 
 type InboundRuleParameters struct {
 
+	// Inbound rule description, up to 200 characters.
 	// Inbound rule description, up to 200 characters
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// Inbound traffic destination ports. Allowed values are a comma separated
+	// list of ports, e.g., 20,22,23, port range, e.g., 1023-1040 or word any.
 	// Inbound traffic destination ports. Either up to 10, comma separated ports or port range or any word
 	// +kubebuilder:validation:Required
 	DstPort *string `json:"dstPort" tf:"dst_port,omitempty"`
 
+	// Inbound traffic protocol. One of IP, TCP, UDP.
 	// Inbound traffic protocol. One of: `IP`, `TCP`, `UDP`
 	// +kubebuilder:validation:Required
 	Protocol *string `json:"protocol" tf:"protocol,omitempty"`
 
+	// Inbound traffic source ports. Allowed values are a comma separated list
+	// of ports, e.g., 20,22,23, port range, e.g., 1023-1040 or word any.
 	// Inbound traffic source ports. Either up to 10, comma separated ports or port range or any word
 	// +kubebuilder:validation:Required
 	SrcPort *string `json:"srcPort" tf:"src_port,omitempty"`
 
+	// Inbound traffic source IP subnet in CIDR format.
 	// Inbound traffic source IP subnet in CIDR format
 	// +kubebuilder:validation:Optional
 	Subnet *string `json:"subnet,omitempty" tf:"subnet,omitempty"`
 
+	// (Deprecated) Inbound traffic source IP subnets in CIDR format.
 	// Inbound traffic source IP subnets in CIDR format
 	// +kubebuilder:validation:Optional
 	Subnets []*string `json:"subnets,omitempty" tf:"subnets,omitempty"`
@@ -126,7 +151,7 @@ type ACLTemplateStatus struct {
 
 // +kubebuilder:object:root=true
 
-// ACLTemplate is the Schema for the ACLTemplates API. <no value>
+// ACLTemplate is the Schema for the ACLTemplates API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

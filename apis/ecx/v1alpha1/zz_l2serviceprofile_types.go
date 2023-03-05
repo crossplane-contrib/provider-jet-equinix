@@ -30,10 +30,14 @@ type FeaturesObservation struct {
 
 type FeaturesParameters struct {
 
+	// Indicates whether or not connections to this profile
+	// can be created from remote metro locations.
 	// Indicates whether or not connections to this profile can be created from remote metro locations
 	// +kubebuilder:validation:Required
 	AllowRemoteConnections *bool `json:"allowRemoteConnections" tf:"allow_remote_connections,omitempty"`
 
+	// (Deprecated) Indicates whether or not this profile can be used for test
+	// connections.
 	// Indicates whether or not this profile can be used for test connections
 	// +kubebuilder:validation:Optional
 	TestProfile *bool `json:"testProfile,omitempty" tf:"test_profile,omitempty"`
@@ -42,111 +46,172 @@ type FeaturesParameters struct {
 type L2ServiceprofileObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Service profile provisioning status.
 	// Service profile provisioning status
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
 
+	// Unique identifier of the service profile.
 	// Unique identifier of the service profile
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type L2ServiceprofileParameters struct {
 
+	// Boolean value that determines if API integration is enabled. It
+	// allows you to complete connection provisioning in less than five minutes. Without API Integration,
+	// additional manual steps will be required and the provisioning will likely take longer.
 	// Specifies the API integration ID that was provided to the customer during onboarding
 	// +kubebuilder:validation:Optional
 	APIIntegration *bool `json:"apiIntegration,omitempty" tf:"api_integration,omitempty"`
 
+	// Name of the authentication key label to be used by the
+	// Authentication Key service. It allows Service Providers with QinQ ports to accept groups of
+	// connections or VLANs from Dot1q customers. This is similar to S-Tag/C-Tag capabilities.
 	// Name of the authentication key label to be used by the Authentication Key service
 	// +kubebuilder:validation:Optional
 	AuthkeyLabel *string `json:"authkeyLabel,omitempty" tf:"authkey_label,omitempty"`
 
+	// Specifies the port bandwidth threshold percentage. If
+	// the bandwidth limit is met or exceeded, an alert is sent to the seller.
 	// Specifies the port bandwidth threshold percentage. If the bandwidth limit is met or exceeded, an alert is sent to the seller
 	// +kubebuilder:validation:Optional
 	BandwidthAlertThreshold *float64 `json:"bandwidthAlertThreshold,omitempty" tf:"bandwidth_alert_threshold,omitempty"`
 
+	// A list of email addresses that will receive
+	// notifications about bandwidth thresholds.
 	// A list of email addresses that will receive notifications about bandwidth thresholds
 	// +kubebuilder:validation:Required
 	BandwidthThresholdNotifications []*string `json:"bandwidthThresholdNotifications" tf:"bandwidth_threshold_notifications,omitempty"`
 
+	// Custom name used for calling a connections
+	// e.g. circuit. Defaults to Connection.
 	// Custom name used for calling a connections i.e. circuit. Defaults to Connection
 	// +kubebuilder:validation:Optional
 	ConnectionNameLabel *string `json:"connectionNameLabel,omitempty" tf:"connection_name_label,omitempty"`
 
+	// C-Tag/Inner-Tag label name for the connections.
 	// C-Tag/Inner-Tag label name for the connections
 	// +kubebuilder:validation:Optional
 	CtagLabel *string `json:"ctagLabel,omitempty" tf:"ctag_label,omitempty"`
 
+	// Description of the service profile.
 	// Description of the service profile
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// Applicable when api_integration is set to true. It
+	// indicates whether the port and VLAN details are managed by Equinix.
 	// Boolean value that indicates whether the port and VLAN details are managed by Equinix
 	// +kubebuilder:validation:Optional
 	EquinixManagedPortVlan *bool `json:"equinixManagedPortVlan,omitempty" tf:"equinix_managed_port_vlan,omitempty"`
 
+	// Block of profile features configuration. See Features below
+	// for more details.
 	// Block of profile features configuration
 	// +kubebuilder:validation:Required
 	Features []FeaturesParameters `json:"features" tf:"features,omitempty"`
 
+	// Specifies the API integration ID that was provided to the customer
+	// during onboarding. You can validate your API integration ID using the validateIntegrationId API.
 	// Specifies the API integration ID that was provided to the customer during onboarding
 	// +kubebuilder:validation:Optional
 	IntegrationID *string `json:"integrationId,omitempty" tf:"integration_id,omitempty"`
 
+	// Name of the service profile. An alpha-numeric 50 characters string which can
+	// include only hyphens and underscores.
 	// Name of the service profile. An alpha-numeric 50 characters string which can include only hyphens and underscores
 	// +kubebuilder:validation:Required
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// You can set an alert for when a percentage of your profile has
+	// been sold. Service providers like to use this functionality to alert them when they need to add
+	// more ports or when they need to create a new service profile. Required with
+	// oversubscription_allowed, defaults to 1x.
 	// Oversubscription limit that will cause alerting. Default is 1x
 	// +kubebuilder:validation:Optional
 	Oversubscription *string `json:"oversubscription,omitempty" tf:"oversubscription,omitempty"`
 
+	// Boolean value that determines if, regardless of the
+	// utilization, Equinix Fabric will continue to add connections to your links until we reach the
+	// oversubscription limit. By selecting this service, you acknowledge that you will manage decisions
+	// on when to increase capacity on these link.
 	// Boolean value that determines if, regardless of the utilization, Equinix Fabric will continue to add connections to your links until we reach the oversubscription limit
 	// +kubebuilder:validation:Optional
 	OversubscriptionAllowed *bool `json:"oversubscriptionAllowed,omitempty" tf:"oversubscription_allowed,omitempty"`
 
+	// One or more definitions of ports residing in locations, from which your
+	// customers will be able to access services using this service profile. See Port below for
+	// more details.
 	// One or more definitions of ports associated with the profile
 	// +kubebuilder:validation:Required
 	Port []PortParameters `json:"port" tf:"port,omitempty"`
 
+	// Boolean value that indicates whether or not this is a private profile,
+	// i.e. not public like AWS/Azure/Oracle/Google, etc. If private, it can only be available for
+	// creating connections if correct permissions are granted.
 	// Boolean value that indicates whether or not this is a private profile.
 	// +kubebuilder:validation:Optional
 	Private *bool `json:"private,omitempty" tf:"private,omitempty"`
 
+	// An array of users email ids who have permission to access this
+	// service profile. Argument is required when profile is set as private.
 	// A list of email addresses associated to users that will be allowed to access this service profile. Applicable for private profiles
 	// +kubebuilder:validation:Optional
 	PrivateUserEmails []*string `json:"privateUserEmails,omitempty" tf:"private_user_emails,omitempty"`
 
+	// A list of email addresses that will receive
+	// notifications about profile status changes.
 	// A list of email addresses that will receive notifications about profile status changes
 	// +kubebuilder:validation:Required
 	ProfileStatuschangeNotifications []*string `json:"profileStatuschangeNotifications" tf:"profile_statuschange_notifications,omitempty"`
 
+	// Boolean value that determines if your connections will require
+	// redundancy. if yes, then users need to create a secondary redundant connection.
 	// Boolean value that determines if yourconnections will require redundancy
 	// +kubebuilder:validation:Optional
 	RedundancyRequired *bool `json:"redundancyRequired,omitempty" tf:"redundancy_required,omitempty"`
 
+	// Indicates whether the VLAN ID of. the secondary
+	// connection is the same as the primary connection.
 	// Indicates whether the VLAN ID of the secondary connection is the same as the primary connection
 	// +kubebuilder:validation:Optional
 	SecondaryVlanFromPrimary *bool `json:"secondaryVlanFromPrimary,omitempty" tf:"secondary_vlan_from_primary,omitempty"`
 
+	// Boolean value that indicates whether multiple connections
+	// can be created with the same authorization key to connect to this service profile after the first
+	// connection has been approved by the seller.
 	// Boolean value that indicates whether multiple connections can be created with the same authorization key
 	// +kubebuilder:validation:Optional
 	ServicekeyAutogenerated *bool `json:"servicekeyAutogenerated,omitempty" tf:"servicekey_autogenerated,omitempty"`
 
+	// One or more definitions of supported speed/bandwidth. Argument is
+	// required when speed_from_api is set to false. See Speed Band below for more
+	// details.
 	// One or more definitions of supported speed/bandwidth configurations
 	// +kubebuilder:validation:Optional
 	SpeedBand []SpeedBandParameters `json:"speedBand,omitempty" tf:"speed_band,omitempty"`
 
+	// Boolean value that determines if customer is allowed
+	// to enter a custom connection speed.
 	// Boolean value that determines if customer is allowed to enter a custom connection speed
 	// +kubebuilder:validation:Optional
 	SpeedCustomizationAllowed *bool `json:"speedCustomizationAllowed,omitempty" tf:"speed_customization_allowed,omitempty"`
 
+	// Boolean valuta that determines if connection speed will be derived
+	// from an API call. Argument has to be specified when api_integration is enabled.
 	// Boolean valuta that determines if connection speed will be derived from an API call
 	// +kubebuilder:validation:Optional
 	SpeedFromAPI *bool `json:"speedFromApi,omitempty" tf:"speed_from_api,omitempty"`
 
+	// Specifies additional tagging information required by the seller profile
+	// for Dot1Q to QinQ translation. See Enhance Dot1q to QinQ translation support
+	// for additional information. Valid values are:
 	// Specifies additional tagging information required by the seller profile for Dot1Q to QinQ translation
 	// +kubebuilder:validation:Optional
 	TagType *string `json:"tagType,omitempty" tf:"tag_type,omitempty"`
 
+	// A list of email addresses that will receive
+	// notifications about connections approvals and rejections.
 	// A list of email addresses that will receive notifications about connections approvals and rejections
 	// +kubebuilder:validation:Required
 	VcStatuschangeNotifications []*string `json:"vcStatuschangeNotifications" tf:"vc_statuschange_notifications,omitempty"`
@@ -157,10 +222,12 @@ type PortObservation struct {
 
 type PortParameters struct {
 
+	// The metro code of location where the port resides.
 	// Port location metro code
 	// +kubebuilder:validation:Required
 	MetroCode *string `json:"metroCode" tf:"metro_code,omitempty"`
 
+	// Unique identifier of the port.
 	// Unique identifier of the port
 	// +kubebuilder:validation:Required
 	UUID *string `json:"uuid" tf:"uuid,omitempty"`
@@ -171,10 +238,13 @@ type SpeedBandObservation struct {
 
 type SpeedBandParameters struct {
 
+	// Speed/bandwidth supported by this service profile.
 	// Speed/bandwidth supported by given service profile
 	// +kubebuilder:validation:Required
 	Speed *float64 `json:"speed" tf:"speed,omitempty"`
 
+	// Unit of the speed/bandwidth supported by this service profile. One of
+	// MB, GB.
 	// Unit of the speed/bandwidth supported by given service profile
 	// +kubebuilder:validation:Required
 	SpeedUnit *string `json:"speedUnit" tf:"speed_unit,omitempty"`
@@ -194,7 +264,7 @@ type L2ServiceprofileStatus struct {
 
 // +kubebuilder:object:root=true
 
-// L2Serviceprofile is the Schema for the L2Serviceprofiles API. <no value>
+// L2Serviceprofile is the Schema for the L2Serviceprofiles API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

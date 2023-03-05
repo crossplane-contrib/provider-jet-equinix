@@ -36,7 +36,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: OrganizationMember is the Schema for the OrganizationMembers
-          API. <no value>
+          API.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -65,14 +65,16 @@ spec:
               forProvider:
                 properties:
                   invitee:
-                    description: The email address of the user to invite
+                    description: The email address of the user to invite The email
+                      address of the user to invite
                     type: string
                   message:
-                    description: A message to the invitee (only used during the invitation
-                      stage)
+                    description: A message to include in the emailed invitation. A
+                      message to the invitee (only used during the invitation stage)
                     type: string
                   organizationId:
-                    description: The organization to invite the user to
+                    description: The organization to invite the user to The organization
+                      to invite the user to
                     type: string
                   organizationIdRef:
                     description: Reference to a Organization to populate organizationId.
@@ -149,12 +151,15 @@ spec:
                     type: object
                   projectsIds:
                     description: Project IDs the member has access to within the organization.
+                      If the member is an 'admin', the projects list should be empty.
+                      Project IDs the member has access to within the organization.
                       If the member is an 'owner', the projects list should be empty.
                     items:
                       type: string
                     type: array
                   roles:
-                    description: Organization roles (owner, collaborator, limited_collaborator,
+                    description: Organization roles (admin, collaborator, limited_collaborator,
+                      billing) Organization roles (owner, collaborator, limited_collaborator,
                       billing)
                     items:
                       type: string
@@ -342,25 +347,32 @@ spec:
                 properties:
                   created:
                     description: When the invitation was created (only known in the
-                      invitation stage)
+                      invitation stage) When the invitation was created (only known
+                      in the invitation stage)
                     type: string
                   id:
+                    description: The unique ID of the membership.
                     type: string
                   invitedBy:
-                    description: The user id of the user that sent the invitation
-                      (only known in the invitation stage)
+                    description: The user_id of the user that sent the invitation
+                      (only known in the invitation stage) The user id of the user
+                      that sent the invitation (only known in the invitation stage)
                     type: string
                   nonce:
                     description: The nonce for the invitation (only known in the invitation
+                      stage) The nonce for the invitation (only known in the invitation
                       stage)
                     type: string
                   state:
                     description: The state of the membership ('invited' when an invitation
-                      is open, 'active' when the user is an organization member)
+                      is open, 'active' when the user is an organization member) The
+                      state of the membership ('invited' when an invitation is open,
+                      'active' when the user is an organization member)
                     type: string
                   updated:
                     description: When the invitation was updated (only known in the
-                      invitation stage)
+                      invitation stage) When the invitation was updated (only known
+                      in the invitation stage)
                     type: string
                 type: object
               conditions:

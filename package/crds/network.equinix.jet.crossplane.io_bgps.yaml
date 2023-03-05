@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: BGP is the Schema for the BGPs API. <no value>
+        description: BGP is the Schema for the BGPs API.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -64,7 +64,8 @@ spec:
               forProvider:
                 properties:
                   authenticationKeySecretRef:
-                    description: Shared key used for BGP peer authentication
+                    description: shared key used for BGP peer authentication. Shared
+                      key used for BGP peer authentication
                     properties:
                       key:
                         description: The key to select.
@@ -81,20 +82,23 @@ spec:
                     - namespace
                     type: object
                   connectionId:
-                    description: Identifier of a connection established between network
-                      device and remote service provider that will be used for peering
+                    description: identifier of a connection established between. network
+                      device and remote service provider that will be used for peering.
+                      Identifier of a connection established between network device
+                      and remote service provider that will be used for peering
                     type: string
                   localAsn:
-                    description: Local ASN number
+                    description: Local ASN number. Local ASN number
                     type: number
                   localIpAddress:
-                    description: IP address in CIDR format of a local device
+                    description: IP address in CIDR format of a local device. IP address
+                      in CIDR format of a local device
                     type: string
                   remoteAsn:
-                    description: Remote ASN number
+                    description: Remote ASN number. Remote ASN number
                     type: number
                   remoteIpAddress:
-                    description: IP address of remote peer
+                    description: IP address of remote peer. IP address of remote peer
                     type: string
                 required:
                 - connectionId
@@ -280,19 +284,25 @@ spec:
               atProvider:
                 properties:
                   deviceId:
-                    description: Unique identifier of a network device that is a local
-                      peer in a given BGP peering configuration
+                    description: unique identifier of a network device that is a local
+                      peer in a given BGP peering configuration. Unique identifier
+                      of a network device that is a local peer in a given BGP peering
+                      configuration
                     type: string
                   id:
                     type: string
                   provisioningStatus:
-                    description: BGP peering configuration provisioning status
+                    description: BGP peering configuration provisioning status, one
+                      of PROVISIONING, PENDING_UPDATE, PROVISIONED, FAILED. BGP peering
+                      configuration provisioning status
                     type: string
                   state:
-                    description: BGP peer state
+                    description: BGP peer state, one of Idle, Connect, Active, OpenSent,
+                      OpenConfirm, Established. BGP peer state
                     type: string
                   uuid:
-                    description: BGP peering configuration unique identifier
+                    description: BGP peering configuration unique identifier. BGP
+                      peering configuration unique identifier
                     type: string
                 type: object
               conditions:

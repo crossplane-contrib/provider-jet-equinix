@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: SSHKey is the Schema for the SSHKeys API. <no value>
+        description: SSHKey is the Schema for the SSHKeys API.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -64,10 +64,13 @@ spec:
               forProvider:
                 properties:
                   name:
-                    description: The name of the SSH key for identification
+                    description: The name of the SSH key for identification The name
+                      of the SSH key for identification
                     type: string
                   publicKey:
-                    description: The public key. If this is a file, it
+                    description: The public key. If this is a file, it can be read
+                      using the file interpolation function The public key. If this
+                      is a file, it
                     type: string
                 required:
                 - name
@@ -250,19 +253,23 @@ spec:
               atProvider:
                 properties:
                   created:
-                    description: The timestamp for when the SSH key was created
+                    description: The timestamp for when the SSH key was created. The
+                      timestamp for when the SSH key was created
                     type: string
                   fingerprint:
-                    description: The fingerprint of the SSH key
+                    description: The fingerprint of the SSH key. The fingerprint of
+                      the SSH key
                     type: string
                   id:
+                    description: The unique ID of the key.
                     type: string
                   ownerId:
                     description: The UUID of the Equinix Metal API User who owns this
-                      key
+                      key. The UUID of the Equinix Metal API User who owns this key
                     type: string
                   updated:
-                    description: The timestamp for the last time the SSH key was updated
+                    description: The timestamp for the last time the SSH key was updated.
+                      The timestamp for the last time the SSH key was updated
                     type: string
                 type: object
               conditions:

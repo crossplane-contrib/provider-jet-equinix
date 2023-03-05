@@ -27,23 +27,30 @@ import (
 
 type DeviceLinkDeviceObservation struct {
 
+	// IP address from device link subnet that was assigned to the device
 	// Assigned IP address from device link subnet
 	IPAddress *string `json:"ipAddress,omitempty" tf:"ip_address,omitempty"`
 
+	// device link provisioning status on a given device. One of PROVISIONING,
+	// PROVISIONED, DEPROVISIONING, DEPROVISIONED, FAILED.
 	// Device link connection provisioning status
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 }
 
 type DeviceLinkDeviceParameters struct {
 
+	// Device ASN number. Not required for self configured devices.
 	// Device ASN number
 	// +kubebuilder:validation:Optional
 	Asn *float64 `json:"asn,omitempty" tf:"asn,omitempty"`
 
+	// Device identifier.
 	// Device identifier
 	// +kubebuilder:validation:Required
 	ID *string `json:"id" tf:"id,omitempty"`
 
+	// Device network interface identifier to use for device link
+	// connection.
 	// Device network interface identifier to use for device link connection
 	// +kubebuilder:validation:Optional
 	InterfaceID *float64 `json:"interfaceId,omitempty" tf:"interface_id,omitempty"`
@@ -51,31 +58,44 @@ type DeviceLinkDeviceParameters struct {
 
 type DeviceLinkObservation struct {
 
+	// definition of one or more devices belonging to the
+	// device link. See Device section below for more details.
 	// +kubebuilder:validation:Required
 	Device []DeviceLinkDeviceObservation `json:"device,omitempty" tf:"device,omitempty"`
 
+	// Device identifier.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Device link provisioning status. One of PROVISIONING, PROVISIONED,
+	// DEPROVISIONING, DEPROVISIONED, FAILED.
 	// Device link provisioning status
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
+	// Device link unique identifier.
 	// Device link unique identifier
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type DeviceLinkParameters struct {
 
+	// definition of one or more devices belonging to the
+	// device link. See Device section below for more details.
 	// +kubebuilder:validation:Required
 	Device []DeviceLinkDeviceParameters `json:"device" tf:"device,omitempty"`
 
+	// definition of one or more, inter metro, connections belonging
+	// to the device link. See Link section below for more details.
 	// link
 	// +kubebuilder:validation:Optional
 	Link []LinkParameters `json:"link,omitempty" tf:"link,omitempty"`
 
+	// device link name.
 	// name
 	// +kubebuilder:validation:Required
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// device link subnet in CIDR format. Not required for link
+	// between self configured devices.
 	// subnet
 	// +kubebuilder:validation:Optional
 	Subnet *string `json:"subnet,omitempty" tf:"subnet,omitempty"`
@@ -86,30 +106,38 @@ type LinkObservation struct {
 
 type LinkParameters struct {
 
+	// billing account number to be used for
+	// connection charges
 	// Billing account number to be used for connection charges
 	// +kubebuilder:validation:Required
 	AccountNumber *string `json:"accountNumber" tf:"account_number,omitempty"`
 
+	// connection destination metro code.
 	// Connection destination metro code
 	// +kubebuilder:validation:Required
 	DstMetroCode *string `json:"dstMetroCode" tf:"dst_metro_code,omitempty"`
 
+	// (Deprecated) connection destination zone code is not required.
 	// Connection destination zone code
 	// +kubebuilder:validation:Optional
 	DstZoneCode *string `json:"dstZoneCode,omitempty" tf:"dst_zone_code,omitempty"`
 
+	// connection source metro code.
 	// Connection source metro code
 	// +kubebuilder:validation:Required
 	SrcMetroCode *string `json:"srcMetroCode" tf:"src_metro_code,omitempty"`
 
+	// (Deprecated) connection source zone code is not required.
 	// Connection source zone code
 	// +kubebuilder:validation:Optional
 	SrcZoneCode *string `json:"srcZoneCode,omitempty" tf:"src_zone_code,omitempty"`
 
+	// connection throughput.
 	// Connection throughput
 	// +kubebuilder:validation:Required
 	Throughput *string `json:"throughput" tf:"throughput,omitempty"`
 
+	// connection throughput unit (Mbps or Gbps).
 	// Connection throughput unit
 	// +kubebuilder:validation:Required
 	ThroughputUnit *string `json:"throughputUnit" tf:"throughput_unit,omitempty"`
@@ -129,7 +157,7 @@ type DeviceLinkStatus struct {
 
 // +kubebuilder:object:root=true
 
-// DeviceLink is the Schema for the DeviceLinks API. <no value>
+// DeviceLink is the Schema for the DeviceLinks API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

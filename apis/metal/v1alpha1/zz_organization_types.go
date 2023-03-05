@@ -30,57 +30,73 @@ type AddressObservation struct {
 
 type AddressParameters struct {
 
+	// Postal address.
 	// Postal address
 	// +kubebuilder:validation:Required
 	Address *string `json:"address" tf:"address,omitempty"`
 
+	// City name.
 	// City name
 	// +kubebuilder:validation:Required
 	City *string `json:"city" tf:"city,omitempty"`
 
+	// Two letter country code (ISO 3166-1 alpha-2), e.g. US.
 	// Two letter country code (ISO 3166-1 alpha-2), e.g. US
 	// +kubebuilder:validation:Required
 	Country *string `json:"country" tf:"country,omitempty"`
 
+	// State name.
 	// State name
 	// +kubebuilder:validation:Optional
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
 
+	// Zip Code.
 	// Zip Code
 	// +kubebuilder:validation:Required
 	ZipCode *string `json:"zipCode" tf:"zip_code,omitempty"`
 }
 
 type OrganizationObservation struct {
+
+	// The timestamp for when the organization was created.
 	Created *string `json:"created,omitempty" tf:"created,omitempty"`
 
+	// The unique ID of the organization.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The timestamp for the last time the organization was updated.
 	Updated *string `json:"updated,omitempty" tf:"updated,omitempty"`
 }
 
 type OrganizationParameters struct {
 
+	// An object that has the address information. See Address
+	// below for more details.
 	// Address information block
 	// +kubebuilder:validation:Required
 	Address []AddressParameters `json:"address" tf:"address,omitempty"`
 
+	// Description string.
 	// Description string
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// Logo URL.
 	// Logo URL
 	// +kubebuilder:validation:Optional
 	Logo *string `json:"logo,omitempty" tf:"logo,omitempty"`
 
+	// The name of the Organization.
 	// The name of the Organization
 	// +kubebuilder:validation:Required
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// Twitter handle.
 	// Twitter handle
 	// +kubebuilder:validation:Optional
 	Twitter *string `json:"twitter,omitempty" tf:"twitter,omitempty"`
 
+	// Website link.
 	// Website link
 	// +kubebuilder:validation:Optional
 	Website *string `json:"website,omitempty" tf:"website,omitempty"`
@@ -100,7 +116,7 @@ type OrganizationStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Organization is the Schema for the Organizations API. <no value>
+// Organization is the Schema for the Organizations API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

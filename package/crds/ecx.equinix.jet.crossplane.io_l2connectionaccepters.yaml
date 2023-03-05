@@ -36,7 +36,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: L2ConnectionAccepter is the Schema for the L2ConnectionAccepters
-          API. <no value>
+          API.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -65,8 +65,8 @@ spec:
               forProvider:
                 properties:
                   accessKeySecretRef:
-                    description: Access Key used to accept connection on provider
-                      side
+                    description: and secret_key resource arguments Access Key used
+                      to accept connection on provider side
                     properties:
                       key:
                         description: The key to select.
@@ -83,15 +83,17 @@ spec:
                     - namespace
                     type: object
                   awsProfile:
-                    description: AWS Profile Name for retrieving credentials from
-                      shared credentials file
+                    description: argument or AWS_PROFILE environmental variable AWS
+                      Profile Name for retrieving credentials from shared credentials
+                      file
                     type: string
                   connectionId:
-                    description: Identifier of layer 2 connection that will be accepted
+                    description: Identifier of Layer 2 connection that will be accepted.
+                      Identifier of layer 2 connection that will be accepted
                     type: string
                   secretKeySecretRef:
                     description: Secret Key used to accept connection on provider
-                      side
+                      side. Secret Key used to accept connection on provider side
                     properties:
                       key:
                         description: The key to select.
@@ -289,6 +291,8 @@ spec:
                 properties:
                   awsConnectionId:
                     description: Identifier of a hosted Direct Connect connection
+                      on AWS side, applicable for accepter resource with connections
+                      to AWS only. Identifier of a hosted Direct Connect connection
                       on AWS side, applicable for accepter resource with connections
                       to AWS only
                     type: string

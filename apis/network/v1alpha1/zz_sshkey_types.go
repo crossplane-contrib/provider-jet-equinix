@@ -29,15 +29,19 @@ type SSHKeyObservation_2 struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// The unique identifier of the key
+	// The unique identifier of the key
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type SSHKeyParameters_2 struct {
 
+	// The name of SSH key used for identification.
 	// The name of SSH key used for identification
 	// +kubebuilder:validation:Required
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// The SSH public key. If this is a file, it can be read using the file
+	// interpolation function.
 	// The SSH public key. If this is a file, it can be read using the file interpolation function
 	// +kubebuilder:validation:Required
 	PublicKey *string `json:"publicKey" tf:"public_key,omitempty"`
@@ -57,7 +61,7 @@ type SSHKeyStatus struct {
 
 // +kubebuilder:object:root=true
 
-// SSHKey is the Schema for the SSHKeys API. <no value>
+// SSHKey is the Schema for the SSHKeys API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

@@ -27,43 +27,57 @@ import (
 
 type BGPObservation struct {
 
+	// unique identifier of a network device that is a local peer in a given BGP peering
+	// configuration.
 	// Unique identifier of a network device that is a local peer in a given BGP peering configuration
 	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// BGP peering configuration provisioning status, one of PROVISIONING,
+	// PENDING_UPDATE, PROVISIONED, FAILED.
 	// BGP peering configuration provisioning status
 	ProvisioningStatus *string `json:"provisioningStatus,omitempty" tf:"provisioning_status,omitempty"`
 
+	// BGP peer state, one of Idle, Connect, Active, OpenSent, OpenConfirm,
+	// Established.
 	// BGP peer state
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
 
+	// BGP peering configuration unique identifier.
 	// BGP peering configuration unique identifier
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type BGPParameters struct {
 
+	// shared key used for BGP peer authentication.
 	// Shared key used for BGP peer authentication
 	// +kubebuilder:validation:Optional
 	AuthenticationKeySecretRef *v1.SecretKeySelector `json:"authenticationKeySecretRef,omitempty" tf:"-"`
 
+	// identifier of a connection established between.
+	// network device and remote service provider that will be used for peering.
 	// Identifier of a connection established between network device and remote service provider that will be used for peering
 	// +kubebuilder:validation:Required
 	ConnectionID *string `json:"connectionId" tf:"connection_id,omitempty"`
 
+	// Local ASN number.
 	// Local ASN number
 	// +kubebuilder:validation:Required
 	LocalAsn *float64 `json:"localAsn" tf:"local_asn,omitempty"`
 
+	// IP address in CIDR format of a local device.
 	// IP address in CIDR format of a local device
 	// +kubebuilder:validation:Required
 	LocalIPAddress *string `json:"localIpAddress" tf:"local_ip_address,omitempty"`
 
+	// Remote ASN number.
 	// Remote ASN number
 	// +kubebuilder:validation:Required
 	RemoteAsn *float64 `json:"remoteAsn" tf:"remote_asn,omitempty"`
 
+	// IP address of remote peer.
 	// IP address of remote peer
 	// +kubebuilder:validation:Required
 	RemoteIPAddress *string `json:"remoteIpAddress" tf:"remote_ip_address,omitempty"`
@@ -83,7 +97,7 @@ type BGPStatus struct {
 
 // +kubebuilder:object:root=true
 
-// BGP is the Schema for the BGPs API. <no value>
+// BGP is the Schema for the BGPs API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

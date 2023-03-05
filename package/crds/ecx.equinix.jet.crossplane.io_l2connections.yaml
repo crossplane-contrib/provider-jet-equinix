@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: L2Connection is the Schema for the L2Connections API. <no value>
+        description: L2Connection is the Schema for the L2Connections API.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -64,14 +64,17 @@ spec:
               forProvider:
                 properties:
                   additionalInfo:
-                    description: One or more additional information key-value objects
+                    description: one or more additional information key-value objects
+                      One or more additional information key-value objects
                     items:
                       properties:
                         name:
-                          description: Additional information key
+                          description: secondary connection name Additional information
+                            key
                           type: string
                         value:
-                          description: Additional information value
+                          description: additional information value Additional information
+                            value
                           type: string
                       required:
                       - name
@@ -79,41 +82,58 @@ spec:
                       type: object
                     type: array
                   authorizationKey:
-                    description: Text field used to authorize connection on the provider
-                      side. Value depends on a provider service profile used for connection
+                    description: Unique identifier authorizing Equinix to provision
+                      a connection towards a cloud service provider. At Equinix, an
+                      Authorization Key is a generic term and is NOT encrypted on
+                      Equinix Fabric. Cloud Service Providers might use a different
+                      name to refer to this key such as Service Key or Authentication
+                      Key. Value depends on a provider service profile, more information
+                      on Equinix Fabric how to guide. Text field used to authorize
+                      connection on the provider side. Value depends on a provider
+                      service profile used for connection
                     type: string
                   deviceInterfaceId:
-                    description: Identifier of network interface on a given device,
-                      used for a connection. If not specified then first available
-                      interface will be selected
+                    description: Applicable with device_uuid, identifier of network
+                      interface on a given device, used for a connection. If not specified
+                      then first available interface will be selected. Identifier
+                      of network interface on a given device, used for a connection.
+                      If not specified then first available interface will be selected
                     type: number
                   deviceUuid:
                     description: Unique identifier of the Network Edge virtual device
-                      from which the connection would originate
+                      from which the connection would originate. Unique identifier
+                      of the Network Edge virtual device from which the connection
+                      would originate
                     type: string
                   name:
                     description: Connection name. An alpha-numeric 24 characters string
-                      which can include only hyphens and underscores
+                      which can include only hyphens and underscores Connection name.
+                      An alpha-numeric 24 characters string which can include only
+                      hyphens and underscores
                     type: string
                   namedTag:
-                    description: The type of peering to set up in case when connecting
+                    description: 'The type of peering to set up when connecting to
+                      Azure Express Route. Valid values: PRIVATE, MICROSOFT, MANUAL*,
+                      PUBLIC*. The type of peering to set up in case when connecting
                       to Azure Express Route. One of PRIVATE, MICROSOFT, MANUAL, PUBLIC
                       (MANUAL and PUBLIC are deprecated and not available for new
-                      connections)
+                      connections)'
                     type: string
                   notifications:
                     description: A list of email addresses used for sending connection
-                      update notifications
+                      update notifications. A list of email addresses used for sending
+                      connection update notifications
                     items:
                       type: string
                     type: array
                   portUuid:
-                    description: Unique identifier of the buyer's port from which
-                      the connection would originate
+                    description: Unique identifier of the Equinix Fabric Port from
+                      which the connection would originate. Unique identifier of the
+                      buyer's port from which the connection would originate
                     type: string
                   profileUuid:
-                    description: Unique identifier of the service provider's service
-                      profile
+                    description: Unique identifier of the service provider's profile.
+                      Unique identifier of the service provider's service profile
                     type: string
                   profileUuidRef:
                     description: Reference to a L2Serviceprofile to populate profileUuid.
@@ -190,113 +210,167 @@ spec:
                     type: object
                   purchaseOrderNumber:
                     description: Connection's purchase order number to reflect on
+                      the invoice Connection's purchase order number to reflect on
                       the invoice
                     type: string
                   secondaryConnection:
                     description: Definition of secondary connection for redundant,
-                      HA connectivity
+                      HA connectivity. See Secondary Connection below for more details.
+                      Definition of secondary connection for redundant, HA connectivity
                     items:
                       properties:
                         authorizationKey:
-                          description: Text field used to authorize connection on
-                            the provider side. Value depends on a provider service
-                            profile used for connection
+                          description: Unique identifier authorizing Equinix to provision
+                            a connection towards a cloud service provider. If not
+                            specified primary authorization_key will be used. However,
+                            some service providers may require different keys for
+                            each connection. More information on Equinix Fabric how
+                            to guide. Text field used to authorize connection on the
+                            provider side. Value depends on a provider service profile
+                            used for connection
                           type: string
                         deviceInterfaceId:
-                          description: Identifier of network interface on a given
-                            device, used for a connection. If not specified then first
-                            available interface will be selected
+                          description: Applicable with device_uuid, identifier of
+                            network interface on a given device. If not specified
+                            then first available interface will be selected. Identifier
+                            of network interface on a given device, used for a connection.
+                            If not specified then first available interface will be
+                            selected
                           type: number
                         deviceUuid:
-                          description: Unique identifier of the Network Edge virtual
+                          description: Applicable with primary device_uuid. Identifier
+                            of the Network Edge virtual device from which the secondary
+                            connection would originate. If not specified primary device_uuid
+                            will be used. Unique identifier of the Network Edge virtual
                             device from which the connection would originate
                           type: string
                         name:
-                          description: Connection name. An alpha-numeric 24 characters
-                            string which can include only hyphens and underscores
+                          description: secondary connection name Connection name.
+                            An alpha-numeric 24 characters string which can include
+                            only hyphens and underscores
                           type: string
                         portUuid:
-                          description: Unique identifier of the buyer's port from
-                            which the connection would originate
+                          description: Applicable with primary port_uuid. Identifier
+                            of the Equinix Fabric Port from which the secondary connection
+                            would originate. If not specified primary port_uuid will
+                            be used. Unique identifier of the buyer's port from which
+                            the connection would originate
                           type: string
                         profileUuid:
                           description: Unique identifier of the service provider's
-                            service profile
+                            profile. Unique identifier of the service provider's service
+                            profile
                           type: string
                         sellerMetroCode:
-                          description: The metro code that denotes the connection's
-                            remote side (z-side)
+                          description: The metro code that denotes the secondary connection’s
+                            destination (Z side). . The metro code that denotes the
+                            connection's remote side (z-side)
                           type: string
                         sellerRegion:
-                          description: The region in which the seller port resides
+                          description: The region in which the seller port resides.
+                            If not specified primary seller_region will be used. The
+                            region in which the seller port resides
                           type: string
                         serviceToken:
-                          description: Unique Equinix Fabric key given by a provider
+                          description: Required with primary service_token. Unique
+                            Equinix Fabric key given by a provider that grants you
+                            authorization to enable connectivity from an Equinix Fabric
+                            Port or virtual device. Each connection (primary and secondary)
+                            requires a separate token. More details in Fabric Service
+                            Tokens. Unique Equinix Fabric key given by a provider
                             that grants you authorization to enable connectivity from
                             a shared multi-tenant port (a-side)
                           type: string
                         speed:
-                          description: Speed/Bandwidth to be allocated to the connection
+                          description: Speed/Bandwidth to be allocated to the secondary
+                            connection. If not specified primary speed will be used.
+                            Speed/Bandwidth to be allocated to the connection
                           type: number
                         speedUnit:
                           description: Unit of the speed/bandwidth to be allocated
-                            to the connection
+                            to the secondary connection. If not specified primary
+                            speed_unit will be used. Unit of the speed/bandwidth to
+                            be allocated to the connection
                           type: string
                         vlanCtag:
-                          description: C-Tag/Inner-Tag of the connection, a numeric
+                          description: Applicable with port_uuid. C-Tag/Inner-Tag
+                            of the secondary connection, a numeric character ranging
+                            from 2 - 4094. C-Tag/Inner-Tag of the connection, a numeric
                             character ranging from 2 - 4094
                           type: number
                         vlanStag:
-                          description: S-Tag/Outer-Tag of the connection, a numeric
-                            character ranging from 2 - 4094
+                          description: S-Tag/Outer-Tag of the secondary connection,
+                            a numeric character ranging from 2 - 4094. S-Tag/Outer-Tag
+                            of the connection, a numeric character ranging from 2
+                            - 4094
                           type: number
                       required:
                       - name
                       type: object
                     type: array
                   sellerMetroCode:
-                    description: The metro code that denotes the connection's remote
-                      side (z-side)
+                    description: The metro code that denotes the connection’s remote/destination
+                      side (z-side). The metro code that denotes the connection's
+                      remote side (z-side)
                     type: string
                   sellerRegion:
-                    description: The region in which the seller port resides
+                    description: The region in which the seller port resides. The
+                      region in which the seller port resides
                     type: string
                   serviceToken:
-                    description: Unique Equinix Fabric key given by a provider that
-                      grants you authorization to enable connectivity from a shared
-                      multi-tenant port (a-side)
+                    description: '- A-side service tokens authorize you to create
+                      a connection from a customer port, which created the token for
+                      you, to a service profile or your own port. More details in
+                      A-Side Fabric Service Tokens. Unique Equinix Fabric key given
+                      by a provider that grants you authorization to enable connectivity
+                      from a shared multi-tenant port (a-side)'
                     type: string
                   speed:
-                    description: Speed/Bandwidth to be allocated to the connection
+                    description: Speed/Bandwidth to be allocated to the connection.
+                      Speed/Bandwidth to be allocated to the connection
                     type: number
                   speedUnit:
                     description: Unit of the speed/bandwidth to be allocated to the
+                      connection. Unit of the speed/bandwidth to be allocated to the
                       connection
                     type: string
                   vlanCtag:
-                    description: C-Tag/Inner-Tag of the connection, a numeric character
-                      ranging from 2 - 4094
+                    description: C-Tag/Inner-Tag of the connection - a numeric character
+                      ranging from 2 - 4094. C-Tag/Inner-Tag of the connection, a
+                      numeric character ranging from 2 - 4094
                     type: number
                   vlanStag:
-                    description: S-Tag/Outer-Tag of the connection, a numeric character
-                      ranging from 2 - 4094
+                    description: S-Tag/Outer-Tag of the connection - a numeric character
+                      ranging from 2 - 4094. S-Tag/Outer-Tag of the connection, a
+                      numeric character ranging from 2 - 4094
                     type: number
                   zsidePortUuid:
-                    description: Unique identifier of the port on the remote side
-                      (z-side)
+                    description: Unique identifier of the port on the remote/destination
+                      side (z-side). Allows you to connect between your own ports
+                      or virtual devices across your company's Equinix Fabric deployment,
+                      with no need for a private service profile. Unique identifier
+                      of the port on the remote side (z-side)
                     type: string
                   zsideServiceToken:
-                    description: Unique Equinix Fabric key given by a provider that
-                      grants you authorization to enable connectivity to a shared
-                      multi-tenant port (z-side)
+                    description: '- Z-side service tokens authorize you to create
+                      a connection from your port or virtual device to a customer
+                      port which created the token for you. zside_service_token cannot
+                      be used with secondary_connection. More details in Z-Side Fabric
+                      Service Tokens. Unique Equinix Fabric key given by a provider
+                      that grants you authorization to enable connectivity to a shared
+                      multi-tenant port (z-side)'
                     type: string
                   zsideVlanCtag:
-                    description: C-Tag/Inner-Tag of the connection on the remote side
-                      (z-side)
+                    description: C-Tag/Inner-Tag of the connection on the remote/destination
+                      side (z-side) - a numeric character ranging from 2 - 4094. secondary_connection
+                      is defined it will internally use same zside_vlan_ctag for the
+                      secondary connection. C-Tag/Inner-Tag of the connection on the
+                      remote side (z-side)
                     type: number
                   zsideVlanStag:
-                    description: S-Tag/Outer-Tag of the connection on the remote side
-                      (z-side)
+                    description: S-Tag/Outer-Tag of the connection on the remote/destination
+                      side (z-side) - a numeric character ranging from 2 - 4094. S-Tag/Outer-Tag
+                      of the connection on the remote side (z-side)
                     type: number
                 required:
                 - name
@@ -482,6 +556,7 @@ spec:
                 properties:
                   actions:
                     description: One or more pending actions to complete connection
+                      provisioning. One or more pending actions to complete connection
                       provisioning
                     items:
                       properties:
@@ -501,6 +576,7 @@ spec:
                               validationPattern:
                                 type: string
                               value:
+                                description: additional information value
                                 type: string
                             type: object
                           type: array
@@ -512,28 +588,33 @@ spec:
                     type: string
                   providerStatus:
                     description: Connection provisioning status on service provider's
-                      side
+                      side. Connection provisioning status on service provider's side
                     type: string
                   redundancyGroup:
                     description: Unique identifier of group containing a primary and
-                      secondary connection
+                      secondary connection. Unique identifier of group containing
+                      a primary and secondary connection
                     type: string
                   redundancyType:
                     description: Connection redundancy type, applicable for HA connections.
-                      Either primary or secondary
+                      Valid values are PRIMARY, SECONDARY. Connection redundancy type,
+                      applicable for HA connections. Either primary or secondary
                     type: string
                   redundantUuid:
                     description: Unique identifier of the redundant connection, applicable
-                      for HA connections
+                      for HA connections. Unique identifier of the redundant connection,
+                      applicable for HA connections
                     type: string
                   secondaryConnection:
                     description: Definition of secondary connection for redundant,
-                      HA connectivity
+                      HA connectivity. See Secondary Connection below for more details.
+                      Definition of secondary connection for redundant, HA connectivity
                     items:
                       properties:
                         actions:
                           description: One or more pending actions to complete connection
-                            provisioning
+                            provisioning. One or more pending actions to complete
+                            connection provisioning
                           items:
                             properties:
                               message:
@@ -552,6 +633,7 @@ spec:
                                     validationPattern:
                                       type: string
                                     value:
+                                      description: additional information value
                                       type: string
                                   type: object
                                 type: array
@@ -561,57 +643,79 @@ spec:
                           type: array
                         providerStatus:
                           description: Connection provisioning status on service provider's
+                            side. Connection provisioning status on service provider's
                             side
                           type: string
                         redundancyGroup:
                           description: Unique identifier of group containing a primary
-                            and secondary connection
+                            and secondary connection. Unique identifier of group containing
+                            a primary and secondary connection
                           type: string
                         redundancyType:
                           description: Connection redundancy type, applicable for
-                            HA connections. Either primary or secondary
+                            HA connections. Valid values are PRIMARY, SECONDARY. Connection
+                            redundancy type, applicable for HA connections. Either
+                            primary or secondary
                           type: string
                         redundantUuid:
                           description: Unique identifier of the redundant connection,
-                            applicable for HA connections
+                            applicable for HA connections. Unique identifier of the
+                            redundant connection, applicable for HA connections
                           type: string
                         status:
                           description: Connection provisioning status on Equinix Fabric
+                            side. Connection provisioning status on Equinix Fabric
                             side
                           type: string
                         uuid:
-                          description: Unique identifier of the connection
+                          description: Unique identifier of the connection. Unique
+                            identifier of the connection
                           type: string
                         vendorToken:
                           description: The Equinix Fabric Token the connection was
                             created with. Applicable if the connection was created
-                            with a ServiceToken (a-side) or ZSideServiceToken (z-side)
+                            with a service_token (a-side) or zside_service_token (z-side).
+                            The Equinix Fabric Token the connection was created with.
+                            Applicable if the connection was created with a ServiceToken
+                            (a-side) or ZSideServiceToken (z-side)
                           type: string
                         zsidePortUuid:
-                          description: Unique identifier of the port on the remote
-                            side (z-side)
+                          description: Unique identifier of the port on the remote/destination
+                            side (z-side). Allows you to connect between your own
+                            ports or virtual devices across your company's Equinix
+                            Fabric deployment, with no need for a private service
+                            profile. Unique identifier of the port on the remote side
+                            (z-side)
                           type: string
                         zsideVlanCtag:
-                          description: C-Tag/Inner-Tag of the connection on the remote
-                            side (z-side)
+                          description: C-Tag/Inner-Tag of the connection on the remote/destination
+                            side (z-side) - a numeric character ranging from 2 - 4094.
+                            secondary_connection is defined it will internally use
+                            same zside_vlan_ctag for the secondary connection. C-Tag/Inner-Tag
+                            of the connection on the remote side (z-side)
                           type: number
                         zsideVlanStag:
-                          description: S-Tag/Outer-Tag of the connection on the remote
-                            side (z-side)
+                          description: S-Tag/Outer-Tag of the connection on the remote/destination
+                            side (z-side) - a numeric character ranging from 2 - 4094.
+                            S-Tag/Outer-Tag of the connection on the remote side (z-side)
                           type: number
                       type: object
                     type: array
                   status:
                     description: Connection provisioning status on Equinix Fabric
-                      side
+                      side. Connection provisioning status on Equinix Fabric side
                     type: string
                   uuid:
-                    description: Unique identifier of the connection
+                    description: Unique identifier of the connection. Unique identifier
+                      of the connection
                     type: string
                   vendorToken:
                     description: The Equinix Fabric Token the connection was created
-                      with. Applicable if the connection was created with a ServiceToken
-                      (a-side) or ZSideServiceToken (z-side)
+                      with. Applicable if the connection was created with a service_token
+                      (a-side) or zside_service_token (z-side). The Equinix Fabric
+                      Token the connection was created with. Applicable if the connection
+                      was created with a ServiceToken (a-side) or ZSideServiceToken
+                      (z-side)
                     type: string
                 type: object
               conditions:

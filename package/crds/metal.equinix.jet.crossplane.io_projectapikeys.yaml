@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: ProjectAPIKey is the Schema for the ProjectAPIKeys API. <no value>
+        description: ProjectAPIKey is the Schema for the ProjectAPIKeys API.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -64,10 +64,12 @@ spec:
               forProvider:
                 properties:
                   description:
-                    description: Description string for the API key
+                    description: Description string for the Project API Key resource.
+                      Description string for the API key
                     type: string
                   projectId:
-                    description: UUID of project which the new API key is scoped to
+                    description: UUID of the project where the API key is scoped to.
+                      UUID of project which the new API key is scoped to
                     type: string
                   projectIdRef:
                     description: Reference to a Project to populate projectId.

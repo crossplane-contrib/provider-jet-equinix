@@ -28,12 +28,14 @@ import (
 type UserAPIKeyObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// UUID of the owner of the API key.
 	// UUID of user owning this key
 	UserID *string `json:"userId,omitempty" tf:"user_id,omitempty"`
 }
 
 type UserAPIKeyParameters struct {
 
+	// Description string for the User API Key resource.
 	// Description string for the API key
 	// +kubebuilder:validation:Required
 	Description *string `json:"description" tf:"description,omitempty"`
@@ -57,7 +59,7 @@ type UserAPIKeyStatus struct {
 
 // +kubebuilder:object:root=true
 
-// UserAPIKey is the Schema for the UserAPIKeys API. <no value>
+// UserAPIKey is the Schema for the UserAPIKeys API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

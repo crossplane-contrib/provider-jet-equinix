@@ -1,2 +1,1770 @@
 name: equinix/equinix
-resources: {}
+resources:
+    "":
+        subCategory: Metal
+        name: ""
+        title: ""
+        argumentDocs:
+            bond_id: '- UUID of the bond port.'
+            bond_name: '- Name of the bond port.'
+            bonded: '- (Required) Whether the port should be bonded.'
+            disbond_supported: '- Flag indicating whether the port can be removed from a bond.'
+            layer2: '- (Optional) Whether to put the port to Layer 2 mode, valid only for bond ports.'
+            mac: '- MAC address of the port.'
+            name: '- Name of the port, e.g. bond0 or eth0.'
+            native_vlan_id: |-
+                - (Optional) UUID of a VLAN to assign as a native VLAN. It must be one of
+                attached VLANs (from vlan_ids parameter).
+            network_type: |-
+                - One of layer2-bonded, layer2-individual, layer3, hybrid and hybrid-bonded. This
+                attribute is only set on bond ports.
+            port_id: '- (Required) ID of the port to read.'
+            reset_on_delete: '- (Optional) Behavioral setting to reset the port to default settings (layer3 bonded mode without any vlan attached) before delete/destroy.'
+            type: '- Type is either "NetworkBondPort" for bond ports or "NetworkPort" for bondable ethernet ports.'
+            vlan_ids: |-
+                - (Optional) List of VLAN UUIDs to attach to the port, valid only for L2 and Hybrid
+                ports.
+            vxlan_ids: |-
+                - (Optional) List of VXLAN IDs to attach to the port, valid only for L2 and Hybrid
+                ports.
+        importStatements: []
+    equinix_ecx_l2_connection:
+        subCategory: Fabric
+        name: equinix_ecx_l2_connection
+        title: ""
+        examples:
+            - name: port-2-aws
+              manifest: |-
+                {
+                  "authorization_key": "345742915919",
+                  "name": "tf-aws",
+                  "notifications": [
+                    "marry@equinix.com",
+                    "john@equinix.com"
+                  ],
+                  "port_uuid": "${data.equinix_ecx_port.sv-qinq-pri.id}",
+                  "profile_uuid": "${data.equinix_ecx_l2_sellerprofile.aws.id}",
+                  "seller_metro_code": "SV",
+                  "seller_region": "us-west-1",
+                  "speed": 200,
+                  "speed_unit": "MB",
+                  "vlan_ctag": 1000,
+                  "vlan_stag": 777
+                }
+              references:
+                port_uuid: data.equinix_ecx_port.sv-qinq-pri.id
+                profile_uuid: data.equinix_ecx_l2_sellerprofile.aws.id
+            - name: ports-2-azure
+              manifest: |-
+                {
+                  "authorization_key": "c4dff8e8-b52f-4b34-b0d4-c4588f7338f3",
+                  "name": "tf-azure-pri",
+                  "named_tag": "PRIVATE",
+                  "notifications": [
+                    "john@equinix.com",
+                    "marry@equinix.com"
+                  ],
+                  "port_uuid": "${data.equinix_ecx_port.sv-qinq-pri.id}",
+                  "profile_uuid": "${data.equinix_ecx_l2_sellerprofile.azure.id}",
+                  "seller_metro_code": "SV",
+                  "speed": 50,
+                  "speed_unit": "MB",
+                  "vlan_ctag": 2512,
+                  "vlan_stag": 1482
+                }
+              references:
+                port_uuid: data.equinix_ecx_port.sv-qinq-pri.id
+                profile_uuid: data.equinix_ecx_l2_sellerprofile.azure.id
+            - name: router-to-gcp
+              manifest: |-
+                {
+                  "authorization_key": "4d335adc-00fd-4a41-c9f3-782ca31ab3f7/us-west1/1",
+                  "device_interface_id": 5,
+                  "device_uuid": "${equinix_network_device.myrouter.id}",
+                  "name": "tf-gcp-pri",
+                  "notifications": [
+                    "john@equinix.com",
+                    "marry@equinix.com"
+                  ],
+                  "profile_uuid": "${data.equinix_ecx_l2_sellerprofile.gcp-1.id}",
+                  "seller_metro_code": "SV",
+                  "seller_region": "us-west1",
+                  "speed": 100,
+                  "speed_unit": "MB"
+                }
+              references:
+                device_uuid: equinix_network_device.myrouter.id
+                profile_uuid: data.equinix_ecx_l2_sellerprofile.gcp-1.id
+            - name: token-to-gcp
+              manifest: |-
+                {
+                  "authorization_key": "4d335adc-00fd-4a41-c9f3-782ca31ab3f7/us-west1/1",
+                  "name": "tf-gcp-pri",
+                  "notifications": [
+                    "john@equinix.com",
+                    "marry@equinix.com"
+                  ],
+                  "profile_uuid": "${data.equinix_ecx_l2_sellerprofile.gcp-1.id}",
+                  "seller_metro_code": "SV",
+                  "seller_region": "us-west1",
+                  "service_token": "e9c22453-d3a7-4d5d-9112-d50173531392",
+                  "speed": 100,
+                  "speed_unit": "MB"
+                }
+              references:
+                profile_uuid: data.equinix_ecx_l2_sellerprofile.gcp-1.id
+            - name: port-to-token
+              manifest: |-
+                {
+                  "name": "tf-port-token",
+                  "notifications": [
+                    "john@equinix.com",
+                    "marry@equinix.com"
+                  ],
+                  "port_uuid": "${data.equinix_ecx_port.sv-qinq-pri.id}",
+                  "seller_metro_code": "FR",
+                  "speed": 200,
+                  "speed_unit": "MB",
+                  "vlan_stag": 1000,
+                  "zside_service_token": "e9c22453-d3a7-4d5d-9112-d50173531392"
+                }
+              references:
+                port_uuid: data.equinix_ecx_port.sv-qinq-pri.id
+        argumentDocs:
+            actions: '- One or more pending actions to complete connection provisioning.'
+            additional_info: '- (Optional) one or more additional information key-value objects'
+            authorization_key: |-
+                - (Optional) Unique identifier authorizing Equinix to provision a connection
+                towards a cloud service provider. At Equinix, an Authorization Key is a generic term and is NOT
+                encrypted on Equinix Fabric. Cloud Service Providers might use a different name to refer to this
+                key such as Service Key or Authentication Key. Value depends on a provider service profile,
+                more information on Equinix Fabric how to guide.
+            device_interface_id: |-
+                - (Optional) Applicable with device_uuid, identifier of network interface
+                on a given device, used for a connection. If not specified then first available interface will be
+                selected.
+            device_uuid: |-
+                - (Required when port_uuid or service_token are not set) Unique identifier of
+                the Network Edge virtual device from which the connection would originate.
+            name: |-
+                - (Required) Connection name. An alpha-numeric 24 characters string which can include only
+                hyphens and underscores
+            named_tag: |-
+                - (Optional) The type of peering to set up when connecting to Azure Express Route.
+                Valid values: PRIVATE, MICROSOFT, MANUAL*, PUBLIC*.
+            notifications: |-
+                - (Required) A list of email addresses used for sending connection update
+                notifications.
+            port_uuid: |-
+                - (Required when device_uuid or service_token are not set) Unique identifier of
+                the Equinix Fabric Port from which the connection would originate.
+            profile_uuid: '- (Required) Unique identifier of the service provider''s profile.'
+            provider_status: '- Connection provisioning status on service provider''s side.'
+            purchase_order_number: '- (Optional) Connection''s purchase order number to reflect on the invoice'
+            redundancy_group: '- Unique identifier of group containing a primary and secondary connection.'
+            redundancy_type: |-
+                - Connection redundancy type, applicable for HA connections. Valid values are
+                PRIMARY, SECONDARY.
+            redundant_uuid: '- Unique identifier of the redundant connection, applicable for HA connections.'
+            secondary_connection: |-
+                - (Optional) Definition of secondary connection for redundant, HA
+                connectivity. See Secondary Connection below for more details.
+            secondary_connection.authorization_key: |-
+                - (Optional) Unique identifier authorizing Equinix to provision a connection
+                towards a cloud service provider. If not specified primary authorization_key will be used. However,
+                some service providers may require different keys for each connection. More information on
+                Equinix Fabric how to guide.
+            secondary_connection.device_interface_id: |-
+                - (Optional) Applicable with device_uuid, identifier of network interface
+                on a given device. If not specified then first available interface will be selected.
+            secondary_connection.device_uuid: |-
+                - (Optional) Applicable with primary device_uuid. Identifier of the Network Edge
+                virtual device from which the secondary connection would originate. If not specified primary
+                device_uuid will be used.
+            secondary_connection.name: '- (Required) secondary connection name'
+            secondary_connection.port_uuid: |-
+                - (Optional) Applicable with primary port_uuid. Identifier of the Equinix Fabric Port from
+                which the secondary connection would originate. If not specified primary port_uuid will be used.
+            secondary_connection.seller_metro_code: |-
+                - (Optional) The metro code that denotes the secondary connection’s
+                destination (Z side). .
+            secondary_connection.seller_region: |-
+                - (Optional) The region in which the seller port resides. If not specified
+                primary seller_region will be used.
+            secondary_connection.service_token: |-
+                - (Optional) Required with primary service_token. Unique Equinix Fabric key
+                given by a provider that grants you authorization to enable connectivity from an Equinix Fabric Port or
+                virtual device. Each connection (primary and secondary) requires a separate token.
+                More details in Fabric Service Tokens.
+            secondary_connection.speed: |-
+                - (Optional) Speed/Bandwidth to be allocated to the secondary connection. If not
+                specified primary speed will be used.
+            secondary_connection.speed_unit: |-
+                - (Optional) Unit of the speed/bandwidth to be allocated to the secondary
+                connection. If not specified primary speed_unit will be used.
+            secondary_connection.vlan_ctag: |-
+                - (Optional) Applicable with port_uuid. C-Tag/Inner-Tag of the secondary
+                connection, a numeric character ranging from 2 - 4094.
+            secondary_connection.vlan_stag: |-
+                - (Required when port_uuid is set) S-Tag/Outer-Tag of the secondary connection, a
+                numeric character ranging from 2 - 4094.
+            seller_metro_code: |-
+                - (Optional) The metro code that denotes the connection’s remote/destination
+                side (z-side).
+            seller_region: '- (Optional) The region in which the seller port resides.'
+            service_token: |-
+                - (Required when port_uuid or device_uuid are not set) - A-side
+                service tokens authorize you to create a connection from a customer port, which created the token
+                for you, to a service profile or your own port.
+                More details in A-Side Fabric Service Tokens.
+            speed: '- (Required) Speed/Bandwidth to be allocated to the connection.'
+            speed_unit: '- (Required) Unit of the speed/bandwidth to be allocated to the connection.'
+            status: '- Connection provisioning status on Equinix Fabric side.'
+            uuid: '- Unique identifier of the connection.'
+            value: '- (Required) additional information value'
+            vendor_token: |-
+                - The Equinix Fabric Token the connection was created with. Applicable if the
+                connection was created with a service_token (a-side) or zside_service_token (z-side).
+            vlan_ctag: |-
+                - (Optional) C-Tag/Inner-Tag of the connection - a numeric character ranging from 2
+                - 4094.
+            vlan_stag: |-
+                - (Required when port_uuid is set) S-Tag/Outer-Tag of the connection - a numeric
+                character ranging from 2 - 4094.
+            zside_port_uuid: |-
+                - (Optional) Unique identifier of the port on the remote/destination side
+                (z-side). Allows you to connect between your own ports or virtual devices across your company's
+                Equinix Fabric deployment, with no need for a private service profile.
+            zside_service_token: |-
+                - (Required when profile_uuid or zside_port_uuid are not set) - Z-side
+                service tokens authorize you to create a connection from your port or virtual device to a customer
+                port which created the token for you. zside_service_token cannot be used with secondary_connection.
+                More details in Z-Side Fabric Service Tokens.
+            zside_vlan_ctag: |-
+                - (Optional) C-Tag/Inner-Tag of the connection on the remote/destination
+                side (z-side) - a numeric character ranging from 2 - 4094.
+                secondary_connection is defined it will internally use same zside_vlan_ctag for the secondary
+                connection.
+            zside_vlan_stag: |-
+                - (Optional) S-Tag/Outer-Tag of the connection on the remote/destination
+                side (z-side) - a numeric character ranging from 2 - 4094.
+        importStatements: []
+    equinix_ecx_l2_connection_accepter:
+        subCategory: Fabric
+        name: equinix_ecx_l2_connection_accepter
+        title: ""
+        examples:
+            - name: accepter
+              manifest: |-
+                {
+                  "connection_id": "${equinix_ecx_l2_connection.awsConn.id}"
+                }
+              references:
+                connection_id: equinix_ecx_l2_connection.awsConn.id
+        argumentDocs:
+            AWS: (AWS Direct Connect)
+            AWS_ACCESS_KEY_ID: |-
+                and AWS_SECRET_ACCESS_KEY
+                environmental variables
+            access_key: and secret_key resource arguments
+            aws_connection_id: |-
+                - Identifier of a hosted Direct Connect connection on AWS side,
+                applicable for accepter resource with connections to AWS only.
+            aws_profile: argument or AWS_PROFILE environmental variable
+            connection_id: '- (Required) Identifier of Layer 2 connection that will be accepted.'
+            secret_key: '- (Optional) Secret Key used to accept connection on provider side.'
+        importStatements: []
+    equinix_ecx_l2_serviceprofile:
+        subCategory: Fabric
+        name: equinix_ecx_l2_serviceprofile
+        title: ""
+        examples:
+            - name: private-profile
+              manifest: |-
+                {
+                  "bandwidth_threshold_notifications": [
+                    "John.Doe@example.com",
+                    "Marry.Doe@example.com"
+                  ],
+                  "connection_name_label": "Connection",
+                  "description": "my private profile",
+                  "features": [
+                    {
+                      "allow_remote_connections": true,
+                      "test_profile": false
+                    }
+                  ],
+                  "name": "private-profile",
+                  "port": [
+                    {
+                      "metro_code": "NY",
+                      "uuid": "a867f685-422f-22f7-6de0-320a5c00abdd"
+                    },
+                    {
+                      "metro_code": "NY",
+                      "uuid": "a867f685-4231-2317-6de0-320a5c00abdd"
+                    }
+                  ],
+                  "private": true,
+                  "private_user_emails": [
+                    "John.Doe@example.com",
+                    "Marry.Doe@example.com"
+                  ],
+                  "profile_statuschange_notifications": [
+                    "John.Doe@example.com",
+                    "Marry.Doe@example.com"
+                  ],
+                  "speed_band": [
+                    {
+                      "speed": 1000,
+                      "speed_unit": "MB"
+                    },
+                    {
+                      "speed": 500,
+                      "speed_unit": "MB"
+                    },
+                    {
+                      "speed": 100,
+                      "speed_unit": "MB"
+                    }
+                  ],
+                  "vc_statuschange_notifications": [
+                    "John.Doe@example.com",
+                    "Marry.Doe@example.com"
+                  ]
+                }
+        argumentDocs:
+            BOTH: '- When both, application tag or seller side VLAN C-Tag can be provided.'
+            CTAGED: '- When seller side VLAN C-Tag has to be provided (Default).'
+            NAMED: '- When application named tag has to be provided.'
+            api_integration: |-
+                - (Optional) Boolean value that determines if API integration is enabled. It
+                allows you to complete connection provisioning in less than five minutes. Without API Integration,
+                additional manual steps will be required and the provisioning will likely take longer.
+            authkey_label: |-
+                - (Optional) Name of the authentication key label to be used by the
+                Authentication Key service. It allows Service Providers with QinQ ports to accept groups of
+                connections or VLANs from Dot1q customers. This is similar to S-Tag/C-Tag capabilities.
+            bandwidth_alert_threshold: |-
+                - (Optional) Specifies the port bandwidth threshold percentage. If
+                the bandwidth limit is met or exceeded, an alert is sent to the seller.
+            bandwidth_threshold_notifications: |-
+                - (Optional) A list of email addresses that will receive
+                notifications about bandwidth thresholds.
+            connection_name_label: |-
+                - (Optional) Custom name used for calling a connections
+                e.g. circuit. Defaults to Connection.
+            ctag_label: '- (Optional) C-Tag/Inner-Tag label name for the connections.'
+            description: '- (Optional) Description of the service profile.'
+            equinix_managed_port_vlan: |-
+                - (Optional) Applicable when api_integration is set to true. It
+                indicates whether the port and VLAN details are managed by Equinix.
+            features: |-
+                - (Required) Block of profile features configuration. See Features below
+                for more details.
+            features.allow_remote_connections: |-
+                - (Required) Indicates whether or not connections to this profile
+                can be created from remote metro locations.
+            features.test_profile: |-
+                - (Deprecated) Indicates whether or not this profile can be used for test
+                connections.
+            integration_id: |-
+                - (Optional) Specifies the API integration ID that was provided to the customer
+                during onboarding. You can validate your API integration ID using the validateIntegrationId API.
+            name: |-
+                - (Required) Name of the service profile. An alpha-numeric 50 characters string which can
+                include only hyphens and underscores.
+            oversubscription: |-
+                - (Optional) You can set an alert for when a percentage of your profile has
+                been sold. Service providers like to use this functionality to alert them when they need to add
+                more ports or when they need to create a new service profile. Required with
+                oversubscription_allowed, defaults to 1x.
+            oversubscription_allowed: |-
+                - (Optional) Boolean value that determines if, regardless of the
+                utilization, Equinix Fabric will continue to add connections to your links until we reach the
+                oversubscription limit. By selecting this service, you acknowledge that you will manage decisions
+                on when to increase capacity on these link.
+            port: |-
+                - (Required) One or more definitions of ports residing in locations, from which your
+                customers will be able to access services using this service profile. See Port below for
+                more details.
+            port.metro_code: '- (Required) The metro code of location where the port resides.'
+            port.uuid: '- (Required) Unique identifier of the port.'
+            private: |-
+                - (Optional) Boolean value that indicates whether or not this is a private profile,
+                i.e. not public like AWS/Azure/Oracle/Google, etc. If private, it can only be available for
+                creating connections if correct permissions are granted.
+            private_user_emails: |-
+                - (Optional) An array of users email ids who have permission to access this
+                service profile. Argument is required when profile is set as private.
+            profile_statuschange_notifications: |-
+                - (Required) A list of email addresses that will receive
+                notifications about profile status changes.
+            redundancy_required: |-
+                - (Optional) Boolean value that determines if your connections will require
+                redundancy. if yes, then users need to create a secondary redundant connection.
+            secondary_vlan_from_primary: |-
+                - (Optional) Indicates whether the VLAN ID of. the secondary
+                connection is the same as the primary connection.
+            servicekey_autogenerated: |-
+                - (Optional) Boolean value that indicates whether multiple connections
+                can be created with the same authorization key to connect to this service profile after the first
+                connection has been approved by the seller.
+            speed_band: |-
+                - (Optional) One or more definitions of supported speed/bandwidth. Argument is
+                required when speed_from_api is set to false. See Speed Band below for more
+                details.
+            speed_band.speed: '- (Required) Speed/bandwidth supported by this service profile.'
+            speed_band.speed_unit: |-
+                - (Required) Unit of the speed/bandwidth supported by this service profile. One of
+                MB, GB.
+            speed_customization_allowed: |-
+                - (Optional) Boolean value that determines if customer is allowed
+                to enter a custom connection speed.
+            speed_from_api: |-
+                - (Optional) Boolean valuta that determines if connection speed will be derived
+                from an API call. Argument has to be specified when api_integration is enabled.
+            state: '- Service profile provisioning status.'
+            tag_type: |-
+                - (Optional) Specifies additional tagging information required by the seller profile
+                for Dot1Q to QinQ translation. See Enhance Dot1q to QinQ translation support
+                for additional information. Valid values are:
+            uuid: '- Unique identifier of the service profile.'
+            vc_statuschange_notifications: |-
+                - (Required) A list of email addresses that will receive
+                notifications about connections approvals and rejections.
+        importStatements: []
+    equinix_fabric_connection Resource - terraform-provider-equinix:
+        subCategory: Fabric
+        description: Fabric V4 API compatible resource allows creation and management of Equinix Fabric connection ~> Note Equinix Fabric v4 resources and datasources are currently in Beta. The interfaces related to equinix_fabric_ resources and datasources may change ahead of general availability. Please, do not hesitate to report any problems that you experience by opening a new issue https://github.com/equinix/terraform-provider-equinix/issues/new?template=bug.md
+        name: equinix_fabric_connection Resource - terraform-provider-equinix
+        title: equinix_fabric_connection Resource - terraform-provider-equinix
+        argumentDocs:
+            a_side: '(Block Set, Min: 1) Requester or Customer side connection configuration object of the multi-segment connection (see below for nested schema)'
+            access_point: (Block Set) Point of access details (see below for nested schema)
+            access_point_type_configs: (List of Object) Access point config information (see below for nested schema)
+            account: (Set of Object) Customer account information that is associated with this connection (see below for nested schema)
+            account_name: (String)
+            account_number: (Number)
+            additional_info: (Block List) Connection additional information (see below for nested schema)
+            authentication_key: (String) Authentication key for provider based connections
+            bandwidth: (Number) Connection bandwidth in Mbps
+            billing_tier: (String) Billing tier for connection bandwidth
+            change_log: (Set of Object) Captures connection lifecycle change information (see below for nested schema)
+            correlation_id: (String)
+            create: (String)
+            created_by: (String)
+            created_by_email: (String)
+            created_by_full_name: (String)
+            created_date_time: (String)
+            delete: (String)
+            deleted_by: (String)
+            deleted_by_email: (String)
+            deleted_by_full_name: (String)
+            deleted_date_time: (String)
+            description: (String) User-provided service description
+            details: (String)
+            direction: (String) Connection directionality from the requester point of view
+            emails: (List of String) Array of contact emails
+            equinix_status: (String)
+            error_code: (String)
+            error_message: (String)
+            errors: (List of Object) (see below for nested schema)
+            gateway: (Block Set) Gateway access point information (see below for nested schema)
+            global_cust_id: (String)
+            global_org_id: (String)
+            global_organization_name: (String)
+            group: (String) Redundancy group identifier
+            help: (String)
+            href: (String) Connection URI information
+            ibx: (String) IBX Code
+            id: (String) The ID of this resource.
+            interface: (Block Set) Virtual device interface (see below for nested schema)
+            is_remote: (Boolean) Connection property derived from access point locations
+            key: (String) Additional information key
+            link_protocol: (Block Set) Connection link protocol (see below for nested schema)
+            location: (Block Set) Access point location (see below for nested schema)
+            metro_code: (String) Access point metro code
+            metro_name: (String) Access point metro name
+            name: (String) Connection name. An alpha-numeric 24 characters string which can include only hyphens and underscores
+            notifications: '(Block List, Min: 1) Preferences for notifications on connection configuration or status changes (see below for nested schema)'
+            operation: (Set of Object) Connection type-specific operational data (see below for nested schema)
+            order: (Block Set) Order related to this connection information (see below for nested schema)
+            order_id: (String) Order Identification
+            order_number: (String) Order Reference Number
+            org_id: (Number)
+            organization_name: (String)
+            peering_type: (String) Peering Type- PRIVATE,MICROSOFT,PUBLIC, MANUAL
+            port: (Block Set) Port access point information (see below for nested schema)
+            priority: (String)
+            profile: (Block Set) Service Profile (see below for nested schema)
+            project: (Block Set) Project information (see below for nested schema)
+            project_id: (String) Project Id
+            property: (String)
+            provider_connection_id: (String) Provider assigned Connection Id
+            provider_status: (String)
+            purchase_order_number: (String) Purchase order number
+            read: (String)
+            reason: (String)
+            redundancy: (Block Set) Redundancy Information (see below for nested schema)
+            region: (String) Access point region
+            routing_protocols: (Block List) Access point routing protocols configuration (see below for nested schema)
+            seller_region: (String) Access point seller region
+            send_interval: (String) Send interval
+            service_token: (Block Set) For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets (see below for nested schema)
+            state: (String) Connection overall state
+            timeouts: (Block, Optional) (see below for nested schema)
+            type: (String) Defines the connection type like VG_VC, EVPL_VC, EPL_VC, EC_VC, GW_VC, ACCESS_EPL_VC
+            update: (String)
+            updated_by: (String)
+            updated_by_email: (String)
+            updated_by_full_name: (String)
+            updated_date_time: (String)
+            uuid: (String) Equinix-assigned virtual gateway identifier
+            value: (String) Additional information value
+            virtual_device: (Block Set) Virtual device (see below for nested schema)
+            vlan_c_tag: (Number) Vlan Customer Tag information, vlanCTag value specified for QINQ connections
+            vlan_s_tag: (Number) Vlan Provider Tag information, vlanSTag value specified for QINQ connections
+            vlan_tag: (Number) Vlan Tag information, vlanTag value specified for DOT1Q connections
+            z_side: '(Block Set, Min: 1) Destination or Provider side connection configuration object of the multi-segment connection (see below for nested schema)'
+        importStatements: []
+    equinix_fabric_service_profile Resource - terraform-provider-equinix:
+        subCategory: Fabric
+        description: Fabric V4 API compatible resource allows creation and management of Equinix Fabric Service Profile ~> Note Equinix Fabric v4 resources and datasources are currently in Beta. The interfaces related to equinix_fabric_ resources and datasources may change ahead of general availability. Please, do not hesitate to report any problems that you experience by opening a new issue https://github.com/equinix/terraform-provider-equinix/issues/new?template=bug.md
+        name: equinix_fabric_service_profile Resource - terraform-provider-equinix
+        title: equinix_fabric_service_profile Resource - terraform-provider-equinix
+        argumentDocs:
+            access_point_type_configs: (Block List) Access point config information (see below for nested schema)
+            account: (Block Set) Account (see below for nested schema)
+            account_name: (String) Account Name
+            account_number: (Number) Account Number
+            allow_bandwidth_auto_approval: (Boolean) Setting to enable or disable the ability of the buyer to change connection bandwidth without approval of the seller
+            allow_bandwidth_upgrade: (Boolean) Availability of a bandwidth upgrade. The default is false
+            allow_custom_bandwidth: (Boolean) Setting to enable or disable the ability of the buyer to customize the bandwidth
+            allow_over_subscription: (Boolean) Setting showing that oversubscription support is available (true) or not (false). The default is false
+            allow_remote_connections: (Boolean) Setting to allow or prohibit remote connections to the service profile
+            allowed_emails: (List of String) Array of contact emails
+            api_available: (Boolean) Setting indicating whether the API is available (true) or not (false)
+            api_config: (Block Set) Api configuration details (see below for nested schema)
+            authentication_key: (Block Set) Authentication key details (see below for nested schema)
+            bandwidth_alert_threshold: (Number) Percentage of port bandwidth at which an allocation alert is generated
+            bandwidth_from_api: (Boolean) Bandwidth from api
+            capture_in_email: (Boolean) Required field
+            change_log: (Set of Object) Captures connection lifecycle change information (see below for nested schema)
+            code: (String) Metro Code - Example SV
+            connection_label: (String) Custom name for Connection
+            connection_redundancy_required: (Boolean) Mandate redundant connections
+            create: (String)
+            created_by: (String)
+            created_by_email: (String)
+            created_by_full_name: (String)
+            created_date_time: (String)
+            cross_connect_id: (String) Cross Connect Id
+            custom_fields: (Block List) Custom Fields (see below for nested schema)
+            data_type: (String) Data type
+            delete: (String)
+            deleted_by: (String)
+            deleted_by_email: (String)
+            deleted_by_full_name: (String)
+            deleted_date_time: (String)
+            description: (String) User-provided service description
+            display_name: (String) Display Name
+            emails: (List of String) Array of contact emails
+            enable_auto_generate_service_key: (Boolean) Enable auto generate service key
+            encapsulation: (String) Port Encapsulation
+            encapsulation_strategy: (String) Encapsulation strategy
+            equinix_managed_port: (Boolean) Setting indicating that the port is managed by Equinix (true) or not (false)
+            equinix_managed_vlan: (Boolean) Setting indicating that the VLAN is managed by Equinix (true) or not (false)
+            global_cust_id: (String) Global Customer organization identifier
+            global_org_id: (String) Global organization identifier
+            global_organization_name: (String) Global organization name
+            href: (String) Service Profile URI response attribute
+            ibx: (String) IBX Code
+            ibxs: (List of String) IBX- Equinix International Business Exchange list
+            id: (String) The ID of this resource.
+            in_trail: (Boolean) In Trail
+            integration_id: (String) Integration id
+            interface_uuid: (String) Device Interface Uuid
+            label: (String) Label
+            link_protocol_config: (Block Set) Link protocol configuration details (see below for nested schema)
+            location: (Block Set) Colo/Port Location (see below for nested schema)
+            logo: (String) Logo
+            marketing_info: (Block Set) Marketing Info (see below for nested schema)
+            metro_code: (String) Access point metro code
+            metro_name: (String) Access point metro name
+            metros: (Block List) Access point config information (see below for nested schema)
+            name: (String) Customer-assigned service profile name
+            notifications: (Block List) Preferences for notifications on connection configuration or status changes (see below for nested schema)
+            options: (List of String) Options
+            org_id: (Number) Customer organization identifier
+            organization_name: (String) Customer organization name
+            over_subscription_limit: (Number) A cap on over subscription
+            ports: (Block List) Ports (see below for nested schema)
+            process_step: (Block List) Process Step (see below for nested schema)
+            project: (Block Set) Project information (see below for nested schema)
+            project_id: (String) Project Id
+            promotion: (Boolean) Promotion
+            read: (String)
+            region: (String) Access point region
+            required: (Boolean) Required
+            reuse_vlan_s_tag: (Boolean) Reuse vlan sTag
+            self_profile: (Boolean) Self Profile
+            seller_region: (String) Seller Region
+            seller_region_description: (String) Seller Region details
+            seller_regions: (Map of String) Seller Regions
+            send_interval: (String) Send interval
+            state: (String) Service profile state - ACTIVE, PENDING_APPROVAL, DELETED, REJECTED
+            sub_title: (String) Sub Title
+            supported_bandwidths: (List of Number) Supported bandwidths
+            tags: (List of String) Tags attached to the connection
+            timeouts: (Block, Optional) (see below for nested schema)
+            title: (String) Title
+            type: (String) Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+            ucm_id: (String) Enterprise datastore id
+            update: (String)
+            updated_by: (String)
+            updated_by_email: (String)
+            updated_by_full_name: (String)
+            updated_date_time: (String)
+            uuid: (String) Equinix assigned service profile identifier
+            virtual_devices: (Block List) Virtual Devices (see below for nested schema)
+            visibility: (String) Service profile visibility - PUBLIC, PRIVATE
+        importStatements: []
+    equinix_metal_connection:
+        subCategory: Metal
+        name: equinix_metal_connection
+        title: ""
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "metro": "sv",
+                  "name": "tf-metal-to-azure",
+                  "project_id": "${local.project_id}",
+                  "redundancy": "redundant",
+                  "service_token_type": "a_side",
+                  "speed": "1000Mbps",
+                  "type": "shared"
+                }
+              references:
+                project_id: local.project_id
+              dependencies:
+                equinix_ecx_l2_connection.example: |-
+                    {
+                      "authorization_key": "${azurerm_express_route_circuit.example.service_key}",
+                      "name": "tf-metal-to-azure",
+                      "named_tag": "PRIVATE",
+                      "notifications": [
+                        "example@equinix.com"
+                      ],
+                      "profile_uuid": "${data.equinix_ecx_l2_sellerprofile.example.uuid}",
+                      "secondary_connection": [
+                        {
+                          "name": "tf-metal-to-azure-sec",
+                          "service_token": "${equinix_metal_connection.example.service_tokens.1.id}"
+                        }
+                      ],
+                      "seller_metro_code": "AM",
+                      "service_token": "${equinix_metal_connection.example.service_tokens.0.id}",
+                      "speed": "${azurerm_express_route_circuit.example.bandwidth_in_mbps}",
+                      "speed_unit": "MB"
+                    }
+            - name: example
+              manifest: |-
+                {
+                  "metro": "FR",
+                  "name": "tf-port-to-metal",
+                  "project_id": "${local.project_id}",
+                  "redundancy": "primary",
+                  "service_token_type": "z_side",
+                  "speed": "200Mbps",
+                  "type": "shared"
+                }
+              references:
+                project_id: local.project_id
+              dependencies:
+                equinix_ecx_l2_connection.example: |-
+                    {
+                      "name": "tf-port-to-metal",
+                      "notifications": [
+                        "example@equinix.com"
+                      ],
+                      "port_uuid": "${data.equinix_ecx_port.example.id}",
+                      "speed": "200",
+                      "speed_unit": "MB",
+                      "vlan_stag": 1020,
+                      "zside_service_token": "${equinix_metal_connection.example.service_tokens.0.id}"
+                    }
+            - name: example
+              manifest: |-
+                {
+                  "metro": "SV",
+                  "name": "tf-port-to-metal-legacy",
+                  "project_id": "${local.my_project_id}",
+                  "redundancy": "redundant",
+                  "type": "shared"
+                }
+              references:
+                project_id: local.my_project_id
+              dependencies:
+                equinix_ecx_l2_connection.example: |-
+                    {
+                      "authorization_key": "${equinix_metal_connection.example.token}",
+                      "name": "tf-port-to-metal-legacy",
+                      "notifications": [
+                        "example@equinix.com"
+                      ],
+                      "port_uuid": "${data.equinix_ecx_port.example.id}",
+                      "speed": "200",
+                      "speed_unit": "MB",
+                      "vlan_stag": 1020
+                    }
+        argumentDocs:
+            description: '- (Optional) Description for the connection resource.'
+            facility: '- (Optional) Facility where the connection will be created.'
+            metro: '- (Optional) Metro where the connection will be created.'
+            mode: '- (Optional) Mode for connections in IBX facilities with the dedicated type - standard or tunnel. Default is standard.'
+            name: '- (Required) Name of the connection resource'
+            organization_id: '- ID of the organization where the connection is scoped to.'
+            ports: |-
+                - List of connection ports - primary (ports[0]) and secondary (ports[1]). Schema of
+                port is described in documentation of the
+                equinix_metal_connection datasource.
+            project_id: '- (Optional) ID of the project where the connection is scoped to, must be set for.'
+            redundancy: '- (Required) Connection redundancy - redundant or primary.'
+            service_token_type: '- (Optional) Only used with shared connection. Type of service token to use for the connection, a_side or z_side. (NOTE: To support the legacy non-automated way to create connections, terraform will not check if )'
+            service_tokens: '- List of connection service tokens with attributes required to configure the connection in Equinix Fabric with the equinix_ecx_l2_connection resource or from the Equinix Fabric Portal. Scehma of service_token is described in documentation of the equinix_metal_connection datasource.'
+            speed: '- (Required) Connection speed - one of 50Mbps, 200Mbps, 500Mbps, 1Gbps, 2Gbps, 5Gbps, 10Gbps.'
+            status: '- Status of the connection resource.'
+            tags: '- (Optional) String list of tags.'
+            token: '- (Deprecated) Fabric Token required to configure the connection in Equinix Fabric with the equinix_ecx_l2_connection resource or from the Equinix Fabric Portal. If your organization already has connection service tokens enabled, use service_tokens instead.'
+            type: '- (Required) Connection type - dedicated or shared.'
+            vlans: '- (Optional) Only used with shared connection. Vlans to attach. Pass one vlan for Primary/Single connection and two vlans for Redundant connection.'
+        importStatements: []
+    equinix_metal_device:
+        subCategory: Metal
+        name: equinix_metal_device
+        title: ""
+        examples:
+            - name: web1
+              manifest: |-
+                {
+                  "billing_cycle": "hourly",
+                  "hostname": "tf.coreos2",
+                  "metro": "sv",
+                  "operating_system": "ubuntu_20_04",
+                  "plan": "c3.small.x86",
+                  "project_id": "${local.project_id}"
+                }
+              references:
+                project_id: local.project_id
+            - name: pxe1
+              manifest: |-
+                {
+                  "always_pxe": "false",
+                  "billing_cycle": "hourly",
+                  "hostname": "tf.coreos2-pxe",
+                  "ipxe_script_url": "https://rawgit.com/cloudnativelabs/pxe/master/metal/coreos-stable-metal.ipxe",
+                  "metro": "sv",
+                  "operating_system": "custom_ipxe",
+                  "plan": "c3.small.x86",
+                  "project_id": "${local.project_id}",
+                  "user_data": "${data.ignition_config.example.rendered}"
+                }
+              references:
+                project_id: local.project_id
+                user_data: data.ignition_config.example.rendered
+            - name: web1
+              manifest: |-
+                {
+                  "billing_cycle": "hourly",
+                  "facilities": [
+                    "ny5"
+                  ],
+                  "hostname": "tf.coreos2",
+                  "ip_address": [
+                    {
+                      "cidr": 30,
+                      "type": "private_ipv4"
+                    }
+                  ],
+                  "operating_system": "ubuntu_20_04",
+                  "plan": "c3.small.x86",
+                  "project_id": "${local.project_id}"
+                }
+              references:
+                project_id: local.project_id
+            - name: web1
+              manifest: |-
+                {
+                  "billing_cycle": "hourly",
+                  "facilities": [
+                    "ny5"
+                  ],
+                  "hardware_reservation_id": "next-available",
+                  "hostname": "tftest",
+                  "operating_system": "ubuntu_20_04",
+                  "plan": "c3.small.x86",
+                  "project_id": "${local.project_id}",
+                  "storage": "{\n  \"disks\": [\n    {\n      \"device\": \"/dev/sda\",\n      \"wipeTable\": true,\n      \"partitions\": [\n        {\n          \"label\": \"BIOS\",\n          \"number\": 1,\n          \"size\": \"4096\"\n        },\n        {\n          \"label\": \"SWAP\",\n          \"number\": 2,\n          \"size\": \"3993600\"\n        },\n        {\n          \"label\": \"ROOT\",\n          \"number\": 3,\n          \"size\": \"0\"\n        }\n      ]\n    }\n  ],\n  \"filesystems\": [\n    {\n      \"mount\": {\n        \"device\": \"/dev/sda3\",\n        \"format\": \"ext4\",\n        \"point\": \"/\",\n        \"create\": {\n          \"options\": [\n            \"-L\",\n            \"ROOT\"\n          ]\n        }\n      }\n    },\n    {\n      \"mount\": {\n        \"device\": \"/dev/sda2\",\n        \"format\": \"swap\",\n        \"point\": \"none\",\n        \"create\": {\n          \"options\": [\n            \"-L\",\n            \"SWAP\"\n          ]\n        }\n      }\n    }\n  ]\n}\n"
+                }
+              references:
+                project_id: local.project_id
+        argumentDocs:
+            access_private_ipv4: '- The ipv4 private IP assigned to the device.'
+            access_public_ipv4: '- The ipv4 maintenance IP assigned to the device.'
+            access_public_ipv6: '- The ipv6 maintenance IP assigned to the device.'
+            address: '- IPv4 or IPv6 address string.'
+            always_pxe: |-
+                - (Optional) If true, a device with OS custom_ipxe will continue to boot via iPXE
+                on reboots.
+            billing_cycle: '- (Optional) monthly or hourly'
+            bonded: '- Whether this port is part of a bond in bonded network setup.'
+            cidr: '- Bit length of the network mask of the address.'
+            created: '- The timestamp for when the device was created.'
+            custom_data: '- (Optional) A string of the desired Custom Data for the device.'
+            deployed_facility: '- The facility where the device is deployed.'
+            deployed_hardware_reservation_id: |-
+                - ID of hardware reservation where this device was deployed.
+                It is useful when using the next-available hardware reservation.
+            description: '- (Optional) The device description.'
+            equinix_metal_device.name.network.0: .
+            equinix_metal_device.name.network.1: .
+            equinix_metal_device.name.network.2: .
+            facilities: |-
+                - (Optional) List of facility codes with deployment preferences. Equinix Metal API will go
+                through the list and will deploy your device to first facility with free capacity. List items must
+                be facility codes or any (a wildcard). To find the facility code, visit
+                Facilities API docs, set your API auth
+                token in the top of the page and see JSON from the API response. Conflicts with metro.
+            family: '- IP version. One of 4, 6.'
+            force_detach_volumes: |-
+                - (Optional) Delete device even if it has volumes attached. Only applies
+                for destroy action.
+            gateway: '- Address of router.'
+            hardware_reservation_id: |-
+                - (Optional) The UUID of the hardware reservation where you want this
+                device deployed, or next-available if you want to pick your next available reservation
+                automatically. Changing this from a reservation UUID to next-available will re-create the device
+                in another reservation. Please be careful when using hardware reservation UUID and next-available
+                together for the same pool of reservations. It might happen that the reservation which Equinix
+                Metal API will pick as next-available is the reservation which you refer with UUID in another
+                equinix_metal_device resource. If that happens, and the equinix_metal_device with the UUID is
+                created later, resource creation will fail because the reservation is already in use (by the
+                resource created with next-available). To workaround this, have the next-available resource
+                explicitly depend_on
+                the resource with hardware reservation UUID, so that the latter is created first. For more details,
+                see issue #176.
+            hostname: |-
+                - (Optional) The device hostname used in deployments taking advantage of Layer3 DHCP
+                or metadata service configuration.
+            id: '- The ID of the device.'
+            ip_address: |-
+                - (Optional) A list of IP address types for the device. See
+                IP address below for more details.
+            ip_address.cidr: '- (Optional) CIDR suffix for IP address block to be assigned, i.e. amount of addresses.'
+            ip_address.reservation_ids: |-
+                - (Optional) List of UUIDs of IP block reservations
+                from which the public IPv4 address should be taken.
+            ip_address.type: '- (Required) One of private_ipv4, public_ipv4, public_ipv6.'
+            ipxe_script_url: |-
+                - (Optional) URL pointing to a hosted iPXE script. More information is in the
+                Custom iPXE doc.
+            locked: '- Whether the device is locked.'
+            mac: '- MAC address assigned to the port.'
+            metro: '- (Optional) Metro area for the new device. Conflicts with facilities.'
+            name: '- Name of the port (e.g. eth0, or bond0).'
+            network: |-
+                - The device's private and public IP (v4 and v6) network details. See
+                Network Attribute below for more details.
+            network_type: |-
+                - (Deprecated) Network type of a device, used in
+                Layer 2 networking. Since this
+                attribute is deprecated you should handle Network Type with one of
+                equinix_metal_port,
+                equinix_metal_device_network_type resources or
+                equinix_metal_port datasource.
+                See network_types guide for more info.
+            operating_system: |-
+                - (Required) The operating system slug. To find the slug, or visit
+                Operating Systems API docs, set your
+                API auth token in the top of the page and see JSON from the API response.
+            plan: |-
+                - (Required) The device plan slug. To find the plan slug, visit
+                Device plans API docs, set your auth token in the
+                top of the page and see JSON from the API response.
+            ports: |-
+                - List of ports assigned to the device. See Ports Attribute below for
+                more details.
+            project_id: '- (Required) The ID of the project in which to create the device'
+            project_ssh_key_ids: |-
+                - (Optional) Array of IDs of the project SSH keys which should be added to the device.
+                If you omit this, SSH keys of all the members of the parent project will be added to the device. If
+                you specify this array, only the listed project SSH keys will be added. Project SSH keys can be
+                created with the equinix_metal_project_ssh_key resource.
+            public: '- Whether the address is routable from the Internet.'
+            reinstall: |-
+                - (Optional) Whether the device should be reinstalled instead of destroyed when
+                modifying user_data, custom_data, or operating system. See Reinstall below for more
+                details.
+            reinstall.deprovision_fast: |-
+                - (Optional) Whether the OS disk should be filled with 00h bytes before reinstall.
+                Defaults to false.
+            reinstall.enabled: |-
+                - (Optional) Whether the provider should favour reinstall over destroy and create. Defaults to
+                false.
+            reinstall.preserve_data: |-
+                - (Optional) Whether the non-OS disks should be kept or wiped during reinstall.
+                Defaults to false.
+            root_password: '- Root password to the server (disabled after 24 hours).'
+            ssh_key_ids: '- List of IDs of SSH keys deployed in the device, can be both user and project SSH keys.'
+            state: '- The status of the device.'
+            storage: |-
+                - (Optional) JSON for custom partitioning. Only usable on reserved hardware. More
+                information in in the
+                Custom Partitioning and RAID
+                doc. Please note that the disks.partitions.size attribute must be a string, not an integer. It can
+                be a number string, or size notation string, e.g. "4G" or "8M" (for gigabytes and megabytes).
+            tags: '- (Optional) Tags attached to the device.'
+            termination_time: |-
+                - (Optional) Timestamp for device termination. For example 2021-09-03T16:32:00+03:00.
+                If you don't supply timezone info, timestamp is assumed to be in UTC.
+            timeouts.create: '- (Defaults to 20 mins) Used when creating the Device. This includes the time to provision the OS.'
+            timeouts.delete: '- (Defaults to 20 mins) Used when deleting the Device. This includes the time to deprovision a hardware reservation when wait_for_reservation_deprovision is enabled.'
+            timeouts.update: '- (Defaults to 20 mins) Used when updating the Device. This includes the time needed to reprovision instances when reinstall arguments are used.'
+            type: '- Type of the port (e.g. NetworkPort or NetworkBondPort).'
+            updated: '- The timestamp for the last time the device was updated.'
+            user_data: '- (Optional) A string of the desired User Data for the device.'
+            user_ssh_key_ids: '- (Optional) Array of IDs of the user SSH keys which should be added to the device. If you omit this, SSH keys of all the members of the parent project will be added to the device. If you specify this array, only the listed user SSH keys (and any project_ssh_key_ids) will be added. User SSH keys can be created with the equinix_metal_ssh_key resource'
+            wait_for_reservation_deprovision: |-
+                - (Optional) Only used for devices in reserved hardware. If
+                set, the deletion of this device will block until the hardware reservation is marked provisionable
+                (about 4 minutes in August 2019).
+        importStatements: []
+    equinix_metal_organization:
+        subCategory: Metal
+        name: equinix_metal_organization
+        title: ""
+        examples:
+            - name: tf_organization_1
+              manifest: |-
+                {
+                  "description": "quux",
+                  "name": "foobar"
+                }
+        argumentDocs:
+            address: |-
+                - (Required) An object that has the address information. See Address
+                below for more details.
+            address.address: '- (Required) Postal address.'
+            address.city: '- (Required) City name.'
+            address.country: '- (Required) Two letter country code (ISO 3166-1 alpha-2), e.g. US.'
+            address.state: '- (Optional) State name.'
+            address.zip_code: '- (Required) Zip Code.'
+            created: '- The timestamp for when the organization was created.'
+            description: '- (Optional) Description string.'
+            id: '- The unique ID of the organization.'
+            logo: '- (Optional) Logo URL.'
+            name: '- (Required) The name of the Organization.'
+            twitter: '- (Optional) Twitter handle.'
+            updated: '- The timestamp for the last time the organization was updated.'
+            website: '- (Optional) Website link.'
+        importStatements: []
+    equinix_metal_organization_member:
+        subCategory: Metal
+        name: equinix_metal_organization_member
+        title: ""
+        examples:
+            - name: member
+              manifest: |-
+                {
+                  "invitee": "member@example.com",
+                  "organization_id": "${var.organization_id}",
+                  "projects_ids": [
+                    "${var.project_id}"
+                  ],
+                  "roles": [
+                    "limited_collaborator"
+                  ]
+                }
+              references:
+                organization_id: var.organization_id
+            - name: owner
+              manifest: |-
+                {
+                  "invitee": "admin@example.com",
+                  "organization_id": "${var.organization_id}",
+                  "projects_ids": [],
+                  "roles": [
+                    "owner"
+                  ]
+                }
+              references:
+                organization_id: var.organization_id
+        argumentDocs:
+            created: '- When the invitation was created (only known in the invitation stage)'
+            id: '- The unique ID of the membership.'
+            invited_by: '- The user_id of the user that sent the invitation (only known in the invitation stage)'
+            invitee: '- (Required) The email address of the user to invite'
+            message: '- A message to include in the emailed invitation.'
+            nonce: '- The nonce for the invitation (only known in the invitation stage)'
+            organization_id: '- (Required) The organization to invite the user to'
+            projects_ids: '- (Required) Project IDs the member has access to within the organization. If the member is an ''admin'', the projects list should be empty.'
+            roles: '- (Required) Organization roles (admin, collaborator, limited_collaborator, billing)'
+            state: '- The state of the membership (''invited'' when an invitation is open, ''active'' when the user is an organization member)'
+            updated: '- When the invitation was updated (only known in the invitation stage)'
+        importStatements: []
+    equinix_metal_project:
+        subCategory: Metal
+        name: equinix_metal_project
+        title: ""
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "name": "example"
+                }
+              dependencies:
+                equinix_metal_vrf.example: |-
+                    {
+                      "description": "VRF with ASN 65000 and a pool of address space that includes 192.168.100.0/25",
+                      "ip_ranges": [
+                        "192.168.100.0/25",
+                        "192.168.200.0/25"
+                      ],
+                      "local_asn": "65000",
+                      "metro": "da",
+                      "name": "example-vrf",
+                      "project_id": "${equinix_metal_project.example.id}"
+                    }
+        argumentDocs:
+            description: '- (Optional) Description of the VRF.'
+            ip_ranges: '- (Optional) All IPv4 and IPv6 Ranges that will be available to BGP Peers. IPv4 addresses must be /8 or smaller with a minimum size of /29. IPv6 must be /56 or smaller with a minimum size of /64. Ranges must not overlap other ranges within the VRF.'
+            local_asn: '- (Optional) The 4-byte ASN set on the VRF.'
+            metro: '- (Required) Metro ID or Code where the VRF will be deployed.'
+            name: '- (Required) User-supplied name of the VRF, unique to the project'
+            project_id: '- (Required) Project ID where the VRF will be deployed.'
+        importStatements: []
+    equinix_metal_project_api_key:
+        subCategory: Metal
+        name: equinix_metal_project_api_key
+        title: ""
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "description": "Read-only key scoped to a projct",
+                  "project_id": "${local.existing_project_id}",
+                  "read_only": true
+                }
+              references:
+                project_id: local.existing_project_id
+        argumentDocs:
+            description: '- (Required) Description string for the Project API Key resource.'
+            project_id: '- (Required) UUID of the project where the API key is scoped to.'
+            read-only: '- (Optional) Flag indicating whether the API key shoud be read-only.'
+            token: '- API token which can be used in Equinix Metal API clients'
+        importStatements: []
+    equinix_metal_project_ssh_key:
+        subCategory: Metal
+        name: equinix_metal_project_ssh_key
+        title: ""
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "name": "test",
+                  "project_id": "${local.project_id}",
+                  "public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDM/unxJeFqxsTJcu6mhqsMHSaVlpu+Jj/P+44zrm6X/MAoHSX3X9oLgujEjjZ74yLfdfe0bJrbL2YgJzNaEkIQQ1VPMHB5EhTKUBGnzlPP0hHTnxsjAm9qDHgUPgvgFDQSAMzdJRJ0Cexo16Ph9VxCoLh3dxiE7s2gaM2FdVg7P8aSxKypsxAhYV3D0AwqzoOyT6WWhBoQ0xZ85XevOTnJCpImSemEGs6nVGEsWcEc1d1YvdxFjAK4SdsKUMkj4Dsy/leKsdi/DEAf356vbMT1UHsXXvy5TlHu/Pa6qF53v32Enz+nhKy7/8W2Yt2yWx8HnQcT2rug9lvCXagJO6oauqRTO77C4QZn13ZLMZgLT66S/tNh2EX0gi6vmIs5dth8uF+K6nxIyKJXbcA4ASg7F1OJrHKFZdTc5v1cPeq6PcbqGgc+8SrPYQmzvQqLoMBuxyos2hUkYOmw3aeWJj9nFa8Wu5WaN89mUeOqSkU4S5cgUzWUOmKey56B/j/s1sVys9rMhZapVs0wL4L9GBBM48N5jAQZnnpo85A8KsZq5ME22bTLqnxsDXqDYZvS7PSI6Dxi7eleOFE/NYYDkrgDLHTQri8ucDMVeVWHgoMY2bPXdn7KKy5jW5jKsf8EPARXg77A4gRYmgKrcwIKqJEUPqyxJBe0CPoGTqgXPRsUiQ== tomk@hp2"
+                }
+              references:
+                project_id: local.project_id
+              dependencies:
+                equinix_metal_device.test: |-
+                    {
+                      "billing_cycle": "hourly",
+                      "facilities": [
+                        "ny5"
+                      ],
+                      "hostname": "test",
+                      "operating_system": "ubuntu_20_04",
+                      "plan": "c3.medium.x86",
+                      "project_id": "${local.project_id}",
+                      "project_ssh_key_ids": [
+                        "${equinix_metal_project_ssh_key.test.id}"
+                      ]
+                    }
+        argumentDocs:
+            created: '- The timestamp for when the SSH key was created.'
+            fingerprint: '- The fingerprint of the SSH key.'
+            id: '- The unique ID of the key.'
+            name: '- (Required) The name of the SSH key for identification.'
+            owner_id: '- The ID of parent project (same as project_id).'
+            project_id: '- (Required) The ID of parent project.'
+            public_key: '- (Required) The public key. If this is a file, it can be read using the file interpolation function.'
+            updated: '- The timestamp for the last time the SSH key was updated.'
+        importStatements: []
+    equinix_metal_reserved_ip_block:
+        subCategory: Metal
+        name: equinix_metal_reserved_ip_block
+        title: ""
+        examples:
+            - name: two_elastic_addresses
+              manifest: |-
+                {
+                  "facility": "sv15",
+                  "project_id": "${local.project_id}",
+                  "quantity": 2
+                }
+              references:
+                project_id: local.project_id
+            - name: test
+              manifest: |-
+                {
+                  "metro": "sv",
+                  "project_id": "${local.project_id}",
+                  "quantity": 1,
+                  "type": "public_ipv4"
+                }
+              references:
+                project_id: local.project_id
+            - name: test
+              manifest: |-
+                {
+                  "project_id": "${local.project_id}",
+                  "quantity": 1,
+                  "type": "global_ipv4"
+                }
+              references:
+                project_id: local.project_id
+            - name: example
+              manifest: |-
+                {
+                  "facility": "sv15",
+                  "project_id": "${local.project_id}",
+                  "quantity": 2
+                }
+              references:
+                project_id: local.project_id
+              dependencies:
+                equinix_metal_device.nodes: |-
+                    {
+                      "billing_cycle": "hourly",
+                      "facilities": [
+                        "sv15"
+                      ],
+                      "hostname": "test",
+                      "ip_address": [
+                        {
+                          "cidr": 31,
+                          "reservation_ids": [
+                            "${equinix_metal_reserved_ip_block.example.id}"
+                          ],
+                          "type": "public_ipv4"
+                        },
+                        {
+                          "type": "private_ipv4"
+                        }
+                      ],
+                      "operating_system": "ubuntu_20_04",
+                      "plan": "c3.small.x86",
+                      "project_id": "${local.project_id}"
+                    }
+        argumentDocs:
+            address_family: '- Address family as integer. One of 4 or 6.'
+            cidr: '- (Optional) Only valid as an argument and required when type is vrf. The size of the network to reserve from an existing VRF ip_range. cidr can only be specified with vrf_id. Range is 22-31. Virtual Circuits require 30-31. Other VRF resources must use a CIDR in the 22-29 range.'
+            cidr_notation: '- Address and mask in CIDR notation, e.g. 147.229.15.30/31.'
+            custom_data: '- (Optional) Custom Data is an arbitrary object (submitted in Terraform as serialized JSON) to assign to the IP Reservation. This may be helpful for self-managed IPAM. The object must be valid JSON.'
+            description: '- (Optional) Arbitrary description.'
+            facility: |-
+                - (Optional) Facility where to allocate the public IP address block, makes sense only
+                if type is public_ipv4 and must be empty if type is global_ipv4. Conflicts with metro.
+            global: |-
+                - Boolean flag whether addresses from a block are global (i.e. can be assigned in any
+                facility).
+            id: '- The unique ID of the block.'
+            metro: |-
+                - (Optional) Metro where to allocate the public IP address block, makes sense only
+                if type is public_ipv4 and must be empty if type is global_ipv4. Conflicts with facility.
+            netmask: '- Mask in decimal notation, e.g. 255.255.255.0.'
+            network: '- (Optional) Only valid as an argument and required when type is vrf. An unreserved network address from an existing ip_range in the specified VRF.'
+            project_id: '- (Required) The metal project ID where to allocate the address block.'
+            public: '- Boolean flag whether addresses from a block are public.'
+            quantity: '- (Optional) The number of allocated /32 addresses, a power of 2. Required when type is not vrf.'
+            tags: '- (Optional) String list of tags.'
+            type: |-
+                - (Optional) One of global_ipv4, public_ipv4, or vrf. Defaults to public_ipv4 for backward
+                compatibility.
+            vrf_id: '- (Optional) Only valid and required when type is vrf. VRF ID for type=vrf reservations.'
+            wait_for_state: '- (Optional) Wait for the IP reservation block to reach a desired state on resource creation. One of: pending, created. The created state is default and recommended if the addresses are needed within the configuration. An error will be returned if a timeout or the denied state is encountered.'
+        importStatements: []
+    equinix_metal_spot_market_request:
+        subCategory: Metal
+        name: equinix_metal_spot_market_request
+        title: ""
+        examples:
+            - name: req
+              manifest: |-
+                {
+                  "devices_max": 1,
+                  "devices_min": 1,
+                  "facilities": [
+                    "ny5"
+                  ],
+                  "instance_parameters": [
+                    {
+                      "billing_cycle": "hourly",
+                      "hostname": "testspot",
+                      "operating_system": "ubuntu_20_04",
+                      "plan": "c3.small.x86"
+                    }
+                  ],
+                  "max_bid_price": 0.03,
+                  "project_id": "${local.project_id}"
+                }
+              references:
+                project_id: local.project_id
+        argumentDocs:
+            devices_max: '- (Required) Maximum number devices to be created.'
+            devices_min: '- (Required) Miniumum number devices to be created.'
+            facilities: '- (Optional) Facility IDs where devices should be created.'
+            id: '- The ID of the Spot Market Request.'
+            instance_parameters: |-
+                - (Required) Key/Value pairs of parameters for devices provisioned from
+                this request. Valid keys are: billing_cycle, plan, operating_system, hostname,
+                termintation_time, always_pxe, description, features, locked, project_ssh_keys,
+                user_ssh_keys, userdata, customdata, ipxe_script_url, tags. You can find each parameter
+                description in equinix_metal_device docs.
+            locked: '- (Optional) Blocks deletion of the SpotMarketRequest device until the lock is disabled.'
+            max_bid_price: '- (Required) Maximum price user is willing to pay per hour per device.'
+            metro: '- (Optional) Metro where devices should be created.'
+            project_id: '- (Required) Project ID.'
+            timeouts.create: |-
+                - (Defaults to 60 mins) Used when creating the Spot Market Request and wait_for_devices
+                is set to true.
+            timeouts.delete: |-
+                - (Defaults to 60 mins) Used when destroying the Spot Market Request and wait_for_devices
+                is set to true.
+            wait_for_devices: |-
+                - (Optional) On resource creation wait until all desired devices are active.
+                On resource destruction wait until devices are removed.
+        importStatements: []
+    equinix_metal_ssh_key:
+        subCategory: Metal
+        name: equinix_metal_ssh_key
+        title: ""
+        examples:
+            - name: key1
+              manifest: |-
+                {
+                  "name": "terraform-1",
+                  "public_key": "${file(\"/home/terraform/.ssh/id_rsa.pub\")}"
+                }
+              dependencies:
+                equinix_metal_device.test: |-
+                    {
+                      "billing_cycle": "hourly",
+                      "depends_on": [
+                        "equinix_metal_ssh_key.key1"
+                      ],
+                      "hostname": "test-device",
+                      "metro": "sv",
+                      "operating_system": "ubuntu_20_04",
+                      "plan": "c3.small.x86",
+                      "project_id": "${local.project_id}"
+                    }
+        argumentDocs:
+            created: '- The timestamp for when the SSH key was created.'
+            fingerprint: '- The fingerprint of the SSH key.'
+            id: '- The unique ID of the key.'
+            name: '- (Required) The name of the SSH key for identification'
+            owner_id: '- The UUID of the Equinix Metal API User who owns this key.'
+            public_key: |-
+                - (Required) The public key. If this is a file, it
+                can be read using the file interpolation function
+            updated: '- The timestamp for the last time the SSH key was updated.'
+        importStatements: []
+    equinix_metal_user_api_key:
+        subCategory: Metal
+        name: equinix_metal_user_api_key
+        title: ""
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "description": "Read-only user key",
+                  "read_only": true
+                }
+        argumentDocs:
+            description: '- (Required) Description string for the User API Key resource.'
+            read-only: '- (Required) Flag indicating whether the API key shoud be read-only.'
+            token: '- API token which can be used in Equinix Metal API clients.'
+            user_id: '- UUID of the owner of the API key.'
+        importStatements: []
+    equinix_metal_vlan:
+        subCategory: Metal
+        name: equinix_metal_vlan
+        title: ""
+        examples:
+            - name: vlan1
+              manifest: |-
+                {
+                  "description": "VLAN in New Jersey",
+                  "facility": "sv15",
+                  "project_id": "${local.project_id}"
+                }
+              references:
+                project_id: local.project_id
+            - name: vlan1
+              manifest: |-
+                {
+                  "description": "VLAN in New Jersey",
+                  "metro": "sv",
+                  "project_id": "${local.project_id}",
+                  "vxlan": 1040
+                }
+              references:
+                project_id: local.project_id
+        argumentDocs:
+            description: '- (Optional) Description string.'
+            facility: '- (Required) Facility where to create the VLAN.'
+            id: '- ID of the virtual network.'
+            project_id: '- (Required) ID of parent project.'
+            vxlan: '- (Optional) VLAN ID, must be unique in metro.'
+        importStatements: []
+    equinix_network_acl_template:
+        subCategory: Network Edge
+        name: equinix_network_acl_template
+        title: ""
+        examples:
+            - name: myacl
+              manifest: |-
+                {
+                  "description": "Test ACL template",
+                  "inbound_rule": [
+                    {
+                      "description": "inbound rule description",
+                      "dst_port": "any",
+                      "protocol": "IP",
+                      "src_port": "any",
+                      "subnet": "1.1.1.1/32"
+                    },
+                    {
+                      "dst_port": "53,1045,2041",
+                      "protocol": "UDP",
+                      "src_port": "any",
+                      "subnet": "172.16.25.0/24"
+                    }
+                  ],
+                  "name": "test"
+                }
+        argumentDocs:
+            description: '- (Optional) ACL template description, up to 200 characters.'
+            device_acl_status: |-
+                - Status of ACL template provisioning process, where template was applied.
+                One of PROVISIONING, PROVISIONED.
+            device_details: '- List of the devices where the ACL template is applied.'
+            device_details.acl_status: |-
+                - Device ACL provisioning status where template was applied. One of PROVISIONING,
+                PROVISIONED.
+            device_details.name: '- Device name.'
+            device_details.uuid: '- Device uuid.'
+            device_id: '- (Deprecated) Identifier of a network device where template was applied.'
+            inbound_rule: |-
+                - (Required) One or more rules to specify allowed inbound traffic.
+                Rules are ordered, matching traffic rule stops processing subsequent ones.
+            inbound_rule.description: '- (Optional) Inbound rule description, up to 200 characters.'
+            inbound_rule.dst_port: |-
+                - (Required) Inbound traffic destination ports. Allowed values are a comma separated
+                list of ports, e.g., 20,22,23, port range, e.g., 1023-1040 or word any.
+            inbound_rule.protocol: '- (Required) Inbound traffic protocol. One of IP, TCP, UDP.'
+            inbound_rule.src_port: |-
+                - (Required) Inbound traffic source ports. Allowed values are a comma separated list
+                of ports, e.g., 20,22,23, port range, e.g., 1023-1040 or word any.
+            inbound_rule.subnet: '- (Required) Inbound traffic source IP subnet in CIDR format.'
+            inbound_rule.subnets: '- (Deprecated) Inbound traffic source IP subnets in CIDR format.'
+            metro_code: '- (Deprecated) ACL template location metro code.'
+            name: '- (Required) ACL template name.'
+            uuid: '- Unique identifier of ACL template resource.'
+        importStatements: []
+    equinix_network_bgp:
+        subCategory: Network Edge
+        name: equinix_network_bgp
+        title: ""
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "authentication_key": "secret",
+                  "connection_id": "54014acf-9730-4b55-a791-459283d05fb1",
+                  "local_asn": 12345,
+                  "local_ip_address": "10.1.1.1/30",
+                  "remote_asn": 66123,
+                  "remote_ip_address": "10.1.1.2"
+                }
+        argumentDocs:
+            authentication_key: '- (Optional) shared key used for BGP peer authentication.'
+            connection_id: |-
+                - (Required) identifier of a connection established between.
+                network device and remote service provider that will be used for peering.
+            device_id: |-
+                - unique identifier of a network device that is a local peer in a given BGP peering
+                configuration.
+            local_asn: '- (Required) Local ASN number.'
+            local_ip_address: '- (Required) IP address in CIDR format of a local device.'
+            provisioning_status: |-
+                - BGP peering configuration provisioning status, one of PROVISIONING,
+                PENDING_UPDATE, PROVISIONED, FAILED.
+            remote_asn: '- (Required) Remote ASN number.'
+            remote_ip_address: '- (Required) IP address of remote peer.'
+            state: |-
+                - BGP peer state, one of Idle, Connect, Active, OpenSent, OpenConfirm,
+                Established.
+            uuid: '- BGP peering configuration unique identifier.'
+        importStatements: []
+    equinix_network_device:
+        subCategory: Network Edge
+        name: equinix_network_device
+        title: ""
+        examples:
+            - name: csr1000v-ha
+              manifest: |-
+                {
+                  "account_number": "${data.equinix_network_account.dc.number}",
+                  "core_count": 2,
+                  "hostname": "csr1000v-p",
+                  "metro_code": "${data.equinix_network_account.dc.metro_code}",
+                  "name": "tf-csr1000v-p",
+                  "notifications": [
+                    "john@equinix.com",
+                    "marry@equinix.com",
+                    "fred@equinix.com"
+                  ],
+                  "package_code": "SEC",
+                  "secondary_device": [
+                    {
+                      "account_number": "${data.equinix_network_account.sv.number}",
+                      "hostname": "csr1000v-s",
+                      "metro_code": "${data.equinix_network_account.sv.metro_code}",
+                      "name": "tf-csr1000v-s",
+                      "notifications": [
+                        "john@equinix.com",
+                        "marry@equinix.com"
+                      ]
+                    }
+                  ],
+                  "term_length": 6,
+                  "throughput": 500,
+                  "throughput_unit": "Mbps",
+                  "type_code": "CSR1000V",
+                  "version": "16.09.05"
+                }
+              references:
+                account_number: data.equinix_network_account.dc.number
+                metro_code: data.equinix_network_account.dc.metro_code
+                secondary_device.account_number: data.equinix_network_account.sv.number
+                secondary_device.metro_code: data.equinix_network_account.sv.metro_code
+            - name: panw-cluster
+              manifest: |-
+                {
+                  "account_number": "${data.equinix_network_account.sv.number}",
+                  "acl_template_id": "0bff6e05-f0e7-44cd-804a-25b92b835f8b",
+                  "byol": true,
+                  "cluster_details": [
+                    {
+                      "cluster_name": "tf-panw-cluster",
+                      "node0": [
+                        {
+                          "license_token": "licenseToken",
+                          "vendor_configuration": [
+                            {
+                              "hostname": "panw-node0"
+                            }
+                          ]
+                        }
+                      ],
+                      "node1": [
+                        {
+                          "license_token": "licenseToken",
+                          "vendor_configuration": [
+                            {
+                              "hostname": "panw-node1"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "core_count": 2,
+                  "interface_count": 10,
+                  "metro_code": "${data.equinix_network_account.sv.metro_code}",
+                  "name": "tf-panw",
+                  "notifications": [
+                    "john@equinix.com",
+                    "marry@equinix.com",
+                    "fred@equinix.com"
+                  ],
+                  "package_code": "VM100",
+                  "self_managed": true,
+                  "ssh_key": [
+                    {
+                      "key_name": "test-key",
+                      "username": "test"
+                    }
+                  ],
+                  "term_length": 6,
+                  "type_code": "PA-VM",
+                  "version": "10.1.3"
+                }
+              references:
+                account_number: data.equinix_network_account.sv.number
+                metro_code: data.equinix_network_account.sv.metro_code
+        argumentDocs:
+            account_number: '- (Required) Billing account number for a device.'
+            acl_template_id: '- (Optional) Identifier of an ACL template that will be applied on the device.'
+            additional_bandwidth: |-
+                - (Optional) Additional Internet bandwidth, in Mbps, that will be
+                allocated to the device (in addition to default 15Mbps).
+            asn: '- (Autonomous System Number) Unique identifier for a network on the internet.'
+            assigned_type: '- interface management type (Equinix Managed or empty).'
+            byol: |-
+                - (Optional) Boolean value that determines device licensing mode, i.e.,
+                bring your own license or subscription (default).
+            cluster_details: |-
+                - (Optional) An object that has the cluster details. See
+                Cluster Details below for more details.
+            cluster_details.cluster_name: '- (Required) The name of the cluster device'
+            cluster_details.node0: |-
+                - (Required) An object that has node0 configuration.
+                See Cluster Details - Nodes below for more details.
+            cluster_details.node0.license_file_id: '- (Optional) License file id. This is necessary for Fortinet and Juniper clusters.'
+            cluster_details.node0.license_token: '- (Optional) License token. This is necessary for Palo Alto clusters.'
+            cluster_details.node0.vendor_configuration: |-
+                - (Optional) An object that has fields relevant to the vendor of the
+                cluster device. See Cluster Details - Nodes - Vendor Configuration
+                below for more details.
+            cluster_details.node0.vendor_configuration.activation_key: '- (Optional) Activation key. This is required for Velocloud clusters.'
+            cluster_details.node0.vendor_configuration.admin_password: |-
+                - (Optional) The administrative password of the device. You can use it to log in
+                to the console. This field is not available for all device types.
+            cluster_details.node0.vendor_configuration.controller_fqdn: '- (Optional) Controller fqdn. This is required for Velocloud clusters.'
+            cluster_details.node0.vendor_configuration.controller1: '- (Optional) System IP Address. Mandatory for the Fortinet SDWAN cluster device.'
+            cluster_details.node0.vendor_configuration.hostname: '- (Optional) Hostname. This is necessary for Palo Alto, Juniper, and Fortinet clusters.'
+            cluster_details.node0.vendor_configuration.root_password: |-
+                - (Optional) The CLI password of the device. This field is relevant only for the
+                Velocloud SDWAN cluster.
+            cluster_details.node1: |-
+                - (Required) An object that has node1 configuration.
+                See Cluster Details - Nodes below for more details.
+            cluster_id: '- The ID of the cluster.'
+            core_count: '- (Required) Number of CPU cores used by device.'
+            hostname: '- (Optional) Device hostname prefix.'
+            ibx: '- Device location Equinix Business Exchange name.'
+            id: '- interface identifier.'
+            interface: |-
+                - List of device interfaces. See Interface Attribute below
+                for more details.
+            interface_count: |-
+                - (Optional) Number of network interfaces on a device. If not specified,
+                default number for a given device type will be used.
+            ip_address: '- interface IP address.'
+            license_file: |-
+                - (Optional) Path to the license file that will be uploaded and applied on a
+                device. Applicable for some devices types in BYOL licensing mode.
+            license_file_id: '- Unique identifier of applied license file.'
+            license_status: |-
+                - Device license registration status. Possible values are APPLYING_LICENSE,
+                REGISTERED, APPLIED, WAITING_FOR_CLUSTER_SETUP, REGISTRATION_FAILED.
+            license_token: |-
+                - (Optional) License Token applicable for some device types in BYOL licensing
+                mode.
+            mac_address: '- interface MAC address.'
+            metro_code: '- (Required) Device location metro code.'
+            mgmt_acl_template_uuid: |-
+                - (Optional) Identifier of an MGMT interface ACL template that will be
+                applied on the device.
+            name: '- (Required) Device name.'
+            notifications: |-
+                - (Required) List of email addresses that will receive device status
+                notifications.
+            num_of_nodes: '- The number of nodes in the cluster.'
+            operational_status: '- interface operational status. One of up, down.'
+            order_reference: '- (Optional) Name/number used to identify device order on the invoice.'
+            package_code: '- (Required) Device software package code.'
+            purchase_order_number: '- (Optional) Purchase order number associated with a device order.'
+            redundancy_type: |-
+                - Device redundancy type applicable for HA devices, either
+                primary or secondary.
+            redundant_id: '- Unique identifier for a redundant device applicable for HA devices.'
+            region: '- Device location region.'
+            secondary_device: |-
+                - (Optional) Definition of secondary device for redundant
+                device configurations. See Secondary Device below for more details.
+            secondary_device.account_number: '- (Required) Billing account number for secondary device.'
+            secondary_device.acl_template_id: |-
+                - (Optional) Identifier of a WAN interface ACL template that will be applied
+                on a secondary device.
+            secondary_device.additional_bandwidth: |-
+                - (Optional) Additional Internet bandwidth, in Mbps, for a secondary
+                device.
+            secondary_device.hostname: '- (Optional) Secondary device hostname.'
+            secondary_device.license_file: |-
+                - (Optional) Path to the license file that will be uploaded and applied on a
+                secondary device. Applicable for some devices types in BYOL licensing mode.
+            secondary_device.license_token: '- (Optional) License Token can be provided for some device types o the device.'
+            secondary_device.metro_code: '- (Required) Metro location of a secondary device.'
+            secondary_device.mgmt_acl_template_uuid: |-
+                - (Optional) Identifier of an MGMT interface ACL template that will be
+                applied on the device.
+            secondary_device.name: '- (Required) Secondary device name.'
+            secondary_device.notifications: |-
+                - (Required) List of email addresses that will receive notifications about
+                secondary device.
+            secondary_device.ssh-key: |-
+                - (Optional) Up to one definition of SSH key that will be provisioned on a secondary
+                device.
+            secondary_device.vendor_configuration: |-
+                - (Optional) Key/Value pairs of vendor specific configuration parameters
+                for a secondary device. Key values are controller1, activationKey, managementType, siteId,
+                systemIpAddress.
+            self-configured: devices.
+            self_managed: |-
+                - (Optional) Boolean value that determines device management mode, i.e.,
+                self-managed or Equinix managed (default).
+            ssh-key: |-
+                - (Optional) Definition of SSH key that will be provisioned
+                on a device (max one key).  See SSH Key below for more details.
+            ssh_ip_address: '- IP address of SSH enabled interface on the device.'
+            ssh_ip_fqdn: '- FQDN of SSH enabled interface on the device.'
+            ssh_key.name: '- (Required) reference by name to previously provisioned public SSH key.'
+            ssh_key.username: '- (Required) username associated with given key.'
+            status: |-
+                - Device provisioning status. Possible values are
+                INITIALIZING, PROVISIONING, WAITING_FOR_PRIMARY, WAITING_FOR_SECONDARY,
+                WAITING_FOR_REPLICA_CLUSTER_NODES, CLUSTER_SETUP_IN_PROGRESS, FAILED, PROVISIONED,
+                DEPROVISIONING, DEPROVISIONED.
+            term_length: '- (Required) Device term length.'
+            throughput: '- (Optional) Device license throughput.'
+            throughput_unit: '- (Optional) License throughput unit. One of Mbps or Gbps.'
+            type: '- interface type.'
+            type_code: '- (Required) Device type code.'
+            uuid: '- Device unique identifier.'
+            vendor_configuration: |-
+                - (Optional) Map of vendor specific configuration parameters for a device
+                (controller1, activationKey, managementType, siteId, systemIpAddress)
+            version: '- (Required) Device software software version.'
+            wan_interafce_id: |-
+                - (Optional) Specify the WAN/SSH interface id. If not specified, default
+                WAN/SSH interface for a given device type will be used.
+            zone_code: '- Device location zone code.'
+        importStatements: []
+    equinix_network_device_link:
+        subCategory: Network Edge
+        name: equinix_network_device_link
+        title: ""
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "device": [
+                    {
+                      "asn": "${equinix_network_device.test.asn \u003e 0 ? equinix_network_device.test.asn : 22111}",
+                      "id": "${equinix_network_device.test.uuid}",
+                      "interface_id": 6
+                    },
+                    {
+                      "asn": "${equinix_network_device.test.secondary_device[0].asn \u003e 0 ? equinix_network_device.test.secondary_device[0].asn : 22333}",
+                      "id": "${equinix_network_device.test.secondary_device[0].uuid}",
+                      "interface_id": 7
+                    }
+                  ],
+                  "link": [
+                    {
+                      "account_number": "${equinix_network_device.test.account_number}",
+                      "dst_metro_code": "${equinix_network_device.test.secondary_device[0].metro_code}",
+                      "src_metro_code": "${equinix_network_device.test.metro_code}",
+                      "throughput": "50",
+                      "throughput_unit": "Mbps"
+                    }
+                  ],
+                  "name": "test-link",
+                  "subnet": "192.168.40.64/27"
+                }
+              references:
+                device.id: equinix_network_device.test.secondary_device[0].uuid
+                link.account_number: equinix_network_device.test.account_number
+                link.dst_metro_code: equinix_network_device.test.secondary_device[0].metro_code
+                link.src_metro_code: equinix_network_device.test.metro_code
+        argumentDocs:
+            device: |-
+                - (Required) definition of one or more devices belonging to the
+                device link. See Device section below for more details.
+            device.asn: '- (Optional) Device ASN number. Not required for self configured devices.'
+            device.id: '- (Required) Device identifier.'
+            device.interface_id: |-
+                - (Optional) Device network interface identifier to use for device link
+                connection.
+            device.ip_address: '- IP address from device link subnet that was assigned to the device'
+            device.status: |-
+                - device link provisioning status on a given device. One of PROVISIONING,
+                PROVISIONED, DEPROVISIONING, DEPROVISIONED, FAILED.
+            link: |-
+                - (Optional) definition of one or more, inter metro, connections belonging
+                to the device link. See Link section below for more details.
+            link.account_number: |-
+                - (Required) billing account number to be used for
+                connection charges
+            link.dst_metro_code: '- (Required) connection destination metro code.'
+            link.dst_zone_code: '- (Deprecated) connection destination zone code is not required.'
+            link.src_metro_code: '- (Required) connection source metro code.'
+            link.src_zone_code: '- (Deprecated) connection source zone code is not required.'
+            link.throughput: '- (Required) connection throughput.'
+            link.throughput_unit: '- (Required) connection throughput unit (Mbps or Gbps).'
+            name: '- (Required) device link name.'
+            status: |-
+                - Device link provisioning status. One of PROVISIONING, PROVISIONED,
+                DEPROVISIONING, DEPROVISIONED, FAILED.
+            subnet: |-
+                - (Optional) device link subnet in CIDR format. Not required for link
+                between self configured devices.
+            uuid: '- Device link unique identifier.'
+        importStatements: []
+    equinix_network_ssh_key:
+        subCategory: Network Edge
+        name: equinix_network_ssh_key
+        title: ""
+        examples:
+            - name: john
+              manifest: |-
+                {
+                  "name": "johnKent",
+                  "public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDpXGdxljAyPp9vH97436U171cX"
+                }
+        argumentDocs:
+            name: '- (Required) The name of SSH key used for identification.'
+            public_key: |-
+                - (Required) The SSH public key. If this is a file, it can be read using the file
+                interpolation function.
+            uuid: '- The unique identifier of the key'
+        importStatements: []
+    equinix_network_ssh_user:
+        subCategory: Network Edge
+        name: equinix_network_ssh_user
+        title: ""
+        examples:
+            - name: john
+              manifest: |-
+                {
+                  "device_ids": [
+                    "${equinix_ne_device.csr1000v-ha.uuid}",
+                    "${equinix_ne_device.csr1000v-ha.redundant_uuid}"
+                  ],
+                  "password": "secret",
+                  "username": "john"
+                }
+        argumentDocs:
+            device_ids: '- (Required) list of device identifiers to which user will have access.'
+            password: '- (Required) SSH user password.'
+            username: '- (Required) SSH user login name.'
+            uuid: '- SSH user unique identifier.'
+        importStatements: []

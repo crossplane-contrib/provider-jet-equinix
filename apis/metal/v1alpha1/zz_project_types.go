@@ -74,6 +74,7 @@ type ProjectParameters struct {
 	// +kubebuilder:validation:Optional
 	BackendTransfer *bool `json:"backendTransfer,omitempty" tf:"backend_transfer,omitempty"`
 
+	// User-supplied name of the VRF, unique to the project
 	// The name of the project
 	// +kubebuilder:validation:Required
 	Name *string `json:"name" tf:"name,omitempty"`
@@ -110,7 +111,7 @@ type ProjectStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Project is the Schema for the Projects API. <no value>
+// Project is the Schema for the Projects API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

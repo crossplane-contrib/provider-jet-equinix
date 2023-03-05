@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: SSHKey is the Schema for the SSHKeys API. <no value>
+        description: SSHKey is the Schema for the SSHKeys API.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -64,11 +64,14 @@ spec:
               forProvider:
                 properties:
                   name:
-                    description: The name of SSH key used for identification
+                    description: The name of SSH key used for identification. The
+                      name of SSH key used for identification
                     type: string
                   publicKey:
                     description: The SSH public key. If this is a file, it can be
-                      read using the file interpolation function
+                      read using the file interpolation function. The SSH public key.
+                      If this is a file, it can be read using the file interpolation
+                      function
                     type: string
                 required:
                 - name
@@ -253,7 +256,8 @@ spec:
                   id:
                     type: string
                   uuid:
-                    description: The unique identifier of the key
+                    description: The unique identifier of the key The unique identifier
+                      of the key
                     type: string
                 type: object
               conditions:

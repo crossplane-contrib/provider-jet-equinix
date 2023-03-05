@@ -28,55 +28,70 @@ import (
 type ReservedIPBlockObservation struct {
 	Address *string `json:"address,omitempty" tf:"address,omitempty"`
 
+	// Address family as integer. One of 4 or 6.
 	// Address family as integer (4 or 6)
 	AddressFamily *float64 `json:"addressFamily,omitempty" tf:"address_family,omitempty"`
 
+	// Address and mask in CIDR notation, e.g. 147.229.15.30/31.
 	CidrNotation *string `json:"cidrNotation,omitempty" tf:"cidr_notation,omitempty"`
 
 	Gateway *string `json:"gateway,omitempty" tf:"gateway,omitempty"`
 
+	// Boolean flag whether addresses from a block are global (i.e. can be assigned in any
+	// facility).
 	// Flag indicating whether IP block is global, i.e. assignable in any location
 	Global *bool `json:"global,omitempty" tf:"global,omitempty"`
 
+	// The unique ID of the block.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	Manageable *bool `json:"manageable,omitempty" tf:"manageable,omitempty"`
 
 	Management *bool `json:"management,omitempty" tf:"management,omitempty"`
 
+	// Mask in decimal notation, e.g. 255.255.255.0.
 	// Mask in decimal notation, e.g. 255.255.255.0
 	Netmask *string `json:"netmask,omitempty" tf:"netmask,omitempty"`
 
+	// Boolean flag whether addresses from a block are public.
 	// Flag indicating whether IP block is addressable from the Internet
 	Public *bool `json:"public,omitempty" tf:"public,omitempty"`
 }
 
 type ReservedIPBlockParameters struct {
 
+	// Only valid as an argument and required when type is vrf. The size of the network to reserve from an existing VRF ip_range. cidr can only be specified with vrf_id. Range is 22-31. Virtual Circuits require 30-31. Other VRF resources must use a CIDR in the 22-29 range.
 	// the size of the network to reserve from an existing vrf ip_range. `cidr` can only be specified with `vrf_id`. Minimum range is 22-29, with 30-31 supported and necessary for virtual-circuits
 	// +kubebuilder:validation:Optional
 	Cidr *float64 `json:"cidr,omitempty" tf:"cidr,omitempty"`
 
-	// This may be helpful for self-managed IPAM. The object must be valid JSON.
+	// This may be helpful for self-managed IPAM. The object must be valid JSON. This may be helpful for self-managed IPAM. The object must be valid JSON.
 	// +kubebuilder:validation:Optional
 	CustomData *string `json:"customData,omitempty" tf:"custom_data,omitempty"`
 
+	// Arbitrary description.
 	// Arbitrary description
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// Facility where to allocate the public IP address block, makes sense only
+	// if type is public_ipv4 and must be empty if type is global_ipv4. Conflicts with metro.
 	// Facility where to allocate the public IP address block, makes sense only for type==public_ipv4, must be empty for type==global_ipv4, conflicts with metro
 	// +kubebuilder:validation:Optional
 	Facility *string `json:"facility,omitempty" tf:"facility,omitempty"`
 
+	// Metro where to allocate the public IP address block, makes sense only
+	// if type is public_ipv4 and must be empty if type is global_ipv4. Conflicts with facility.
 	// Metro where to allocate the public IP address block, makes sense only for type==public_ipv4, must be empty for type==global_ipv4, conflicts with facility
 	// +kubebuilder:validation:Optional
 	Metro *string `json:"metro,omitempty" tf:"metro,omitempty"`
 
+	// Only valid as an argument and required when type is vrf. An unreserved network address from an existing ip_range in the specified VRF.
 	// an unreserved network address from an existing vrf ip_range. `network` can only be specified with vrf_id
 	// +kubebuilder:validation:Optional
 	Network *string `json:"network,omitempty" tf:"network,omitempty"`
 
+	// The metal project ID where to allocate the address block.
 	// The metal project ID where to allocate the address block
 	// +crossplane:generate:reference:type=Project
 	// +kubebuilder:validation:Optional
@@ -90,18 +105,23 @@ type ReservedIPBlockParameters struct {
 	// +kubebuilder:validation:Optional
 	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
+	// The number of allocated /32 addresses, a power of 2. Required when type is not vrf.
 	// The number of allocated /32 addresses, a power of 2
 	// +kubebuilder:validation:Optional
 	Quantity *float64 `json:"quantity,omitempty" tf:"quantity,omitempty"`
 
+	// String list of tags.
 	// Tags attached to the reserved block
 	// +kubebuilder:validation:Optional
 	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
 
+	// One of global_ipv4, public_ipv4, or vrf. Defaults to public_ipv4 for backward
+	// compatibility.
 	// Either global_ipv4, public_ipv4, or vrf. Defaults to public_ipv4.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
+	// Only valid and required when type is vrf. VRF ID for type=vrf reservations.
 	// VRF ID for type=vrf reservations
 	// +crossplane:generate:reference:type=Vrf
 	// +kubebuilder:validation:Optional
@@ -115,6 +135,7 @@ type ReservedIPBlockParameters struct {
 	// +kubebuilder:validation:Optional
 	VrfIDSelector *v1.Selector `json:"vrfIdSelector,omitempty" tf:"-"`
 
+	// Wait for the IP reservation block to reach a desired state on resource creation. One of: pending, created. The created state is default and recommended if the addresses are needed within the configuration. An error will be returned if a timeout or the denied state is encountered.
 	// Wait for the IP reservation block to reach a desired state on resource creation. One of: `pending`, `created`. The `created` state is default and recommended if the addresses are needed within the configuration. An error will be returned if a timeout or the `denied` state is encountered.
 	// +kubebuilder:validation:Optional
 	WaitForState *string `json:"waitForState,omitempty" tf:"wait_for_state,omitempty"`
@@ -134,7 +155,7 @@ type ReservedIPBlockStatus struct {
 
 // +kubebuilder:object:root=true
 
-// ReservedIPBlock is the Schema for the ReservedIPBlocks API. <no value>
+// ReservedIPBlock is the Schema for the ReservedIPBlocks API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

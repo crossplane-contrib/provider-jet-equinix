@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Connection is the Schema for the Connections API. <no value>
+        description: Connection is the Schema for the Connections API.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -64,24 +64,30 @@ spec:
               forProvider:
                 properties:
                   description:
-                    description: Description of the connection resource
+                    description: Description for the connection resource. Description
+                      of the connection resource
                     type: string
                   facility:
-                    description: Facility where the connection will be created
+                    description: Facility where the connection will be created. Facility
+                      where the connection will be created
                     type: string
                   metro:
-                    description: Metro where the connection will be created
+                    description: Metro where the connection will be created. Metro
+                      where the connection will be created
                     type: string
                   mode:
                     description: Mode for connections in IBX facilities with the dedicated
-                      type - standard or tunnel
+                      type - standard or tunnel. Default is standard. Mode for connections
+                      in IBX facilities with the dedicated type - standard or tunnel
                     type: string
                   name:
-                    description: Name of the connection resource
+                    description: Name of the connection resource Name of the connection
+                      resource
                     type: string
                   organizationId:
-                    description: ID of the organization responsible for the connection.
-                      Applicable with type "dedicated"
+                    description: ID of the organization where the connection is scoped
+                      to. ID of the organization responsible for the connection. Applicable
+                      with type "dedicated"
                     type: string
                   organizationIdRef:
                     description: Reference to a Organization to populate organizationId.
@@ -158,7 +164,8 @@ spec:
                     type: object
                   projectId:
                     description: ID of the project where the connection is scoped
-                      to. Required with type "shared"
+                      to, must be set for. ID of the project where the connection
+                      is scoped to. Required with type "shared"
                     type: string
                   projectIdRef:
                     description: Reference to a Project to populate projectId.
@@ -234,28 +241,34 @@ spec:
                         type: object
                     type: object
                   redundancy:
-                    description: Connection redundancy - redundant or primary
+                    description: Connection redundancy - redundant or primary. Connection
+                      redundancy - redundant or primary
                     type: string
                   serviceTokenType:
                     description: Only used with shared connection. Type of service
+                      token to use for the connection, a_side or z_side. Type of service
                       token to use for the connection, a_side or z_side
                     type: string
                   speed:
-                    description: Port speed. Allowed values are 50Mbps, 200Mbps, 500Mbps,
-                      1Gbps, 2Gbps, 5Gbps, 10Gbps
+                    description: Connection speed - one of 50Mbps, 200Mbps, 500Mbps,
+                      1Gbps, 2Gbps, 5Gbps, 10Gbps. Port speed. Allowed values are
+                      50Mbps, 200Mbps, 500Mbps, 1Gbps, 2Gbps, 5Gbps, 10Gbps
                     type: string
                   tags:
-                    description: Tags attached to the connection
+                    description: String list of tags. Tags attached to the connection
                     items:
                       type: string
                     type: array
                   type:
-                    description: Connection type - dedicated or shared
+                    description: Connection type - dedicated or shared. Connection
+                      type - dedicated or shared
                     type: string
                   vlans:
-                    description: Only used with shared connection. VLANs to attach.
+                    description: Only used with shared connection. Vlans to attach.
                       Pass one vlan for Primary/Single connection and two vlans for
-                      Redundant connection
+                      Redundant connection. Only used with shared connection. VLANs
+                      to attach. Pass one vlan for Primary/Single connection and two
+                      vlans for Redundant connection
                     items:
                       type: number
                     type: array
@@ -444,21 +457,28 @@ spec:
                   id:
                     type: string
                   ports:
-                    description: List of connection ports - primary (`ports[0]`) and
-                      secondary (`ports[1]`)
+                    description: List of connection ports - primary (ports[0]) and
+                      secondary (ports[1]). Schema of port is described in documentation
+                      of the equinix_metal_connection datasource. List of connection
+                      ports - primary (`ports[0]`) and secondary (`ports[1]`)
                     items:
                       properties:
                         id:
                           type: string
                         linkStatus:
+                          description: Status of the connection resource.
                           type: string
                         name:
+                          description: Name of the connection resource
                           type: string
                         role:
                           type: string
                         speed:
+                          description: Connection speed - one of 50Mbps, 200Mbps,
+                            500Mbps, 1Gbps, 2Gbps, 5Gbps, 10Gbps.
                           type: number
                         status:
+                          description: Status of the connection resource.
                           type: string
                         virtualCircuitIds:
                           items:
@@ -467,8 +487,13 @@ spec:
                       type: object
                     type: array
                   serviceTokens:
-                    description: Only used with shared connection. List of service
-                      tokens required to continue the setup process with [equinix_ecx_l2_connection](https://registry.io/providers/equinix/equinix/latest/docs/resources/equinix_ecx_l2_connection)
+                    description: List of connection service tokens with attributes
+                      required to configure the connection in Equinix Fabric with
+                      the equinix_ecx_l2_connection resource or from the Equinix Fabric
+                      Portal. Scehma of service_token is described in documentation
+                      of the equinix_metal_connection datasource. Only used with shared
+                      connection. List of service tokens required to continue the
+                      setup process with [equinix_ecx_l2_connection](https://registry.io/providers/equinix/equinix/latest/docs/resources/equinix_ecx_l2_connection)
                       or from the [Equinix Fabric Portal](https://ecxfabric.equinix.com/dashboard)
                     items:
                       properties:
@@ -477,20 +502,28 @@ spec:
                         id:
                           type: string
                         maxAllowedSpeed:
+                          description: Connection speed - one of 50Mbps, 200Mbps,
+                            500Mbps, 1Gbps, 2Gbps, 5Gbps, 10Gbps.
                           type: string
                         role:
                           type: string
                         state:
                           type: string
                         type:
+                          description: Connection type - dedicated or shared.
                           type: string
                       type: object
                     type: array
                   status:
-                    description: Status of the connection resource
+                    description: Status of the connection resource. Status of the
+                      connection resource
                     type: string
                   token:
-                    description: Only used with shared connection. Fabric Token required
+                    description: (Deprecated) Fabric Token required to configure the
+                      connection in Equinix Fabric with the equinix_ecx_l2_connection
+                      resource or from the Equinix Fabric Portal. If your organization
+                      already has connection service tokens enabled, use service_tokens
+                      instead. Only used with shared connection. Fabric Token required
                       to continue the setup process with [equinix_ecx_l2_connection](https://registry.io/providers/equinix/equinix/latest/docs/resources/equinix_ecx_l2_connection)
                       or from the [Equinix Fabric Portal](https://ecxfabric.equinix.com/dashboard)
                     type: string

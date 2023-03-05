@@ -27,17 +27,22 @@ import (
 
 type SSHKeyObservation struct {
 
+	// The timestamp for when the SSH key was created.
 	// The timestamp for when the SSH key was created
 	Created *string `json:"created,omitempty" tf:"created,omitempty"`
 
+	// The fingerprint of the SSH key.
 	// The fingerprint of the SSH key
 	Fingerprint *string `json:"fingerprint,omitempty" tf:"fingerprint,omitempty"`
 
+	// The unique ID of the key.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The UUID of the Equinix Metal API User who owns this key.
 	// The UUID of the Equinix Metal API User who owns this key
 	OwnerID *string `json:"ownerId,omitempty" tf:"owner_id,omitempty"`
 
+	// The timestamp for the last time the SSH key was updated.
 	// The timestamp for the last time the SSH key was updated
 	Updated *string `json:"updated,omitempty" tf:"updated,omitempty"`
 }
@@ -45,9 +50,12 @@ type SSHKeyObservation struct {
 type SSHKeyParameters struct {
 
 	// The name of the SSH key for identification
+	// The name of the SSH key for identification
 	// +kubebuilder:validation:Required
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// The public key. If this is a file, it
+	// can be read using the file interpolation function
 	// The public key. If this is a file, it
 	// +kubebuilder:validation:Required
 	PublicKey *string `json:"publicKey" tf:"public_key,omitempty"`
@@ -67,7 +75,7 @@ type SSHKeyStatus struct {
 
 // +kubebuilder:object:root=true
 
-// SSHKey is the Schema for the SSHKeys API. <no value>
+// SSHKey is the Schema for the SSHKeys API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

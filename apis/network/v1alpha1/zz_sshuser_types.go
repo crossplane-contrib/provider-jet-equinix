@@ -28,20 +28,24 @@ import (
 type SSHUserObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// SSH user unique identifier.
 	// SSH user unique identifier
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type SSHUserParameters struct {
 
+	// list of device identifiers to which user will have access.
 	// list of device identifiers to which user will have access
 	// +kubebuilder:validation:Required
 	DeviceIds []*string `json:"deviceIds" tf:"device_ids,omitempty"`
 
+	// SSH user password.
 	// SSH user password
 	// +kubebuilder:validation:Required
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
+	// SSH user login name.
 	// SSH user login name
 	// +kubebuilder:validation:Required
 	Username *string `json:"username" tf:"username,omitempty"`
@@ -61,7 +65,7 @@ type SSHUserStatus struct {
 
 // +kubebuilder:object:root=true
 
-// SSHUser is the Schema for the SSHUsers API. <no value>
+// SSHUser is the Schema for the SSHUsers API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

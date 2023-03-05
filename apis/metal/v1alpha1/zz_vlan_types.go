@@ -26,15 +26,19 @@ import (
 )
 
 type VlanObservation struct {
+
+	// ID of the virtual network.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type VlanParameters struct {
 
+	// Description string.
 	// Description string
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// Facility where to create the VLAN.
 	// Facility where to create the VLAN
 	// +kubebuilder:validation:Optional
 	Facility *string `json:"facility,omitempty" tf:"facility,omitempty"`
@@ -42,6 +46,7 @@ type VlanParameters struct {
 	// +kubebuilder:validation:Optional
 	Metro *string `json:"metro,omitempty" tf:"metro,omitempty"`
 
+	// ID of parent project.
 	// ID of parent project
 	// +crossplane:generate:reference:type=Project
 	// +kubebuilder:validation:Optional
@@ -55,6 +60,7 @@ type VlanParameters struct {
 	// +kubebuilder:validation:Optional
 	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
+	// VLAN ID, must be unique in metro.
 	// VLAN ID, must be unique in metro
 	// +kubebuilder:validation:Optional
 	Vxlan *float64 `json:"vxlan,omitempty" tf:"vxlan,omitempty"`
@@ -74,7 +80,7 @@ type VlanStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Vlan is the Schema for the Vlans API. <no value>
+// Vlan is the Schema for the Vlans API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

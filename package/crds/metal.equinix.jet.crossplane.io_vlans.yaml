@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Vlan is the Schema for the Vlans API. <no value>
+        description: Vlan is the Schema for the Vlans API.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -64,15 +64,16 @@ spec:
               forProvider:
                 properties:
                   description:
-                    description: Description string
+                    description: Description string. Description string
                     type: string
                   facility:
-                    description: Facility where to create the VLAN
+                    description: Facility where to create the VLAN. Facility where
+                      to create the VLAN
                     type: string
                   metro:
                     type: string
                   projectId:
-                    description: ID of parent project
+                    description: ID of parent project. ID of parent project
                     type: string
                   projectIdRef:
                     description: Reference to a Project to populate projectId.
@@ -148,7 +149,8 @@ spec:
                         type: object
                     type: object
                   vxlan:
-                    description: VLAN ID, must be unique in metro
+                    description: VLAN ID, must be unique in metro. VLAN ID, must be
+                      unique in metro
                     type: number
                 type: object
               providerConfigRef:
@@ -328,6 +330,7 @@ spec:
               atProvider:
                 properties:
                   id:
+                    description: ID of the virtual network.
                     type: string
                 type: object
               conditions:

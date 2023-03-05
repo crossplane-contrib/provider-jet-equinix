@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: SSHUser is the Schema for the SSHUsers API. <no value>
+        description: SSHUser is the Schema for the SSHUsers API.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -65,12 +65,12 @@ spec:
                 properties:
                   deviceIds:
                     description: list of device identifiers to which user will have
-                      access
+                      access. list of device identifiers to which user will have access
                     items:
                       type: string
                     type: array
                   passwordSecretRef:
-                    description: SSH user password
+                    description: SSH user password. SSH user password
                     properties:
                       key:
                         description: The key to select.
@@ -87,7 +87,7 @@ spec:
                     - namespace
                     type: object
                   username:
-                    description: SSH user login name
+                    description: SSH user login name. SSH user login name
                     type: string
                 required:
                 - deviceIds
@@ -273,7 +273,7 @@ spec:
                   id:
                     type: string
                   uuid:
-                    description: SSH user unique identifier
+                    description: SSH user unique identifier. SSH user unique identifier
                     type: string
                 type: object
               conditions:

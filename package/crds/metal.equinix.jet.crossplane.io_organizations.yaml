@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Organization is the Schema for the Organizations API. <no value>
+        description: Organization is the Schema for the Organizations API.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -64,24 +64,26 @@ spec:
               forProvider:
                 properties:
                   address:
-                    description: Address information block
+                    description: An object that has the address information. See Address
+                      below for more details. Address information block
                     items:
                       properties:
                         address:
-                          description: Postal address
+                          description: Postal address. Postal address
                           type: string
                         city:
-                          description: City name
+                          description: City name. City name
                           type: string
                         country:
                           description: Two letter country code (ISO 3166-1 alpha-2),
+                            e.g. US. Two letter country code (ISO 3166-1 alpha-2),
                             e.g. US
                           type: string
                         state:
-                          description: State name
+                          description: State name. State name
                           type: string
                         zipCode:
-                          description: Zip Code
+                          description: Zip Code. Zip Code
                           type: string
                       required:
                       - address
@@ -91,19 +93,19 @@ spec:
                       type: object
                     type: array
                   description:
-                    description: Description string
+                    description: Description string. Description string
                     type: string
                   logo:
-                    description: Logo URL
+                    description: Logo URL. Logo URL
                     type: string
                   name:
-                    description: The name of the Organization
+                    description: The name of the Organization. The name of the Organization
                     type: string
                   twitter:
-                    description: Twitter handle
+                    description: Twitter handle. Twitter handle
                     type: string
                   website:
-                    description: Website link
+                    description: Website link. Website link
                     type: string
                 required:
                 - address
@@ -286,10 +288,14 @@ spec:
               atProvider:
                 properties:
                   created:
+                    description: The timestamp for when the organization was created.
                     type: string
                   id:
+                    description: The unique ID of the organization.
                     type: string
                   updated:
+                    description: The timestamp for the last time the organization
+                      was updated.
                     type: string
                 type: object
               conditions:
