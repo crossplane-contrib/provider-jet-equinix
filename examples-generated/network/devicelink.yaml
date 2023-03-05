@@ -1,0 +1,30 @@
+apiVersion: network.equinix.jet.crossplane.io/v1alpha1
+kind: DeviceLink
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/devicelink
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    device:
+    - asn: '${equinix_network_device.test.asn > 0 ? equinix_network_device.test.asn
+        : 22111}'
+      id: ${equinix_network_device.test.uuid}
+      interfaceId: 6
+    - asn: '${equinix_network_device.test.secondary_device[0].asn > 0 ? equinix_network_device.test.secondary_device[0].asn
+        : 22333}'
+      id: ${equinix_network_device.test.secondary_device[0].uuid}
+      interfaceId: 7
+    link:
+    - accountNumber: ${equinix_network_device.test.account_number}
+      dstMetroCode: ${equinix_network_device.test.secondary_device[0].metro_code}
+      srcMetroCode: ${equinix_network_device.test.metro_code}
+      throughput: "50"
+      throughputUnit: Mbps
+    name: test-link
+    subnet: 192.168.40.64/27
+
+---
+
