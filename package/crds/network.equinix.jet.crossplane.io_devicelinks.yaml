@@ -12,7 +12,7 @@ spec:
     categories:
     - crossplane
     - managed
-    - equinixjet
+    - equinix
     kind: DeviceLink
     listKind: DeviceLinkList
     plural: devicelinks
@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: DeviceLink is the Schema for the DeviceLinks API
+        description: DeviceLink is the Schema for the DeviceLinks API.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -64,47 +64,59 @@ spec:
               forProvider:
                 properties:
                   device:
+                    description: definition of one or more devices belonging to the
+                      device link. See Device section below for more details.
                     items:
                       properties:
                         asn:
-                          description: Device ASN number
+                          description: Device ASN number. Not required for self configured
+                            devices. Device ASN number
                           type: number
                         id:
-                          description: Device identifier
+                          description: Device identifier. Device identifier
                           type: string
                         interfaceId:
                           description: Device network interface identifier to use
-                            for device link connection
+                            for device link connection. Device network interface identifier
+                            to use for device link connection
                           type: number
                       required:
                       - id
                       type: object
                     type: array
                   link:
-                    description: link
+                    description: definition of one or more, inter metro, connections
+                      belonging to the device link. See Link section below for more
+                      details. link
                     items:
                       properties:
                         accountNumber:
-                          description: Billing account number to be used for connection
+                          description: billing account number to be used for connection
+                            charges Billing account number to be used for connection
                             charges
                           type: string
                         dstMetroCode:
-                          description: Connection destination metro code
+                          description: connection destination metro code. Connection
+                            destination metro code
                           type: string
                         dstZoneCode:
-                          description: Connection destination zone code
+                          description: (Deprecated) connection destination zone code
+                            is not required. Connection destination zone code
                           type: string
                         srcMetroCode:
-                          description: Connection source metro code
+                          description: connection source metro code. Connection source
+                            metro code
                           type: string
                         srcZoneCode:
-                          description: Connection source zone code
+                          description: (Deprecated) connection source zone code is
+                            not required. Connection source zone code
                           type: string
                         throughput:
-                          description: Connection throughput
+                          description: connection throughput. Connection throughput
                           type: string
                         throughputUnit:
-                          description: Connection throughput unit
+                          description: connection throughput unit (Mbps or Gbps).
+                            Connection throughput unit
                           type: string
                       required:
                       - accountNumber
@@ -115,10 +127,11 @@ spec:
                       type: object
                     type: array
                   name:
-                    description: name
+                    description: device link name. name
                     type: string
                   subnet:
-                    description: subnet
+                    description: device link subnet in CIDR format. Not required for
+                      link between self configured devices. subnet
                     type: string
                 required:
                 - device
@@ -134,6 +147,31 @@ spec:
                   name:
                     description: Name of the referenced object.
                     type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
                 required:
                 - name
                 type: object
@@ -145,6 +183,31 @@ spec:
                   name:
                     description: Name of the referenced object.
                     type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
                 required:
                 - name
                 type: object
@@ -164,6 +227,31 @@ spec:
                       name:
                         description: Name of the referenced object.
                         type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
                     required:
                     - name
                     type: object
@@ -226,19 +314,34 @@ spec:
               atProvider:
                 properties:
                   device:
+                    description: definition of one or more devices belonging to the
+                      device link. See Device section below for more details.
                     items:
                       properties:
                         ipAddress:
+                          description: IP address from device link subnet that was
+                            assigned to the device Assigned IP address from device
+                            link subnet
                           type: string
                         status:
+                          description: device link provisioning status on a given
+                            device. One of PROVISIONING, PROVISIONED, DEPROVISIONING,
+                            DEPROVISIONED, FAILED. Device link connection provisioning
+                            status
                           type: string
                       type: object
                     type: array
                   id:
+                    description: Device identifier.
                     type: string
                   status:
+                    description: Device link provisioning status. One of PROVISIONING,
+                      PROVISIONED, DEPROVISIONING, DEPROVISIONED, FAILED. Device link
+                      provisioning status
                     type: string
                   uuid:
+                    description: Device link unique identifier. Device link unique
+                      identifier
                     type: string
                 type: object
               conditions:

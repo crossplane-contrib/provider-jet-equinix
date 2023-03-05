@@ -1,0 +1,15 @@
+apiVersion: network.equinix.jet.crossplane.io/v1alpha1
+kind: SSHKey
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/sshkey
+  labels:
+    testing.upbound.io/example-name: john
+  name: john
+spec:
+  forProvider:
+    name: johnKent
+    publicKey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDpXGdxljAyPp9vH97436U171cX
+
+---
+

@@ -21,22 +21,22 @@ import (
 	_ "embed"
 	"strings"
 
-	tjconfig "github.com/crossplane/terrajet/pkg/config"
+	upconfig "github.com/upbound/upjet/pkg/config"
 )
 
 // IdentifierAssignedByEquinix will work for all Equinix types because even if
 // the ID is assigned by user, we'll see it in the TF State ID. The
 // resource-specific configurations should override this whenever possible.
-func IdentifierAssignedByEquinix() tjconfig.ResourceOption {
-	return func(r *tjconfig.Resource) {
-		r.ExternalName = tjconfig.IdentifierFromProvider
+func IdentifierAssignedByEquinix() upconfig.ResourceOption {
+	return func(r *upconfig.Resource) {
+		r.ExternalName = upconfig.IdentifierFromProvider
 	}
 }
 
 // KnownReferencers adds referencers for fields that are known and common among
 // more than a few resources.
-func KnownReferencers() tjconfig.ResourceOption { //nolint:gocyclo
-	return func(r *tjconfig.Resource) {
+func KnownReferencers() upconfig.ResourceOption { //nolint:gocyclo
+	return func(r *upconfig.Resource) {
 		for k, s := range r.TerraformResource.Schema {
 			// We shouldn't add referencers for status fields and sensitive fields
 			// since they already have secret referencer.
@@ -46,33 +46,33 @@ func KnownReferencers() tjconfig.ResourceOption { //nolint:gocyclo
 			if r.ShortGroup == "metal" {
 				switch {
 				case strings.HasSuffix(k, "project_id"):
-					r.References[k] = tjconfig.Reference{
+					r.References[k] = upconfig.Reference{
 						// github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Project
 						Type: "Project",
 					}
 				case strings.HasSuffix(k, "organization_id"):
-					r.References[k] = tjconfig.Reference{
+					r.References[k] = upconfig.Reference{
 						Type: "Organization",
 					}
 				case strings.HasSuffix(k, "connection_id"):
-					r.References[k] = tjconfig.Reference{
+					r.References[k] = upconfig.Reference{
 						Type: "Connection",
 					}
 				case strings.HasSuffix(k, "device_id"):
-					r.References[k] = tjconfig.Reference{
+					r.References[k] = upconfig.Reference{
 						Type: "Device",
 					}
 				case strings.HasSuffix(k, "vlan_id"):
 					// vlan_vnid is ignored because it is an int type
-					r.References[k] = tjconfig.Reference{
+					r.References[k] = upconfig.Reference{
 						Type: "Vlan",
 					}
 				case strings.HasSuffix(k, "vrf_id"):
-					r.References[k] = tjconfig.Reference{
+					r.References[k] = upconfig.Reference{
 						Type: "Vrf",
 					}
 				case strings.HasSuffix(k, "ip_reservation_id"):
-					r.References[k] = tjconfig.Reference{
+					r.References[k] = upconfig.Reference{
 						Type: "ReservedIPBlock",
 					}
 				}

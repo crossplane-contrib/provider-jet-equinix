@@ -12,7 +12,7 @@ spec:
     categories:
     - crossplane
     - managed
-    - equinixjet
+    - equinix
     kind: SSHKey
     listKind: SSHKeyList
     plural: sshkeys
@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: SSHKey is the Schema for the SSHKeys API
+        description: SSHKey is the Schema for the SSHKeys API.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -64,10 +64,13 @@ spec:
               forProvider:
                 properties:
                   name:
-                    description: The name of the SSH key for identification
+                    description: The name of the SSH key for identification The name
+                      of the SSH key for identification
                     type: string
                   publicKey:
-                    description: The public key. If this is a file, it
+                    description: The public key. If this is a file, it can be read
+                      using the file interpolation function The public key. If this
+                      is a file, it
                     type: string
                 required:
                 - name
@@ -83,6 +86,31 @@ spec:
                   name:
                     description: Name of the referenced object.
                     type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
                 required:
                 - name
                 type: object
@@ -94,6 +122,31 @@ spec:
                   name:
                     description: Name of the referenced object.
                     type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
                 required:
                 - name
                 type: object
@@ -113,6 +166,31 @@ spec:
                       name:
                         description: Name of the referenced object.
                         type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
                     required:
                     - name
                     type: object
@@ -175,14 +253,23 @@ spec:
               atProvider:
                 properties:
                   created:
+                    description: The timestamp for when the SSH key was created. The
+                      timestamp for when the SSH key was created
                     type: string
                   fingerprint:
+                    description: The fingerprint of the SSH key. The fingerprint of
+                      the SSH key
                     type: string
                   id:
+                    description: The unique ID of the key.
                     type: string
                   ownerId:
+                    description: The UUID of the Equinix Metal API User who owns this
+                      key. The UUID of the Equinix Metal API User who owns this key
                     type: string
                   updated:
+                    description: The timestamp for the last time the SSH key was updated.
+                      The timestamp for the last time the SSH key was updated
                     type: string
                 type: object
               conditions:

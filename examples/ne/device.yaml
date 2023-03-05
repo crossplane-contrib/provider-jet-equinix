@@ -1,7 +1,7 @@
 apiVersion: network.equinix.jet.crossplane.io/v1alpha1
 kind: Device
 metadata:
-  name: terrajet
+  name: upjet
   # annotations:
   #  crossplane.io/external-name: <existing-uuid>
 spec:
@@ -11,8 +11,8 @@ spec:
     licenseToken: null
     throughput: 500
     throughputUnit: "Mbps"
-    name: "terrajet"
-    hostname: "terrajet"
+    name: "upjet"
+    hostname: "upjet"
     typeCode: "CSR1000V"
     packageCode: "IPBASE"
     version: "16.12.03"
@@ -20,7 +20,7 @@ spec:
     metroCode: "DA"
     accountNumber: "1"
     termLength: 1
-    notifications: ["terrajet@example.com"]
+    notifications: ["upjet@example.com"]
     aclTemplateId: null
     additionalBandwidth: null
     interfaceCount: null

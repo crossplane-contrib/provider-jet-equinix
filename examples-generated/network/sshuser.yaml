@@ -1,0 +1,21 @@
+apiVersion: network.equinix.jet.crossplane.io/v1alpha1
+kind: SSHUser
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/sshuser
+  labels:
+    testing.upbound.io/example-name: john
+  name: john
+spec:
+  forProvider:
+    deviceIds:
+    - ${equinix_ne_device.csr1000v-ha.uuid}
+    - ${equinix_ne_device.csr1000v-ha.redundant_uuid}
+    passwordSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    username: john
+
+---
+

@@ -1,0 +1,22 @@
+apiVersion: network.equinix.jet.crossplane.io/v1alpha1
+kind: BGP
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/bgp
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    authenticationKeySecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    connectionId: 54014acf-9730-4b55-a791-459283d05fb1
+    localAsn: 12345
+    localIpAddress: 10.1.1.1/30
+    remoteAsn: 66123
+    remoteIpAddress: 10.1.1.2
+
+---
+

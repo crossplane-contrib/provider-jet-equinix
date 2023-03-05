@@ -1,0 +1,21 @@
+apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
+kind: OrganizationMember
+metadata:
+  annotations:
+    meta.upbound.io/example-id: metal/v1alpha1/organizationmember
+  labels:
+    testing.upbound.io/example-name: member
+  name: member
+spec:
+  forProvider:
+    invitee: member@example.com
+    organizationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    projectsIds:
+    - ${var.project_id}
+    roles:
+    - limited_collaborator
+
+---
+

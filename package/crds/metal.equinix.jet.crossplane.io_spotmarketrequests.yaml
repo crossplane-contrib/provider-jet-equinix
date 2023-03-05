@@ -12,7 +12,7 @@ spec:
     categories:
     - crossplane
     - managed
-    - equinixjet
+    - equinix
     kind: SpotMarketRequest
     listKind: SpotMarketRequestList
     plural: spotmarketrequests
@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: SpotMarketRequest is the Schema for the SpotMarketRequests API
+        description: SpotMarketRequest is the Schema for the SpotMarketRequests API.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -64,20 +64,28 @@ spec:
               forProvider:
                 properties:
                   devicesMax:
-                    description: Maximum number devices to be created
+                    description: Maximum number devices to be created. Maximum number
+                      devices to be created
                     type: number
                   devicesMin:
-                    description: Miniumum number devices to be created
+                    description: Miniumum number devices to be created. Miniumum number
+                      devices to be created
                     type: number
                   facilities:
-                    description: Facility IDs where devices should be created
+                    description: Facility IDs where devices should be created. Facility
+                      IDs where devices should be created
                     items:
                       type: string
                     type: array
                   instanceParameters:
-                    description: Parameters for devices provisioned from this request.
-                      You can find the parameter description from the [equinix_metal_device
-                      doc](device.md)
+                    description: 'Key/Value pairs of parameters for devices provisioned
+                      from this request. Valid keys are: billing_cycle, plan, operating_system,
+                      hostname, termintation_time, always_pxe, description, features,
+                      locked, project_ssh_keys, user_ssh_keys, userdata, customdata,
+                      ipxe_script_url, tags. You can find each parameter description
+                      in equinix_metal_device docs. Parameters for devices provisioned
+                      from this request. You can find the parameter description from
+                      the [equinix_metal_device doc](device.md)'
                     items:
                       properties:
                         alwaysPxe:
@@ -97,6 +105,8 @@ spec:
                         ipxeScriptUrl:
                           type: string
                         locked:
+                          description: Blocks deletion of the SpotMarketRequest device
+                            until the lock is disabled.
                           type: boolean
                         operatingSystem:
                           type: string
@@ -125,25 +135,51 @@ spec:
                     type: array
                   maxBidPrice:
                     description: Maximum price user is willing to pay per hour per
-                      device
+                      device. Maximum price user is willing to pay per hour per device
                     type: number
                   metro:
-                    description: Metro where devices should be created
+                    description: Metro where devices should be created. Metro where
+                      devices should be created
                     type: string
                   projectId:
-                    description: Project ID
+                    description: Project ID. Project ID
                     type: string
                   projectIdRef:
-                    description: A Reference to a named object.
+                    description: Reference to a Project to populate projectId.
                     properties:
                       name:
                         description: Name of the referenced object.
                         type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
                     required:
                     - name
                     type: object
                   projectIdSelector:
-                    description: A Selector selects an object.
+                    description: Selector for a Project to populate projectId.
                     properties:
                       matchControllerRef:
                         description: MatchControllerRef ensures an object with the
@@ -155,11 +191,37 @@ spec:
                         description: MatchLabels ensures an object with matching labels
                           is selected.
                         type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
                     type: object
                   waitForDevices:
-                    description: On resource creation - wait until all desired devices
-                      are active, on resource destruction - wait until devices are
-                      removed
+                    description: On resource creation wait until all desired devices
+                      are active. On resource destruction wait until devices are removed.
+                      On resource creation - wait until all desired devices are active,
+                      on resource destruction - wait until devices are removed
                     type: boolean
                 required:
                 - devicesMax
@@ -177,6 +239,31 @@ spec:
                   name:
                     description: Name of the referenced object.
                     type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
                 required:
                 - name
                 type: object
@@ -188,6 +275,31 @@ spec:
                   name:
                     description: Name of the referenced object.
                     type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
                 required:
                 - name
                 type: object
@@ -207,6 +319,31 @@ spec:
                       name:
                         description: Name of the referenced object.
                         type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
                     required:
                     - name
                     type: object
@@ -269,8 +406,17 @@ spec:
               atProvider:
                 properties:
                   id:
+                    description: The ID of the Spot Market Request.
                     type: string
                   instanceParameters:
+                    description: 'Key/Value pairs of parameters for devices provisioned
+                      from this request. Valid keys are: billing_cycle, plan, operating_system,
+                      hostname, termintation_time, always_pxe, description, features,
+                      locked, project_ssh_keys, user_ssh_keys, userdata, customdata,
+                      ipxe_script_url, tags. You can find each parameter description
+                      in equinix_metal_device docs. Parameters for devices provisioned
+                      from this request. You can find the parameter description from
+                      the [equinix_metal_device doc](device.md)'
                     items:
                       properties:
                         termintationTime:

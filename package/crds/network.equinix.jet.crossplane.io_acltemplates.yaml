@@ -12,7 +12,7 @@ spec:
     categories:
     - crossplane
     - managed
-    - equinixjet
+    - equinix
     kind: ACLTemplate
     listKind: ACLTemplateList
     plural: acltemplates
@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: ACLTemplate is the Schema for the ACLTemplates API
+        description: ACLTemplate is the Schema for the ACLTemplates API.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -64,34 +64,47 @@ spec:
               forProvider:
                 properties:
                   description:
-                    description: ACL template description, up to 200 characters
+                    description: ACL template description, up to 200 characters. ACL
+                      template description, up to 200 characters
                     type: string
                   inboundRule:
                     description: One or more rules to specify allowed inbound traffic.
+                      Rules are ordered, matching traffic rule stops processing subsequent
+                      ones. One or more rules to specify allowed inbound traffic.
                       Rules are ordered, matching traffic rule stops processing subsequent
                       ones.
                     items:
                       properties:
                         description:
-                          description: Inbound rule description, up to 200 characters
+                          description: Inbound rule description, up to 200 characters.
+                            Inbound rule description, up to 200 characters
                           type: string
                         dstPort:
-                          description: Inbound traffic destination ports. Either up
-                            to 10, comma separated ports or port range or any word
+                          description: Inbound traffic destination ports. Allowed
+                            values are a comma separated list of ports, e.g., 20,22,23,
+                            port range, e.g., 1023-1040 or word any. Inbound traffic
+                            destination ports. Either up to 10, comma separated ports
+                            or port range or any word
                           type: string
                         protocol:
-                          description: 'Inbound traffic protocol. One of: `IP`, `TCP`,
-                            `UDP`'
+                          description: 'Inbound traffic protocol. One of IP, TCP,
+                            UDP. Inbound traffic protocol. One of: `IP`, `TCP`, `UDP`'
                           type: string
                         srcPort:
-                          description: Inbound traffic source ports. Either up to
-                            10, comma separated ports or port range or any word
+                          description: Inbound traffic source ports. Allowed values
+                            are a comma separated list of ports, e.g., 20,22,23, port
+                            range, e.g., 1023-1040 or word any. Inbound traffic source
+                            ports. Either up to 10, comma separated ports or port
+                            range or any word
                           type: string
                         subnet:
-                          description: Inbound traffic source IP subnet in CIDR format
+                          description: Inbound traffic source IP subnet in CIDR format.
+                            Inbound traffic source IP subnet in CIDR format
                           type: string
                         subnets:
-                          description: Inbound traffic source IP subnets in CIDR format
+                          description: (Deprecated) Inbound traffic source IP subnets
+                            in CIDR format. Inbound traffic source IP subnets in CIDR
+                            format
                           items:
                             type: string
                           type: array
@@ -102,10 +115,11 @@ spec:
                       type: object
                     type: array
                   metroCode:
-                    description: ACL template location metro code
+                    description: (Deprecated) ACL template location metro code. ACL
+                      template location metro code
                     type: string
                   name:
-                    description: ACL template name
+                    description: ACL template name. ACL template name
                     type: string
                 required:
                 - inboundRule
@@ -121,6 +135,31 @@ spec:
                   name:
                     description: Name of the referenced object.
                     type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
                 required:
                 - name
                 type: object
@@ -132,6 +171,31 @@ spec:
                   name:
                     description: Name of the referenced object.
                     type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
                 required:
                 - name
                 type: object
@@ -151,6 +215,31 @@ spec:
                       name:
                         description: Name of the referenced object.
                         type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
                     required:
                     - name
                     type: object
@@ -213,32 +302,55 @@ spec:
               atProvider:
                 properties:
                   deviceAclStatus:
+                    description: Status of ACL template provisioning process, where
+                      template was applied. One of PROVISIONING, PROVISIONED. Status
+                      of ACL template provisioning process on a device, where template
+                      was applied
                     type: string
                   deviceDetails:
+                    description: List of the devices where the ACL template is applied.
+                      Device Details to which ACL template is assigned to.
                     items:
                       properties:
                         aclStatus:
+                          description: Device ACL provisioning status where template
+                            was applied. One of PROVISIONING, PROVISIONED.
                           type: string
                         name:
+                          description: Device name.
                           type: string
                         uuid:
+                          description: Device uuid.
                           type: string
                       type: object
                     type: array
                   deviceId:
+                    description: (Deprecated) Identifier of a network device where
+                      template was applied. Identifier of a network device where template
+                      was applied
                     type: string
                   id:
                     type: string
                   inboundRule:
+                    description: One or more rules to specify allowed inbound traffic.
+                      Rules are ordered, matching traffic rule stops processing subsequent
+                      ones. One or more rules to specify allowed inbound traffic.
+                      Rules are ordered, matching traffic rule stops processing subsequent
+                      ones.
                     items:
                       properties:
                         sequenceNumber:
+                          description: Inbound rule sequence number
                           type: number
                         sourceType:
+                          description: Type of traffic source used in a given inbound
+                            rule
                           type: string
                       type: object
                     type: array
                   uuid:
+                    description: Unique identifier of ACL template resource. Unique
+                      identifier of ACL template resource
                     type: string
                 type: object
               conditions:

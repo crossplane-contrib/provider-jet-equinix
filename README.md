@@ -1,7 +1,7 @@
-# Terrajet Equinix Provider
+# Upjet Equinix Provider
 
 `provider-jet-equinix` is a [Crossplane](https://crossplane.io/) provider that
-is built using [Terrajet](https://github.com/crossplane/terrajet) code
+is built using [Upjet](https://github.com/upbound/upjet) code
 generation tools and exposes XRM-conformant managed resources for the
 Equinix API.
 

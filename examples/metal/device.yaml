@@ -1,13 +1,13 @@
 apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
 kind: Device
 metadata:
-  name: terrajet-example
+  name: upjet-example
 spec:
   forProvider:
     projectIdRef:
-      name: terrajet-example-project
+      name: upjet-example-project
     metro: da
-    hostname: terrajet-example
+    hostname: upjet-example
     plan: t3.small.x86
     operatingSystem: ubuntu_20_04
     billingCycle: hourly
@@ -16,5 +16,5 @@ spec:
   providerConfigRef:
     name: default
   writeConnectionSecretToRef:
-    name: terrajet-example
+    name: upjet-example
     namespace: crossplane-system

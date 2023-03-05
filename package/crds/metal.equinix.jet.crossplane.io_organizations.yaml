@@ -12,7 +12,7 @@ spec:
     categories:
     - crossplane
     - managed
-    - equinixjet
+    - equinix
     kind: Organization
     listKind: OrganizationList
     plural: organizations
@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Organization is the Schema for the Organizations API
+        description: Organization is the Schema for the Organizations API.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -64,24 +64,26 @@ spec:
               forProvider:
                 properties:
                   address:
-                    description: Address information block
+                    description: An object that has the address information. See Address
+                      below for more details. Address information block
                     items:
                       properties:
                         address:
-                          description: Postal address
+                          description: Postal address. Postal address
                           type: string
                         city:
-                          description: City name
+                          description: City name. City name
                           type: string
                         country:
                           description: Two letter country code (ISO 3166-1 alpha-2),
+                            e.g. US. Two letter country code (ISO 3166-1 alpha-2),
                             e.g. US
                           type: string
                         state:
-                          description: State name
+                          description: State name. State name
                           type: string
                         zipCode:
-                          description: Zip Code
+                          description: Zip Code. Zip Code
                           type: string
                       required:
                       - address
@@ -91,19 +93,19 @@ spec:
                       type: object
                     type: array
                   description:
-                    description: Description string
+                    description: Description string. Description string
                     type: string
                   logo:
-                    description: Logo URL
+                    description: Logo URL. Logo URL
                     type: string
                   name:
-                    description: The name of the Organization
+                    description: The name of the Organization. The name of the Organization
                     type: string
                   twitter:
-                    description: Twitter handle
+                    description: Twitter handle. Twitter handle
                     type: string
                   website:
-                    description: Website link
+                    description: Website link. Website link
                     type: string
                 required:
                 - address
@@ -119,6 +121,31 @@ spec:
                   name:
                     description: Name of the referenced object.
                     type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
                 required:
                 - name
                 type: object
@@ -130,6 +157,31 @@ spec:
                   name:
                     description: Name of the referenced object.
                     type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
                 required:
                 - name
                 type: object
@@ -149,6 +201,31 @@ spec:
                       name:
                         description: Name of the referenced object.
                         type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
                     required:
                     - name
                     type: object
@@ -211,10 +288,14 @@ spec:
               atProvider:
                 properties:
                   created:
+                    description: The timestamp for when the organization was created.
                     type: string
                   id:
+                    description: The unique ID of the organization.
                     type: string
                   updated:
+                    description: The timestamp for the last time the organization
+                      was updated.
                     type: string
                 type: object
               conditions:
