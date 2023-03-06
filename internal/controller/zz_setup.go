@@ -38,6 +38,7 @@ import (
 	bgp "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/network/bgp"
 	devicenetwork "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/network/device"
 	devicelink "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/network/devicelink"
+	file "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/network/file"
 	sshkeynetwork "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/network/sshkey"
 	sshuser "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/network/sshuser"
 	providerconfig "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/providerconfig"
@@ -76,6 +77,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		bgp.Setup,
 		devicenetwork.Setup,
 		devicelink.Setup,
+		file.Setup,
 		sshkeynetwork.Setup,
 		sshuser.Setup,
 		providerconfig.Setup,

@@ -810,6 +810,32 @@ resources:
                 }
               references:
                 project_id: local.project_id
+            - name: pxe1
+              manifest: |-
+                {
+                  "always_pxe": "false",
+                  "behavior": [
+                    {
+                      "allow_changes": [
+                        "custom_data",
+                        "user_data"
+                      ]
+                    }
+                  ],
+                  "billing_cycle": "hourly",
+                  "custom_data": "${local.custom_data}",
+                  "hostname": "tf.coreos2-pxe",
+                  "ipxe_script_url": "https://rawgit.com/cloudnativelabs/pxe/master/metal/coreos-stable-metal.ipxe",
+                  "metro": "sv",
+                  "operating_system": "custom_ipxe",
+                  "plan": "c3.small.x86",
+                  "project_id": "${local.project_id}",
+                  "user_data": "${local.user_data}"
+                }
+              references:
+                custom_data: local.custom_data
+                project_id: local.project_id
+                user_data: local.user_data
         argumentDocs:
             access_private_ipv4: '- The ipv4 private IP assigned to the device.'
             access_public_ipv4: '- The ipv4 maintenance IP assigned to the device.'
@@ -818,11 +844,13 @@ resources:
             always_pxe: |-
                 - (Optional) If true, a device with OS custom_ipxe will continue to boot via iPXE
                 on reboots.
+            behavior: '- (Optional) Behavioral overrides that change how the resource handles certain attribute updates. See Behavior below for more details.'
+            behavior.allow_changes: '- (Optional) List of attributes that are allowed to change without recreating the instance. Supported attributes: custom_data, user_data"'
             billing_cycle: '- (Optional) monthly or hourly'
             bonded: '- Whether this port is part of a bond in bonded network setup.'
             cidr: '- Bit length of the network mask of the address.'
             created: '- The timestamp for when the device was created.'
-            custom_data: '- (Optional) A string of the desired Custom Data for the device.'
+            custom_data: '- (Optional) A string of the desired Custom Data for the device.  By default, changing this attribute will cause the provider to destroy and recreate your device.  If reinstall is specified or behavior.allow_changes includes "custom_data", the device will be updated in-place instead of recreated.'
             deployed_facility: '- The facility where the device is deployed.'
             deployed_hardware_reservation_id: |-
                 - ID of hardware reservation where this device was deployed.
@@ -934,7 +962,7 @@ resources:
             timeouts.update: '- (Defaults to 20 mins) Used when updating the Device. This includes the time needed to reprovision instances when reinstall arguments are used.'
             type: '- Type of the port (e.g. NetworkPort or NetworkBondPort).'
             updated: '- The timestamp for the last time the device was updated.'
-            user_data: '- (Optional) A string of the desired User Data for the device.'
+            user_data: '- (Optional) A string of the desired User Data for the device.  By default, changing this attribute will cause the provider to destroy and recreate your device.  If reinstall is specified or behavior.allow_changes includes "user_data", the device will be updated in-place instead of recreated.'
             user_ssh_key_ids: '- (Optional) Array of IDs of the user SSH keys which should be added to the device. If you omit this, SSH keys of all the members of the parent project will be added to the device. If you specify this array, only the listed user SSH keys (and any project_ssh_key_ids) will be added. User SSH keys can be created with the equinix_metal_ssh_key resource'
             wait_for_reservation_deprovision: |-
                 - (Optional) Only used for devices in reserved hardware. If
@@ -1431,6 +1459,7 @@ resources:
               manifest: |-
                 {
                   "account_number": "${data.equinix_network_account.dc.number}",
+                  "byol": false,
                   "core_count": 2,
                   "hostname": "csr1000v-p",
                   "metro_code": "${data.equinix_network_account.dc.metro_code}",
@@ -1453,6 +1482,7 @@ resources:
                       ]
                     }
                   ],
+                  "self_managed": false,
                   "term_length": 6,
                   "throughput": 500,
                   "throughput_unit": "Mbps",
@@ -1519,9 +1549,73 @@ resources:
               references:
                 account_number: data.equinix_network_account.sv.number
                 metro_code: data.equinix_network_account.sv.metro_code
+            - name: aviatrix-single
+              manifest: |-
+                {
+                  "account_number": "${data.equinix_network_account.sv.number}",
+                  "acl_template_id": "c06150ea-b604-4ad1-832a-d63936e9b938",
+                  "byol": true,
+                  "cloud_init_file_id": "${equinix_network_file.aviatrix-cloudinit-file.uuid}",
+                  "core_count": 2,
+                  "metro_code": "${data.equinix_network_account.sv.metro_code}",
+                  "name": "tf-aviatrix",
+                  "notifications": [
+                    "john@equinix.com"
+                  ],
+                  "package_code": "STD",
+                  "self_managed": true,
+                  "term_length": 6,
+                  "type_code": "AVIATRIX_EDGE",
+                  "version": "6.9"
+                }
+              references:
+                account_number: data.equinix_network_account.sv.number
+                cloud_init_file_id: equinix_network_file.aviatrix-cloudinit-file.uuid
+                metro_code: data.equinix_network_account.sv.metro_code
+              dependencies:
+                equinix_network_file.aviatrix-cloudinit-file: |-
+                    {
+                      "byol": true,
+                      "content": "${file(\"${path.module}/${var.filepath}\")}",
+                      "device_type_code": "AVIATRIX_EDGE",
+                      "file_name": "TF-AVX-cloud-init-file.txt",
+                      "metro_code": "${data.equinix_network_account.sv.metro_code}",
+                      "process_type": "CLOUD_INIT",
+                      "self_managed": true
+                    }
+            - name: c8kv-single
+              manifest: |-
+                {
+                  "account_number": "${data.equinix_network_account.sv.number}",
+                  "acl_template_id": "3e548c02-9164-4197-aa23-05b1f644883c",
+                  "additional_bandwidth": 5,
+                  "byol": true,
+                  "core_count": 2,
+                  "hostname": "C8KV",
+                  "license_token": "valid-license-token",
+                  "metro_code": "${data.equinix_network_account.sv.metro_code}",
+                  "name": "tf-c8kv",
+                  "notifications": [
+                    "test@equinix.com"
+                  ],
+                  "package_code": "network-essentials",
+                  "self_managed": true,
+                  "ssh_key": [
+                    {
+                      "key_name": "valid-key-name",
+                      "username": "test-username"
+                    }
+                  ],
+                  "term_length": 6,
+                  "type_code": "C8000V",
+                  "version": "17.06.01a"
+                }
+              references:
+                account_number: data.equinix_network_account.sv.number
+                metro_code: data.equinix_network_account.sv.metro_code
         argumentDocs:
             account_number: '- (Required) Billing account number for a device.'
-            acl_template_id: '- (Optional) Identifier of an ACL template that will be applied on the device.'
+            acl_template_id: '- (Optional) Identifier of a WAN interface ACL template that will be applied on the device.'
             additional_bandwidth: |-
                 - (Optional) Additional Internet bandwidth, in Mbps, that will be
                 allocated to the device (in addition to default 15Mbps).
@@ -1530,6 +1624,7 @@ resources:
             byol: |-
                 - (Optional) Boolean value that determines device licensing mode, i.e.,
                 bring your own license or subscription (default).
+            cloud_init_file_id: '- (Optional) Identifier of a cloud init file that will be applied on the device.'
             cluster_details: |-
                 - (Optional) An object that has the cluster details. See
                 Cluster Details below for more details.
@@ -1570,13 +1665,13 @@ resources:
             ip_address: '- interface IP address.'
             license_file: |-
                 - (Optional) Path to the license file that will be uploaded and applied on a
-                device. Applicable for some devices types in BYOL licensing mode.
-            license_file_id: '- Unique identifier of applied license file.'
+                device. Applicable for some device types in BYOL licensing mode.
+            license_file_id: '- (Optional, conflicts with license_file) Identifier of a license file that will be applied on the device.'
             license_status: |-
                 - Device license registration status. Possible values are APPLYING_LICENSE,
                 REGISTERED, APPLIED, WAITING_FOR_CLUSTER_SETUP, REGISTRATION_FAILED.
             license_token: |-
-                - (Optional) License Token applicable for some device types in BYOL licensing
+                - (Optional, conflicts with license_file) License Token applicable for some device types in BYOL licensing
                 mode.
             mac_address: '- interface MAC address.'
             metro_code: '- (Required) Device location metro code.'
@@ -1607,15 +1702,17 @@ resources:
             secondary_device.additional_bandwidth: |-
                 - (Optional) Additional Internet bandwidth, in Mbps, for a secondary
                 device.
+            secondary_device.cloud_init_file_id: '- (Optional) Identifier of a cloud init file that will be applied on a secondary device.'
             secondary_device.hostname: '- (Optional) Secondary device hostname.'
             secondary_device.license_file: |-
                 - (Optional) Path to the license file that will be uploaded and applied on a
-                secondary device. Applicable for some devices types in BYOL licensing mode.
-            secondary_device.license_token: '- (Optional) License Token can be provided for some device types o the device.'
+                secondary device. Applicable for some device types in BYOL licensing mode.
+            secondary_device.license_file_id: '- (Optional, conflicts with license_file) Identifier of a license file that will be applied on a secondary device.'
+            secondary_device.license_token: '- (Optional, conflicts with license_file) License Token can be provided for some device types o the device.'
             secondary_device.metro_code: '- (Required) Metro location of a secondary device.'
             secondary_device.mgmt_acl_template_uuid: |-
                 - (Optional) Identifier of an MGMT interface ACL template that will be
-                applied on the device.
+                applied on a secondary device.
             secondary_device.name: '- (Required) Secondary device name.'
             secondary_device.notifications: |-
                 - (Required) List of email addresses that will receive notifications about
@@ -1630,7 +1727,7 @@ resources:
             self-configured: devices.
             self_managed: |-
                 - (Optional) Boolean value that determines device management mode, i.e.,
-                self-managed or Equinix managed (default).
+                self-managed or Equinix-managed (default).
             ssh-key: |-
                 - (Optional) Definition of SSH key that will be provisioned
                 on a device (max one key).  See SSH Key below for more details.
@@ -1729,6 +1826,37 @@ resources:
                 between self configured devices.
             uuid: '- Device link unique identifier.'
         importStatements: []
+    equinix_network_file:
+        subCategory: Network Edge
+        name: equinix_network_file
+        title: ""
+        examples:
+            - name: test-file
+              manifest: |-
+                {
+                  "byol": true,
+                  "content": "${file(\"${path.module}/${var.filepath}\")}",
+                  "device_type_code": "AVIATRIX_EDGE",
+                  "file_name": "fileName.txt",
+                  "metro_code": "SV",
+                  "process_type": "CLOUD_INIT",
+                  "self_managed": true
+                }
+        argumentDocs:
+            byol: |-
+                - (Required) Boolean value that determines device licensing mode, i.e.,
+                bring your own license or subscription.
+            content: '- (Required) Uploaded file content, expected to be a UTF-8 encoded string.'
+            file_name: '- (Required) File name.'
+            metro_code: '- (Required) File upload location metro code. It should match the device location metro code.'
+            process_type: '- (Required) File process type (LICENSE or CLOUD_INIT).'
+            self_managed: |-
+                - (Required) Boolean value that determines device management mode, i.e.,
+                self-managed or Equinix-managed.
+            status: '- File upload status.'
+            type_code: '- (Required) Device type code.'
+            uuid: '- Unique identifier of file resource.'
+        importStatements: []
     equinix_network_ssh_key:
         subCategory: Network Edge
         name: equinix_network_ssh_key
@@ -1756,8 +1884,8 @@ resources:
               manifest: |-
                 {
                   "device_ids": [
-                    "${equinix_ne_device.csr1000v-ha.uuid}",
-                    "${equinix_ne_device.csr1000v-ha.redundant_uuid}"
+                    "${equinix_network_device.csr1000v-ha.uuid}",
+                    "${equinix_network_device.csr1000v-ha.redundant_uuid}"
                   ],
                   "password": "secret",
                   "username": "john"
