@@ -68,8 +68,8 @@ spec:
                       account number
                     type: string
                   aclTemplateId:
-                    description: Identifier of an ACL template that will be applied
-                      on the device. Unique identifier of applied ACL template
+                    description: Identifier of a WAN interface ACL template that will
+                      be applied on the device. Unique identifier of applied ACL template
                     type: string
                   additionalBandwidth:
                     description: Additional Internet bandwidth, in Mbps, that will
@@ -83,6 +83,10 @@ spec:
                       value that determines device licensing mode: bring your own
                       license or subscription (default)'
                     type: boolean
+                  cloudInitFileId:
+                    description: Identifier of a cloud init file that will be applied
+                      on the device. Unique identifier of applied cloud init file
+                    type: string
                   clusterDetails:
                     description: An object that has the cluster details. See Cluster
                       Details below for more details. An object that has the cluster
@@ -99,25 +103,11 @@ spec:
                             that has node0 details
                           items:
                             properties:
-                              licenseFileIdSecretRef:
+                              licenseFileId:
                                 description: License file id. This is necessary for
                                   Fortinet and Juniper clusters. License file id.
                                   This is necessary for Fortinet and Juniper clusters
-                                properties:
-                                  key:
-                                    description: The key to select.
-                                    type: string
-                                  name:
-                                    description: Name of the secret.
-                                    type: string
-                                  namespace:
-                                    description: Namespace of the secret.
-                                    type: string
-                                required:
-                                - key
-                                - name
-                                - namespace
-                                type: object
+                                type: string
                               licenseTokenSecretRef:
                                 description: License token. This is necessary for
                                   Palo Alto clusters. License token. This is necessary
@@ -235,25 +225,11 @@ spec:
                             that has node1 details
                           items:
                             properties:
-                              licenseFileIdSecretRef:
-                                description: Unique identifier of applied license
-                                  file. License file id. This is necessary for Fortinet
-                                  and Juniper clusters
-                                properties:
-                                  key:
-                                    description: The key to select.
-                                    type: string
-                                  name:
-                                    description: Name of the secret.
-                                    type: string
-                                  namespace:
-                                    description: Namespace of the secret.
-                                    type: string
-                                required:
-                                - key
-                                - name
-                                - namespace
-                                type: object
+                              licenseFileId:
+                                description: Identifier of a license file that will
+                                  be applied on a secondary device. License file id.
+                                  This is necessary for Fortinet and Juniper clusters
+                                type: string
                               licenseTokenSecretRef:
                                 description: License Token can be provided for some
                                   device types o the device. License token. This is
@@ -385,10 +361,14 @@ spec:
                     type: number
                   licenseFile:
                     description: Path to the license file that will be uploaded and
-                      applied on a device. Applicable for some devices types in BYOL
+                      applied on a device. Applicable for some device types in BYOL
                       licensing mode. Path to the license file that will be uploaded
                       and applied on a device, applicable for some device types in
                       BYOL licensing mode
+                    type: string
+                  licenseFileId:
+                    description: Identifier of a license file that will be applied
+                      on the device. Unique identifier of applied license file
                     type: string
                   licenseToken:
                     description: License Token applicable for some device types in
@@ -446,6 +426,11 @@ spec:
                             a secondary device. Additional Internet bandwidth, in
                             Mbps, that will be allocated to the device
                           type: number
+                        cloudInitFileId:
+                          description: Identifier of a cloud init file that will be
+                            applied on a secondary device. Unique identifier of applied
+                            cloud init file
+                          type: string
                         hostname:
                           description: Secondary device hostname. Device hostname
                             prefix
@@ -453,9 +438,14 @@ spec:
                         licenseFile:
                           description: Path to the license file that will be uploaded
                             and applied on a secondary device. Applicable for some
-                            devices types in BYOL licensing mode. Path to the license
+                            device types in BYOL licensing mode. Path to the license
                             file that will be uploaded and applied on a device, applicable
                             for some device types in BYOL licensing mode
+                          type: string
+                        licenseFileId:
+                          description: Identifier of a license file that will be applied
+                            on a secondary device. Unique identifier of applied license
+                            file
                           type: string
                         licenseToken:
                           description: License Token can be provided for some device
@@ -468,7 +458,7 @@ spec:
                           type: string
                         mgmtAclTemplateUuid:
                           description: Identifier of an MGMT interface ACL template
-                            that will be applied on the device. Unique identifier
+                            that will be applied on a secondary device. Unique identifier
                             of applied MGMT ACL template
                           type: string
                         name:
@@ -522,7 +512,7 @@ spec:
                     type: array
                   selfManaged:
                     description: 'Boolean value that determines device management
-                      mode, i.e., self-managed or Equinix managed (default). Boolean
+                      mode, i.e., self-managed or Equinix-managed (default). Boolean
                       value that determines device management mode: self-managed or
                       subscription (default)'
                     type: boolean
@@ -855,10 +845,6 @@ spec:
                           type: string
                       type: object
                     type: array
-                  licenseFileId:
-                    description: Unique identifier of applied license file. Unique
-                      identifier of applied license file
-                    type: string
                   licenseStatus:
                     description: Device license registration status. Possible values
                       are APPLYING_LICENSE, REGISTERED, APPLIED, WAITING_FOR_CLUSTER_SETUP,
@@ -929,10 +915,6 @@ spec:
                                 type: string
                             type: object
                           type: array
-                        licenseFileId:
-                          description: Unique identifier of applied license file.
-                            Unique identifier of applied license file
-                          type: string
                         licenseStatus:
                           description: Device license registration status. Possible
                             values are APPLYING_LICENSE, REGISTERED, APPLIED, WAITING_FOR_CLUSTER_SETUP,

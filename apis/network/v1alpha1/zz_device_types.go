@@ -92,10 +92,6 @@ type DeviceObservation struct {
 	// List of device interfaces
 	Interface []InterfaceObservation `json:"interface,omitempty" tf:"interface,omitempty"`
 
-	// Unique identifier of applied license file.
-	// Unique identifier of applied license file
-	LicenseFileID *string `json:"licenseFileId,omitempty" tf:"license_file_id,omitempty"`
-
 	// Device license registration status. Possible values are APPLYING_LICENSE,
 	// REGISTERED, APPLIED, WAITING_FOR_CLUSTER_SETUP, REGISTRATION_FAILED.
 	// Device license registration status
@@ -146,7 +142,7 @@ type DeviceObservation struct {
 
 type DeviceParameters struct {
 
-	// Identifier of an ACL template that will be applied on the device.
+	// Identifier of a WAN interface ACL template that will be applied on the device.
 	// Unique identifier of applied ACL template
 	// +kubebuilder:validation:Optional
 	ACLTemplateID *string `json:"aclTemplateId,omitempty" tf:"acl_template_id,omitempty"`
@@ -167,6 +163,11 @@ type DeviceParameters struct {
 	// Boolean value that determines device licensing mode: bring your own license or subscription (default)
 	// +kubebuilder:validation:Optional
 	Byol *bool `json:"byol,omitempty" tf:"byol,omitempty"`
+
+	// Identifier of a cloud init file that will be applied on the device.
+	// Unique identifier of applied cloud init file
+	// +kubebuilder:validation:Optional
+	CloudInitFileID *string `json:"cloudInitFileId,omitempty" tf:"cloud_init_file_id,omitempty"`
 
 	// An object that has the cluster details. See
 	// Cluster Details below for more details.
@@ -191,10 +192,15 @@ type DeviceParameters struct {
 	InterfaceCount *float64 `json:"interfaceCount,omitempty" tf:"interface_count,omitempty"`
 
 	// Path to the license file that will be uploaded and applied on a
-	// device. Applicable for some devices types in BYOL licensing mode.
+	// device. Applicable for some device types in BYOL licensing mode.
 	// Path to the license file that will be uploaded and applied on a device, applicable for some device types in BYOL licensing mode
 	// +kubebuilder:validation:Optional
 	LicenseFile *string `json:"licenseFile,omitempty" tf:"license_file,omitempty"`
+
+	// Identifier of a license file that will be applied on the device.
+	// Unique identifier of applied license file
+	// +kubebuilder:validation:Optional
+	LicenseFileID *string `json:"licenseFileId,omitempty" tf:"license_file_id,omitempty"`
 
 	// License Token applicable for some device types in BYOL licensing
 	// mode.
@@ -250,7 +256,7 @@ type DeviceParameters struct {
 	SecondaryDevice []SecondaryDeviceParameters `json:"secondaryDevice,omitempty" tf:"secondary_device,omitempty"`
 
 	// Boolean value that determines device management mode, i.e.,
-	// self-managed or Equinix managed (default).
+	// self-managed or Equinix-managed (default).
 	// Boolean value that determines device management mode: self-managed or subscription (default)
 	// +kubebuilder:validation:Optional
 	SelfManaged *bool `json:"selfManaged,omitempty" tf:"self_managed,omitempty"`
@@ -357,7 +363,7 @@ type Node0Parameters struct {
 	// License file id. This is necessary for Fortinet and Juniper clusters.
 	// License file id. This is necessary for Fortinet and Juniper clusters
 	// +kubebuilder:validation:Optional
-	LicenseFileIDSecretRef *v1.SecretKeySelector `json:"licenseFileIdSecretRef,omitempty" tf:"-"`
+	LicenseFileID *string `json:"licenseFileId,omitempty" tf:"license_file_id,omitempty"`
 
 	// License token. This is necessary for Palo Alto clusters.
 	// License token. This is necessary for Palo Alto clusters
@@ -385,10 +391,10 @@ type Node1Observation struct {
 
 type Node1Parameters struct {
 
-	// Unique identifier of applied license file.
+	// Identifier of a license file that will be applied on a secondary device.
 	// License file id. This is necessary for Fortinet and Juniper clusters
 	// +kubebuilder:validation:Optional
-	LicenseFileIDSecretRef *v1.SecretKeySelector `json:"licenseFileIdSecretRef,omitempty" tf:"-"`
+	LicenseFileID *string `json:"licenseFileId,omitempty" tf:"license_file_id,omitempty"`
 
 	// License Token can be provided for some device types o the device.
 	// License token. This is necessary for Palo Alto clusters
@@ -504,10 +510,6 @@ type SecondaryDeviceObservation struct {
 	// List of device interfaces
 	Interface []SecondaryDeviceInterfaceObservation `json:"interface,omitempty" tf:"interface,omitempty"`
 
-	// Unique identifier of applied license file.
-	// Unique identifier of applied license file
-	LicenseFileID *string `json:"licenseFileId,omitempty" tf:"license_file_id,omitempty"`
-
 	// Device license registration status. Possible values are APPLYING_LICENSE,
 	// REGISTERED, APPLIED, WAITING_FOR_CLUSTER_SETUP, REGISTRATION_FAILED.
 	// Device license registration status
@@ -569,16 +571,26 @@ type SecondaryDeviceParameters struct {
 	// +kubebuilder:validation:Optional
 	AdditionalBandwidth *float64 `json:"additionalBandwidth,omitempty" tf:"additional_bandwidth,omitempty"`
 
+	// Identifier of a cloud init file that will be applied on a secondary device.
+	// Unique identifier of applied cloud init file
+	// +kubebuilder:validation:Optional
+	CloudInitFileID *string `json:"cloudInitFileId,omitempty" tf:"cloud_init_file_id,omitempty"`
+
 	// Secondary device hostname.
 	// Device hostname prefix
 	// +kubebuilder:validation:Optional
 	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
 
 	// Path to the license file that will be uploaded and applied on a
-	// secondary device. Applicable for some devices types in BYOL licensing mode.
+	// secondary device. Applicable for some device types in BYOL licensing mode.
 	// Path to the license file that will be uploaded and applied on a device, applicable for some device types in BYOL licensing mode
 	// +kubebuilder:validation:Optional
 	LicenseFile *string `json:"licenseFile,omitempty" tf:"license_file,omitempty"`
+
+	// Identifier of a license file that will be applied on a secondary device.
+	// Unique identifier of applied license file
+	// +kubebuilder:validation:Optional
+	LicenseFileID *string `json:"licenseFileId,omitempty" tf:"license_file_id,omitempty"`
 
 	// License Token can be provided for some device types o the device.
 	// License Token applicable for some device types in BYOL licensing mode
@@ -591,7 +603,7 @@ type SecondaryDeviceParameters struct {
 	MetroCode *string `json:"metroCode" tf:"metro_code,omitempty"`
 
 	// Identifier of an MGMT interface ACL template that will be
-	// applied on the device.
+	// applied on a secondary device.
 	// Unique identifier of applied MGMT ACL template
 	// +kubebuilder:validation:Optional
 	MgmtACLTemplateUUID *string `json:"mgmtAclTemplateUuid,omitempty" tf:"mgmt_acl_template_uuid,omitempty"`

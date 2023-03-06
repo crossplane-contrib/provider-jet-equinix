@@ -68,12 +68,37 @@ spec:
                       to boot via iPXE on reboots. If true, a device with OS custom_ipxe
                       will
                     type: boolean
+                  behavior:
+                    description: Behavioral overrides that change how the resource
+                      handles certain attribute updates. See Behavior below for more
+                      details.
+                    items:
+                      properties:
+                        allowChanges:
+                          description: 'List of attributes that are allowed to change
+                            without recreating the instance. Supported attributes:
+                            custom_data, user_data" List of attributes that are allowed
+                            to change without recreating the instance. Supported attributes:
+                            `custom_data`, `user_data`'
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
                   billingCycle:
                     description: monthly or hourly monthly or hourly
                     type: string
                   customDataSecretRef:
-                    description: A string of the desired Custom Data for the device.
-                      A string of the desired Custom Data for the device
+                    description: A string of the desired Custom Data for the device.  By
+                      default, changing this attribute will cause the provider to
+                      destroy and recreate your device.  If reinstall is specified
+                      or behavior.allow_changes includes "custom_data", the device
+                      will be updated in-place instead of recreated. A string of the
+                      desired Custom Data for the device.  By default, changing this
+                      attribute will cause the provider to destroy and recreate your
+                      device.  If `reinstall` is specified or `behavior.allow_changes`
+                      includes `"custom_data"`, the device will be updated in-place
+                      instead of recreated.
                     properties:
                       key:
                         description: The key to select.
@@ -183,7 +208,9 @@ spec:
                       system slug. To find the slug, or visit [Operating Systems API
                       docs](https://metal.equinix.com/developers/api/operatingsystems),
                       set your API auth token in the top of the page and see JSON
-                      from the API response
+                      from the API response.  By default, changing this attribute
+                      will cause your device to be deleted and recreated.  If `reinstall`
+                      is enabled, the device will be updated in-place instead of recreated.
                     type: string
                   plan:
                     description: The device plan slug. To find the plan slug, visit
@@ -334,8 +361,16 @@ spec:
                       in UTC.
                     type: string
                   userDataSecretRef:
-                    description: A string of the desired User Data for the device.
-                      A string of the desired User Data for the device
+                    description: A string of the desired User Data for the device.  By
+                      default, changing this attribute will cause the provider to
+                      destroy and recreate your device.  If reinstall is specified
+                      or behavior.allow_changes includes "user_data", the device will
+                      be updated in-place instead of recreated. A string of the desired
+                      User Data for the device.  By default, changing this attribute
+                      will cause the provider to destroy and recreate your device.  If
+                      `reinstall` is specified or `behavior.allow_changes` includes
+                      `"user_data"`, the device will be updated in-place instead of
+                      recreated.
                     properties:
                       key:
                         description: The key to select.

@@ -180,7 +180,7 @@ func (mg *Device) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this Device
 func (tr *Device) GetConnectionDetailsMapping() map[string]string {
-	return map[string]string{"cluster_details[*].node0[*].license_file_id": "spec.forProvider.clusterDetails[*].node0[*].licenseFileIdSecretRef", "cluster_details[*].node0[*].license_token": "spec.forProvider.clusterDetails[*].node0[*].licenseTokenSecretRef", "cluster_details[*].node0[*].vendor_configuration[*].activation_key": "spec.forProvider.clusterDetails[*].node0[*].vendorConfiguration[*].activationKeySecretRef", "cluster_details[*].node0[*].vendor_configuration[*].admin_password": "spec.forProvider.clusterDetails[*].node0[*].vendorConfiguration[*].adminPasswordSecretRef", "cluster_details[*].node0[*].vendor_configuration[*].root_password": "spec.forProvider.clusterDetails[*].node0[*].vendorConfiguration[*].rootPasswordSecretRef", "cluster_details[*].node1[*].license_file_id": "spec.forProvider.clusterDetails[*].node1[*].licenseFileIdSecretRef", "cluster_details[*].node1[*].license_token": "spec.forProvider.clusterDetails[*].node1[*].licenseTokenSecretRef", "cluster_details[*].node1[*].vendor_configuration[*].activation_key": "spec.forProvider.clusterDetails[*].node1[*].vendorConfiguration[*].activationKeySecretRef", "cluster_details[*].node1[*].vendor_configuration[*].admin_password": "spec.forProvider.clusterDetails[*].node1[*].vendorConfiguration[*].adminPasswordSecretRef", "cluster_details[*].node1[*].vendor_configuration[*].root_password": "spec.forProvider.clusterDetails[*].node1[*].vendorConfiguration[*].rootPasswordSecretRef"}
+	return map[string]string{"cluster_details[*].node0[*].license_token": "spec.forProvider.clusterDetails[*].node0[*].licenseTokenSecretRef", "cluster_details[*].node0[*].vendor_configuration[*].activation_key": "spec.forProvider.clusterDetails[*].node0[*].vendorConfiguration[*].activationKeySecretRef", "cluster_details[*].node0[*].vendor_configuration[*].admin_password": "spec.forProvider.clusterDetails[*].node0[*].vendorConfiguration[*].adminPasswordSecretRef", "cluster_details[*].node0[*].vendor_configuration[*].root_password": "spec.forProvider.clusterDetails[*].node0[*].vendorConfiguration[*].rootPasswordSecretRef", "cluster_details[*].node1[*].license_token": "spec.forProvider.clusterDetails[*].node1[*].licenseTokenSecretRef", "cluster_details[*].node1[*].vendor_configuration[*].activation_key": "spec.forProvider.clusterDetails[*].node1[*].vendorConfiguration[*].activationKeySecretRef", "cluster_details[*].node1[*].vendor_configuration[*].admin_password": "spec.forProvider.clusterDetails[*].node1[*].vendorConfiguration[*].adminPasswordSecretRef", "cluster_details[*].node1[*].vendor_configuration[*].root_password": "spec.forProvider.clusterDetails[*].node1[*].vendorConfiguration[*].rootPasswordSecretRef"}
 }
 
 // GetObservation of this Device
@@ -318,6 +318,80 @@ func (tr *DeviceLink) LateInitialize(attrs []byte) (bool, error) {
 
 // GetTerraformSchemaVersion returns the associated Terraform schema version
 func (tr *DeviceLink) GetTerraformSchemaVersion() int {
+	return 0
+}
+
+// GetTerraformResourceType returns Terraform resource type for this File
+func (mg *File) GetTerraformResourceType() string {
+	return "equinix_network_file"
+}
+
+// GetConnectionDetailsMapping for this File
+func (tr *File) GetConnectionDetailsMapping() map[string]string {
+	return map[string]string{"content": "spec.forProvider.contentSecretRef"}
+}
+
+// GetObservation of this File
+func (tr *File) GetObservation() (map[string]any, error) {
+	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(o, &base)
+}
+
+// SetObservation for this File
+func (tr *File) SetObservation(obs map[string]any) error {
+	p, err := json.TFParser.Marshal(obs)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
+}
+
+// GetID returns ID of underlying Terraform resource of this File
+func (tr *File) GetID() string {
+	if tr.Status.AtProvider.ID == nil {
+		return ""
+	}
+	return *tr.Status.AtProvider.ID
+}
+
+// GetParameters of this File
+func (tr *File) GetParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
+// SetParameters for this File
+func (tr *File) SetParameters(params map[string]any) error {
+	p, err := json.TFParser.Marshal(params)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// LateInitialize this File using its observed tfState.
+// returns True if there are any spec changes for the resource.
+func (tr *File) LateInitialize(attrs []byte) (bool, error) {
+	params := &FileParameters{}
+	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
+		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
+	}
+	opts := []resource.GenericLateInitializerOption{resource.WithZeroValueJSONOmitEmptyFilter(resource.CNameWildcard)}
+
+	li := resource.NewGenericLateInitializer(opts...)
+	return li.LateInitialize(&tr.Spec.ForProvider, params)
+}
+
+// GetTerraformSchemaVersion returns the associated Terraform schema version
+func (tr *File) GetTerraformSchemaVersion() int {
 	return 0
 }
 

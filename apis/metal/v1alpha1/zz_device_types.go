@@ -25,6 +25,17 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type BehaviorObservation struct {
+}
+
+type BehaviorParameters struct {
+
+	// List of attributes that are allowed to change without recreating the instance. Supported attributes: custom_data, user_data"
+	// List of attributes that are allowed to change without recreating the instance. Supported attributes: `custom_data`, `user_data`
+	// +kubebuilder:validation:Optional
+	AllowChanges []*string `json:"allowChanges,omitempty" tf:"allow_changes,omitempty"`
+}
+
 type DeviceObservation struct {
 
 	// The ipv4 private IP assigned to the device.
@@ -100,13 +111,17 @@ type DeviceParameters struct {
 	// +kubebuilder:validation:Optional
 	AlwaysPxe *bool `json:"alwaysPxe,omitempty" tf:"always_pxe,omitempty"`
 
+	// Behavioral overrides that change how the resource handles certain attribute updates. See Behavior below for more details.
+	// +kubebuilder:validation:Optional
+	Behavior []BehaviorParameters `json:"behavior,omitempty" tf:"behavior,omitempty"`
+
 	// monthly or hourly
 	// monthly or hourly
 	// +kubebuilder:validation:Optional
 	BillingCycle *string `json:"billingCycle,omitempty" tf:"billing_cycle,omitempty"`
 
-	// A string of the desired Custom Data for the device.
-	// A string of the desired Custom Data for the device
+	// A string of the desired Custom Data for the device.  By default, changing this attribute will cause the provider to destroy and recreate your device.  If reinstall is specified or behavior.allow_changes includes "custom_data", the device will be updated in-place instead of recreated.
+	// A string of the desired Custom Data for the device.  By default, changing this attribute will cause the provider to destroy and recreate your device.  If `reinstall` is specified or `behavior.allow_changes` includes `"custom_data"`, the device will be updated in-place instead of recreated.
 	// +kubebuilder:validation:Optional
 	CustomDataSecretRef *v1.SecretKeySelector `json:"customDataSecretRef,omitempty" tf:"-"`
 
@@ -172,7 +187,7 @@ type DeviceParameters struct {
 	// The operating system slug. To find the slug, or visit
 	// Operating Systems API docs, set your
 	// API auth token in the top of the page and see JSON from the API response.
-	// The operating system slug. To find the slug, or visit [Operating Systems API docs](https://metal.equinix.com/developers/api/operatingsystems), set your API auth token in the top of the page and see JSON from the API response
+	// The operating system slug. To find the slug, or visit [Operating Systems API docs](https://metal.equinix.com/developers/api/operatingsystems), set your API auth token in the top of the page and see JSON from the API response.  By default, changing this attribute will cause your device to be deleted and recreated.  If `reinstall` is enabled, the device will be updated in-place instead of recreated.
 	// +kubebuilder:validation:Required
 	OperatingSystem *string `json:"operatingSystem" tf:"operating_system,omitempty"`
 
@@ -231,8 +246,8 @@ type DeviceParameters struct {
 	// +kubebuilder:validation:Optional
 	TerminationTime *string `json:"terminationTime,omitempty" tf:"termination_time,omitempty"`
 
-	// A string of the desired User Data for the device.
-	// A string of the desired User Data for the device
+	// A string of the desired User Data for the device.  By default, changing this attribute will cause the provider to destroy and recreate your device.  If reinstall is specified or behavior.allow_changes includes "user_data", the device will be updated in-place instead of recreated.
+	// A string of the desired User Data for the device.  By default, changing this attribute will cause the provider to destroy and recreate your device.  If `reinstall` is specified or `behavior.allow_changes` includes `"user_data"`, the device will be updated in-place instead of recreated.
 	// +kubebuilder:validation:Optional
 	UserDataSecretRef *v1.SecretKeySelector `json:"userDataSecretRef,omitempty" tf:"-"`
 
