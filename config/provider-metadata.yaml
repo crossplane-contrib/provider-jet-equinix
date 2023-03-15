@@ -630,6 +630,85 @@ resources:
             virtual_devices: (Block List) Virtual Devices (see below for nested schema)
             visibility: (String) Service profile visibility - PUBLIC, PRIVATE
         importStatements: []
+    equinix_metal_bgp_session:
+        subCategory: Metal
+        name: equinix_metal_bgp_session
+        title: ""
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "address_family": "ipv4",
+                  "device_id": "${equinix_metal_device.test.id}"
+                }
+              references:
+                device_id: equinix_metal_device.test.id
+              dependencies:
+                equinix_metal_device.test: |-
+                    {
+                      "billing_cycle": "hourly",
+                      "facilities": [
+                        "ny5"
+                      ],
+                      "hostname": "terraform-test-bgp-sesh",
+                      "operating_system": "ubuntu_20_04",
+                      "plan": "c3.small.x86",
+                      "project_id": "${local.project_id}"
+                    }
+                equinix_metal_reserved_ip_block.addr: |-
+                    {
+                      "facility": "ny5",
+                      "project_id": "${local.project_id}",
+                      "quantity": 1
+                    }
+                null_resource.configure_bird: |-
+                    {
+                      "connection": [
+                        {
+                          "agent": false,
+                          "host": "${equinix_metal_device.test.access_public_ipv4}",
+                          "private_key": "${file(\"/home/tomk/keys/tkarasek_key.pem\")}",
+                          "type": "ssh"
+                        }
+                      ],
+                      "provisioner": {
+                        "file": [
+                          {
+                            "content": "${data.template_file.bird_conf_template.rendered}",
+                            "destination": "/etc/bird/bird.conf"
+                          },
+                          {
+                            "content": "${data.template_file.interface_lo0.rendered}",
+                            "destination": "/etc/network/interfaces.d/lo0"
+                          }
+                        ],
+                        "remote-exec": [
+                          {
+                            "inline": [
+                              "apt-get install bird",
+                              "mv /etc/bird/bird.conf /etc/bird/bird.conf.old"
+                            ]
+                          },
+                          {
+                            "inline": [
+                              "sysctl net.ipv4.ip_forward=1",
+                              "grep /etc/network/interfaces.d /etc/network/interfaces || echo 'source /etc/network/interfaces.d/*' \u003e\u003e /etc/network/interfaces",
+                              "ifup lo:0",
+                              "service bird restart"
+                            ]
+                          }
+                        ]
+                      },
+                      "triggers": {
+                        "template": "${data.template_file.interface_lo0.rendered}"
+                      }
+                    }
+        argumentDocs:
+            address_family: '- (Required) ipv4 or ipv6.'
+            default_route: '- (Optional) Boolean flag to set the default route policy. False by default.'
+            device_id: '- (Required) ID of device.'
+            status: ': Status of the session - up or down'
+        importStatements: []
     equinix_metal_connection:
         subCategory: Metal
         name: equinix_metal_connection
@@ -969,6 +1048,97 @@ resources:
                 set, the deletion of this device will block until the hardware reservation is marked provisionable
                 (about 4 minutes in August 2019).
         importStatements: []
+    equinix_metal_gateway:
+        subCategory: Metal
+        name: equinix_metal_gateway
+        title: ""
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "private_ipv4_subnet_size": 8,
+                  "project_id": "${local.project_id}",
+                  "vlan_id": "${equinix_metal_vlan.test.id}"
+                }
+              references:
+                project_id: local.project_id
+                vlan_id: equinix_metal_vlan.test.id
+              dependencies:
+                equinix_metal_vlan.test: |-
+                    {
+                      "description": "test VLAN in SV",
+                      "metro": "sv",
+                      "project_id": "${local.project_id}"
+                    }
+            - name: test
+              manifest: |-
+                {
+                  "ip_reservation_id": "${equinix_metal_reserved_ip_block.test.id}",
+                  "project_id": "${local.project_id}",
+                  "vlan_id": "${equinix_metal_vlan.test.id}"
+                }
+              references:
+                ip_reservation_id: equinix_metal_reserved_ip_block.test.id
+                project_id: local.project_id
+                vlan_id: equinix_metal_vlan.test.id
+              dependencies:
+                equinix_metal_reserved_ip_block.test: |-
+                    {
+                      "metro": "sv",
+                      "project_id": "${local.project_id}",
+                      "quantity": 2
+                    }
+                equinix_metal_vlan.test: |-
+                    {
+                      "description": "test VLAN in SV",
+                      "metro": "sv",
+                      "project_id": "${local.project_id}"
+                    }
+        argumentDocs:
+            ip_reservation_id: |-
+                - (Optional) UUID of Public or VRF IP Reservation to associate with the gateway, the
+                reservation must be in the same metro as the VLAN, conflicts with private_ipv4_subnet_size.
+            private_ipv4_subnet_size: |-
+                - (Optional) Size of the private IPv4 subnet to create for this metal
+                gateway, must be one of 8, 16, 32, 64, 128. Conflicts with ip_reservation_id.
+            project_id: '- (Required) UUID of the project where the gateway is scoped to.'
+            state: '- Status of the gateway resource.'
+            vlan_id: '- (Required) UUID of the VLAN where the gateway is scoped to.'
+            vrf_id: '- UUID of the VRF associated with the IP Reservation'
+        importStatements: []
+    equinix_metal_ip_attachment:
+        subCategory: Metal
+        name: equinix_metal_ip_attachment
+        title: ""
+        examples:
+            - name: first_address_assignment
+              manifest: |-
+                {
+                  "cidr_notation": "${join(\"/\", [cidrhost(metal_reserved_ip_block.myblock.cidr_notation, 0), \"32\"])}",
+                  "device_id": "${equinix_metal_device.mydevice.id}"
+                }
+              references:
+                device_id: equinix_metal_device.mydevice.id
+              dependencies:
+                equinix_metal_reserved_ip_block.myblock: |-
+                    {
+                      "facility": "ny5",
+                      "project_id": "${local.project_id}",
+                      "quantity": 2
+                    }
+        argumentDocs:
+            address_family: '- Address family as integer. One of 4 or 6.'
+            cidr: '- Length of CIDR prefix of the subnet as integer.'
+            cidr_notation: |-
+                - (Required) CIDR notation of subnet from block reserved in the same project
+                and facility as the device.
+            device_id: '- (Required) ID of device to which to assign the subnet.'
+            gateway: '- IP address of gateway for the subnet.'
+            id: '- The unique ID of the assignment.'
+            netmask: '- Subnet mask in decimal notation, e.g., 255.255.255.0.'
+            network: '- Subnet network address.'
+            public: '- Boolean flag whether subnet is reachable from the Internet.'
+        importStatements: []
     equinix_metal_organization:
         subCategory: Metal
         name: equinix_metal_organization
@@ -1042,36 +1212,196 @@ resources:
             state: '- The state of the membership (''invited'' when an invitation is open, ''active'' when the user is an organization member)'
             updated: '- When the invitation was updated (only known in the invitation stage)'
         importStatements: []
+    equinix_metal_port_vlan_attachment:
+        subCategory: Metal
+        name: equinix_metal_port_vlan_attachment
+        title: ""
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "device_id": "${equinix_metal_device_network_type.test.id}",
+                  "port_name": "eth1",
+                  "vlan_vnid": "${equinix_metal_vlan.test.vxlan}"
+                }
+              references:
+                device_id: equinix_metal_device_network_type.test.id
+                vlan_vnid: equinix_metal_vlan.test.vxlan
+              dependencies:
+                equinix_metal_device.test: |-
+                    {
+                      "billing_cycle": "hourly",
+                      "facilities": [
+                        "ny5"
+                      ],
+                      "hostname": "test",
+                      "operating_system": "ubuntu_20_04",
+                      "plan": "c3.small.x86",
+                      "project_id": "${local.project_id}"
+                    }
+                equinix_metal_device_network_type.test: |-
+                    {
+                      "device_id": "${equinix_metal_device.test.id}",
+                      "type": "hybrid"
+                    }
+                equinix_metal_vlan.test: |-
+                    {
+                      "description": "VLAN in New Jersey",
+                      "facility": "ny5",
+                      "project_id": "${local.project_id}"
+                    }
+            - name: test1
+              manifest: |-
+                {
+                  "device_id": "${equinix_metal_device_network_type.test.id}",
+                  "port_name": "eth1",
+                  "vlan_vnid": "${equinix_metal_vlan.test1.vxlan}"
+                }
+              references:
+                device_id: equinix_metal_device_network_type.test.id
+                vlan_vnid: equinix_metal_vlan.test1.vxlan
+              dependencies:
+                equinix_metal_device.test: |-
+                    {
+                      "billing_cycle": "hourly",
+                      "facilities": [
+                        "ny5"
+                      ],
+                      "hostname": "test",
+                      "operating_system": "ubuntu_20_04",
+                      "plan": "c3.small.x86",
+                      "project_id": "${local.project_id}"
+                    }
+                equinix_metal_device_network_type.test: |-
+                    {
+                      "device_id": "${equinix_metal_device.test.id}",
+                      "type": "layer2-individual"
+                    }
+                equinix_metal_vlan.test1: |-
+                    {
+                      "description": "VLAN in New Jersey",
+                      "facility": "ny5",
+                      "project_id": "${local.project_id}"
+                    }
+                equinix_metal_vlan.test2: |-
+                    {
+                      "description": "VLAN in New Jersey",
+                      "facility": "ny5",
+                      "project_id": "${local.project_id}"
+                    }
+            - name: test2
+              manifest: |-
+                {
+                  "depends_on": [
+                    "equinix_metal_port_vlan_attachment.test1"
+                  ],
+                  "device_id": "${equinix_metal_device_network_type.test.id}",
+                  "native": true,
+                  "port_name": "eth1",
+                  "vlan_vnid": "${equinix_metal_vlan.test2.vxlan}"
+                }
+              references:
+                device_id: equinix_metal_device_network_type.test.id
+                vlan_vnid: equinix_metal_vlan.test2.vxlan
+              dependencies:
+                equinix_metal_device.test: |-
+                    {
+                      "billing_cycle": "hourly",
+                      "facilities": [
+                        "ny5"
+                      ],
+                      "hostname": "test",
+                      "operating_system": "ubuntu_20_04",
+                      "plan": "c3.small.x86",
+                      "project_id": "${local.project_id}"
+                    }
+                equinix_metal_device_network_type.test: |-
+                    {
+                      "device_id": "${equinix_metal_device.test.id}",
+                      "type": "layer2-individual"
+                    }
+                equinix_metal_vlan.test1: |-
+                    {
+                      "description": "VLAN in New Jersey",
+                      "facility": "ny5",
+                      "project_id": "${local.project_id}"
+                    }
+                equinix_metal_vlan.test2: |-
+                    {
+                      "description": "VLAN in New Jersey",
+                      "facility": "ny5",
+                      "project_id": "${local.project_id}"
+                    }
+        argumentDocs:
+            device_id: '- (Required) ID of device to be assigned to the VLAN.'
+            force_bond: |-
+                - (Optional) Add port back to the bond when this resource is removed. Default is
+                false.
+            id: '- UUID of device port used in the assignment.'
+            native: |-
+                - (Optional) Mark this VLAN a native VLAN on the port. This can be used only if this
+                assignment assigns second or further VLAN to the port. To ensure that this attachment is not first
+                on a port, you can use depends_on pointing to another equinix_metal_port_vlan_attachment, just
+                like in the layer2-individual example above.
+            port_id: '- UUID of device port.'
+            port_name: '- (Required) Name of network port to be assigned to the VLAN.'
+            vlan_id: '- UUID of VLAN API resource.'
+            vlan_vnid: '- (Required) VXLAN Network Identifier.'
+        importStatements: []
     equinix_metal_project:
         subCategory: Metal
         name: equinix_metal_project
         title: ""
         examples:
-            - name: example
+            - name: tf_project_1
               manifest: |-
                 {
-                  "name": "example"
+                  "name": "Terraform Fun"
                 }
-              dependencies:
-                equinix_metal_vrf.example: |-
+            - name: tf_project_1
+              manifest: |-
+                {
+                  "bgp_config": [
                     {
-                      "description": "VRF with ASN 65000 and a pool of address space that includes 192.168.100.0/25",
-                      "ip_ranges": [
-                        "192.168.100.0/25",
-                        "192.168.200.0/25"
-                      ],
-                      "local_asn": "65000",
-                      "metro": "da",
-                      "name": "example-vrf",
-                      "project_id": "${equinix_metal_project.example.id}"
+                      "asn": 65000,
+                      "deployment_type": "local",
+                      "md5": "C179c28c41a85b"
                     }
+                  ],
+                  "name": "tftest"
+                }
+            - name: existing_project
+              manifest: |-
+                {
+                  "bgp_config": [
+                    {
+                      "asn": 65000,
+                      "deployment_type": "local",
+                      "md5": "C179c28c41a85b"
+                    }
+                  ],
+                  "name": "The name of the project (if different, will rewrite)"
+                }
         argumentDocs:
-            description: '- (Optional) Description of the VRF.'
-            ip_ranges: '- (Optional) All IPv4 and IPv6 Ranges that will be available to BGP Peers. IPv4 addresses must be /8 or smaller with a minimum size of /29. IPv6 must be /56 or smaller with a minimum size of /64. Ranges must not overlap other ranges within the VRF.'
-            local_asn: '- (Optional) The 4-byte ASN set on the VRF.'
-            metro: '- (Required) Metro ID or Code where the VRF will be deployed.'
-            name: '- (Required) User-supplied name of the VRF, unique to the project'
-            project_id: '- (Required) Project ID where the VRF will be deployed.'
+            backend_transfer: '- Enable or disable Backend Transfer, default is false.'
+            bgp_config: '- Optional BGP settings. Refer to Equinix Metal guide for BGP.'
+            bgp_config.asn: '- (Required) Autonomous System Number for local BGP deployment.'
+            bgp_config.deployment_type: |-
+                - (Required) private or public, the private is likely to be usable immediately, the
+                public will need to be reviewed by Equinix Metal engineers.
+            bgp_config.max_prefix: '- The maximum number of route filters allowed per server.'
+            bgp_config.md5: '- (Optional) Password for BGP session in plaintext (not a checksum).'
+            bgp_config.status: '- status of BGP configuration in the project.'
+            created: '- The timestamp for when the project was created.'
+            id: '- The unique ID of the project.'
+            name: '- (Required) The name of the project.'
+            organization_id: |-
+                - (Required) The UUID of organization under which you want to create the project. If you
+                leave it out, the project will be create under your the default organization of your account.
+            payment_method_id: |-
+                - The UUID of payment method for this project. The payment method and the
+                project need to belong to the same organization (passed with organization_id, or default).
+            updated: '- The timestamp for the last time the project was updated.'
         importStatements: []
     equinix_metal_project_api_key:
         subCategory: Metal
@@ -1329,6 +1659,53 @@ resources:
             token: '- API token which can be used in Equinix Metal API clients.'
             user_id: '- UUID of the owner of the API key.'
         importStatements: []
+    equinix_metal_virtual_circuit:
+        subCategory: Metal
+        name: equinix_metal_virtual_circuit
+        title: ""
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "connection_id": "${local.conn_id}",
+                  "nni_vlan": 1056,
+                  "port_id": "${data.equinix_metal_connection.test.ports[0].id}",
+                  "project_id": "${local.project_id}",
+                  "vlan_id": "${equinix_metal_vlan.test.id}"
+                }
+              references:
+                connection_id: local.conn_id
+                port_id: data.equinix_metal_connection.test.ports[0].id
+                project_id: local.project_id
+                vlan_id: equinix_metal_vlan.test.id
+              dependencies:
+                equinix_metal_vlan.test: |-
+                    {
+                      "metro": "${data.equinix_metal_connection.test.metro}",
+                      "project_id": "${local.project_id}"
+                    }
+        argumentDocs:
+            connection_id: '- (Required) UUID of Connection where the VC is scoped to.'
+            customer_ip: '- (Optional, required with vrf_id) The Customer IP address which the CSR switch will peer with. Will default to the other usable IP in the subnet.'
+            description: '- (Optional) Description for the Virtual Circuit resource.'
+            md5: '- (Optional, only valid with vrf_id) The password that can be set for the VRF BGP peer'
+            metal_ip: '- (Optional, required with vrf_id) The Metal IP address for the SVI (Switch Virtual Interface) of the VirtualCircuit. Will default to the first usable IP in the subnet.'
+            name: '- (Optional) Name of the Virtual Circuit resource.'
+            nni_vlan: '- (Required) Equinix Metal network-to-network VLAN ID.'
+            nni_vnid: '- NNI VLAN parameters, see the documentation for Equinix Fabric.'
+            peer_asn: '- (Optional, required with vrf_id) The BGP ASN of the peer. The same ASN may be the used across several VCs, but it cannot be the same as the local_asn of the VRF.'
+            port_id: '- (Required) UUID of the Connection Port where the VC is scoped to.'
+            project_id: '- (Required) UUID of the Project where the VC is scoped to.'
+            speed: '- (Optional) Speed of the Virtual Circuit resource.'
+            status: '- Status of the virtal circuit.'
+            subnet: |-
+                - (Optional, required with vrf_id) A subnet from one of the IP
+                blocks associated with the VRF that we will help create an IP reservation for. Can only be either a /30 or /31.
+            tags: '- (Optional) Tags for the Virtual Circuit resource.'
+            vlan_id: '- (Required) UUID of the VLAN to associate.'
+            vnid: '- VNID VLAN parameter, see the documentation for Equinix Fabric.'
+            vrf_id: '- (Optional) UUID of the VRF to associate.'
+        importStatements: []
     equinix_metal_vlan:
         subCategory: Metal
         name: equinix_metal_vlan
@@ -1359,6 +1736,39 @@ resources:
             id: '- ID of the virtual network.'
             project_id: '- (Required) ID of parent project.'
             vxlan: '- (Optional) VLAN ID, must be unique in metro.'
+        importStatements: []
+    equinix_metal_vrf:
+        subCategory: Metal
+        name: equinix_metal_vrf
+        title: ""
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "description": "VRF with ASN 65000 and a pool of address space that includes 192.168.100.0/25",
+                  "ip_ranges": [
+                    "192.168.100.0/25",
+                    "192.168.200.0/25"
+                  ],
+                  "local_asn": "65000",
+                  "metro": "da",
+                  "name": "example-vrf",
+                  "project_id": "${equinix_metal_project.example.id}"
+                }
+              references:
+                project_id: equinix_metal_project.example.id
+              dependencies:
+                equinix_metal_project.example: |-
+                    {
+                      "name": "example"
+                    }
+        argumentDocs:
+            description: '- (Optional) Description of the VRF.'
+            ip_ranges: '- (Optional) All IPv4 and IPv6 Ranges that will be available to BGP Peers. IPv4 addresses must be /8 or smaller with a minimum size of /29. IPv6 must be /56 or smaller with a minimum size of /64. Ranges must not overlap other ranges within the VRF.'
+            local_asn: '- (Optional) The 4-byte ASN set on the VRF.'
+            metro: '- (Required) Metro ID or Code where the VRF will be deployed.'
+            name: '- (Required) User-supplied name of the VRF, unique to the project'
+            project_id: '- (Required) Project ID where the VRF will be deployed.'
         importStatements: []
     equinix_network_acl_template:
         subCategory: Network Edge

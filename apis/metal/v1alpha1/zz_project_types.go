@@ -27,23 +27,29 @@ import (
 
 type BGPConfigObservation struct {
 
+	// The maximum number of route filters allowed per server.
 	// The maximum number of route filters allowed per server
 	MaxPrefix *float64 `json:"maxPrefix,omitempty" tf:"max_prefix,omitempty"`
 
+	// status of BGP configuration in the project.
 	// Status of BGP configuration in the project
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 }
 
 type BGPConfigParameters struct {
 
+	// Autonomous System Number for local BGP deployment.
 	// Autonomous System Number for local BGP deployment
 	// +kubebuilder:validation:Required
 	Asn *float64 `json:"asn" tf:"asn,omitempty"`
 
+	// private or public, the private is likely to be usable immediately, the
+	// public will need to be reviewed by Equinix Metal engineers.
 	// "local" or "global", the local is likely to be usable immediately, the global will need to be review by Equinix Metal engineers
 	// +kubebuilder:validation:Required
 	DeploymentType *string `json:"deploymentType" tf:"deployment_type,omitempty"`
 
+	// Password for BGP session in plaintext (not a checksum).
 	// Password for BGP session in plaintext (not a checksum)
 	// +kubebuilder:validation:Optional
 	Md5SecretRef *v1.SecretKeySelector `json:"md5SecretRef,omitempty" tf:"-"`
@@ -51,34 +57,42 @@ type BGPConfigParameters struct {
 
 type ProjectObservation struct {
 
+	// Optional BGP settings. Refer to Equinix Metal guide for BGP.
 	// Optional BGP settings. Refer to [Equinix Metal guide for BGP](https://metal.equinix.com/developers/docs/networking/local-global-bgp/)
 	// +kubebuilder:validation:Optional
 	BGPConfig []BGPConfigObservation `json:"bgpConfig,omitempty" tf:"bgp_config,omitempty"`
 
+	// The timestamp for when the project was created.
 	// The timestamp for when the project was created
 	Created *string `json:"created,omitempty" tf:"created,omitempty"`
 
+	// The unique ID of the project.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The timestamp for the last time the project was updated.
 	// The timestamp for the last time the project was updated
 	Updated *string `json:"updated,omitempty" tf:"updated,omitempty"`
 }
 
 type ProjectParameters struct {
 
+	// Optional BGP settings. Refer to Equinix Metal guide for BGP.
 	// Optional BGP settings. Refer to [Equinix Metal guide for BGP](https://metal.equinix.com/developers/docs/networking/local-global-bgp/)
 	// +kubebuilder:validation:Optional
 	BGPConfig []BGPConfigParameters `json:"bgpConfig,omitempty" tf:"bgp_config,omitempty"`
 
+	// Enable or disable Backend Transfer, default is false.
 	// Enable or disable [Backend Transfer](https://metal.equinix.com/developers/docs/networking/backend-transfer/), default is false
 	// +kubebuilder:validation:Optional
 	BackendTransfer *bool `json:"backendTransfer,omitempty" tf:"backend_transfer,omitempty"`
 
-	// User-supplied name of the VRF, unique to the project
+	// The name of the project.
 	// The name of the project
 	// +kubebuilder:validation:Required
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// The UUID of organization under which you want to create the project. If you
+	// leave it out, the project will be create under your the default organization of your account.
 	// The UUID of organization under which you want to create the project. If you leave it out, the project will be create under your the default organization of your account
 	// +crossplane:generate:reference:type=Organization
 	// +kubebuilder:validation:Optional
@@ -92,6 +106,8 @@ type ProjectParameters struct {
 	// +kubebuilder:validation:Optional
 	OrganizationIDSelector *v1.Selector `json:"organizationIdSelector,omitempty" tf:"-"`
 
+	// The UUID of payment method for this project. The payment method and the
+	// project need to belong to the same organization (passed with organization_id, or default).
 	// The UUID of payment method for this project. The payment method and the project need to belong to the same organization (passed with organization_id, or default)
 	// +kubebuilder:validation:Optional
 	PaymentMethodID *string `json:"paymentMethodId,omitempty" tf:"payment_method_id,omitempty"`

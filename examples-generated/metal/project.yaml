@@ -4,11 +4,11 @@ metadata:
   annotations:
     meta.upbound.io/example-id: metal/v1alpha1/project
   labels:
-    testing.upbound.io/example-name: example
-  name: example
+    testing.upbound.io/example-name: tf_project_1
+  name: tf-project-1
 spec:
   forProvider:
-    name: example
+    name: Terraform Fun
 
 ---
 
