@@ -28,15 +28,19 @@ import (
 type GatewayObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Status of the gateway resource.
 	// Status of the gateway resource
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
 
+	// UUID of the VRF associated with the IP Reservation
 	// UUID of the VRF associated with the IP Reservation
 	VrfID *string `json:"vrfId,omitempty" tf:"vrf_id,omitempty"`
 }
 
 type GatewayParameters struct {
 
+	// UUID of Public or VRF IP Reservation to associate with the gateway, the
+	// reservation must be in the same metro as the VLAN, conflicts with private_ipv4_subnet_size.
 	// UUID of the Public or VRF IP Reservation to associate, must be in the same metro as the VLAN
 	// +crossplane:generate:reference:type=ReservedIPBlock
 	// +kubebuilder:validation:Optional
@@ -50,10 +54,13 @@ type GatewayParameters struct {
 	// +kubebuilder:validation:Optional
 	IPReservationIDSelector *v1.Selector `json:"ipReservationIdSelector,omitempty" tf:"-"`
 
+	// Size of the private IPv4 subnet to create for this metal
+	// gateway, must be one of 8, 16, 32, 64, 128. Conflicts with ip_reservation_id.
 	// Size of the private IPv4 subnet to create for this gateway, one of [8 16 32 64 128]
 	// +kubebuilder:validation:Optional
 	PrivateIPv4SubnetSize *float64 `json:"privateIpv4SubnetSize,omitempty" tf:"private_ipv4_subnet_size,omitempty"`
 
+	// UUID of the project where the gateway is scoped to.
 	// UUID of the Project where the Gateway is scoped to
 	// +crossplane:generate:reference:type=Project
 	// +kubebuilder:validation:Optional
@@ -67,6 +74,7 @@ type GatewayParameters struct {
 	// +kubebuilder:validation:Optional
 	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
+	// UUID of the VLAN where the gateway is scoped to.
 	// UUID of the VLAN to associate
 	// +crossplane:generate:reference:type=Vlan
 	// +kubebuilder:validation:Optional
@@ -95,7 +103,7 @@ type GatewayStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Gateway is the Schema for the Gateways API. <no value>
+// Gateway is the Schema for the Gateways API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

@@ -28,20 +28,24 @@ import (
 type BGPSessionObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// up or down
 	// Status of the session - up or down
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 }
 
 type BGPSessionParameters struct {
 
+	// ipv4 or ipv6.
 	// ipv4 or ipv6
 	// +kubebuilder:validation:Required
 	AddressFamily *string `json:"addressFamily" tf:"address_family,omitempty"`
 
+	// Boolean flag to set the default route policy. False by default.
 	// Boolean flag to set the default route policy. False by default
 	// +kubebuilder:validation:Optional
 	DefaultRoute *bool `json:"defaultRoute,omitempty" tf:"default_route,omitempty"`
 
+	// ID of device.
 	// ID of device
 	// +crossplane:generate:reference:type=Device
 	// +kubebuilder:validation:Optional
@@ -70,7 +74,7 @@ type BGPSessionStatus struct {
 
 // +kubebuilder:object:root=true
 
-// BGPSession is the Schema for the BGPSessions API. <no value>
+// BGPSession is the Schema for the BGPSessions API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

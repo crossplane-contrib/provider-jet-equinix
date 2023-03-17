@@ -1,0 +1,37 @@
+apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
+kind: Vrf
+metadata:
+  annotations:
+    meta.upbound.io/example-id: metal/v1alpha1/vrf
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    description: VRF with ASN 65000 and a pool of address space that includes 192.168.100.0/25
+    ipRanges:
+    - 192.168.100.0/25
+    - 192.168.200.0/25
+    localAsn: "65000"
+    metro: da
+    name: example-vrf
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
+kind: Project
+metadata:
+  annotations:
+    meta.upbound.io/example-id: metal/v1alpha1/vrf
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    name: example
+
+---
+

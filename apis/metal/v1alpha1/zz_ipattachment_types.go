@@ -28,40 +28,51 @@ import (
 type IPAttachmentObservation struct {
 	Address *string `json:"address,omitempty" tf:"address,omitempty"`
 
+	// Address family as integer. One of 4 or 6.
 	// Address family as integer (4 or 6)
 	AddressFamily *float64 `json:"addressFamily,omitempty" tf:"address_family,omitempty"`
 
+	// Length of CIDR prefix of the subnet as integer.
 	// Length of CIDR prefix of the block as integer
 	Cidr *float64 `json:"cidr,omitempty" tf:"cidr,omitempty"`
 
+	// IP address of gateway for the subnet.
 	Gateway *string `json:"gateway,omitempty" tf:"gateway,omitempty"`
 
 	// Flag indicating whether IP block is global, i.e. assignable in any location
 	Global *bool `json:"global,omitempty" tf:"global,omitempty"`
 
+	// The unique ID of the assignment.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	Manageable *bool `json:"manageable,omitempty" tf:"manageable,omitempty"`
 
 	Management *bool `json:"management,omitempty" tf:"management,omitempty"`
 
+	// Subnet mask in decimal notation, e.g., 255.255.255.0.
 	// Mask in decimal notation, e.g. 255.255.255.0
 	Netmask *string `json:"netmask,omitempty" tf:"netmask,omitempty"`
 
+	// Subnet network address.
 	// Network IP address portion of the block specification
 	Network *string `json:"network,omitempty" tf:"network,omitempty"`
 
+	// Boolean flag whether subnet is reachable from the Internet.
 	// Flag indicating whether IP block is addressable from the Internet
 	Public *bool `json:"public,omitempty" tf:"public,omitempty"`
 
+	// The unique ID of the assignment.
 	VrfID *string `json:"vrfId,omitempty" tf:"vrf_id,omitempty"`
 }
 
 type IPAttachmentParameters struct {
 
+	// CIDR notation of subnet from block reserved in the same project
+	// and facility as the device.
 	// +kubebuilder:validation:Required
 	CidrNotation *string `json:"cidrNotation" tf:"cidr_notation,omitempty"`
 
+	// ID of device to which to assign the subnet.
 	// +crossplane:generate:reference:type=Device
 	// +kubebuilder:validation:Optional
 	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
@@ -89,7 +100,7 @@ type IPAttachmentStatus struct {
 
 // +kubebuilder:object:root=true
 
-// IPAttachment is the Schema for the IPAttachments API. <no value>
+// IPAttachment is the Schema for the IPAttachments API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

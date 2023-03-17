@@ -1,0 +1,36 @@
+apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
+kind: IPAttachment
+metadata:
+  annotations:
+    meta.upbound.io/example-id: metal/v1alpha1/ipattachment
+  labels:
+    testing.upbound.io/example-name: first_address_assignment
+  name: first-address-assignment
+spec:
+  forProvider:
+    cidrNotation: ${join("/", [cidrhost(metal_reserved_ip_block.myblock.cidr_notation,
+      0), "32"])}
+    deviceIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: mydevice
+
+---
+
+apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
+kind: ReservedIPBlock
+metadata:
+  annotations:
+    meta.upbound.io/example-id: metal/v1alpha1/ipattachment
+  labels:
+    testing.upbound.io/example-name: myblock
+  name: myblock
+spec:
+  forProvider:
+    facility: ny5
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    quantity: 2
+
+---
+

@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Gateway is the Schema for the Gateways API. <no value>
+        description: Gateway is the Schema for the Gateways API.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -64,8 +64,11 @@ spec:
               forProvider:
                 properties:
                   ipReservationId:
-                    description: UUID of the Public or VRF IP Reservation to associate,
-                      must be in the same metro as the VLAN
+                    description: UUID of Public or VRF IP Reservation to associate
+                      with the gateway, the reservation must be in the same metro
+                      as the VLAN, conflicts with private_ipv4_subnet_size. UUID of
+                      the Public or VRF IP Reservation to associate, must be in the
+                      same metro as the VLAN
                     type: string
                   ipReservationIdRef:
                     description: Reference to a ReservedIPBlock to populate ipReservationId.
@@ -142,10 +145,13 @@ spec:
                     type: object
                   privateIpv4SubnetSize:
                     description: Size of the private IPv4 subnet to create for this
-                      gateway, one of [8 16 32 64 128]
+                      metal gateway, must be one of 8, 16, 32, 64, 128. Conflicts
+                      with ip_reservation_id. Size of the private IPv4 subnet to create
+                      for this gateway, one of [8 16 32 64 128]
                     type: number
                   projectId:
-                    description: UUID of the Project where the Gateway is scoped to
+                    description: UUID of the project where the gateway is scoped to.
+                      UUID of the Project where the Gateway is scoped to
                     type: string
                   projectIdRef:
                     description: Reference to a Project to populate projectId.
@@ -221,7 +227,8 @@ spec:
                         type: object
                     type: object
                   vlanId:
-                    description: UUID of the VLAN to associate
+                    description: UUID of the VLAN where the gateway is scoped to.
+                      UUID of the VLAN to associate
                     type: string
                   vlanIdRef:
                     description: Reference to a Vlan to populate vlanId.
@@ -476,10 +483,12 @@ spec:
                   id:
                     type: string
                   state:
-                    description: Status of the gateway resource
+                    description: Status of the gateway resource. Status of the gateway
+                      resource
                     type: string
                   vrfId:
                     description: UUID of the VRF associated with the IP Reservation
+                      UUID of the VRF associated with the IP Reservation
                     type: string
                 type: object
               conditions:

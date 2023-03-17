@@ -64,24 +64,30 @@ spec:
               forProvider:
                 properties:
                   backendTransfer:
-                    description: Enable or disable [Backend Transfer](https://metal.equinix.com/developers/docs/networking/backend-transfer/),
+                    description: Enable or disable Backend Transfer, default is false.
+                      Enable or disable [Backend Transfer](https://metal.equinix.com/developers/docs/networking/backend-transfer/),
                       default is false
                     type: boolean
                   bgpConfig:
-                    description: Optional BGP settings. Refer to [Equinix Metal guide
+                    description: Optional BGP settings. Refer to Equinix Metal guide
+                      for BGP. Optional BGP settings. Refer to [Equinix Metal guide
                       for BGP](https://metal.equinix.com/developers/docs/networking/local-global-bgp/)
                     items:
                       properties:
                         asn:
-                          description: Autonomous System Number for local BGP deployment
+                          description: Autonomous System Number for local BGP deployment.
+                            Autonomous System Number for local BGP deployment
                           type: number
                         deploymentType:
-                          description: '"local" or "global", the local is likely to
-                            be usable immediately, the global will need to be review
-                            by Equinix Metal engineers'
+                          description: private or public, the private is likely to
+                            be usable immediately, the public will need to be reviewed
+                            by Equinix Metal engineers. "local" or "global", the local
+                            is likely to be usable immediately, the global will need
+                            to be review by Equinix Metal engineers
                           type: string
                         md5SecretRef:
                           description: Password for BGP session in plaintext (not
+                            a checksum). Password for BGP session in plaintext (not
                             a checksum)
                           properties:
                             key:
@@ -104,13 +110,15 @@ spec:
                       type: object
                     type: array
                   name:
-                    description: User-supplied name of the VRF, unique to the project
-                      The name of the project
+                    description: The name of the project. The name of the project
                     type: string
                   organizationId:
                     description: The UUID of organization under which you want to
                       create the project. If you leave it out, the project will be
-                      create under your the default organization of your account
+                      create under your the default organization of your account.
+                      The UUID of organization under which you want to create the
+                      project. If you leave it out, the project will be create under
+                      your the default organization of your account
                     type: string
                   organizationIdRef:
                     description: Reference to a Organization to populate organizationId.
@@ -188,7 +196,10 @@ spec:
                   paymentMethodId:
                     description: The UUID of payment method for this project. The
                       payment method and the project need to belong to the same organization
-                      (passed with organization_id, or default)
+                      (passed with organization_id, or default). The UUID of payment
+                      method for this project. The payment method and the project
+                      need to belong to the same organization (passed with organization_id,
+                      or default)
                     type: string
                 required:
                 - name
@@ -370,26 +381,32 @@ spec:
               atProvider:
                 properties:
                   bgpConfig:
-                    description: Optional BGP settings. Refer to [Equinix Metal guide
+                    description: Optional BGP settings. Refer to Equinix Metal guide
+                      for BGP. Optional BGP settings. Refer to [Equinix Metal guide
                       for BGP](https://metal.equinix.com/developers/docs/networking/local-global-bgp/)
                     items:
                       properties:
                         maxPrefix:
                           description: The maximum number of route filters allowed
+                            per server. The maximum number of route filters allowed
                             per server
                           type: number
                         status:
-                          description: Status of BGP configuration in the project
+                          description: status of BGP configuration in the project.
+                            Status of BGP configuration in the project
                           type: string
                       type: object
                     type: array
                   created:
-                    description: The timestamp for when the project was created
+                    description: The timestamp for when the project was created. The
+                      timestamp for when the project was created
                     type: string
                   id:
+                    description: The unique ID of the project.
                     type: string
                   updated:
-                    description: The timestamp for the last time the project was updated
+                    description: The timestamp for the last time the project was updated.
+                      The timestamp for the last time the project was updated
                     type: string
                 type: object
               conditions:

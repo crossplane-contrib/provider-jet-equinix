@@ -35,8 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: VirtualCircuit is the Schema for the VirtualCircuits API. <no
-          value>
+        description: VirtualCircuit is the Schema for the VirtualCircuits API.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -65,7 +64,8 @@ spec:
               forProvider:
                 properties:
                   connectionId:
-                    description: UUID of Connection where the VC is scoped to
+                    description: UUID of Connection where the VC is scoped to. UUID
+                      of Connection where the VC is scoped to
                     type: string
                   connectionIdRef:
                     description: Reference to a Connection to populate connectionId.
@@ -143,12 +143,16 @@ spec:
                   customerIp:
                     description: The Customer IP address which the CSR switch will
                       peer with. Will default to the other usable IP in the subnet.
+                      The Customer IP address which the CSR switch will peer with.
+                      Will default to the other usable IP in the subnet.
                     type: string
                   description:
-                    description: Description of the Virtual Circuit resource
+                    description: Description for the Virtual Circuit resource. Description
+                      of the Virtual Circuit resource
                     type: string
                   md5SecretRef:
                     description: The password that can be set for the VRF BGP peer
+                      The password that can be set for the VRF BGP peer
                     properties:
                       key:
                         description: The key to select.
@@ -167,26 +171,33 @@ spec:
                   metalIp:
                     description: The Metal IP address for the SVI (Switch Virtual
                       Interface) of the VirtualCircuit. Will default to the first
-                      usable IP in the subnet.
+                      usable IP in the subnet. The Metal IP address for the SVI (Switch
+                      Virtual Interface) of the VirtualCircuit. Will default to the
+                      first usable IP in the subnet.
                     type: string
                   name:
-                    description: Name of the Virtual Circuit resource
+                    description: Name of the Virtual Circuit resource. Name of the
+                      Virtual Circuit resource
                     type: string
                   nniVlan:
-                    description: Equinix Metal network-to-network VLAN ID (optional
-                      when the connection has mode=tunnel)
+                    description: Equinix Metal network-to-network VLAN ID. Equinix
+                      Metal network-to-network VLAN ID (optional when the connection
+                      has mode=tunnel)
                     type: number
                   peerAsn:
                     description: The BGP ASN of the peer. The same ASN may be the
+                      used across several VCs, but it cannot be the same as the local_asn
+                      of the VRF. The BGP ASN of the peer. The same ASN may be the
                       used across several VCs, but it cannot be the same as the local_asn
                       of the VRF.
                     type: number
                   portId:
                     description: UUID of the Connection Port where the VC is scoped
-                      to
+                      to. UUID of the Connection Port where the VC is scoped to
                     type: string
                   projectId:
-                    description: UUID of the Project where the VC is scoped to
+                    description: UUID of the Project where the VC is scoped to. UUID
+                      of the Project where the VC is scoped to
                     type: string
                   projectIdRef:
                     description: Reference to a Project to populate projectId.
@@ -262,26 +273,30 @@ spec:
                         type: object
                     type: object
                   speed:
-                    description: Description of the Virtual Circuit speed. This is
-                      for information purposes and is computed when the connection
-                      type is shared.
+                    description: Speed of the Virtual Circuit resource. Description
+                      of the Virtual Circuit speed. This is for information purposes
+                      and is computed when the connection type is shared.
                     type: string
                   subnet:
                     description: A subnet from one of the IP blocks associated with
                       the VRF that we will help create an IP reservation for. Can
-                      only be either a /30 or /31. * For a /31 block, it will only
-                      have two IP addresses, which will be used for the metal_ip and
-                      customer_ip. * For a /30 block, it will have four IP addresses,
-                      but the first and last IP addresses are not usable. We will
-                      default to the first usable IP address for the metal_ip.
+                      only be either a /30 or /31. A subnet from one of the IP blocks
+                      associated with the VRF that we will help create an IP reservation
+                      for. Can only be either a /30 or /31. * For a /31 block, it
+                      will only have two IP addresses, which will be used for the
+                      metal_ip and customer_ip. * For a /30 block, it will have four
+                      IP addresses, but the first and last IP addresses are not usable.
+                      We will default to the first usable IP address for the metal_ip.
                     type: string
                   tags:
-                    description: Tags attached to the virtual circuit
+                    description: Tags for the Virtual Circuit resource. Tags attached
+                      to the virtual circuit
                     items:
                       type: string
                     type: array
                   vlanId:
-                    description: UUID of the VLAN to associate
+                    description: UUID of the VLAN to associate. UUID of the VLAN to
+                      associate
                     type: string
                   vlanIdRef:
                     description: Reference to a Vlan to populate vlanId.
@@ -357,7 +372,8 @@ spec:
                         type: object
                     type: object
                   vrfId:
-                    description: UUID of the VRF to associate
+                    description: UUID of the VRF to associate. UUID of the VRF to
+                      associate
                     type: string
                   vrfIdRef:
                     description: Reference to a Vrf to populate vrfId.
@@ -614,13 +630,16 @@ spec:
                   id:
                     type: string
                   nniVnid:
-                    description: Nni VLAN ID parameter, see https://metal.equinix.com/developers/docs/networking/fabric/
+                    description: NNI VLAN parameters, see the documentation for Equinix
+                      Fabric. Nni VLAN ID parameter, see https://metal.equinix.com/developers/docs/networking/fabric/
                     type: number
                   status:
-                    description: Status of the virtual circuit resource
+                    description: Status of the virtal circuit. Status of the virtual
+                      circuit resource
                     type: string
                   vnid:
-                    description: VNID VLAN parameter, see https://metal.equinix.com/developers/docs/networking/fabric/
+                    description: VNID VLAN parameter, see the documentation for Equinix
+                      Fabric. VNID VLAN parameter, see https://metal.equinix.com/developers/docs/networking/fabric/
                     type: number
                 type: object
               conditions:

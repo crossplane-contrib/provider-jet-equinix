@@ -31,26 +31,32 @@ type VrfObservation struct {
 
 type VrfParameters struct {
 
+	// Description of the VRF.
 	// Description of the VRF
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// All IPv4 and IPv6 Ranges that will be available to BGP Peers. IPv4 addresses must be /8 or smaller with a minimum size of /29. IPv6 must be /56 or smaller with a minimum size of /64. Ranges must not overlap other ranges within the VRF.
+	// All IPv4 and IPv6 Ranges that will be available to BGP Peers. IPv4 addresses must be /8 or smaller with a minimum size of /29. IPv6 must be /56 or smaller with a minimum size of /64. Ranges must not overlap other ranges within the VRF.
 	// +kubebuilder:validation:Optional
 	IPRanges []*string `json:"ipRanges,omitempty" tf:"ip_ranges,omitempty"`
 
 	// The 4-byte ASN set on the VRF.
+	// The 4-byte ASN set on the VRF.
 	// +kubebuilder:validation:Optional
 	LocalAsn *float64 `json:"localAsn,omitempty" tf:"local_asn,omitempty"`
 
+	// Metro ID or Code where the VRF will be deployed.
 	// Metro Code
 	// +kubebuilder:validation:Required
 	Metro *string `json:"metro" tf:"metro,omitempty"`
 
 	// User-supplied name of the VRF, unique to the project
+	// User-supplied name of the VRF, unique to the project
 	// +kubebuilder:validation:Required
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// Project ID where the VRF will be deployed.
 	// Project ID
 	// +crossplane:generate:reference:type=Project
 	// +kubebuilder:validation:Optional
@@ -79,7 +85,7 @@ type VrfStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Vrf is the Schema for the Vrfs API. <no value>
+// Vrf is the Schema for the Vrfs API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

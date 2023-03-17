@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: BGPSession is the Schema for the BGPSessions API. <no value>
+        description: BGPSession is the Schema for the BGPSessions API.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -64,14 +64,15 @@ spec:
               forProvider:
                 properties:
                   addressFamily:
-                    description: ipv4 or ipv6
+                    description: ipv4 or ipv6. ipv4 or ipv6
                     type: string
                   defaultRoute:
                     description: Boolean flag to set the default route policy. False
+                      by default. Boolean flag to set the default route policy. False
                       by default
                     type: boolean
                   deviceId:
-                    description: ID of device
+                    description: ID of device. ID of device
                     type: string
                   deviceIdRef:
                     description: Reference to a Device to populate deviceId.
@@ -328,7 +329,7 @@ spec:
                   id:
                     type: string
                   status:
-                    description: Status of the session - up or down
+                    description: up or down Status of the session - up or down
                     type: string
                 type: object
               conditions:
