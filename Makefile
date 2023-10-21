@@ -4,7 +4,7 @@
 PROJECT_NAME ?= provider-jet-equinix
 PROJECT_REPO ?= github.com/crossplane-contrib/$(PROJECT_NAME)
 
-export TERRAFORM_VERSION ?= 1.2.1
+export TERRAFORM_VERSION ?= 1.4.6
 
 export TERRAFORM_PROVIDER_SOURCE := equinix/equinix
 export TERRAFORM_PROVIDER_VERSION := 1.20.0
