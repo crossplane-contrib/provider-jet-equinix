@@ -68,7 +68,7 @@ type IPAttachmentObservation struct {
 type IPAttachmentParameters struct {
 
 	// CIDR notation of subnet from block reserved in the same project
-	// and facility as the device.
+	// and metro as the device.
 	// +kubebuilder:validation:Required
 	CidrNotation *string `json:"cidrNotation" tf:"cidr_notation,omitempty"`
 

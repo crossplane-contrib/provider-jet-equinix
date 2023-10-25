@@ -346,6 +346,13 @@ spec:
                       - node1
                       type: object
                     type: array
+                  connectivity:
+                    description: 'Device accessibility (INTERNET-ACCESS or PRIVATE
+                      or INTERNET-ACCESS-WITH-PRVT-MGMT). If not specified, default
+                      will be INTERNET-ACCESS Parameter to identify internet access
+                      for device. Supported Values: INTERNET-ACCESS(default) or PRIVATE
+                      or INTERNET-ACCESS-WITH-PRVT-MGMT'
+                    type: string
                   coreCount:
                     description: Number of CPU cores used by device. Number of CPU
                       cores used by device

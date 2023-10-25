@@ -65,7 +65,7 @@ spec:
                 properties:
                   cidrNotation:
                     description: CIDR notation of subnet from block reserved in the
-                      same project and facility as the device.
+                      same project and metro as the device.
                     type: string
                   deviceId:
                     description: ID of device to which to assign the subnet.

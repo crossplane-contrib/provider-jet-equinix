@@ -8,7 +8,7 @@ metadata:
   name: two-elastic-addresses
 spec:
   forProvider:
-    facility: sv15
+    metro: sv
     projectIdSelector:
       matchLabels:
         testing.upbound.io/example-name: example

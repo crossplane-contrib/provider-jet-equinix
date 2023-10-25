@@ -9,10 +9,11 @@ metadata:
 spec:
   forProvider:
     description: VLAN in New Jersey
-    facility: sv15
+    metro: sv
     projectIdSelector:
       matchLabels:
         testing.upbound.io/example-name: example
+    vxlan: 1040
 
 ---
 

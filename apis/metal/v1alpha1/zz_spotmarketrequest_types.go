@@ -26,6 +26,8 @@ import (
 )
 
 type InstanceParametersObservation struct {
+	TerminationTime *string `json:"terminationTime,omitempty" tf:"termination_time,omitempty"`
+
 	TermintationTime *string `json:"termintationTime,omitempty" tf:"termintation_time,omitempty"`
 }
 
@@ -82,7 +84,7 @@ type SpotMarketRequestObservation struct {
 
 	// Key/Value pairs of parameters for devices provisioned from
 	// this request. Valid keys are: billing_cycle, plan, operating_system, hostname,
-	// termintation_time, always_pxe, description, features, locked, project_ssh_keys,
+	// termination_time, always_pxe, description, features, locked, project_ssh_keys,
 	// user_ssh_keys, userdata, customdata, ipxe_script_url, tags. You can find each parameter
 	// description in equinix_metal_device docs.
 	// Parameters for devices provisioned from this request. You can find the parameter description from the [equinix_metal_device doc](device.md)
@@ -102,14 +104,14 @@ type SpotMarketRequestParameters struct {
 	// +kubebuilder:validation:Required
 	DevicesMin *float64 `json:"devicesMin" tf:"devices_min,omitempty"`
 
-	// Facility IDs where devices should be created.
+	// (Deprecated) Facility IDs where devices should be created. Use metro instead; read the facility to metro migration guide
 	// Facility IDs where devices should be created
 	// +kubebuilder:validation:Optional
 	Facilities []*string `json:"facilities,omitempty" tf:"facilities,omitempty"`
 
 	// Key/Value pairs of parameters for devices provisioned from
 	// this request. Valid keys are: billing_cycle, plan, operating_system, hostname,
-	// termintation_time, always_pxe, description, features, locked, project_ssh_keys,
+	// termination_time, always_pxe, description, features, locked, project_ssh_keys,
 	// user_ssh_keys, userdata, customdata, ipxe_script_url, tags. You can find each parameter
 	// description in equinix_metal_device docs.
 	// Parameters for devices provisioned from this request. You can find the parameter description from the [equinix_metal_device doc](device.md)

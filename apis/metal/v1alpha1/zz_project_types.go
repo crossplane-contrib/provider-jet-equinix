@@ -43,8 +43,8 @@ type BGPConfigParameters struct {
 	// +kubebuilder:validation:Required
 	Asn *float64 `json:"asn" tf:"asn,omitempty"`
 
-	// private or public, the private is likely to be usable immediately, the
-	// public will need to be reviewed by Equinix Metal engineers.
+	// local or global, the local is likely to be usable immediately, the
+	// global will need to be reviewed by Equinix Metal engineers.
 	// "local" or "global", the local is likely to be usable immediately, the global will need to be review by Equinix Metal engineers
 	// +kubebuilder:validation:Required
 	DeploymentType *string `json:"deploymentType" tf:"deployment_type,omitempty"`
@@ -86,13 +86,13 @@ type ProjectParameters struct {
 	// +kubebuilder:validation:Optional
 	BackendTransfer *bool `json:"backendTransfer,omitempty" tf:"backend_transfer,omitempty"`
 
-	// The name of the project.
-	// The name of the project
+	// The name of the project.  The maximum length is 80 characters
+	// The name of the project.  The maximum length is 80 characters.
 	// +kubebuilder:validation:Required
 	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The UUID of organization under which you want to create the project. If you
-	// leave it out, the project will be create under your the default organization of your account.
+	// leave it out, the project will be created under your the default organization of your account.
 	// The UUID of organization under which you want to create the project. If you leave it out, the project will be create under your the default organization of your account
 	// +crossplane:generate:reference:type=Organization
 	// +kubebuilder:validation:Optional

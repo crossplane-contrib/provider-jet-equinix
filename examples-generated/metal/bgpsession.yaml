@@ -26,9 +26,9 @@ metadata:
 spec:
   forProvider:
     billingCycle: hourly
-    facilities:
-    - ny5
     hostname: terraform-test-bgp-sesh
+    metro:
+    - ny
     operatingSystem: ubuntu_20_04
     plan: c3.small.x86
     projectIdSelector:
@@ -47,7 +47,7 @@ metadata:
   name: addr
 spec:
   forProvider:
-    facility: ny5
+    metro: ny
     projectIdSelector:
       matchLabels:
         testing.upbound.io/example-name: example

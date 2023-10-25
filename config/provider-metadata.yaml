@@ -20,6 +20,9 @@ resources:
                 attribute is only set on bond ports.
             port_id: '- (Required) ID of the port to read.'
             reset_on_delete: '- (Optional) Behavioral setting to reset the port to default settings (layer3 bonded mode without any vlan attached) before delete/destroy.'
+            timeouts.create: '- (Defaults to 30 mins) Used when creating the Port.'
+            timeouts.delete: '- (Defaults to 30 mins) Used when deleting the Port.'
+            timeouts.update: '- (Defaults to 30 mins) Used when updating the Port.'
             type: '- Type is either "NetworkBondPort" for bond ports or "NetworkPort" for bondable ethernet ports.'
             vlan_ids: |-
                 - (Optional) List of VLAN UUIDs to attach to the port, valid only for L2 and Hybrid
@@ -434,6 +437,57 @@ resources:
                 - (Required) A list of email addresses that will receive
                 notifications about connections approvals and rejections.
         importStatements: []
+    equinix_fabric_cloud_router Resource - terraform-provider-equinix:
+        subCategory: Fabric
+        description: Fabric V4 API compatible resource allows creation and management of Equinix Fabric Cloud Router ~> Note Equinix Fabric v4 resources and datasources are currently in Beta. The interfaces related to equinix_fabric_ resources and datasources may change ahead of general availability. Please, do not hesitate to report any problems that you experience by opening a new issue https://github.com/equinix/terraform-provider-equinix/issues/new?template=bug.md
+        name: equinix_fabric_cloud_router Resource - terraform-provider-equinix
+        title: equinix_fabric_cloud_router Resource - terraform-provider-equinix
+        argumentDocs:
+            account: '(Block Set, Max: 1) Customer account information that is associated with this Fabric Cloud Router (see below for nested schema)'
+            account_number: (Number) Account Number
+            billing_tier: (String) Billing tier for connection bandwidth
+            change_log: (Set of Object) Captures Fabric Cloud Router lifecycle change information (see below for nested schema)
+            code: (String) Fabric Cloud Router package code
+            create: (String)
+            created_by: (String)
+            created_by_email: (String)
+            created_by_full_name: (String)
+            created_date_time: (String)
+            delete: (String)
+            deleted_by: (String)
+            deleted_by_email: (String)
+            deleted_by_full_name: (String)
+            deleted_date_time: (String)
+            description: (String) Customer-provided Fabric Cloud Router description
+            emails: (List of String) Array of contact emails
+            equinix_asn: (Number) Equinix ASN
+            href: (String) Fabric Cloud Router URI information
+            ibx: (String) IBX Code
+            id: (String) The ID of this resource.
+            location: '(Block Set, Min: 1, Max: 1) Fabric Cloud Router location (see below for nested schema)'
+            metro_code: (String) Access point metro code
+            metro_name: (String) Access point metro name
+            name: (String) Fabric Cloud Router name. An alpha-numeric 24 characters string which can include only hyphens and underscores
+            notifications: '(Block List, Min: 1) Preferences for notifications on Fabric Cloud Router configuration or status changes (see below for nested schema)'
+            order: '(Block Set, Max: 1) Order information related to this Fabric Cloud Router (see below for nested schema)'
+            order_id: (String) Order Identification
+            order_number: (String) Order Reference Number
+            package: '(Block Set, Min: 1, Max: 1) Fabric Cloud Router package (see below for nested schema)'
+            project: (Block Set) Fabric Cloud Router project (see below for nested schema)
+            project_id: (String) Project Id
+            purchase_order_number: (String) Purchase order number
+            read: (String)
+            region: (String) Access point region
+            send_interval: (String) Send interval
+            state: (String) Fabric Cloud Router overall state
+            timeouts: (Block, Optional) (see below for nested schema)
+            type: (String) Defines the FCR type like XF_GATEWAY
+            update: (String)
+            updated_by: (String)
+            updated_by_email: (String)
+            updated_by_full_name: (String)
+            updated_date_time: (String)
+        importStatements: []
     equinix_fabric_connection Resource - terraform-provider-equinix:
         subCategory: Fabric
         description: Fabric V4 API compatible resource allows creation and management of Equinix Fabric connection ~> Note Equinix Fabric v4 resources and datasources are currently in Beta. The interfaces related to equinix_fabric_ resources and datasources may change ahead of general availability. Please, do not hesitate to report any problems that you experience by opening a new issue https://github.com/equinix/terraform-provider-equinix/issues/new?template=bug.md
@@ -470,11 +524,11 @@ resources:
             error_code: (String)
             error_message: (String)
             errors: (List of Object) (see below for nested schema)
-            gateway: (Block Set) Gateway access point information (see below for nested schema)
+            gateway: Use router attribute instead; (Block Set) (see below for nested schema)
             global_cust_id: (String)
             global_org_id: (String)
             global_organization_name: (String)
-            group: (String) Redundancy group identifier
+            group: (String)
             help: (String)
             href: (String) Connection URI information
             ibx: (String) IBX Code
@@ -508,13 +562,14 @@ resources:
             reason: (String)
             redundancy: (Block Set) Redundancy Information (see below for nested schema)
             region: (String) Access point region
+            router: (Block Set) Cloud Router access point information that replaces gateway (refers to below for nested schema)
             routing_protocols: (Block List) Access point routing protocols configuration (see below for nested schema)
             seller_region: (String) Access point seller region
             send_interval: (String) Send interval
             service_token: (Block Set) For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets (see below for nested schema)
             state: (String) Connection overall state
             timeouts: (Block, Optional) (see below for nested schema)
-            type: (String) Defines the connection type like VG_VC, EVPL_VC, EPL_VC, EC_VC, GW_VC, ACCESS_EPL_VC
+            type: (String) Defines the connection type like VG_VC, EVPL_VC, EPL_VC, EC_VC, IP_VC, ACCESS_EPL_VC
             update: (String)
             updated_by: (String)
             updated_by_email: (String)
@@ -527,6 +582,63 @@ resources:
             vlan_s_tag: (Number) Vlan Provider Tag information, vlanSTag value specified for QINQ connections
             vlan_tag: (Number) Vlan Tag information, vlanTag value specified for DOT1Q connections
             z_side: '(Block Set, Min: 1) Destination or Provider side connection configuration object of the multi-segment connection (see below for nested schema)'
+        importStatements: []
+    equinix_fabric_routing_protocol Resource - terraform-provider-equinix:
+        subCategory: Fabric
+        description: Fabric V4 API compatible resource allows creation and management of Equinix Fabric connection ~> Note Equinix Fabric v4 resources and datasources are currently in Beta. The interfaces related to equinix_fabric_ resources and datasources may change ahead of general availability. Please, do not hesitate to report any problems that you experience by opening a new issue https://github.com/equinix/terraform-provider-equinix/issues/new?template=bug.md
+        name: equinix_fabric_routing_protocol Resource - terraform-provider-equinix
+        title: equinix_fabric_routing_protocol Resource - terraform-provider-equinix
+        argumentDocs:
+            additional_info: (List of Object) (see below for nested schema)
+            bfd: (Block Set) Bidirectional Forwarding Detection (see below for nested schema)
+            bgp_auth_key: (String) BGP authorization key
+            bgp_ipv4: (Block Set) Routing Protocol BGP IPv4 (see below for nested schema)
+            bgp_ipv6: (Block Set) Routing Protocol BGP IPv6 (see below for nested schema)
+            change: (Set of Object) Routing Protocol configuration Changes (see below for nested schema)
+            change_log: (Set of Object) Captures Routing Protocol lifecycle change information (see below for nested schema)
+            connection_uuid: (String) Connection URI associated with Routing Protocol
+            correlation_id: (String)
+            create: (String)
+            created_by: (String)
+            created_by_email: (String)
+            created_by_full_name: (String)
+            created_date_time: (String)
+            customer_asn: (Number) Customer-provided ASN
+            customer_peer_ip: (String) Customer side peering ip
+            delete: (String)
+            deleted_by: (String)
+            deleted_by_email: (String)
+            deleted_by_full_name: (String)
+            deleted_date_time: (String)
+            description: (String) Customer-provided Fabric Routing Protocol description
+            details: (String)
+            direct_ipv4: (Block Set) Routing Protocol Direct IPv4 (see below for nested schema)
+            direct_ipv6: (Block Set) Routing Protocol Direct IPv6 (see below for nested schema)
+            enabled: (Boolean) Bidirectional Forwarding Detection enablement
+            equinix_asn: (Number) Equinix ASN
+            equinix_iface_ip: (String) Equinix side Interface IP address
+            equinix_peer_ip: (String) Equinix side peering ip
+            error_code: (String)
+            error_message: (String)
+            errors: (List of Object) (see below for nested schema)
+            help: (String)
+            href: (String) Routing Protocol URI information
+            id: (String) The ID of this resource.
+            interval: (String) Interval range between the received BFD control packets
+            name: (String) Routing Protocol name. An alpha-numeric 24 characters string which can include only hyphens and underscores
+            operation: (Set of Object) Routing Protocol type-specific operational data (see below for nested schema)
+            property: (String)
+            read: (String)
+            reason: (String)
+            state: (String) Routing Protocol overall state
+            timeouts: (Block, Optional) (see below for nested schema)
+            type: (String) Defines the routing protocol type like BGP or DIRECT
+            update: (String)
+            updated_by: (String)
+            updated_by_email: (String)
+            updated_by_full_name: (String)
+            updated_date_time: (String)
+            uuid: (String) Equinix-assigned routing protocol identifier
         importStatements: []
     equinix_fabric_service_profile Resource - terraform-provider-equinix:
         subCategory: Fabric
@@ -647,17 +759,17 @@ resources:
                 equinix_metal_device.test: |-
                     {
                       "billing_cycle": "hourly",
-                      "facilities": [
-                        "ny5"
-                      ],
                       "hostname": "terraform-test-bgp-sesh",
+                      "metro": [
+                        "ny"
+                      ],
                       "operating_system": "ubuntu_20_04",
                       "plan": "c3.small.x86",
                       "project_id": "${local.project_id}"
                     }
                 equinix_metal_reserved_ip_block.addr: |-
                     {
-                      "facility": "ny5",
+                      "metro": "ny",
                       "project_id": "${local.project_id}",
                       "quantity": 1
                     }
@@ -717,6 +829,7 @@ resources:
             - name: example
               manifest: |-
                 {
+                  "contact_email": "username@example.com",
                   "metro": "sv",
                   "name": "tf-metal-to-azure",
                   "project_id": "${local.project_id}",
@@ -751,6 +864,7 @@ resources:
             - name: example
               manifest: |-
                 {
+                  "contact_email": "username@example.com",
                   "metro": "FR",
                   "name": "tf-port-to-metal",
                   "project_id": "${local.project_id}",
@@ -777,6 +891,7 @@ resources:
             - name: example
               manifest: |-
                 {
+                  "contact_email": "username@example.com",
                   "metro": "SV",
                   "name": "tf-port-to-metal-legacy",
                   "project_id": "${local.my_project_id}",
@@ -799,8 +914,9 @@ resources:
                       "vlan_stag": 1020
                     }
         argumentDocs:
+            contact_email: '- (Optional) The preferred email used for communication and notifications about the Equinix Fabric interconnection. Required when using a Project API key. Optional and defaults to the primary user email address when using a User API key.'
             description: '- (Optional) Description for the connection resource.'
-            facility: '- (Optional) Facility where the connection will be created.'
+            facility: '- (Deprecated) Facility where the connection will be created.   Use metro instead; read the facility to metro migration guide'
             metro: '- (Optional) Metro where the connection will be created.'
             mode: '- (Optional) Mode for connections in IBX facilities with the dedicated type - standard or tunnel. Default is standard.'
             name: '- (Required) Name of the connection resource'
@@ -843,7 +959,7 @@ resources:
                   "always_pxe": "false",
                   "billing_cycle": "hourly",
                   "hostname": "tf.coreos2-pxe",
-                  "ipxe_script_url": "https://rawgit.com/cloudnativelabs/pxe/master/metal/coreos-stable-metal.ipxe",
+                  "ipxe_script_url": "https://rawgit.com/cloudnativelabs/pxe/master/packet/coreos-stable-metal.ipxe",
                   "metro": "sv",
                   "operating_system": "custom_ipxe",
                   "plan": "c3.small.x86",
@@ -857,9 +973,6 @@ resources:
               manifest: |-
                 {
                   "billing_cycle": "hourly",
-                  "facilities": [
-                    "ny5"
-                  ],
                   "hostname": "tf.coreos2",
                   "ip_address": [
                     {
@@ -867,6 +980,7 @@ resources:
                       "type": "private_ipv4"
                     }
                   ],
+                  "metro": "ny",
                   "operating_system": "ubuntu_20_04",
                   "plan": "c3.small.x86",
                   "project_id": "${local.project_id}"
@@ -877,11 +991,9 @@ resources:
               manifest: |-
                 {
                   "billing_cycle": "hourly",
-                  "facilities": [
-                    "ny5"
-                  ],
                   "hardware_reservation_id": "next-available",
                   "hostname": "tftest",
+                  "metro": "ny",
                   "operating_system": "ubuntu_20_04",
                   "plan": "c3.small.x86",
                   "project_id": "${local.project_id}",
@@ -904,7 +1016,7 @@ resources:
                   "billing_cycle": "hourly",
                   "custom_data": "${local.custom_data}",
                   "hostname": "tf.coreos2-pxe",
-                  "ipxe_script_url": "https://rawgit.com/cloudnativelabs/pxe/master/metal/coreos-stable-metal.ipxe",
+                  "ipxe_script_url": "https://rawgit.com/cloudnativelabs/pxe/master/packet/coreos-stable-metal.ipxe",
                   "metro": "sv",
                   "operating_system": "custom_ipxe",
                   "plan": "c3.small.x86",
@@ -930,7 +1042,7 @@ resources:
             cidr: '- Bit length of the network mask of the address.'
             created: '- The timestamp for when the device was created.'
             custom_data: '- (Optional) A string of the desired Custom Data for the device.  By default, changing this attribute will cause the provider to destroy and recreate your device.  If reinstall is specified or behavior.allow_changes includes "custom_data", the device will be updated in-place instead of recreated.'
-            deployed_facility: '- The facility where the device is deployed.'
+            deployed_facility: '- (Deprecated) The facility where the device is deployed. Use metro instead; read the facility to metro migration guide'
             deployed_hardware_reservation_id: |-
                 - ID of hardware reservation where this device was deployed.
                 It is useful when using the next-available hardware reservation.
@@ -939,11 +1051,11 @@ resources:
             equinix_metal_device.name.network.1: .
             equinix_metal_device.name.network.2: .
             facilities: |-
-                - (Optional) List of facility codes with deployment preferences. Equinix Metal API will go
+                - (Deprecated) List of facility codes with deployment preferences. Equinix Metal API will go
                 through the list and will deploy your device to first facility with free capacity. List items must
                 be facility codes or any (a wildcard). To find the facility code, visit
                 Facilities API docs, set your API auth
-                token in the top of the page and see JSON from the API response. Conflicts with metro.
+                token in the top of the page and see JSON from the API response. Conflicts with metro.  Use metro instead; read the facility to metro migration guide
             family: '- IP version. One of 4, 6.'
             force_detach_volumes: |-
                 - (Optional) Delete device even if it has volumes attached. Only applies
@@ -1004,11 +1116,7 @@ resources:
                 - List of ports assigned to the device. See Ports Attribute below for
                 more details.
             project_id: '- (Required) The ID of the project in which to create the device'
-            project_ssh_key_ids: |-
-                - (Optional) Array of IDs of the project SSH keys which should be added to the device.
-                If you omit this, SSH keys of all the members of the parent project will be added to the device. If
-                you specify this array, only the listed project SSH keys will be added. Project SSH keys can be
-                created with the equinix_metal_project_ssh_key resource.
+            project_ssh_key_ids: '- (Optional) Array of IDs of the project SSH keys which should be added to the device. If you specify this array, only the listed project SSH keys (and any SSH keys for the users specified in user_ssh_key_ids) will be added. If no SSH keys are specified (both user_ssh_keys_ids and project_ssh_key_ids are empty lists or omitted), all parent project keys, parent project members keys and organization members keys will be included.  Project SSH keys can be created with the equinix_metal_project_ssh_key resource.'
             public: '- Whether the address is routable from the Internet.'
             reinstall: |-
                 - (Optional) Whether the device should be reinstalled instead of destroyed when
@@ -1042,7 +1150,7 @@ resources:
             type: '- Type of the port (e.g. NetworkPort or NetworkBondPort).'
             updated: '- The timestamp for the last time the device was updated.'
             user_data: '- (Optional) A string of the desired User Data for the device.  By default, changing this attribute will cause the provider to destroy and recreate your device.  If reinstall is specified or behavior.allow_changes includes "user_data", the device will be updated in-place instead of recreated.'
-            user_ssh_key_ids: '- (Optional) Array of IDs of the user SSH keys which should be added to the device. If you omit this, SSH keys of all the members of the parent project will be added to the device. If you specify this array, only the listed user SSH keys (and any project_ssh_key_ids) will be added. User SSH keys can be created with the equinix_metal_ssh_key resource'
+            user_ssh_key_ids: '- (Optional) Array of IDs of the users whose SSH keys should be added to the device. If you specify this array, only the listed users'' SSH keys (and any project SSH keys specified in project_ssh_key_ids) will be added. If no SSH keys are specified (both user_ssh_keys_ids and project_ssh_key_ids are empty lists or omitted), all parent project keys, parent project members keys and organization members keys will be included. User SSH keys can be created with the equinix_metal_ssh_key resource.'
             wait_for_reservation_deprovision: |-
                 - (Optional) Only used for devices in reserved hardware. If
                 set, the deletion of this device will block until the hardware reservation is marked provisionable
@@ -1122,7 +1230,7 @@ resources:
               dependencies:
                 equinix_metal_reserved_ip_block.myblock: |-
                     {
-                      "facility": "ny5",
+                      "metro": "ny",
                       "project_id": "${local.project_id}",
                       "quantity": 2
                     }
@@ -1131,7 +1239,7 @@ resources:
             cidr: '- Length of CIDR prefix of the subnet as integer.'
             cidr_notation: |-
                 - (Required) CIDR notation of subnet from block reserved in the same project
-                and facility as the device.
+                and metro as the device.
             device_id: '- (Required) ID of device to which to assign the subnet.'
             gateway: '- IP address of gateway for the subnet.'
             id: '- The unique ID of the assignment.'
@@ -1212,142 +1320,6 @@ resources:
             state: '- The state of the membership (''invited'' when an invitation is open, ''active'' when the user is an organization member)'
             updated: '- When the invitation was updated (only known in the invitation stage)'
         importStatements: []
-    equinix_metal_port_vlan_attachment:
-        subCategory: Metal
-        name: equinix_metal_port_vlan_attachment
-        title: ""
-        examples:
-            - name: test
-              manifest: |-
-                {
-                  "device_id": "${equinix_metal_device_network_type.test.id}",
-                  "port_name": "eth1",
-                  "vlan_vnid": "${equinix_metal_vlan.test.vxlan}"
-                }
-              references:
-                device_id: equinix_metal_device_network_type.test.id
-                vlan_vnid: equinix_metal_vlan.test.vxlan
-              dependencies:
-                equinix_metal_device.test: |-
-                    {
-                      "billing_cycle": "hourly",
-                      "facilities": [
-                        "ny5"
-                      ],
-                      "hostname": "test",
-                      "operating_system": "ubuntu_20_04",
-                      "plan": "c3.small.x86",
-                      "project_id": "${local.project_id}"
-                    }
-                equinix_metal_device_network_type.test: |-
-                    {
-                      "device_id": "${equinix_metal_device.test.id}",
-                      "type": "hybrid"
-                    }
-                equinix_metal_vlan.test: |-
-                    {
-                      "description": "VLAN in New Jersey",
-                      "facility": "ny5",
-                      "project_id": "${local.project_id}"
-                    }
-            - name: test1
-              manifest: |-
-                {
-                  "device_id": "${equinix_metal_device_network_type.test.id}",
-                  "port_name": "eth1",
-                  "vlan_vnid": "${equinix_metal_vlan.test1.vxlan}"
-                }
-              references:
-                device_id: equinix_metal_device_network_type.test.id
-                vlan_vnid: equinix_metal_vlan.test1.vxlan
-              dependencies:
-                equinix_metal_device.test: |-
-                    {
-                      "billing_cycle": "hourly",
-                      "facilities": [
-                        "ny5"
-                      ],
-                      "hostname": "test",
-                      "operating_system": "ubuntu_20_04",
-                      "plan": "c3.small.x86",
-                      "project_id": "${local.project_id}"
-                    }
-                equinix_metal_device_network_type.test: |-
-                    {
-                      "device_id": "${equinix_metal_device.test.id}",
-                      "type": "layer2-individual"
-                    }
-                equinix_metal_vlan.test1: |-
-                    {
-                      "description": "VLAN in New Jersey",
-                      "facility": "ny5",
-                      "project_id": "${local.project_id}"
-                    }
-                equinix_metal_vlan.test2: |-
-                    {
-                      "description": "VLAN in New Jersey",
-                      "facility": "ny5",
-                      "project_id": "${local.project_id}"
-                    }
-            - name: test2
-              manifest: |-
-                {
-                  "depends_on": [
-                    "equinix_metal_port_vlan_attachment.test1"
-                  ],
-                  "device_id": "${equinix_metal_device_network_type.test.id}",
-                  "native": true,
-                  "port_name": "eth1",
-                  "vlan_vnid": "${equinix_metal_vlan.test2.vxlan}"
-                }
-              references:
-                device_id: equinix_metal_device_network_type.test.id
-                vlan_vnid: equinix_metal_vlan.test2.vxlan
-              dependencies:
-                equinix_metal_device.test: |-
-                    {
-                      "billing_cycle": "hourly",
-                      "facilities": [
-                        "ny5"
-                      ],
-                      "hostname": "test",
-                      "operating_system": "ubuntu_20_04",
-                      "plan": "c3.small.x86",
-                      "project_id": "${local.project_id}"
-                    }
-                equinix_metal_device_network_type.test: |-
-                    {
-                      "device_id": "${equinix_metal_device.test.id}",
-                      "type": "layer2-individual"
-                    }
-                equinix_metal_vlan.test1: |-
-                    {
-                      "description": "VLAN in New Jersey",
-                      "facility": "ny5",
-                      "project_id": "${local.project_id}"
-                    }
-                equinix_metal_vlan.test2: |-
-                    {
-                      "description": "VLAN in New Jersey",
-                      "facility": "ny5",
-                      "project_id": "${local.project_id}"
-                    }
-        argumentDocs:
-            device_id: '- (Required) ID of device to be assigned to the VLAN.'
-            force_bond: |-
-                - (Optional) Add port back to the bond when this resource is removed. Default is
-                false.
-            id: '- UUID of device port used in the assignment.'
-            native: |-
-                - (Optional) Mark this VLAN a native VLAN on the port. This can be used only if this
-                assignment assigns second or further VLAN to the port. To ensure that this attachment is not first
-                on a port, you can use depends_on pointing to another equinix_metal_port_vlan_attachment, just
-                like in the layer2-individual example above.
-            port_id: '- UUID of device port.'
-            port_name: '- (Required) Name of network port to be assigned to the VLAN.'
-            vlan_id: '- UUID of VLAN API resource.'
-            vlan_vnid: '- (Required) VXLAN Network Identifier.'
-        importStatements: []
     equinix_metal_project:
         subCategory: Metal
         name: equinix_metal_project
@@ -1387,17 +1359,17 @@ resources:
             bgp_config: '- Optional BGP settings. Refer to Equinix Metal guide for BGP.'
             bgp_config.asn: '- (Required) Autonomous System Number for local BGP deployment.'
             bgp_config.deployment_type: |-
-                - (Required) private or public, the private is likely to be usable immediately, the
-                public will need to be reviewed by Equinix Metal engineers.
+                - (Required) local or global, the local is likely to be usable immediately, the
+                global will need to be reviewed by Equinix Metal engineers.
             bgp_config.max_prefix: '- The maximum number of route filters allowed per server.'
             bgp_config.md5: '- (Optional) Password for BGP session in plaintext (not a checksum).'
             bgp_config.status: '- status of BGP configuration in the project.'
             created: '- The timestamp for when the project was created.'
             id: '- The unique ID of the project.'
-            name: '- (Required) The name of the project.'
+            name: '- (Required) The name of the project.  The maximum length is 80 characters'
             organization_id: |-
                 - (Required) The UUID of organization under which you want to create the project. If you
-                leave it out, the project will be create under your the default organization of your account.
+                leave it out, the project will be created under your the default organization of your account.
             payment_method_id: |-
                 - The UUID of payment method for this project. The payment method and the
                 project need to belong to the same organization (passed with organization_id, or default).
@@ -1441,10 +1413,8 @@ resources:
                 equinix_metal_device.test: |-
                     {
                       "billing_cycle": "hourly",
-                      "facilities": [
-                        "ny5"
-                      ],
                       "hostname": "test",
+                      "metro": "ny",
                       "operating_system": "ubuntu_20_04",
                       "plan": "c3.medium.x86",
                       "project_id": "${local.project_id}",
@@ -1470,7 +1440,7 @@ resources:
             - name: two_elastic_addresses
               manifest: |-
                 {
-                  "facility": "sv15",
+                  "metro": "sv",
                   "project_id": "${local.project_id}",
                   "quantity": 2
                 }
@@ -1498,7 +1468,7 @@ resources:
             - name: example
               manifest: |-
                 {
-                  "facility": "sv15",
+                  "metro": "sv",
                   "project_id": "${local.project_id}",
                   "quantity": 2
                 }
@@ -1508,9 +1478,6 @@ resources:
                 equinix_metal_device.nodes: |-
                     {
                       "billing_cycle": "hourly",
-                      "facilities": [
-                        "sv15"
-                      ],
                       "hostname": "test",
                       "ip_address": [
                         {
@@ -1524,6 +1491,7 @@ resources:
                           "type": "private_ipv4"
                         }
                       ],
+                      "metro": "sv",
                       "operating_system": "ubuntu_20_04",
                       "plan": "c3.small.x86",
                       "project_id": "${local.project_id}"
@@ -1535,11 +1503,11 @@ resources:
             custom_data: '- (Optional) Custom Data is an arbitrary object (submitted in Terraform as serialized JSON) to assign to the IP Reservation. This may be helpful for self-managed IPAM. The object must be valid JSON.'
             description: '- (Optional) Arbitrary description.'
             facility: |-
-                - (Optional) Facility where to allocate the public IP address block, makes sense only
-                if type is public_ipv4 and must be empty if type is global_ipv4. Conflicts with metro.
+                - (Deprecated) Facility where to allocate the public IP address block, makes sense only
+                if type is public_ipv4 and must be empty if type is global_ipv4. Conflicts with metro. Use metro instead; read the facility to metro migration guide
             global: |-
                 - Boolean flag whether addresses from a block are global (i.e. can be assigned in any
-                facility).
+                metro).
             id: '- The unique ID of the block.'
             metro: |-
                 - (Optional) Metro where to allocate the public IP address block, makes sense only
@@ -1566,9 +1534,6 @@ resources:
                 {
                   "devices_max": 1,
                   "devices_min": 1,
-                  "facilities": [
-                    "ny5"
-                  ],
                   "instance_parameters": [
                     {
                       "billing_cycle": "hourly",
@@ -1578,6 +1543,7 @@ resources:
                     }
                   ],
                   "max_bid_price": 0.03,
+                  "metro": "ny",
                   "project_id": "${local.project_id}"
                 }
               references:
@@ -1585,12 +1551,12 @@ resources:
         argumentDocs:
             devices_max: '- (Required) Maximum number devices to be created.'
             devices_min: '- (Required) Miniumum number devices to be created.'
-            facilities: '- (Optional) Facility IDs where devices should be created.'
+            facilities: '- (Deprecated) Facility IDs where devices should be created. Use metro instead; read the facility to metro migration guide'
             id: '- The ID of the Spot Market Request.'
             instance_parameters: |-
                 - (Required) Key/Value pairs of parameters for devices provisioned from
                 this request. Valid keys are: billing_cycle, plan, operating_system, hostname,
-                termintation_time, always_pxe, description, features, locked, project_ssh_keys,
+                termination_time, always_pxe, description, features, locked, project_ssh_keys,
                 user_ssh_keys, userdata, customdata, ipxe_script_url, tags. You can find each parameter
                 description in equinix_metal_device docs.
             locked: '- (Optional) Blocks deletion of the SpotMarketRequest device until the lock is disabled.'
@@ -1715,15 +1681,6 @@ resources:
               manifest: |-
                 {
                   "description": "VLAN in New Jersey",
-                  "facility": "sv15",
-                  "project_id": "${local.project_id}"
-                }
-              references:
-                project_id: local.project_id
-            - name: vlan1
-              manifest: |-
-                {
-                  "description": "VLAN in New Jersey",
                   "metro": "sv",
                   "project_id": "${local.project_id}",
                   "vxlan": 1040
@@ -1732,8 +1689,9 @@ resources:
                 project_id: local.project_id
         argumentDocs:
             description: '- (Optional) Description string.'
-            facility: '- (Required) Facility where to create the VLAN.'
+            facility: '- (Deprecated) Facility where to create the VLAN. Use metro instead; read the facility to metro migration guide'
             id: '- ID of the virtual network.'
+            metro: '- (Optional) Metro in which to create the VLAN'
             project_id: '- (Required) ID of parent project.'
             vxlan: '- (Optional) VLAN ID, must be unique in metro.'
         importStatements: []
@@ -1870,6 +1828,7 @@ resources:
                 {
                   "account_number": "${data.equinix_network_account.dc.number}",
                   "byol": false,
+                  "connectivity": "INTERNET-ACCESS",
                   "core_count": 2,
                   "hostname": "csr1000v-p",
                   "metro_code": "${data.equinix_network_account.dc.metro_code}",
@@ -1893,7 +1852,7 @@ resources:
                     }
                   ],
                   "self_managed": false,
-                  "term_length": 6,
+                  "term_length": 12,
                   "throughput": 500,
                   "throughput_unit": "Mbps",
                   "type_code": "CSR1000V",
@@ -1952,7 +1911,7 @@ resources:
                       "username": "test"
                     }
                   ],
-                  "term_length": 6,
+                  "term_length": 12,
                   "type_code": "PA-VM",
                   "version": "10.1.3"
                 }
@@ -1974,7 +1933,7 @@ resources:
                   ],
                   "package_code": "STD",
                   "self_managed": true,
-                  "term_length": 6,
+                  "term_length": 12,
                   "type_code": "AVIATRIX_EDGE",
                   "version": "6.9"
                 }
@@ -2016,13 +1975,65 @@ resources:
                       "username": "test-username"
                     }
                   ],
-                  "term_length": 6,
+                  "term_length": 12,
                   "type_code": "C8000V",
                   "version": "17.06.01a"
                 }
               references:
                 account_number: data.equinix_network_account.sv.number
                 metro_code: data.equinix_network_account.sv.metro_code
+            - name: arista-ha
+              manifest: |-
+                {
+                  "account_number": "${data.equinix_network_account.sv.number}",
+                  "acl_template_id": "c637a17b-7a6a-4486-924b-30e6c36904b0",
+                  "additional_bandwidth": 5,
+                  "byol": true,
+                  "connectivity": "PRIVATE",
+                  "core_count": 4,
+                  "hostname": "arista-p",
+                  "metro_code": "${data.equinix_network_account.sv.metro_code}",
+                  "name": "tf-arista-p",
+                  "notifications": [
+                    "test@equinix.com"
+                  ],
+                  "package_code": "CloudEOS",
+                  "secondary_device": [
+                    {
+                      "account_number": "${data.equinix_network_account.sv.number}",
+                      "acl_template_id": "fee5e2c0-6198-4ce6-9cbd-bbe6c1dbe138",
+                      "hostname": "arista-s",
+                      "metro_code": "${data.equinix_network_account.sv.metro_code}",
+                      "name": "tf-arista-s",
+                      "notifications": [
+                        "test@eq.com"
+                      ]
+                    }
+                  ],
+                  "self_managed": true,
+                  "ssh_key": [
+                    {
+                      "key_name": "${equinix_network_ssh_key.test-public-key.name}",
+                      "username": "test-username"
+                    }
+                  ],
+                  "term_length": 12,
+                  "type_code": "ARISTA-ROUTER",
+                  "version": "4.29.0"
+                }
+              references:
+                account_number: data.equinix_network_account.sv.number
+                metro_code: data.equinix_network_account.sv.metro_code
+                secondary_device.account_number: data.equinix_network_account.sv.number
+                secondary_device.metro_code: data.equinix_network_account.sv.metro_code
+                ssh_key.key_name: equinix_network_ssh_key.test-public-key.name
+              dependencies:
+                equinix_network_ssh_key.test-public-key: |-
+                    {
+                      "name": "key-name",
+                      "public_key": "ssh-dss key-value",
+                      "type": "DSA"
+                    }
         argumentDocs:
             account_number: '- (Required) Billing account number for a device.'
             acl_template_id: '- (Optional) Identifier of a WAN interface ACL template that will be applied on the device.'
@@ -2062,6 +2073,9 @@ resources:
                 - (Required) An object that has node1 configuration.
                 See Cluster Details - Nodes below for more details.
             cluster_id: '- The ID of the cluster.'
+            connectivity: |-
+                - (Optional) Device accessibility (INTERNET-ACCESS or PRIVATE or INTERNET-ACCESS-WITH-PRVT-MGMT).
+                If not specified, default will be INTERNET-ACCESS
             core_count: '- (Required) Number of CPU cores used by device.'
             hostname: '- (Optional) Device hostname prefix.'
             ibx: '- Device location Equinix Business Exchange name.'
@@ -2276,13 +2290,15 @@ resources:
               manifest: |-
                 {
                   "name": "johnKent",
-                  "public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDpXGdxljAyPp9vH97436U171cX"
+                  "public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDpXGdxljAyPp9vH97436U171cX",
+                  "type": "RSA"
                 }
         argumentDocs:
             name: '- (Required) The name of SSH key used for identification.'
             public_key: |-
                 - (Required) The SSH public key. If this is a file, it can be read using the file
                 interpolation function.
+            type: '- (Optional) The type of SSH key: RSA (default) or DSA.'
             uuid: '- The unique identifier of the key'
         importStatements: []
     equinix_network_ssh_user:

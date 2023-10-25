@@ -45,6 +45,11 @@ type SSHKeyParameters_2 struct {
 	// The SSH public key. If this is a file, it can be read using the file interpolation function
 	// +kubebuilder:validation:Required
 	PublicKey *string `json:"publicKey" tf:"public_key,omitempty"`
+
+	// The type of SSH key: RSA (default) or DSA.
+	// The type of SSH key: RSA (default) or DSA
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 // SSHKeySpec defines the desired state of SSHKey

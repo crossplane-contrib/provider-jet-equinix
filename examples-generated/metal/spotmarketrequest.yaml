@@ -10,14 +10,13 @@ spec:
   forProvider:
     devicesMax: 1
     devicesMin: 1
-    facilities:
-    - ny5
     instanceParameters:
     - billingCycle: hourly
       hostname: testspot
       operatingSystem: ubuntu_20_04
       plan: c3.small.x86
     maxBidPrice: 0.03
+    metro: ny
     projectIdSelector:
       matchLabels:
         testing.upbound.io/example-name: example

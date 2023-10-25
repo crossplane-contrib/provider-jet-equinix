@@ -26,22 +26,17 @@ import (
 )
 
 type PortVlanAttachmentObservation struct {
-
-	// UUID of device port used in the assignment.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// UUID of device port.
 	// UUID of device port
 	PortID *string `json:"portId,omitempty" tf:"port_id,omitempty"`
 
-	// UUID of VLAN API resource.
 	// UUID of VLAN API resource
 	VlanID *string `json:"vlanId,omitempty" tf:"vlan_id,omitempty"`
 }
 
 type PortVlanAttachmentParameters struct {
 
-	// ID of device to be assigned to the VLAN.
 	// ID of device to be assigned to the VLAN
 	// +crossplane:generate:reference:type=Device
 	// +kubebuilder:validation:Optional
@@ -55,26 +50,18 @@ type PortVlanAttachmentParameters struct {
 	// +kubebuilder:validation:Optional
 	DeviceIDSelector *v1.Selector `json:"deviceIdSelector,omitempty" tf:"-"`
 
-	// Add port back to the bond when this resource is removed. Default is
-	// false.
 	// Add port back to the bond when this resource is removed. Default is false
 	// +kubebuilder:validation:Optional
 	ForceBond *bool `json:"forceBond,omitempty" tf:"force_bond,omitempty"`
 
-	// Mark this VLAN a native VLAN on the port. This can be used only if this
-	// assignment assigns second or further VLAN to the port. To ensure that this attachment is not first
-	// on a port, you can use depends_on pointing to another equinix_metal_port_vlan_attachment, just
-	// like in the layer2-individual example above.
 	// Mark this VLAN a native VLAN on the port. This can be used only if this assignment assigns second or further VLAN to the port. To ensure that this attachment is not first on a port, you can use depends_on pointing to another equinix_metal_port_vlan_attachment, just like in the layer2-individual example above
 	// +kubebuilder:validation:Optional
 	Native *bool `json:"native,omitempty" tf:"native,omitempty"`
 
-	// Name of network port to be assigned to the VLAN.
 	// Name of network port to be assigned to the VLAN
 	// +kubebuilder:validation:Required
 	PortName *string `json:"portName" tf:"port_name,omitempty"`
 
-	// VXLAN Network Identifier.
 	// VXLAN Network Identifier, integer
 	// +kubebuilder:validation:Required
 	VlanVnid *float64 `json:"vlanVnid" tf:"vlan_vnid,omitempty"`
@@ -94,7 +81,7 @@ type PortVlanAttachmentStatus struct {
 
 // +kubebuilder:object:root=true
 
-// PortVlanAttachment is the Schema for the PortVlanAttachments API.
+// PortVlanAttachment is the Schema for the PortVlanAttachments API. <no value>
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
