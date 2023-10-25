@@ -915,6 +915,11 @@ func (in *DeviceParameters) DeepCopyInto(out *DeviceParameters) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.Connectivity != nil {
+		in, out := &in.Connectivity, &out.Connectivity
+		*out = new(string)
+		**out = **in
+	}
 	if in.CoreCount != nil {
 		in, out := &in.CoreCount, &out.CoreCount
 		*out = new(float64)
@@ -1824,6 +1829,11 @@ func (in *SSHKeyParameters_2) DeepCopyInto(out *SSHKeyParameters_2) {
 	}
 	if in.PublicKey != nil {
 		in, out := &in.PublicKey, &out.PublicKey
+		*out = new(string)
+		**out = **in
+	}
+	if in.Type != nil {
+		in, out := &in.Type, &out.Type
 		*out = new(string)
 		**out = **in
 	}

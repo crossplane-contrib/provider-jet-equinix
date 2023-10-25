@@ -67,10 +67,13 @@ spec:
                     description: Description string. Description string
                     type: string
                   facility:
-                    description: Facility where to create the VLAN. Facility where
-                      to create the VLAN
+                    description: (Deprecated) Facility where to create the VLAN. Use
+                      metro instead; read the facility to metro migration guide Facility
+                      where to create the VLAN
                     type: string
                   metro:
+                    description: Metro in which to create the VLAN Metro in which
+                      to create the VLAN
                     type: string
                   projectId:
                     description: ID of parent project. ID of parent project

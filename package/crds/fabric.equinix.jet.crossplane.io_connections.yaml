@@ -72,12 +72,17 @@ spec:
                           description: Point of access details
                           items:
                             properties:
+                              account:
+                                description: Account
+                                items:
+                                  type: object
+                                type: array
                               authenticationKey:
                                 description: Authentication key for provider based
                                   connections
                                 type: string
                               gateway:
-                                description: Gateway access point information
+                                description: Cloud Router access point information
                                 items:
                                   properties:
                                     uuid:
@@ -138,6 +143,15 @@ spec:
                                       type: string
                                   type: object
                                 type: array
+                              network:
+                                description: network access point information
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: Equinix-assigned Network identifier
+                                      type: string
+                                  type: object
+                                type: array
                               peeringType:
                                 description: Peering Type- PRIVATE,MICROSOFT,PUBLIC,
                                   MANUAL
@@ -171,6 +185,16 @@ spec:
                               providerConnectionId:
                                 description: Provider assigned Connection Id
                                 type: string
+                              router:
+                                description: Cloud Router access point information
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: Equinix-assigned virtual gateway
+                                        identifier
+                                      type: string
+                                  type: object
+                                type: array
                               routingProtocols:
                                 description: Access point routing protocols configuration
                                 items:
@@ -192,7 +216,7 @@ spec:
                                 type: string
                               type:
                                 description: Access point type - COLO, VD, VG, SP,
-                                  IGW, SUBNET, GW
+                                  IGW, SUBNET, CLOUD_ROUTER, NETWORK
                                 type: string
                               virtualDevice:
                                 description: Virtual device
@@ -242,13 +266,8 @@ spec:
                   additionalInfo:
                     description: Connection additional information
                     items:
-                      properties:
-                        key:
-                          description: Additional information key
-                          type: string
-                        value:
-                          description: Additional information value
-                          type: string
+                      additionalProperties:
+                        type: string
                       type: object
                     type: array
                   bandwidth:
@@ -301,6 +320,9 @@ spec:
                     description: Redundancy Information
                     items:
                       properties:
+                        group:
+                          description: Redundancy group identifier
+                          type: string
                         priority:
                           description: Priority type- PRIMARY, SECONDARY
                           type: string
@@ -308,7 +330,7 @@ spec:
                     type: array
                   type:
                     description: Defines the connection type like VG_VC, EVPL_VC,
-                      EPL_VC, EC_VC, GW_VC, ACCESS_EPL_VC
+                      EPL_VC, EC_VC, IP_VC, IPWAN_VC,ACCESS_EPL_VC
                     type: string
                   zSide:
                     description: Destination or Provider side connection configuration
@@ -319,12 +341,17 @@ spec:
                           description: Point of access details
                           items:
                             properties:
+                              account:
+                                description: Account
+                                items:
+                                  type: object
+                                type: array
                               authenticationKey:
                                 description: Authentication key for provider based
                                   connections
                                 type: string
                               gateway:
-                                description: Gateway access point information
+                                description: Cloud Router access point information
                                 items:
                                   properties:
                                     uuid:
@@ -385,6 +412,15 @@ spec:
                                       type: string
                                   type: object
                                 type: array
+                              network:
+                                description: network access point information
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: Equinix-assigned Network identifier
+                                      type: string
+                                  type: object
+                                type: array
                               peeringType:
                                 description: Peering Type- PRIVATE,MICROSOFT,PUBLIC,
                                   MANUAL
@@ -418,6 +454,16 @@ spec:
                               providerConnectionId:
                                 description: Provider assigned Connection Id
                                 type: string
+                              router:
+                                description: Cloud Router access point information
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: Equinix-assigned virtual gateway
+                                        identifier
+                                      type: string
+                                  type: object
+                                type: array
                               routingProtocols:
                                 description: Access point routing protocols configuration
                                 items:
@@ -439,7 +485,7 @@ spec:
                                 type: string
                               type:
                                 description: Access point type - COLO, VD, VG, SP,
-                                  IGW, SUBNET, GW
+                                  IGW, SUBNET, CLOUD_ROUTER, NETWORK
                                 type: string
                               virtualDevice:
                                 description: Virtual device
@@ -684,23 +730,30 @@ spec:
                                 items:
                                   properties:
                                     accountName:
+                                      description: Account Name
                                       type: string
                                     accountNumber:
+                                      description: Account Number
                                       type: number
                                     globalCustId:
+                                      description: Global Customer organization identifier
                                       type: string
                                     globalOrgId:
+                                      description: Global organization identifier
                                       type: string
                                     globalOrganizationName:
+                                      description: Global organization name
                                       type: string
                                     orgId:
+                                      description: Customer organization identifier
                                       type: number
                                     organizationName:
+                                      description: Customer organization name
                                       type: string
                                   type: object
                                 type: array
                               gateway:
-                                description: Gateway access point information
+                                description: Cloud Router access point information
                                 items:
                                   properties:
                                     href:
@@ -714,6 +767,15 @@ spec:
                                   properties:
                                     id:
                                       description: id
+                                      type: string
+                                  type: object
+                                type: array
+                              network:
+                                description: network access point information
+                                items:
+                                  properties:
+                                    href:
+                                      description: Unique Resource Identifier
                                       type: string
                                   type: object
                                 type: array
@@ -760,6 +822,15 @@ spec:
                                     name:
                                       description: Customer-assigned service profile
                                         name
+                                      type: string
+                                  type: object
+                                type: array
+                              router:
+                                description: Cloud Router access point information
+                                items:
+                                  properties:
+                                    href:
+                                      description: Unique Resource Identifier
                                       type: string
                                   type: object
                                 type: array
@@ -914,15 +985,6 @@ spec:
                           type: string
                       type: object
                     type: array
-                  redundancy:
-                    description: Redundancy Information
-                    items:
-                      properties:
-                        group:
-                          description: Redundancy group identifier
-                          type: string
-                      type: object
-                    type: array
                   state:
                     description: Connection overall state
                     type: string
@@ -940,23 +1002,30 @@ spec:
                                 items:
                                   properties:
                                     accountName:
+                                      description: Account Name
                                       type: string
                                     accountNumber:
+                                      description: Account Number
                                       type: number
                                     globalCustId:
+                                      description: Global Customer organization identifier
                                       type: string
                                     globalOrgId:
+                                      description: Global organization identifier
                                       type: string
                                     globalOrganizationName:
+                                      description: Global organization name
                                       type: string
                                     orgId:
+                                      description: Customer organization identifier
                                       type: number
                                     organizationName:
+                                      description: Customer organization name
                                       type: string
                                   type: object
                                 type: array
                               gateway:
-                                description: Gateway access point information
+                                description: Cloud Router access point information
                                 items:
                                   properties:
                                     href:
@@ -970,6 +1039,15 @@ spec:
                                   properties:
                                     id:
                                       description: id
+                                      type: string
+                                  type: object
+                                type: array
+                              network:
+                                description: network access point information
+                                items:
+                                  properties:
+                                    href:
+                                      description: Unique Resource Identifier
                                       type: string
                                   type: object
                                 type: array
@@ -1016,6 +1094,15 @@ spec:
                                     name:
                                       description: Customer-assigned service profile
                                         name
+                                      type: string
+                                  type: object
+                                type: array
+                              router:
+                                description: Cloud Router access point information
+                                items:
+                                  properties:
+                                    href:
+                                      description: Unique Resource Identifier
                                       type: string
                                   type: object
                                 type: array

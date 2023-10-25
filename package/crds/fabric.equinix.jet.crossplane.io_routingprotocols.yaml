@@ -5,18 +5,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.8.0
   creationTimestamp: null
-  name: portvlanattachments.metal.equinix.jet.crossplane.io
+  name: routingprotocols.fabric.equinix.jet.crossplane.io
 spec:
-  group: metal.equinix.jet.crossplane.io
+  group: fabric.equinix.jet.crossplane.io
   names:
     categories:
     - crossplane
     - managed
     - equinix
-    kind: PortVlanAttachment
-    listKind: PortVlanAttachmentList
-    plural: portvlanattachments
-    singular: portvlanattachment
+    kind: RoutingProtocol
+    listKind: RoutingProtocolList
+    plural: routingprotocols
+    singular: routingprotocol
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,8 +35,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: PortVlanAttachment is the Schema for the PortVlanAttachments
-          API. <no value>
+        description: RoutingProtocol is the Schema for the RoutingProtocols API. <no
+          value>
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -51,7 +51,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: PortVlanAttachmentSpec defines the desired state of PortVlanAttachment
+            description: RoutingProtocolSpec defines the desired state of RoutingProtocol
             properties:
               deletionPolicy:
                 default: Delete
@@ -64,102 +64,93 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  deviceId:
-                    description: ID of device to be assigned to the VLAN
-                    type: string
-                  deviceIdRef:
-                    description: Reference to a Device to populate deviceId.
-                    properties:
-                      name:
-                        description: Name of the referenced object.
-                        type: string
-                      policy:
-                        description: Policies for referencing.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    required:
-                    - name
-                    type: object
-                  deviceIdSelector:
-                    description: Selector for a Device to populate deviceId.
-                    properties:
-                      matchControllerRef:
-                        description: MatchControllerRef ensures an object with the
-                          same controller reference as the selecting object is selected.
-                        type: boolean
-                      matchLabels:
-                        additionalProperties:
+                  bfd:
+                    description: Bidirectional Forwarding Detection
+                    items:
+                      properties:
+                        enabled:
+                          description: Bidirectional Forwarding Detection enablement
+                          type: boolean
+                        interval:
+                          description: Interval range between the received BFD control
+                            packets
                           type: string
-                        description: MatchLabels ensures an object with matching labels
-                          is selected.
-                        type: object
-                      policy:
-                        description: Policies for selection.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    type: object
-                  forceBond:
-                    description: Add port back to the bond when this resource is removed.
-                      Default is false
-                    type: boolean
-                  native:
-                    description: Mark this VLAN a native VLAN on the port. This can
-                      be used only if this assignment assigns second or further VLAN
-                      to the port. To ensure that this attachment is not first on
-                      a port, you can use depends_on pointing to another equinix_metal_port_vlan_attachment,
-                      just like in the layer2-individual example above
-                    type: boolean
-                  portName:
-                    description: Name of network port to be assigned to the VLAN
+                      required:
+                      - enabled
+                      type: object
+                    type: array
+                  bgpAuthKey:
+                    description: BGP authorization key
                     type: string
-                  vlanVnid:
-                    description: VXLAN Network Identifier, integer
+                  bgpIpv4:
+                    description: Routing Protocol BGP IPv4
+                    items:
+                      properties:
+                        customerPeerIp:
+                          description: Customer side peering ip
+                          type: string
+                        enabled:
+                          description: Admin status for the BGP session
+                          type: boolean
+                      required:
+                      - customerPeerIp
+                      type: object
+                    type: array
+                  bgpIpv6:
+                    description: Routing Protocol BGP IPv6
+                    items:
+                      properties:
+                        customerPeerIp:
+                          description: Customer side peering ip
+                          type: string
+                        enabled:
+                          description: Admin status for the BGP session
+                          type: boolean
+                      required:
+                      - customerPeerIp
+                      type: object
+                    type: array
+                  connectionUuid:
+                    description: Connection URI associated with Routing Protocol
+                    type: string
+                  customerAsn:
+                    description: Customer-provided ASN
                     type: number
+                  description:
+                    description: Customer-provided Fabric Routing Protocol description
+                    type: string
+                  directIpv4:
+                    description: Routing Protocol Direct IPv4
+                    items:
+                      properties:
+                        equinixIfaceIp:
+                          description: Equinix side Interface IP address
+                          type: string
+                      required:
+                      - equinixIfaceIp
+                      type: object
+                    type: array
+                  directIpv6:
+                    description: Routing Protocol Direct IPv6
+                    items:
+                      properties:
+                        equinixIfaceIp:
+                          description: Equinix side Interface IP address
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: Routing Protocol name. An alpha-numeric 24 characters
+                      string which can include only hyphens and underscores
+                    type: string
+                  type:
+                    description: Defines the routing protocol type like BGP or DIRECT
+                    type: string
+                  uuid:
+                    description: Equinix-assigned routing protocol identifier
+                    type: string
                 required:
-                - portName
-                - vlanVnid
+                - connectionUuid
                 type: object
               providerConfigRef:
                 default:
@@ -333,17 +324,110 @@ spec:
             - forProvider
             type: object
           status:
-            description: PortVlanAttachmentStatus defines the observed state of PortVlanAttachment.
+            description: RoutingProtocolStatus defines the observed state of RoutingProtocol.
             properties:
               atProvider:
                 properties:
+                  bgpIpv4:
+                    description: Routing Protocol BGP IPv4
+                    items:
+                      properties:
+                        equinixPeerIp:
+                          description: Equinix side peering ip
+                          type: string
+                      type: object
+                    type: array
+                  bgpIpv6:
+                    description: Routing Protocol BGP IPv6
+                    items:
+                      properties:
+                        equinixPeerIp:
+                          description: Equinix side peering ip
+                          type: string
+                      type: object
+                    type: array
+                  change:
+                    description: Routing Protocol configuration Changes
+                    items:
+                      properties:
+                        href:
+                          type: string
+                        type:
+                          type: string
+                        uuid:
+                          type: string
+                      type: object
+                    type: array
+                  changeLog:
+                    description: Captures Routing Protocol lifecycle change information
+                    items:
+                      properties:
+                        createdBy:
+                          type: string
+                        createdByEmail:
+                          type: string
+                        createdByFullName:
+                          type: string
+                        createdDateTime:
+                          type: string
+                        deletedBy:
+                          type: string
+                        deletedByEmail:
+                          type: string
+                        deletedByFullName:
+                          type: string
+                        deletedDateTime:
+                          type: string
+                        updatedBy:
+                          type: string
+                        updatedByEmail:
+                          type: string
+                        updatedByFullName:
+                          type: string
+                        updatedDateTime:
+                          type: string
+                      type: object
+                    type: array
+                  equinixAsn:
+                    description: Equinix ASN
+                    type: number
+                  href:
+                    description: Routing Protocol URI information
+                    type: string
                   id:
                     type: string
-                  portId:
-                    description: UUID of device port
-                    type: string
-                  vlanId:
-                    description: UUID of VLAN API resource
+                  operation:
+                    description: Routing Protocol type-specific operational data
+                    items:
+                      properties:
+                        errors:
+                          items:
+                            properties:
+                              additionalInfo:
+                                items:
+                                  properties:
+                                    property:
+                                      type: string
+                                    reason:
+                                      type: string
+                                  type: object
+                                type: array
+                              correlationId:
+                                type: string
+                              details:
+                                type: string
+                              errorCode:
+                                type: string
+                              errorMessage:
+                                type: string
+                              help:
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  state:
+                    description: Routing Protocol overall state
                     type: string
                 type: object
               conditions:

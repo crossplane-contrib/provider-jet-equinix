@@ -10,6 +10,7 @@ spec:
   forProvider:
     accountNumber: ${data.equinix_network_account.dc.number}
     byol: false
+    connectivity: INTERNET-ACCESS
     coreCount: 2
     hostname: csr1000v-p
     metroCode: ${data.equinix_network_account.dc.metro_code}
@@ -28,7 +29,7 @@ spec:
       - john@equinix.com
       - marry@equinix.com
     selfManaged: false
-    termLength: 6
+    termLength: 12
     throughput: 500
     throughputUnit: Mbps
     typeCode: CSR1000V

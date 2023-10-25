@@ -38,11 +38,13 @@ type VlanParameters struct {
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// Facility where to create the VLAN.
+	// (Deprecated) Facility where to create the VLAN. Use metro instead; read the facility to metro migration guide
 	// Facility where to create the VLAN
 	// +kubebuilder:validation:Optional
 	Facility *string `json:"facility,omitempty" tf:"facility,omitempty"`
 
+	// Metro in which to create the VLAN
+	// Metro in which to create the VLAN
 	// +kubebuilder:validation:Optional
 	Metro *string `json:"metro,omitempty" tf:"metro,omitempty"`
 

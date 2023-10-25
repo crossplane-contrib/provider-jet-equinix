@@ -9,7 +9,7 @@ GOLANGCILINT_VERSION ?= 1.50.0
 export TERRAFORM_VERSION := 1.3.1
 
 export TERRAFORM_PROVIDER_SOURCE := equinix/equinix
-export TERRAFORM_PROVIDER_VERSION := 1.13.0
+export TERRAFORM_PROVIDER_VERSION := 1.18.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME := terraform-provider-equinix
 export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX := https://releases.hashicorp.com/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}/${TERRAFORM_PROVIDER_VERSION}
 export TERRAFORM_NATIVE_PROVIDER_BINARY := ${TERRAFORM_PROVIDER_DOWNLOAD_NAME}_v${TERRAFORM_PROVIDER_VERSION}
@@ -120,6 +120,10 @@ pull-docs:
 			git clone -c advice.detachedHead=false --depth 1 --filter=blob:none --branch "v$(TERRAFORM_PROVIDER_VERSION)" --sparse "$(TERRAFORM_PROVIDER_REPO)" "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)"; \
 	fi
 	@git -C "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" sparse-checkout set "$(TERRAFORM_DOCS_PATH)"
+	@echo "Removing examples known to cause parser errors for examples-generated"
+	@rm -f "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/equinix_metal_port_vlan_attachment.md"
+
+ generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
 
 generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
 

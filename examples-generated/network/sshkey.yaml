@@ -10,6 +10,7 @@ spec:
   forProvider:
     name: johnKent
     publicKey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDpXGdxljAyPp9vH97436U171cX
+    type: RSA
 
 ---
 

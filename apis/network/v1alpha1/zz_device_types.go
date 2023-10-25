@@ -175,6 +175,12 @@ type DeviceParameters struct {
 	// +kubebuilder:validation:Optional
 	ClusterDetails []ClusterDetailsParameters `json:"clusterDetails,omitempty" tf:"cluster_details,omitempty"`
 
+	// Device accessibility (INTERNET-ACCESS or PRIVATE or INTERNET-ACCESS-WITH-PRVT-MGMT).
+	// If not specified, default will be INTERNET-ACCESS
+	// Parameter to identify internet access for device. Supported Values: INTERNET-ACCESS(default) or PRIVATE or INTERNET-ACCESS-WITH-PRVT-MGMT
+	// +kubebuilder:validation:Optional
+	Connectivity *string `json:"connectivity,omitempty" tf:"connectivity,omitempty"`
+
 	// Number of CPU cores used by device.
 	// Number of CPU cores used by device
 	// +kubebuilder:validation:Required

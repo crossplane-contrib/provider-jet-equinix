@@ -79,8 +79,8 @@ spec:
                             Autonomous System Number for local BGP deployment
                           type: number
                         deploymentType:
-                          description: private or public, the private is likely to
-                            be usable immediately, the public will need to be reviewed
+                          description: local or global, the local is likely to be
+                            usable immediately, the global will need to be reviewed
                             by Equinix Metal engineers. "local" or "global", the local
                             is likely to be usable immediately, the global will need
                             to be review by Equinix Metal engineers
@@ -110,12 +110,14 @@ spec:
                       type: object
                     type: array
                   name:
-                    description: The name of the project. The name of the project
+                    description: The name of the project.  The maximum length is 80
+                      characters The name of the project.  The maximum length is 80
+                      characters.
                     type: string
                   organizationId:
                     description: The UUID of organization under which you want to
                       create the project. If you leave it out, the project will be
-                      create under your the default organization of your account.
+                      created under your the default organization of your account.
                       The UUID of organization under which you want to create the
                       project. If you leave it out, the project will be create under
                       your the default organization of your account

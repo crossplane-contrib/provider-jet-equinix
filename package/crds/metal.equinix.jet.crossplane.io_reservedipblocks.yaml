@@ -82,12 +82,13 @@ spec:
                     description: Arbitrary description. Arbitrary description
                     type: string
                   facility:
-                    description: Facility where to allocate the public IP address
-                      block, makes sense only if type is public_ipv4 and must be empty
-                      if type is global_ipv4. Conflicts with metro. Facility where
-                      to allocate the public IP address block, makes sense only for
-                      type==public_ipv4, must be empty for type==global_ipv4, conflicts
-                      with metro
+                    description: (Deprecated) Facility where to allocate the public
+                      IP address block, makes sense only if type is public_ipv4 and
+                      must be empty if type is global_ipv4. Conflicts with metro.
+                      Use metro instead; read the facility to metro migration guide
+                      Facility where to allocate the public IP address block, makes
+                      sense only for type==public_ipv4, must be empty for type==global_ipv4,
+                      conflicts with metro
                     type: string
                   metro:
                     description: Metro where to allocate the public IP address block,
@@ -474,7 +475,7 @@ spec:
                     type: string
                   global:
                     description: Boolean flag whether addresses from a block are global
-                      (i.e. can be assigned in any facility). Flag indicating whether
+                      (i.e. can be assigned in any metro). Flag indicating whether
                       IP block is global, i.e. assignable in any location
                     type: boolean
                   id:

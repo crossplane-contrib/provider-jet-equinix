@@ -49,12 +49,17 @@ type ConnectionObservation struct {
 
 type ConnectionParameters struct {
 
+	// The preferred email used for communication and notifications about the Equinix Fabric interconnection. Required when using a Project API key. Optional and defaults to the primary user email address when using a User API key.
+	// The preferred email used for communication and notifications about the Equinix Fabric interconnection. Required when using a Project API key. Optional and defaults to the primary user email address when using a User API key
+	// +kubebuilder:validation:Optional
+	ContactEmail *string `json:"contactEmail,omitempty" tf:"contact_email,omitempty"`
+
 	// Description for the connection resource.
 	// Description of the connection resource
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// Facility where the connection will be created.
+	// (Deprecated) Facility where the connection will be created.   Use metro instead; read the facility to metro migration guide
 	// Facility where the connection will be created
 	// +kubebuilder:validation:Optional
 	Facility *string `json:"facility,omitempty" tf:"facility,omitempty"`
@@ -112,9 +117,9 @@ type ConnectionParameters struct {
 	ServiceTokenType *string `json:"serviceTokenType,omitempty" tf:"service_token_type,omitempty"`
 
 	// Connection speed - one of 50Mbps, 200Mbps, 500Mbps, 1Gbps, 2Gbps, 5Gbps, 10Gbps.
-	// Port speed. Allowed values are 50Mbps, 200Mbps, 500Mbps, 1Gbps, 2Gbps, 5Gbps, 10Gbps
-	// +kubebuilder:validation:Required
-	Speed *string `json:"speed" tf:"speed,omitempty"`
+	// Port speed. Required for a_side connections. Allowed values are 50Mbps, 200Mbps, 500Mbps, 1Gbps, 2Gbps, 5Gbps, 10Gbps
+	// +kubebuilder:validation:Optional
+	Speed *string `json:"speed,omitempty" tf:"speed,omitempty"`
 
 	// String list of tags.
 	// Tags attached to the connection

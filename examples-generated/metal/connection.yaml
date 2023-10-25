@@ -8,6 +8,7 @@ metadata:
   name: example
 spec:
   forProvider:
+    contactEmail: username@example.com
     metro: sv
     name: tf-metal-to-azure
     projectIdSelector:

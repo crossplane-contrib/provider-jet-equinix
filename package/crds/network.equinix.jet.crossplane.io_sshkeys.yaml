@@ -73,6 +73,10 @@ spec:
                       If this is a file, it can be read using the file interpolation
                       function
                     type: string
+                  type:
+                    description: 'The type of SSH key: RSA (default) or DSA. The type
+                      of SSH key: RSA (default) or DSA'
+                    type: string
                 required:
                 - name
                 - publicKey

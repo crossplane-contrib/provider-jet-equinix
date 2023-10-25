@@ -72,15 +72,16 @@ spec:
                       devices to be created
                     type: number
                   facilities:
-                    description: Facility IDs where devices should be created. Facility
-                      IDs where devices should be created
+                    description: (Deprecated) Facility IDs where devices should be
+                      created. Use metro instead; read the facility to metro migration
+                      guide Facility IDs where devices should be created
                     items:
                       type: string
                     type: array
                   instanceParameters:
                     description: 'Key/Value pairs of parameters for devices provisioned
                       from this request. Valid keys are: billing_cycle, plan, operating_system,
-                      hostname, termintation_time, always_pxe, description, features,
+                      hostname, termination_time, always_pxe, description, features,
                       locked, project_ssh_keys, user_ssh_keys, userdata, customdata,
                       ipxe_script_url, tags. You can find each parameter description
                       in equinix_metal_device docs. Parameters for devices provisioned
@@ -411,7 +412,7 @@ spec:
                   instanceParameters:
                     description: 'Key/Value pairs of parameters for devices provisioned
                       from this request. Valid keys are: billing_cycle, plan, operating_system,
-                      hostname, termintation_time, always_pxe, description, features,
+                      hostname, termination_time, always_pxe, description, features,
                       locked, project_ssh_keys, user_ssh_keys, userdata, customdata,
                       ipxe_script_url, tags. You can find each parameter description
                       in equinix_metal_device docs. Parameters for devices provisioned
@@ -419,6 +420,8 @@ spec:
                       the [equinix_metal_device doc](device.md)'
                     items:
                       properties:
+                        terminationTime:
+                          type: string
                         termintationTime:
                           type: string
                       type: object

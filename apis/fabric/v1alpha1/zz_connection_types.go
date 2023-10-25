@@ -52,18 +52,26 @@ type ASideParameters struct {
 }
 
 type AccessPointAccountObservation struct {
+
+	// Account Name
 	AccountName *string `json:"accountName,omitempty" tf:"account_name,omitempty"`
 
+	// Account Number
 	AccountNumber *float64 `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
 
+	// Global Customer organization identifier
 	GlobalCustID *string `json:"globalCustId,omitempty" tf:"global_cust_id,omitempty"`
 
+	// Global organization identifier
 	GlobalOrgID *string `json:"globalOrgId,omitempty" tf:"global_org_id,omitempty"`
 
+	// Global organization name
 	GlobalOrganizationName *string `json:"globalOrganizationName,omitempty" tf:"global_organization_name,omitempty"`
 
+	// Customer organization identifier
 	OrgID *float64 `json:"orgId,omitempty" tf:"org_id,omitempty"`
 
+	// Customer organization name
 	OrganizationName *string `json:"organizationName,omitempty" tf:"organization_name,omitempty"`
 }
 
@@ -144,18 +152,36 @@ type AccessPointLocationParameters struct {
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }
 
+type AccessPointNetworkObservation struct {
+
+	// Unique Resource Identifier
+	Href *string `json:"href,omitempty" tf:"href,omitempty"`
+}
+
+type AccessPointNetworkParameters struct {
+
+	// Equinix-assigned Network identifier
+	// +kubebuilder:validation:Optional
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
 type AccessPointObservation struct {
 
 	// Account
-	Account []AccountObservation `json:"account,omitempty" tf:"account,omitempty"`
+	// +kubebuilder:validation:Optional
+	Account []AccessPointAccountObservation `json:"account,omitempty" tf:"account,omitempty"`
 
-	// Gateway access point information
+	// Cloud Router access point information
 	// +kubebuilder:validation:Optional
 	Gateway []GatewayObservation `json:"gateway,omitempty" tf:"gateway,omitempty"`
 
 	// Virtual device interface
 	// +kubebuilder:validation:Optional
 	Interface []InterfaceObservation `json:"interface,omitempty" tf:"interface,omitempty"`
+
+	// network access point information
+	// +kubebuilder:validation:Optional
+	Network []NetworkObservation `json:"network,omitempty" tf:"network,omitempty"`
 
 	// Port access point information
 	// +kubebuilder:validation:Optional
@@ -165,6 +191,10 @@ type AccessPointObservation struct {
 	// +kubebuilder:validation:Optional
 	Profile []ProfileObservation `json:"profile,omitempty" tf:"profile,omitempty"`
 
+	// Cloud Router access point information
+	// +kubebuilder:validation:Optional
+	Router []RouterObservation `json:"router,omitempty" tf:"router,omitempty"`
+
 	// Virtual device
 	// +kubebuilder:validation:Optional
 	VirtualDevice []VirtualDeviceObservation `json:"virtualDevice,omitempty" tf:"virtual_device,omitempty"`
@@ -172,11 +202,15 @@ type AccessPointObservation struct {
 
 type AccessPointParameters struct {
 
+	// Account
+	// +kubebuilder:validation:Optional
+	Account []AccessPointAccountParameters `json:"account,omitempty" tf:"account,omitempty"`
+
 	// Authentication key for provider based connections
 	// +kubebuilder:validation:Optional
 	AuthenticationKey *string `json:"authenticationKey,omitempty" tf:"authentication_key,omitempty"`
 
-	// Gateway access point information
+	// Cloud Router access point information
 	// +kubebuilder:validation:Optional
 	Gateway []GatewayParameters `json:"gateway,omitempty" tf:"gateway,omitempty"`
 
@@ -190,7 +224,11 @@ type AccessPointParameters struct {
 
 	// Access point location
 	// +kubebuilder:validation:Optional
-	Location []LocationParameters `json:"location,omitempty" tf:"location,omitempty"`
+	Location []AccessPointLocationParameters `json:"location,omitempty" tf:"location,omitempty"`
+
+	// network access point information
+	// +kubebuilder:validation:Optional
+	Network []NetworkParameters `json:"network,omitempty" tf:"network,omitempty"`
 
 	// Peering Type- PRIVATE,MICROSOFT,PUBLIC, MANUAL
 	// +kubebuilder:validation:Optional
@@ -208,6 +246,10 @@ type AccessPointParameters struct {
 	// +kubebuilder:validation:Optional
 	ProviderConnectionID *string `json:"providerConnectionId,omitempty" tf:"provider_connection_id,omitempty"`
 
+	// Cloud Router access point information
+	// +kubebuilder:validation:Optional
+	Router []RouterParameters `json:"router,omitempty" tf:"router,omitempty"`
+
 	// Access point routing protocols configuration
 	// +kubebuilder:validation:Optional
 	RoutingProtocols []RoutingProtocolsParameters `json:"routingProtocols,omitempty" tf:"routing_protocols,omitempty"`
@@ -216,7 +258,7 @@ type AccessPointParameters struct {
 	// +kubebuilder:validation:Optional
 	SellerRegion *string `json:"sellerRegion,omitempty" tf:"seller_region,omitempty"`
 
-	// Access point type - COLO, VD, VG, SP, IGW, SUBNET, GW
+	// Access point type - COLO, VD, VG, SP, IGW, SUBNET, CLOUD_ROUTER, NETWORK
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
@@ -270,6 +312,19 @@ type AccessPointProfileParameters struct {
 	UUID *string `json:"uuid" tf:"uuid,omitempty"`
 }
 
+type AccessPointRouterObservation struct {
+
+	// Unique Resource Identifier
+	Href *string `json:"href,omitempty" tf:"href,omitempty"`
+}
+
+type AccessPointRouterParameters struct {
+
+	// Equinix-assigned virtual gateway identifier
+	// +kubebuilder:validation:Optional
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
 type AccessPointRoutingProtocolsObservation struct {
 }
 
@@ -314,7 +369,21 @@ type AccessPointVirtualDeviceParameters struct {
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
-type AccountObservation struct {
+type AdditionalInfoObservation struct {
+}
+
+type AdditionalInfoParameters struct {
+
+	// Additional information key
+	// +kubebuilder:validation:Optional
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// Additional information value
+	// +kubebuilder:validation:Optional
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type ConnectionAccountObservation struct {
 	AccountName *string `json:"accountName,omitempty" tf:"account_name,omitempty"`
 
 	AccountNumber *float64 `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
@@ -330,24 +399,10 @@ type AccountObservation struct {
 	OrganizationName *string `json:"organizationName,omitempty" tf:"organization_name,omitempty"`
 }
 
-type AccountParameters struct {
+type ConnectionAccountParameters struct {
 }
 
-type AdditionalInfoObservation struct {
-}
-
-type AdditionalInfoParameters struct {
-
-	// Additional information key
-	// +kubebuilder:validation:Optional
-	Key *string `json:"key,omitempty" tf:"key,omitempty"`
-
-	// Additional information value
-	// +kubebuilder:validation:Optional
-	Value *string `json:"value,omitempty" tf:"value,omitempty"`
-}
-
-type ChangeLogObservation struct {
+type ConnectionChangeLogObservation struct {
 	CreatedBy *string `json:"createdBy,omitempty" tf:"created_by,omitempty"`
 
 	CreatedByEmail *string `json:"createdByEmail,omitempty" tf:"created_by_email,omitempty"`
@@ -373,40 +428,25 @@ type ChangeLogObservation struct {
 	UpdatedDateTime *string `json:"updatedDateTime,omitempty" tf:"updated_date_time,omitempty"`
 }
 
-type ChangeLogParameters struct {
+type ConnectionChangeLogParameters struct {
 }
 
-type ConnectionAccountObservation struct {
-	AccountName *string `json:"accountName,omitempty" tf:"account_name,omitempty"`
-
-	AccountNumber *float64 `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
-
-	GlobalCustID *string `json:"globalCustId,omitempty" tf:"global_cust_id,omitempty"`
-
-	GlobalOrgID *string `json:"globalOrgId,omitempty" tf:"global_org_id,omitempty"`
-
-	GlobalOrganizationName *string `json:"globalOrganizationName,omitempty" tf:"global_organization_name,omitempty"`
-
-	OrgID *float64 `json:"orgId,omitempty" tf:"org_id,omitempty"`
-
-	OrganizationName *string `json:"organizationName,omitempty" tf:"organization_name,omitempty"`
+type ConnectionNotificationsObservation struct {
 }
 
-type ConnectionAccountParameters struct {
-}
+type ConnectionNotificationsParameters struct {
 
-type ConnectionAdditionalInfoObservation struct {
-}
+	// Array of contact emails
+	// +kubebuilder:validation:Required
+	Emails []*string `json:"emails" tf:"emails,omitempty"`
 
-type ConnectionAdditionalInfoParameters struct {
-
-	// Additional information key
+	// Send interval
 	// +kubebuilder:validation:Optional
-	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+	SendInterval *string `json:"sendInterval,omitempty" tf:"send_interval,omitempty"`
 
-	// Additional information value
-	// +kubebuilder:validation:Optional
-	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+	// Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
+	// +kubebuilder:validation:Required
+	Type *string `json:"type" tf:"type,omitempty"`
 }
 
 type ConnectionObservation struct {
@@ -419,7 +459,7 @@ type ConnectionObservation struct {
 	Account []ConnectionAccountObservation `json:"account,omitempty" tf:"account,omitempty"`
 
 	// Captures connection lifecycle change information
-	ChangeLog []ChangeLogObservation `json:"changeLog,omitempty" tf:"change_log,omitempty"`
+	ChangeLog []ConnectionChangeLogObservation `json:"changeLog,omitempty" tf:"change_log,omitempty"`
 
 	// Connection directionality from the requester point of view
 	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
@@ -437,15 +477,11 @@ type ConnectionObservation struct {
 
 	// Order related to this connection information
 	// +kubebuilder:validation:Optional
-	Order []OrderObservation `json:"order,omitempty" tf:"order,omitempty"`
+	Order []ConnectionOrderObservation `json:"order,omitempty" tf:"order,omitempty"`
 
 	// Project information
 	// +kubebuilder:validation:Optional
-	Project []ProjectObservation `json:"project,omitempty" tf:"project,omitempty"`
-
-	// Redundancy Information
-	// +kubebuilder:validation:Optional
-	Redundancy []ConnectionRedundancyObservation `json:"redundancy,omitempty" tf:"redundancy,omitempty"`
+	Project []ConnectionProjectObservation `json:"project,omitempty" tf:"project,omitempty"`
 
 	// Connection overall state
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
@@ -453,6 +489,26 @@ type ConnectionObservation struct {
 	// Destination or Provider side connection configuration object of the multi-segment connection
 	// +kubebuilder:validation:Required
 	ZSide []ZSideObservation `json:"zSide,omitempty" tf:"z_side,omitempty"`
+}
+
+type ConnectionOrderObservation struct {
+
+	// Order Identification
+	OrderID *string `json:"orderId,omitempty" tf:"order_id,omitempty"`
+
+	// Order Reference Number
+	OrderNumber *string `json:"orderNumber,omitempty" tf:"order_number,omitempty"`
+}
+
+type ConnectionOrderParameters struct {
+
+	// Billing tier for connection bandwidth
+	// +kubebuilder:validation:Optional
+	BillingTier *string `json:"billingTier,omitempty" tf:"billing_tier,omitempty"`
+
+	// Purchase order number
+	// +kubebuilder:validation:Optional
+	PurchaseOrderNumber *string `json:"purchaseOrderNumber,omitempty" tf:"purchase_order_number,omitempty"`
 }
 
 type ConnectionParameters struct {
@@ -463,7 +519,7 @@ type ConnectionParameters struct {
 
 	// Connection additional information
 	// +kubebuilder:validation:Optional
-	AdditionalInfo []ConnectionAdditionalInfoParameters `json:"additionalInfo,omitempty" tf:"additional_info,omitempty"`
+	AdditionalInfo []map[string]*string `json:"additionalInfo,omitempty" tf:"additional_info,omitempty"`
 
 	// Connection bandwidth in Mbps
 	// +kubebuilder:validation:Required
@@ -475,21 +531,21 @@ type ConnectionParameters struct {
 
 	// Preferences for notifications on connection configuration or status changes
 	// +kubebuilder:validation:Required
-	Notifications []NotificationsParameters `json:"notifications" tf:"notifications,omitempty"`
+	Notifications []ConnectionNotificationsParameters `json:"notifications" tf:"notifications,omitempty"`
 
 	// Order related to this connection information
 	// +kubebuilder:validation:Optional
-	Order []OrderParameters `json:"order,omitempty" tf:"order,omitempty"`
+	Order []ConnectionOrderParameters `json:"order,omitempty" tf:"order,omitempty"`
 
 	// Project information
 	// +kubebuilder:validation:Optional
-	Project []ProjectParameters `json:"project,omitempty" tf:"project,omitempty"`
+	Project []ConnectionProjectParameters `json:"project,omitempty" tf:"project,omitempty"`
 
 	// Redundancy Information
 	// +kubebuilder:validation:Optional
 	Redundancy []ConnectionRedundancyParameters `json:"redundancy,omitempty" tf:"redundancy,omitempty"`
 
-	// Defines the connection type like VG_VC, EVPL_VC, EPL_VC, EC_VC, GW_VC, ACCESS_EPL_VC
+	// Defines the connection type like VG_VC, EVPL_VC, EPL_VC, EC_VC, IP_VC, IPWAN_VC,ACCESS_EPL_VC
 	// +kubebuilder:validation:Required
 	Type *string `json:"type" tf:"type,omitempty"`
 
@@ -498,13 +554,26 @@ type ConnectionParameters struct {
 	ZSide []ZSideParameters `json:"zSide" tf:"z_side,omitempty"`
 }
 
-type ConnectionRedundancyObservation struct {
+type ConnectionProjectObservation struct {
 
-	// Redundancy group identifier
-	Group *string `json:"group,omitempty" tf:"group,omitempty"`
+	// Unique Resource URL
+	Href *string `json:"href,omitempty" tf:"href,omitempty"`
+
+	// Project Id
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+}
+
+type ConnectionProjectParameters struct {
+}
+
+type ConnectionRedundancyObservation struct {
 }
 
 type ConnectionRedundancyParameters struct {
+
+	// Redundancy group identifier
+	// +kubebuilder:validation:Optional
+	Group *string `json:"group,omitempty" tf:"group,omitempty"`
 
 	// Priority type- PRIMARY, SECONDARY
 	// +kubebuilder:validation:Optional
@@ -589,44 +658,17 @@ type LinkProtocolParameters struct {
 	VlanTag *float64 `json:"vlanTag,omitempty" tf:"vlan_tag,omitempty"`
 }
 
-type LocationObservation struct {
+type NetworkObservation struct {
+
+	// Unique Resource Identifier
+	Href *string `json:"href,omitempty" tf:"href,omitempty"`
 }
 
-type LocationParameters struct {
+type NetworkParameters struct {
 
-	// IBX Code
+	// Equinix-assigned Network identifier
 	// +kubebuilder:validation:Optional
-	Ibx *string `json:"ibx,omitempty" tf:"ibx,omitempty"`
-
-	// Access point metro code
-	// +kubebuilder:validation:Optional
-	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
-
-	// Access point metro name
-	// +kubebuilder:validation:Optional
-	MetroName *string `json:"metroName,omitempty" tf:"metro_name,omitempty"`
-
-	// Access point region
-	// +kubebuilder:validation:Optional
-	Region *string `json:"region,omitempty" tf:"region,omitempty"`
-}
-
-type NotificationsObservation struct {
-}
-
-type NotificationsParameters struct {
-
-	// Array of contact emails
-	// +kubebuilder:validation:Required
-	Emails []*string `json:"emails" tf:"emails,omitempty"`
-
-	// Send interval
-	// +kubebuilder:validation:Optional
-	SendInterval *string `json:"sendInterval,omitempty" tf:"send_interval,omitempty"`
-
-	// Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type OperationObservation struct {
@@ -638,26 +680,6 @@ type OperationObservation struct {
 }
 
 type OperationParameters struct {
-}
-
-type OrderObservation struct {
-
-	// Order Identification
-	OrderID *string `json:"orderId,omitempty" tf:"order_id,omitempty"`
-
-	// Order Reference Number
-	OrderNumber *string `json:"orderNumber,omitempty" tf:"order_number,omitempty"`
-}
-
-type OrderParameters struct {
-
-	// Billing tier for connection bandwidth
-	// +kubebuilder:validation:Optional
-	BillingTier *string `json:"billingTier,omitempty" tf:"billing_tier,omitempty"`
-
-	// Purchase order number
-	// +kubebuilder:validation:Optional
-	PurchaseOrderNumber *string `json:"purchaseOrderNumber,omitempty" tf:"purchase_order_number,omitempty"`
 }
 
 type PortObservation struct {
@@ -721,23 +743,24 @@ type ProfileParameters struct {
 	UUID *string `json:"uuid" tf:"uuid,omitempty"`
 }
 
-type ProjectObservation struct {
-
-	// Unique Resource URL
-	Href *string `json:"href,omitempty" tf:"href,omitempty"`
-
-	// Project Id
-	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
-}
-
-type ProjectParameters struct {
-}
-
 type RedundancyObservation struct {
 	Priority *string `json:"priority,omitempty" tf:"priority,omitempty"`
 }
 
 type RedundancyParameters struct {
+}
+
+type RouterObservation struct {
+
+	// Unique Resource Identifier
+	Href *string `json:"href,omitempty" tf:"href,omitempty"`
+}
+
+type RouterParameters struct {
+
+	// Equinix-assigned virtual gateway identifier
+	// +kubebuilder:validation:Optional
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type RoutingProtocolsObservation struct {
@@ -795,18 +818,72 @@ type VirtualDeviceParameters struct {
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
+type ZSideAccessPointAccountObservation struct {
+
+	// Account Name
+	AccountName *string `json:"accountName,omitempty" tf:"account_name,omitempty"`
+
+	// Account Number
+	AccountNumber *float64 `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
+
+	// Global Customer organization identifier
+	GlobalCustID *string `json:"globalCustId,omitempty" tf:"global_cust_id,omitempty"`
+
+	// Global organization identifier
+	GlobalOrgID *string `json:"globalOrgId,omitempty" tf:"global_org_id,omitempty"`
+
+	// Global organization name
+	GlobalOrganizationName *string `json:"globalOrganizationName,omitempty" tf:"global_organization_name,omitempty"`
+
+	// Customer organization identifier
+	OrgID *float64 `json:"orgId,omitempty" tf:"org_id,omitempty"`
+
+	// Customer organization name
+	OrganizationName *string `json:"organizationName,omitempty" tf:"organization_name,omitempty"`
+}
+
+type ZSideAccessPointAccountParameters struct {
+}
+
+type ZSideAccessPointLocationObservation struct {
+}
+
+type ZSideAccessPointLocationParameters struct {
+
+	// IBX Code
+	// +kubebuilder:validation:Optional
+	Ibx *string `json:"ibx,omitempty" tf:"ibx,omitempty"`
+
+	// Access point metro code
+	// +kubebuilder:validation:Optional
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// Access point metro name
+	// +kubebuilder:validation:Optional
+	MetroName *string `json:"metroName,omitempty" tf:"metro_name,omitempty"`
+
+	// Access point region
+	// +kubebuilder:validation:Optional
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+}
+
 type ZSideAccessPointObservation struct {
 
 	// Account
-	Account []AccessPointAccountObservation `json:"account,omitempty" tf:"account,omitempty"`
+	// +kubebuilder:validation:Optional
+	Account []ZSideAccessPointAccountObservation `json:"account,omitempty" tf:"account,omitempty"`
 
-	// Gateway access point information
+	// Cloud Router access point information
 	// +kubebuilder:validation:Optional
 	Gateway []AccessPointGatewayObservation `json:"gateway,omitempty" tf:"gateway,omitempty"`
 
 	// Virtual device interface
 	// +kubebuilder:validation:Optional
 	Interface []AccessPointInterfaceObservation `json:"interface,omitempty" tf:"interface,omitempty"`
+
+	// network access point information
+	// +kubebuilder:validation:Optional
+	Network []AccessPointNetworkObservation `json:"network,omitempty" tf:"network,omitempty"`
 
 	// Port access point information
 	// +kubebuilder:validation:Optional
@@ -816,6 +893,10 @@ type ZSideAccessPointObservation struct {
 	// +kubebuilder:validation:Optional
 	Profile []AccessPointProfileObservation `json:"profile,omitempty" tf:"profile,omitempty"`
 
+	// Cloud Router access point information
+	// +kubebuilder:validation:Optional
+	Router []AccessPointRouterObservation `json:"router,omitempty" tf:"router,omitempty"`
+
 	// Virtual device
 	// +kubebuilder:validation:Optional
 	VirtualDevice []AccessPointVirtualDeviceObservation `json:"virtualDevice,omitempty" tf:"virtual_device,omitempty"`
@@ -823,11 +904,15 @@ type ZSideAccessPointObservation struct {
 
 type ZSideAccessPointParameters struct {
 
+	// Account
+	// +kubebuilder:validation:Optional
+	Account []ZSideAccessPointAccountParameters `json:"account,omitempty" tf:"account,omitempty"`
+
 	// Authentication key for provider based connections
 	// +kubebuilder:validation:Optional
 	AuthenticationKey *string `json:"authenticationKey,omitempty" tf:"authentication_key,omitempty"`
 
-	// Gateway access point information
+	// Cloud Router access point information
 	// +kubebuilder:validation:Optional
 	Gateway []AccessPointGatewayParameters `json:"gateway,omitempty" tf:"gateway,omitempty"`
 
@@ -841,7 +926,11 @@ type ZSideAccessPointParameters struct {
 
 	// Access point location
 	// +kubebuilder:validation:Optional
-	Location []AccessPointLocationParameters `json:"location,omitempty" tf:"location,omitempty"`
+	Location []ZSideAccessPointLocationParameters `json:"location,omitempty" tf:"location,omitempty"`
+
+	// network access point information
+	// +kubebuilder:validation:Optional
+	Network []AccessPointNetworkParameters `json:"network,omitempty" tf:"network,omitempty"`
 
 	// Peering Type- PRIVATE,MICROSOFT,PUBLIC, MANUAL
 	// +kubebuilder:validation:Optional
@@ -859,6 +948,10 @@ type ZSideAccessPointParameters struct {
 	// +kubebuilder:validation:Optional
 	ProviderConnectionID *string `json:"providerConnectionId,omitempty" tf:"provider_connection_id,omitempty"`
 
+	// Cloud Router access point information
+	// +kubebuilder:validation:Optional
+	Router []AccessPointRouterParameters `json:"router,omitempty" tf:"router,omitempty"`
+
 	// Access point routing protocols configuration
 	// +kubebuilder:validation:Optional
 	RoutingProtocols []AccessPointRoutingProtocolsParameters `json:"routingProtocols,omitempty" tf:"routing_protocols,omitempty"`
@@ -867,7 +960,7 @@ type ZSideAccessPointParameters struct {
 	// +kubebuilder:validation:Optional
 	SellerRegion *string `json:"sellerRegion,omitempty" tf:"seller_region,omitempty"`
 
-	// Access point type - COLO, VD, VG, SP, IGW, SUBNET, GW
+	// Access point type - COLO, VD, VG, SP, IGW, SUBNET, CLOUD_ROUTER, NETWORK
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 

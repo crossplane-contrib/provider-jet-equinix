@@ -26,7 +26,7 @@ metadata:
   name: myblock
 spec:
   forProvider:
-    facility: ny5
+    metro: ny
     projectIdSelector:
       matchLabels:
         testing.upbound.io/example-name: example
