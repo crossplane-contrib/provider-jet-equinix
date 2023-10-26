@@ -38,6 +38,9 @@ const (
 	errExtractCredentials   = "cannot extract credentials"
 	errUnmarshalCredentials = "cannot unmarshal equinix credentials as JSON"
 
+	keyClientID            = "client_id"
+	keyClientSecret        = "client_secret"
+	keyAuthToken           = "auth_token"
 	keyEndpoint            = "endpoint"
 	keyRequestTimeout      = "request_timeout"
 	keyResponseMaxPageSize = "response_max_page_size"
@@ -84,6 +87,9 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			keyEndpoint,
 			keyRequestTimeout,
 			keyResponseMaxPageSize,
+			keyAuthToken,
+			keyClientID,
+			keyClientSecret,
 		} {
 			if equinixCreds[key] != "" {
 				ps.Configuration[key] = equinixCreds[key]
