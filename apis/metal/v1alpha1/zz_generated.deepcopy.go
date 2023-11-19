@@ -869,6 +869,11 @@ func (in *DeviceObservation) DeepCopyInto(out *DeviceObservation) {
 			}
 		}
 	}
+	if in.SosHostname != nil {
+		in, out := &in.SosHostname, &out.SosHostname
+		*out = new(string)
+		**out = **in
+	}
 	if in.State != nil {
 		in, out := &in.State, &out.State
 		*out = new(string)

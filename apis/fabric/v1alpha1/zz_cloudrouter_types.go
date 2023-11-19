@@ -66,8 +66,17 @@ type ChangeLogParameters struct {
 
 type CloudRouterObservation struct {
 
+	// Access point used and maximum number of IPv4 BGP routes
+	BGPIPv4RoutesCount *float64 `json:"bgpIpv4RoutesCount,omitempty" tf:"bgp_ipv4_routes_count,omitempty"`
+
+	// Access point used and maximum number of IPv6 BGP routes
+	BGPIPv6RoutesCount *float64 `json:"bgpIpv6RoutesCount,omitempty" tf:"bgp_ipv6_routes_count,omitempty"`
+
 	// Captures Fabric Cloud Router lifecycle change information
 	ChangeLog []ChangeLogObservation `json:"changeLog,omitempty" tf:"change_log,omitempty"`
+
+	// Number of connections associated with this Access point
+	ConnectionsCount *float64 `json:"connectionsCount,omitempty" tf:"connections_count,omitempty"`
 
 	// Equinix ASN
 	EquinixAsn *float64 `json:"equinixAsn,omitempty" tf:"equinix_asn,omitempty"`

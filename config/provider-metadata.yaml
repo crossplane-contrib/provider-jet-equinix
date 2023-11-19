@@ -69,6 +69,14 @@ resources:
                   ],
                   "port_uuid": "${data.equinix_ecx_port.sv-qinq-pri.id}",
                   "profile_uuid": "${data.equinix_ecx_l2_sellerprofile.azure.id}",
+                  "secondary_connection": [
+                    {
+                      "name": "tf-azure-sec",
+                      "port_uuid": "${data.equinix_ecx_port.sv-qinq-sec.id}",
+                      "vlan_ctag": 1631,
+                      "vlan_stag": 1904
+                    }
+                  ],
                   "seller_metro_code": "SV",
                   "speed": 50,
                   "speed_unit": "MB",
@@ -78,6 +86,7 @@ resources:
               references:
                 port_uuid: data.equinix_ecx_port.sv-qinq-pri.id
                 profile_uuid: data.equinix_ecx_l2_sellerprofile.azure.id
+                secondary_connection.port_uuid: data.equinix_ecx_port.sv-qinq-sec.id
             - name: router-to-gcp
               manifest: |-
                 {
@@ -541,6 +550,7 @@ resources:
             metro_code: (String) Access point metro code
             metro_name: (String) Access point metro name
             name: (String) Connection name. An alpha-numeric 24 characters string which can include only hyphens and underscores
+            network: (Block Set) Simplified Network (see below for nested schema)
             notifications: '(Block List, Min: 1) Preferences for notifications on connection configuration or status changes (see below for nested schema)'
             operation: (Set of Object) Connection type-specific operational data (see below for nested schema)
             order: (Block Set) Order related to this connection information (see below for nested schema)
@@ -1132,6 +1142,7 @@ resources:
                 - (Optional) Whether the non-OS disks should be kept or wiped during reinstall.
                 Defaults to false.
             root_password: '- Root password to the server (disabled after 24 hours).'
+            sos_hostname: '- The hostname to use for Serial over SSH access to the device'
             ssh_key_ids: '- List of IDs of SSH keys deployed in the device, can be both user and project SSH keys.'
             state: '- The status of the device.'
             storage: |-

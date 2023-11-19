@@ -94,6 +94,10 @@ type DeviceObservation struct {
 	// List of IDs of SSH keys deployed in the device, can be both user and project SSH keys
 	SSHKeyIds []*string `json:"sshKeyIds,omitempty" tf:"ssh_key_ids,omitempty"`
 
+	// The hostname to use for Serial over SSH access to the device
+	// The hostname to use for [Serial over SSH](https://deploy.equinix.com/developers/docs/metal/resilience-recovery/serial-over-ssh/) access to the device
+	SosHostname *string `json:"sosHostname,omitempty" tf:"sos_hostname,omitempty"`
+
 	// The status of the device.
 	// The status of the device
 	State *string `json:"state,omitempty" tf:"state,omitempty"`

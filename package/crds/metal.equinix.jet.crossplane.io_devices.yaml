@@ -694,6 +694,11 @@ spec:
                           type: string
                       type: object
                     type: array
+                  sosHostname:
+                    description: The hostname to use for Serial over SSH access to
+                      the device The hostname to use for [Serial over SSH](https://deploy.equinix.com/developers/docs/metal/resilience-recovery/serial-over-ssh/)
+                      access to the device
+                    type: string
                   sshKeyIds:
                     description: List of IDs of SSH keys deployed in the device, can
                       be both user and project SSH keys. List of IDs of SSH keys deployed
