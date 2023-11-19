@@ -222,6 +222,10 @@ spec:
                                 description: Virtual device
                                 items:
                                   properties:
+                                    name:
+                                      description: Customer-assigned Virtual Device
+                                        Name
+                                      type: string
                                     type:
                                       description: Virtual Device type
                                       type: string
@@ -491,6 +495,10 @@ spec:
                                 description: Virtual device
                                 items:
                                   properties:
+                                    name:
+                                      description: Customer-assigned Virtual Device
+                                        Name
+                                      type: string
                                     type:
                                       description: Virtual Device type
                                       type: string
@@ -767,7 +775,7 @@ spec:
                                   properties:
                                     id:
                                       description: id
-                                      type: string
+                                      type: number
                                   type: object
                                 type: array
                               network:
@@ -1039,7 +1047,7 @@ spec:
                                   properties:
                                     id:
                                       description: id
-                                      type: string
+                                      type: number
                                   type: object
                                 type: array
                               network:

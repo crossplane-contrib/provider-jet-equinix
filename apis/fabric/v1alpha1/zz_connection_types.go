@@ -94,7 +94,7 @@ type AccessPointGatewayParameters struct {
 type AccessPointInterfaceObservation struct {
 
 	// id
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+	ID *float64 `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type AccessPointInterfaceParameters struct {
@@ -360,6 +360,10 @@ type AccessPointVirtualDeviceObservation struct {
 
 type AccessPointVirtualDeviceParameters struct {
 
+	// Customer-assigned Virtual Device Name
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
 	// Virtual Device type
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
@@ -622,7 +626,7 @@ type GatewayParameters struct {
 type InterfaceObservation struct {
 
 	// id
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+	ID *float64 `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type InterfaceParameters struct {
@@ -808,6 +812,10 @@ type VirtualDeviceObservation struct {
 }
 
 type VirtualDeviceParameters struct {
+
+	// Customer-assigned Virtual Device Name
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// Virtual Device type
 	// +kubebuilder:validation:Optional

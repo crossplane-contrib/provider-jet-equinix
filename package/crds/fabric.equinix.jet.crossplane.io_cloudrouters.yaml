@@ -341,6 +341,14 @@ spec:
             properties:
               atProvider:
                 properties:
+                  bgpIpv4RoutesCount:
+                    description: Access point used and maximum number of IPv4 BGP
+                      routes
+                    type: number
+                  bgpIpv6RoutesCount:
+                    description: Access point used and maximum number of IPv6 BGP
+                      routes
+                    type: number
                   changeLog:
                     description: Captures Fabric Cloud Router lifecycle change information
                     items:
@@ -371,6 +379,10 @@ spec:
                           type: string
                       type: object
                     type: array
+                  connectionsCount:
+                    description: Number of connections associated with this Access
+                      point
+                    type: number
                   equinixAsn:
                     description: Equinix ASN
                     type: number
