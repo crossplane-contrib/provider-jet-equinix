@@ -1,0 +1,42 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: k3sclusters.deployments.equinix.com
+spec:
+  group: deployments.equinix.com
+  names:
+    kind: K3sCluster
+    listKind: K3sClusterList
+    plural: k3sclusters
+    singular: k3scluster
+  versions:
+    - name: v1alpha1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          description: Managed resources for provider-jet-equinix crossplane K3s Cluster. Creates a k3s server and agent node in a new project named after the composition resource.
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                metro:
+                  type: string
+                  description: metro
+                k3stoken:
+                  type: string
+                  description: K3s Token
+                secretNamespace:
+                  type: string
+                  description: Secret Namespace
+              required:
+                - metro
+                - k3stoken
+                - secretNamespace
+            status:
+              type: object
+              properties:
+                serverIP:
+                  type: string
+                  description: IPv4 of the K3s Server

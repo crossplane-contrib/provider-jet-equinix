@@ -1,0 +1,8 @@
+apiVersion: deployments.equinix.com/v1alpha1
+kind: K3sCluster
+metadata:
+  name: k3s-sv
+spec:
+  metro: sv
+  k3stoken: t09s3cr37 # This is an example token.
+  secretNamespace: crossplane-system
