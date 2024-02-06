@@ -38,7 +38,7 @@ RUN unzip /tmp/terraform_${TERRAFORM_VERSION}_${TARGETOS}_${TARGETARCH}.zip -d /
   && chown -R ${USER_ID}:${USER_ID} /terraform
 # End of - Setup Terraform environment
 
-ADD bin/$TARGETOS\_$TARGETARCH/provider /usr/local/bin/crossplane-equinix-provider
+ADD bin/$TARGETOS\_$TARGETARCH/provider /usr/local/bin/provider
 
 # Provider controller needs these environment variable at runtime
 ENV TERRAFORM_VERSION ${TERRAFORM_VERSION}
@@ -49,4 +49,4 @@ ENV TERRAFORM_NATIVE_PROVIDER_PATH ${PLUGIN_DIR}/${TERRAFORM_NATIVE_PROVIDER_BIN
 USER ${USER_ID}
 EXPOSE 8080
 
-ENTRYPOINT ["crossplane-equinix-provider"]
+ENTRYPOINT ["provider"]
