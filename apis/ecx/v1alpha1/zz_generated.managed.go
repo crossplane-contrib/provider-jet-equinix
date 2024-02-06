@@ -29,17 +29,14 @@ func (mg *L2Connection) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this L2Connection.
+func (mg *L2Connection) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this L2Connection.
 func (mg *L2Connection) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
-}
-
-/*
-GetProviderReference of this L2Connection.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *L2Connection) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
 }
 
 // GetPublishConnectionDetailsTo of this L2Connection.
@@ -62,17 +59,14 @@ func (mg *L2Connection) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
+// SetManagementPolicies of this L2Connection.
+func (mg *L2Connection) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
 // SetProviderConfigReference of this L2Connection.
 func (mg *L2Connection) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this L2Connection.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *L2Connection) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this L2Connection.
@@ -95,17 +89,14 @@ func (mg *L2ConnectionAccepter) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this L2ConnectionAccepter.
+func (mg *L2ConnectionAccepter) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this L2ConnectionAccepter.
 func (mg *L2ConnectionAccepter) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
-}
-
-/*
-GetProviderReference of this L2ConnectionAccepter.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *L2ConnectionAccepter) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
 }
 
 // GetPublishConnectionDetailsTo of this L2ConnectionAccepter.
@@ -128,17 +119,14 @@ func (mg *L2ConnectionAccepter) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
+// SetManagementPolicies of this L2ConnectionAccepter.
+func (mg *L2ConnectionAccepter) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
 // SetProviderConfigReference of this L2ConnectionAccepter.
 func (mg *L2ConnectionAccepter) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this L2ConnectionAccepter.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *L2ConnectionAccepter) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this L2ConnectionAccepter.
@@ -161,17 +149,14 @@ func (mg *L2Serviceprofile) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this L2Serviceprofile.
+func (mg *L2Serviceprofile) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this L2Serviceprofile.
 func (mg *L2Serviceprofile) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
-}
-
-/*
-GetProviderReference of this L2Serviceprofile.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *L2Serviceprofile) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
 }
 
 // GetPublishConnectionDetailsTo of this L2Serviceprofile.
@@ -194,17 +179,14 @@ func (mg *L2Serviceprofile) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
+// SetManagementPolicies of this L2Serviceprofile.
+func (mg *L2Serviceprofile) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
 // SetProviderConfigReference of this L2Serviceprofile.
 func (mg *L2Serviceprofile) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this L2Serviceprofile.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *L2Serviceprofile) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this L2Serviceprofile.

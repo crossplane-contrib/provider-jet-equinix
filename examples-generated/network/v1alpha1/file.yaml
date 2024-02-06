@@ -1,0 +1,20 @@
+apiVersion: network.equinix.jet.crossplane.io/v1alpha1
+kind: File
+metadata:
+  annotations:
+    meta.upbound.io/example-id: network/v1alpha1/file
+  labels:
+    testing.upbound.io/example-name: test-file
+  name: test-file
+spec:
+  forProvider:
+    byol: true
+    contentSecretRef:
+      key: attribute.${var.filepath}
+      name: example-secret
+      namespace: upbound-system
+    deviceTypeCode: AVIATRIX_EDGE
+    fileName: fileName.txt
+    metroCode: SV
+    processType: CLOUD_INIT
+    selfManaged: true

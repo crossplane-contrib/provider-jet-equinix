@@ -1,0 +1,11 @@
+apiVersion: ecx.equinix.jet.crossplane.io/v1alpha1
+kind: L2ConnectionAccepter
+metadata:
+  annotations:
+    meta.upbound.io/example-id: ecx/v1alpha1/l2connectionaccepter
+  labels:
+    testing.upbound.io/example-name: accepter
+  name: accepter
+spec:
+  forProvider:
+    connectionId: ${equinix_ecx_l2_connection.awsConn.id}

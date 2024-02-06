@@ -1,0 +1,54 @@
+apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
+kind: BGPSession
+metadata:
+  annotations:
+    meta.upbound.io/example-id: metal/v1alpha1/bgpsession
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    addressFamily: ipv4
+    deviceIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: test
+
+---
+
+apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
+kind: Device
+metadata:
+  annotations:
+    meta.upbound.io/example-id: metal/v1alpha1/bgpsession
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    billingCycle: hourly
+    hostname: terraform-test-bgp-sesh
+    metro:
+    - ny
+    operatingSystem: ubuntu_20_04
+    plan: c3.small.x86
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
+kind: ReservedIPBlock
+metadata:
+  annotations:
+    meta.upbound.io/example-id: metal/v1alpha1/bgpsession
+  labels:
+    testing.upbound.io/example-name: addr
+  name: addr
+spec:
+  forProvider:
+    metro: ny
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    quantity: 1

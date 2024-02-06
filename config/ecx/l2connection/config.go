@@ -17,7 +17,7 @@ limitations under the License.
 package l2connection
 
 import (
-	"github.com/upbound/upjet/pkg/config"
+	"github.com/crossplane/upjet/pkg/config"
 )
 
 // Configure the device group with references to other resources

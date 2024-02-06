@@ -17,7 +17,7 @@ limitations under the License.
 package device
 
 import (
-	"github.com/upbound/upjet/pkg/config"
+	"github.com/crossplane/upjet/pkg/config"
 )
 
 // Configure the device group with references to other resources
@@ -25,7 +25,7 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("equinix_metal_device", func(r *config.Resource) {
 		r.LateInitializer = config.LateInitializer{
 			// NOTE(displague): These are ignored because they conflict with each other.
-			// See the following for more details: https://github.com/upbound/upjet/issues/107
+			// See the following for more details: https://github.com/crossplane/upjet/issues/107
 			IgnoredFields: []string{
 				"metro",
 				"facilities",

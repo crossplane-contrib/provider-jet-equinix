@@ -1,0 +1,25 @@
+apiVersion: ecx.equinix.jet.crossplane.io/v1alpha1
+kind: L2Connection
+metadata:
+  annotations:
+    meta.upbound.io/example-id: ecx/v1alpha1/l2connection
+  labels:
+    testing.upbound.io/example-name: port-2-aws
+  name: port-2-aws
+spec:
+  forProvider:
+    authorizationKey: "345742915919"
+    name: tf-aws
+    notifications:
+    - marry@equinix.com
+    - john@equinix.com
+    portUuid: ${data.equinix_ecx_port.sv-qinq-pri.id}
+    profileUuidSelector:
+      matchLabels:
+        testing.upbound.io/example-name: equinix_ecx_l2_sellerprofile
+    sellerMetroCode: SV
+    sellerRegion: us-west-1
+    speed: 200
+    speedUnit: MB
+    vlanCtag: 1000
+    vlanStag: 777

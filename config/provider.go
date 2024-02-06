@@ -20,7 +20,7 @@ import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
 
-	upconfig "github.com/upbound/upjet/pkg/config"
+	upconfig "github.com/crossplane/upjet/pkg/config"
 
 	"github.com/crossplane-contrib/provider-jet-equinix/config/ecx/l2connection"
 	"github.com/crossplane-contrib/provider-jet-equinix/config/metal/device"

@@ -47,5 +47,21 @@ func (mg *L2Connection) ResolveReferences(ctx context.Context, c client.Reader) 
 	mg.Spec.ForProvider.ProfileUUID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.ProfileUUIDRef = rsp.ResolvedReference
 
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.ProfileUUID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.ProfileUUIDRef,
+		Selector:     mg.Spec.InitProvider.ProfileUUIDSelector,
+		To: reference.To{
+			List:    &L2ServiceprofileList{},
+			Managed: &L2Serviceprofile{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.ProfileUUID")
+	}
+	mg.Spec.InitProvider.ProfileUUID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.ProfileUUIDRef = rsp.ResolvedReference
+
 	return nil
 }

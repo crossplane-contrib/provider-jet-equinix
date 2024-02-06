@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2021 The Crossplane Authors.
 
@@ -25,7 +29,31 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ACLTemplateInitParameters struct {
+
+	// ACL template description, up to 200 characters.
+	// ACL template description, up to 200 characters
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// One or more rules to specify allowed inbound traffic.
+	// Rules are ordered, matching traffic rule stops processing subsequent ones.
+	// One or more rules to specify allowed inbound traffic. Rules are ordered, matching traffic rule stops processing subsequent ones.
+	InboundRule []InboundRuleInitParameters `json:"inboundRule,omitempty" tf:"inbound_rule,omitempty"`
+
+	// (Deprecated) ACL template location metro code.
+	// ACL template location metro code
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// ACL template name.
+	// ACL template name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
 type ACLTemplateObservation struct {
+
+	// ACL template description, up to 200 characters.
+	// ACL template description, up to 200 characters
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// Status of ACL template provisioning process, where template was applied.
 	// One of PROVISIONING, PROVISIONED.
@@ -45,8 +73,15 @@ type ACLTemplateObservation struct {
 	// One or more rules to specify allowed inbound traffic.
 	// Rules are ordered, matching traffic rule stops processing subsequent ones.
 	// One or more rules to specify allowed inbound traffic. Rules are ordered, matching traffic rule stops processing subsequent ones.
-	// +kubebuilder:validation:Required
 	InboundRule []InboundRuleObservation `json:"inboundRule,omitempty" tf:"inbound_rule,omitempty"`
+
+	// (Deprecated) ACL template location metro code.
+	// ACL template location metro code
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// ACL template name.
+	// ACL template name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// Unique identifier of ACL template resource.
 	// Unique identifier of ACL template resource
@@ -63,8 +98,8 @@ type ACLTemplateParameters struct {
 	// One or more rules to specify allowed inbound traffic.
 	// Rules are ordered, matching traffic rule stops processing subsequent ones.
 	// One or more rules to specify allowed inbound traffic. Rules are ordered, matching traffic rule stops processing subsequent ones.
-	// +kubebuilder:validation:Required
-	InboundRule []InboundRuleParameters `json:"inboundRule" tf:"inbound_rule,omitempty"`
+	// +kubebuilder:validation:Optional
+	InboundRule []InboundRuleParameters `json:"inboundRule,omitempty" tf:"inbound_rule,omitempty"`
 
 	// (Deprecated) ACL template location metro code.
 	// ACL template location metro code
@@ -73,8 +108,11 @@ type ACLTemplateParameters struct {
 
 	// ACL template name.
 	// ACL template name
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type DeviceDetailsInitParameters struct {
 }
 
 type DeviceDetailsObservation struct {
@@ -93,13 +131,68 @@ type DeviceDetailsObservation struct {
 type DeviceDetailsParameters struct {
 }
 
+type InboundRuleInitParameters struct {
+
+	// Inbound rule description, up to 200 characters.
+	// Inbound rule description, up to 200 characters
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Inbound traffic destination ports. Allowed values are a comma separated
+	// list of ports, e.g., 20,22,23, port range, e.g., 1023-1040 or word any.
+	// Inbound traffic destination ports. Either up to 10, comma separated ports or port range or any word
+	DstPort *string `json:"dstPort,omitempty" tf:"dst_port,omitempty"`
+
+	// Inbound traffic protocol. One of IP, TCP, UDP.
+	// Inbound traffic protocol. One of: `IP`, `TCP`, `UDP`
+	Protocol *string `json:"protocol,omitempty" tf:"protocol,omitempty"`
+
+	// Inbound traffic source ports. Allowed values are a comma separated list
+	// of ports, e.g., 20,22,23, port range, e.g., 1023-1040 or word any.
+	// Inbound traffic source ports. Either up to 10, comma separated ports or port range or any word
+	SrcPort *string `json:"srcPort,omitempty" tf:"src_port,omitempty"`
+
+	// Inbound traffic source IP subnet in CIDR format.
+	// Inbound traffic source IP subnet in CIDR format
+	Subnet *string `json:"subnet,omitempty" tf:"subnet,omitempty"`
+
+	// (Deprecated) Inbound traffic source IP subnets in CIDR format.
+	// Inbound traffic source IP subnets in CIDR format
+	Subnets []*string `json:"subnets,omitempty" tf:"subnets,omitempty"`
+}
+
 type InboundRuleObservation struct {
+
+	// Inbound rule description, up to 200 characters.
+	// Inbound rule description, up to 200 characters
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Inbound traffic destination ports. Allowed values are a comma separated
+	// list of ports, e.g., 20,22,23, port range, e.g., 1023-1040 or word any.
+	// Inbound traffic destination ports. Either up to 10, comma separated ports or port range or any word
+	DstPort *string `json:"dstPort,omitempty" tf:"dst_port,omitempty"`
+
+	// Inbound traffic protocol. One of IP, TCP, UDP.
+	// Inbound traffic protocol. One of: `IP`, `TCP`, `UDP`
+	Protocol *string `json:"protocol,omitempty" tf:"protocol,omitempty"`
 
 	// Inbound rule sequence number
 	SequenceNumber *float64 `json:"sequenceNumber,omitempty" tf:"sequence_number,omitempty"`
 
 	// Type of traffic source used in a given inbound rule
 	SourceType *string `json:"sourceType,omitempty" tf:"source_type,omitempty"`
+
+	// Inbound traffic source ports. Allowed values are a comma separated list
+	// of ports, e.g., 20,22,23, port range, e.g., 1023-1040 or word any.
+	// Inbound traffic source ports. Either up to 10, comma separated ports or port range or any word
+	SrcPort *string `json:"srcPort,omitempty" tf:"src_port,omitempty"`
+
+	// Inbound traffic source IP subnet in CIDR format.
+	// Inbound traffic source IP subnet in CIDR format
+	Subnet *string `json:"subnet,omitempty" tf:"subnet,omitempty"`
+
+	// (Deprecated) Inbound traffic source IP subnets in CIDR format.
+	// Inbound traffic source IP subnets in CIDR format
+	Subnets []*string `json:"subnets,omitempty" tf:"subnets,omitempty"`
 }
 
 type InboundRuleParameters struct {
@@ -112,18 +205,18 @@ type InboundRuleParameters struct {
 	// Inbound traffic destination ports. Allowed values are a comma separated
 	// list of ports, e.g., 20,22,23, port range, e.g., 1023-1040 or word any.
 	// Inbound traffic destination ports. Either up to 10, comma separated ports or port range or any word
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	DstPort *string `json:"dstPort" tf:"dst_port,omitempty"`
 
 	// Inbound traffic protocol. One of IP, TCP, UDP.
 	// Inbound traffic protocol. One of: `IP`, `TCP`, `UDP`
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Protocol *string `json:"protocol" tf:"protocol,omitempty"`
 
 	// Inbound traffic source ports. Allowed values are a comma separated list
 	// of ports, e.g., 20,22,23, port range, e.g., 1023-1040 or word any.
 	// Inbound traffic source ports. Either up to 10, comma separated ports or port range or any word
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	SrcPort *string `json:"srcPort" tf:"src_port,omitempty"`
 
 	// Inbound traffic source IP subnet in CIDR format.
@@ -141,6 +234,17 @@ type InboundRuleParameters struct {
 type ACLTemplateSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ACLTemplateParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ACLTemplateInitParameters `json:"initProvider,omitempty"`
 }
 
 // ACLTemplateStatus defines the observed state of ACLTemplate.
@@ -150,19 +254,22 @@ type ACLTemplateStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // ACLTemplate is the Schema for the ACLTemplates API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinix}
 type ACLTemplate struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ACLTemplateSpec   `json:"spec"`
-	Status            ACLTemplateStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.inboundRule) || (has(self.initProvider) && has(self.initProvider.inboundRule))",message="spec.forProvider.inboundRule is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	Spec   ACLTemplateSpec   `json:"spec"`
+	Status ACLTemplateStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

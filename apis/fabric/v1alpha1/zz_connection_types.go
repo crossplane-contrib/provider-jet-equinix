@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2021 The Crossplane Authors.
 
@@ -25,14 +29,27 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ASideInitParameters struct {
+
+	// Point of access details
+	AccessPoint []AccessPointInitParameters `json:"accessPoint,omitempty" tf:"access_point,omitempty"`
+
+	// Connection side additional information
+	AdditionalInfo []AdditionalInfoInitParameters `json:"additionalInfo,omitempty" tf:"additional_info,omitempty"`
+
+	// For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets
+	ServiceToken []ServiceTokenInitParameters `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+}
+
 type ASideObservation struct {
 
 	// Point of access details
-	// +kubebuilder:validation:Optional
 	AccessPoint []AccessPointObservation `json:"accessPoint,omitempty" tf:"access_point,omitempty"`
 
+	// Connection side additional information
+	AdditionalInfo []AdditionalInfoObservation `json:"additionalInfo,omitempty" tf:"additional_info,omitempty"`
+
 	// For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets
-	// +kubebuilder:validation:Optional
 	ServiceToken []ServiceTokenObservation `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
 }
 
@@ -49,6 +66,9 @@ type ASideParameters struct {
 	// For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets
 	// +kubebuilder:validation:Optional
 	ServiceToken []ServiceTokenParameters `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+}
+
+type AccessPointAccountInitParameters struct {
 }
 
 type AccessPointAccountObservation struct {
@@ -78,10 +98,19 @@ type AccessPointAccountObservation struct {
 type AccessPointAccountParameters struct {
 }
 
+type AccessPointGatewayInitParameters struct {
+
+	// Equinix-assigned virtual gateway identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
 type AccessPointGatewayObservation struct {
 
 	// Unique Resource Identifier
 	Href *string `json:"href,omitempty" tf:"href,omitempty"`
+
+	// Equinix-assigned virtual gateway identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type AccessPointGatewayParameters struct {
@@ -91,10 +120,76 @@ type AccessPointGatewayParameters struct {
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
+type AccessPointInitParameters struct {
+
+	// Account
+	Account []AccessPointAccountInitParameters `json:"account,omitempty" tf:"account,omitempty"`
+
+	// Authentication key for provider based connections
+	AuthenticationKey *string `json:"authenticationKey,omitempty" tf:"authentication_key,omitempty"`
+
+	// Cloud Router access point information
+	Gateway []GatewayInitParameters `json:"gateway,omitempty" tf:"gateway,omitempty"`
+
+	// Virtual device interface
+	Interface []InterfaceInitParameters `json:"interface,omitempty" tf:"interface,omitempty"`
+
+	// Connection link protocol
+	LinkProtocol []LinkProtocolInitParameters `json:"linkProtocol,omitempty" tf:"link_protocol,omitempty"`
+
+	// Access point location
+	Location []AccessPointLocationInitParameters `json:"location,omitempty" tf:"location,omitempty"`
+
+	// network access point information
+	Network []NetworkInitParameters `json:"network,omitempty" tf:"network,omitempty"`
+
+	// Peering Type- PRIVATE,MICROSOFT,PUBLIC, MANUAL
+	PeeringType *string `json:"peeringType,omitempty" tf:"peering_type,omitempty"`
+
+	// Port access point information
+	Port []PortInitParameters `json:"port,omitempty" tf:"port,omitempty"`
+
+	// Service Profile
+	Profile []ProfileInitParameters `json:"profile,omitempty" tf:"profile,omitempty"`
+
+	// Provider assigned Connection Id
+	ProviderConnectionID *string `json:"providerConnectionId,omitempty" tf:"provider_connection_id,omitempty"`
+
+	// Cloud Router access point information
+	Router []RouterInitParameters `json:"router,omitempty" tf:"router,omitempty"`
+
+	// Access point routing protocols configuration
+	RoutingProtocols []RoutingProtocolsInitParameters `json:"routingProtocols,omitempty" tf:"routing_protocols,omitempty"`
+
+	// Access point seller region
+	SellerRegion *string `json:"sellerRegion,omitempty" tf:"seller_region,omitempty"`
+
+	// Access point type - COLO, VD, VG, SP, IGW, SUBNET, CLOUD_ROUTER, NETWORK
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Virtual device
+	VirtualDevice []VirtualDeviceInitParameters `json:"virtualDevice,omitempty" tf:"virtual_device,omitempty"`
+}
+
+type AccessPointInterfaceInitParameters struct {
+
+	// Interface type
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Equinix-assigned interface identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
 type AccessPointInterfaceObservation struct {
 
 	// id
 	ID *float64 `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Interface type
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Equinix-assigned interface identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type AccessPointInterfaceParameters struct {
@@ -108,7 +203,34 @@ type AccessPointInterfaceParameters struct {
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
+type AccessPointLinkProtocolInitParameters struct {
+
+	// Type of the link protocol - UNTAGGED, DOT1Q, QINQ, EVPN_VXLAN
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Vlan Customer Tag information, vlanCTag value specified for QINQ connections
+	VlanCTag *float64 `json:"vlanCTag,omitempty" tf:"vlan_c_tag,omitempty"`
+
+	// Vlan Provider Tag information, vlanSTag value specified for QINQ connections
+	VlanSTag *float64 `json:"vlanSTag,omitempty" tf:"vlan_s_tag,omitempty"`
+
+	// Vlan Tag information, vlanTag value specified for DOT1Q connections
+	VlanTag *float64 `json:"vlanTag,omitempty" tf:"vlan_tag,omitempty"`
+}
+
 type AccessPointLinkProtocolObservation struct {
+
+	// Type of the link protocol - UNTAGGED, DOT1Q, QINQ, EVPN_VXLAN
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Vlan Customer Tag information, vlanCTag value specified for QINQ connections
+	VlanCTag *float64 `json:"vlanCTag,omitempty" tf:"vlan_c_tag,omitempty"`
+
+	// Vlan Provider Tag information, vlanSTag value specified for QINQ connections
+	VlanSTag *float64 `json:"vlanSTag,omitempty" tf:"vlan_s_tag,omitempty"`
+
+	// Vlan Tag information, vlanTag value specified for DOT1Q connections
+	VlanTag *float64 `json:"vlanTag,omitempty" tf:"vlan_tag,omitempty"`
 }
 
 type AccessPointLinkProtocolParameters struct {
@@ -130,7 +252,34 @@ type AccessPointLinkProtocolParameters struct {
 	VlanTag *float64 `json:"vlanTag,omitempty" tf:"vlan_tag,omitempty"`
 }
 
+type AccessPointLocationInitParameters struct {
+
+	// IBX Code
+	Ibx *string `json:"ibx,omitempty" tf:"ibx,omitempty"`
+
+	// Access point metro code
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// Access point metro name
+	MetroName *string `json:"metroName,omitempty" tf:"metro_name,omitempty"`
+
+	// Access point region
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+}
+
 type AccessPointLocationObservation struct {
+
+	// IBX Code
+	Ibx *string `json:"ibx,omitempty" tf:"ibx,omitempty"`
+
+	// Access point metro code
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// Access point metro name
+	MetroName *string `json:"metroName,omitempty" tf:"metro_name,omitempty"`
+
+	// Access point region
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }
 
 type AccessPointLocationParameters struct {
@@ -152,10 +301,19 @@ type AccessPointLocationParameters struct {
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }
 
+type AccessPointNetworkInitParameters struct {
+
+	// Equinix-assigned Network identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
 type AccessPointNetworkObservation struct {
 
 	// Unique Resource Identifier
 	Href *string `json:"href,omitempty" tf:"href,omitempty"`
+
+	// Equinix-assigned Network identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type AccessPointNetworkParameters struct {
@@ -168,35 +326,51 @@ type AccessPointNetworkParameters struct {
 type AccessPointObservation struct {
 
 	// Account
-	// +kubebuilder:validation:Optional
 	Account []AccessPointAccountObservation `json:"account,omitempty" tf:"account,omitempty"`
 
+	// Authentication key for provider based connections
+	AuthenticationKey *string `json:"authenticationKey,omitempty" tf:"authentication_key,omitempty"`
+
 	// Cloud Router access point information
-	// +kubebuilder:validation:Optional
 	Gateway []GatewayObservation `json:"gateway,omitempty" tf:"gateway,omitempty"`
 
 	// Virtual device interface
-	// +kubebuilder:validation:Optional
 	Interface []InterfaceObservation `json:"interface,omitempty" tf:"interface,omitempty"`
 
+	// Connection link protocol
+	LinkProtocol []LinkProtocolObservation `json:"linkProtocol,omitempty" tf:"link_protocol,omitempty"`
+
+	// Access point location
+	Location []AccessPointLocationObservation `json:"location,omitempty" tf:"location,omitempty"`
+
 	// network access point information
-	// +kubebuilder:validation:Optional
 	Network []NetworkObservation `json:"network,omitempty" tf:"network,omitempty"`
 
+	// Peering Type- PRIVATE,MICROSOFT,PUBLIC, MANUAL
+	PeeringType *string `json:"peeringType,omitempty" tf:"peering_type,omitempty"`
+
 	// Port access point information
-	// +kubebuilder:validation:Optional
 	Port []PortObservation `json:"port,omitempty" tf:"port,omitempty"`
 
 	// Service Profile
-	// +kubebuilder:validation:Optional
 	Profile []ProfileObservation `json:"profile,omitempty" tf:"profile,omitempty"`
 
+	// Provider assigned Connection Id
+	ProviderConnectionID *string `json:"providerConnectionId,omitempty" tf:"provider_connection_id,omitempty"`
+
 	// Cloud Router access point information
-	// +kubebuilder:validation:Optional
 	Router []RouterObservation `json:"router,omitempty" tf:"router,omitempty"`
 
+	// Access point routing protocols configuration
+	RoutingProtocols []RoutingProtocolsObservation `json:"routingProtocols,omitempty" tf:"routing_protocols,omitempty"`
+
+	// Access point seller region
+	SellerRegion *string `json:"sellerRegion,omitempty" tf:"seller_region,omitempty"`
+
+	// Access point type - COLO, VD, VG, SP, IGW, SUBNET, CLOUD_ROUTER, NETWORK
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
 	// Virtual device
-	// +kubebuilder:validation:Optional
 	VirtualDevice []VirtualDeviceObservation `json:"virtualDevice,omitempty" tf:"virtual_device,omitempty"`
 }
 
@@ -267,6 +441,12 @@ type AccessPointParameters struct {
 	VirtualDevice []VirtualDeviceParameters `json:"virtualDevice,omitempty" tf:"virtual_device,omitempty"`
 }
 
+type AccessPointPortInitParameters struct {
+
+	// Equinix-assigned Port identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
 type AccessPointPortObservation struct {
 
 	// Unique Resource Identifier
@@ -277,12 +457,24 @@ type AccessPointPortObservation struct {
 
 	// Redundancy Information
 	Redundancy []PortRedundancyObservation `json:"redundancy,omitempty" tf:"redundancy,omitempty"`
+
+	// Equinix-assigned Port identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type AccessPointPortParameters struct {
 
 	// Equinix-assigned Port identifier
 	// +kubebuilder:validation:Optional
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
+type AccessPointProfileInitParameters struct {
+
+	// Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Equinix assigned service profile identifier
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
@@ -299,23 +491,38 @@ type AccessPointProfileObservation struct {
 
 	// Customer-assigned service profile name
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Equinix assigned service profile identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type AccessPointProfileParameters struct {
 
 	// Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
 
 	// Equinix assigned service profile identifier
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	UUID *string `json:"uuid" tf:"uuid,omitempty"`
+}
+
+type AccessPointRouterInitParameters struct {
+
+	// Equinix-assigned virtual gateway identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type AccessPointRouterObservation struct {
 
 	// Unique Resource Identifier
 	Href *string `json:"href,omitempty" tf:"href,omitempty"`
+
+	// Equinix-assigned virtual gateway identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type AccessPointRouterParameters struct {
@@ -325,7 +532,28 @@ type AccessPointRouterParameters struct {
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
+type AccessPointRoutingProtocolsInitParameters struct {
+
+	// Routing protocol instance state
+	State *string `json:"state,omitempty" tf:"state,omitempty"`
+
+	// Routing Protocol type
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Equinix-assigned Routing protocol identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
 type AccessPointRoutingProtocolsObservation struct {
+
+	// Routing protocol instance state
+	State *string `json:"state,omitempty" tf:"state,omitempty"`
+
+	// Routing Protocol type
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Equinix-assigned Routing protocol identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type AccessPointRoutingProtocolsParameters struct {
@@ -343,6 +571,9 @@ type AccessPointRoutingProtocolsParameters struct {
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
+type AccessPointTypeConfigsInitParameters struct {
+}
+
 type AccessPointTypeConfigsObservation struct {
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
@@ -352,10 +583,31 @@ type AccessPointTypeConfigsObservation struct {
 type AccessPointTypeConfigsParameters struct {
 }
 
+type AccessPointVirtualDeviceInitParameters struct {
+
+	// Customer-assigned Virtual Device Name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Virtual Device type
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Equinix-assigned Virtual Device identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
 type AccessPointVirtualDeviceObservation struct {
 
 	// Unique Resource Identifier
 	Href *string `json:"href,omitempty" tf:"href,omitempty"`
+
+	// Customer-assigned Virtual Device Name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Virtual Device type
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Equinix-assigned Virtual Device identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type AccessPointVirtualDeviceParameters struct {
@@ -373,7 +625,22 @@ type AccessPointVirtualDeviceParameters struct {
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
+type AdditionalInfoInitParameters struct {
+
+	// Additional information key
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// Additional information value
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
 type AdditionalInfoObservation struct {
+
+	// Additional information key
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// Additional information value
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type AdditionalInfoParameters struct {
@@ -385,6 +652,9 @@ type AdditionalInfoParameters struct {
 	// Additional information value
 	// +kubebuilder:validation:Optional
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type ConnectionAccountInitParameters struct {
 }
 
 type ConnectionAccountObservation struct {
@@ -404,6 +674,9 @@ type ConnectionAccountObservation struct {
 }
 
 type ConnectionAccountParameters struct {
+}
+
+type ConnectionChangeLogInitParameters struct {
 }
 
 type ConnectionChangeLogObservation struct {
@@ -435,13 +708,67 @@ type ConnectionChangeLogObservation struct {
 type ConnectionChangeLogParameters struct {
 }
 
+type ConnectionInitParameters struct {
+
+	// Requester or Customer side connection configuration object of the multi-segment connection
+	ASide []ASideInitParameters `json:"aSide,omitempty" tf:"a_side,omitempty"`
+
+	// Connection additional information
+	AdditionalInfo []map[string]*string `json:"additionalInfo,omitempty" tf:"additional_info,omitempty"`
+
+	// Connection bandwidth in Mbps
+	Bandwidth *float64 `json:"bandwidth,omitempty" tf:"bandwidth,omitempty"`
+
+	// Connection name. An alpha-numeric 24 characters string which can include only hyphens and underscores
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Preferences for notifications on connection configuration or status changes
+	Notifications []ConnectionNotificationsInitParameters `json:"notifications,omitempty" tf:"notifications,omitempty"`
+
+	// Order related to this connection information
+	Order []ConnectionOrderInitParameters `json:"order,omitempty" tf:"order,omitempty"`
+
+	// Project information
+	Project []ConnectionProjectInitParameters `json:"project,omitempty" tf:"project,omitempty"`
+
+	// Redundancy Information
+	Redundancy []ConnectionRedundancyInitParameters `json:"redundancy,omitempty" tf:"redundancy,omitempty"`
+
+	// Defines the connection type like VG_VC, EVPL_VC, EPL_VC, EC_VC, IP_VC, IPWAN_VC,ACCESS_EPL_VC
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Destination or Provider side connection configuration object of the multi-segment connection
+	ZSide []ZSideInitParameters `json:"zSide,omitempty" tf:"z_side,omitempty"`
+}
+
+type ConnectionNotificationsInitParameters struct {
+
+	// Array of contact emails
+	Emails []*string `json:"emails,omitempty" tf:"emails,omitempty"`
+
+	// Send interval
+	SendInterval *string `json:"sendInterval,omitempty" tf:"send_interval,omitempty"`
+
+	// Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type ConnectionNotificationsObservation struct {
+
+	// Array of contact emails
+	Emails []*string `json:"emails,omitempty" tf:"emails,omitempty"`
+
+	// Send interval
+	SendInterval *string `json:"sendInterval,omitempty" tf:"send_interval,omitempty"`
+
+	// Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type ConnectionNotificationsParameters struct {
 
 	// Array of contact emails
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Emails []*string `json:"emails" tf:"emails,omitempty"`
 
 	// Send interval
@@ -449,18 +776,23 @@ type ConnectionNotificationsParameters struct {
 	SendInterval *string `json:"sendInterval,omitempty" tf:"send_interval,omitempty"`
 
 	// Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
 }
 
 type ConnectionObservation struct {
 
 	// Requester or Customer side connection configuration object of the multi-segment connection
-	// +kubebuilder:validation:Required
 	ASide []ASideObservation `json:"aSide,omitempty" tf:"a_side,omitempty"`
 
 	// Customer account information that is associated with this connection
 	Account []ConnectionAccountObservation `json:"account,omitempty" tf:"account,omitempty"`
+
+	// Connection additional information
+	AdditionalInfo []map[string]*string `json:"additionalInfo,omitempty" tf:"additional_info,omitempty"`
+
+	// Connection bandwidth in Mbps
+	Bandwidth *float64 `json:"bandwidth,omitempty" tf:"bandwidth,omitempty"`
 
 	// Captures connection lifecycle change information
 	ChangeLog []ConnectionChangeLogObservation `json:"changeLog,omitempty" tf:"change_log,omitempty"`
@@ -476,32 +808,56 @@ type ConnectionObservation struct {
 	// Connection property derived from access point locations
 	IsRemote *bool `json:"isRemote,omitempty" tf:"is_remote,omitempty"`
 
+	// Connection name. An alpha-numeric 24 characters string which can include only hyphens and underscores
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Preferences for notifications on connection configuration or status changes
+	Notifications []ConnectionNotificationsObservation `json:"notifications,omitempty" tf:"notifications,omitempty"`
+
 	// Connection type-specific operational data
 	Operation []OperationObservation `json:"operation,omitempty" tf:"operation,omitempty"`
 
 	// Order related to this connection information
-	// +kubebuilder:validation:Optional
 	Order []ConnectionOrderObservation `json:"order,omitempty" tf:"order,omitempty"`
 
 	// Project information
-	// +kubebuilder:validation:Optional
 	Project []ConnectionProjectObservation `json:"project,omitempty" tf:"project,omitempty"`
+
+	// Redundancy Information
+	Redundancy []ConnectionRedundancyObservation `json:"redundancy,omitempty" tf:"redundancy,omitempty"`
 
 	// Connection overall state
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
 
+	// Defines the connection type like VG_VC, EVPL_VC, EPL_VC, EC_VC, IP_VC, IPWAN_VC,ACCESS_EPL_VC
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
 	// Destination or Provider side connection configuration object of the multi-segment connection
-	// +kubebuilder:validation:Required
 	ZSide []ZSideObservation `json:"zSide,omitempty" tf:"z_side,omitempty"`
 }
 
+type ConnectionOrderInitParameters struct {
+
+	// Billing tier for connection bandwidth
+	BillingTier *string `json:"billingTier,omitempty" tf:"billing_tier,omitempty"`
+
+	// Purchase order number
+	PurchaseOrderNumber *string `json:"purchaseOrderNumber,omitempty" tf:"purchase_order_number,omitempty"`
+}
+
 type ConnectionOrderObservation struct {
+
+	// Billing tier for connection bandwidth
+	BillingTier *string `json:"billingTier,omitempty" tf:"billing_tier,omitempty"`
 
 	// Order Identification
 	OrderID *string `json:"orderId,omitempty" tf:"order_id,omitempty"`
 
 	// Order Reference Number
 	OrderNumber *string `json:"orderNumber,omitempty" tf:"order_number,omitempty"`
+
+	// Purchase order number
+	PurchaseOrderNumber *string `json:"purchaseOrderNumber,omitempty" tf:"purchase_order_number,omitempty"`
 }
 
 type ConnectionOrderParameters struct {
@@ -518,24 +874,24 @@ type ConnectionOrderParameters struct {
 type ConnectionParameters struct {
 
 	// Requester or Customer side connection configuration object of the multi-segment connection
-	// +kubebuilder:validation:Required
-	ASide []ASideParameters `json:"aSide" tf:"a_side,omitempty"`
+	// +kubebuilder:validation:Optional
+	ASide []ASideParameters `json:"aSide,omitempty" tf:"a_side,omitempty"`
 
 	// Connection additional information
 	// +kubebuilder:validation:Optional
 	AdditionalInfo []map[string]*string `json:"additionalInfo,omitempty" tf:"additional_info,omitempty"`
 
 	// Connection bandwidth in Mbps
-	// +kubebuilder:validation:Required
-	Bandwidth *float64 `json:"bandwidth" tf:"bandwidth,omitempty"`
+	// +kubebuilder:validation:Optional
+	Bandwidth *float64 `json:"bandwidth,omitempty" tf:"bandwidth,omitempty"`
 
 	// Connection name. An alpha-numeric 24 characters string which can include only hyphens and underscores
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// Preferences for notifications on connection configuration or status changes
-	// +kubebuilder:validation:Required
-	Notifications []ConnectionNotificationsParameters `json:"notifications" tf:"notifications,omitempty"`
+	// +kubebuilder:validation:Optional
+	Notifications []ConnectionNotificationsParameters `json:"notifications,omitempty" tf:"notifications,omitempty"`
 
 	// Order related to this connection information
 	// +kubebuilder:validation:Optional
@@ -550,12 +906,15 @@ type ConnectionParameters struct {
 	Redundancy []ConnectionRedundancyParameters `json:"redundancy,omitempty" tf:"redundancy,omitempty"`
 
 	// Defines the connection type like VG_VC, EVPL_VC, EPL_VC, EC_VC, IP_VC, IPWAN_VC,ACCESS_EPL_VC
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// Destination or Provider side connection configuration object of the multi-segment connection
-	// +kubebuilder:validation:Required
-	ZSide []ZSideParameters `json:"zSide" tf:"z_side,omitempty"`
+	// +kubebuilder:validation:Optional
+	ZSide []ZSideParameters `json:"zSide,omitempty" tf:"z_side,omitempty"`
+}
+
+type ConnectionProjectInitParameters struct {
 }
 
 type ConnectionProjectObservation struct {
@@ -570,7 +929,22 @@ type ConnectionProjectObservation struct {
 type ConnectionProjectParameters struct {
 }
 
+type ConnectionRedundancyInitParameters struct {
+
+	// Redundancy group identifier
+	Group *string `json:"group,omitempty" tf:"group,omitempty"`
+
+	// Priority type- PRIMARY, SECONDARY
+	Priority *string `json:"priority,omitempty" tf:"priority,omitempty"`
+}
+
 type ConnectionRedundancyObservation struct {
+
+	// Redundancy group identifier
+	Group *string `json:"group,omitempty" tf:"group,omitempty"`
+
+	// Priority type- PRIMARY, SECONDARY
+	Priority *string `json:"priority,omitempty" tf:"priority,omitempty"`
 }
 
 type ConnectionRedundancyParameters struct {
@@ -584,6 +958,9 @@ type ConnectionRedundancyParameters struct {
 	Priority *string `json:"priority,omitempty" tf:"priority,omitempty"`
 }
 
+type ErrorsAdditionalInfoInitParameters struct {
+}
+
 type ErrorsAdditionalInfoObservation struct {
 	Property *string `json:"property,omitempty" tf:"property,omitempty"`
 
@@ -591,6 +968,9 @@ type ErrorsAdditionalInfoObservation struct {
 }
 
 type ErrorsAdditionalInfoParameters struct {
+}
+
+type ErrorsInitParameters struct {
 }
 
 type ErrorsObservation struct {
@@ -610,10 +990,19 @@ type ErrorsObservation struct {
 type ErrorsParameters struct {
 }
 
+type GatewayInitParameters struct {
+
+	// Equinix-assigned virtual gateway identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
 type GatewayObservation struct {
 
 	// Unique Resource Identifier
 	Href *string `json:"href,omitempty" tf:"href,omitempty"`
+
+	// Equinix-assigned virtual gateway identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type GatewayParameters struct {
@@ -623,10 +1012,25 @@ type GatewayParameters struct {
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
+type InterfaceInitParameters struct {
+
+	// Interface type
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Equinix-assigned interface identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
 type InterfaceObservation struct {
 
 	// id
 	ID *float64 `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Interface type
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Equinix-assigned interface identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type InterfaceParameters struct {
@@ -640,7 +1044,34 @@ type InterfaceParameters struct {
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
+type LinkProtocolInitParameters struct {
+
+	// Type of the link protocol - UNTAGGED, DOT1Q, QINQ, EVPN_VXLAN
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Vlan Customer Tag information, vlanCTag value specified for QINQ connections
+	VlanCTag *float64 `json:"vlanCTag,omitempty" tf:"vlan_c_tag,omitempty"`
+
+	// Vlan Provider Tag information, vlanSTag value specified for QINQ connections
+	VlanSTag *float64 `json:"vlanSTag,omitempty" tf:"vlan_s_tag,omitempty"`
+
+	// Vlan Tag information, vlanTag value specified for DOT1Q connections
+	VlanTag *float64 `json:"vlanTag,omitempty" tf:"vlan_tag,omitempty"`
+}
+
 type LinkProtocolObservation struct {
+
+	// Type of the link protocol - UNTAGGED, DOT1Q, QINQ, EVPN_VXLAN
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Vlan Customer Tag information, vlanCTag value specified for QINQ connections
+	VlanCTag *float64 `json:"vlanCTag,omitempty" tf:"vlan_c_tag,omitempty"`
+
+	// Vlan Provider Tag information, vlanSTag value specified for QINQ connections
+	VlanSTag *float64 `json:"vlanSTag,omitempty" tf:"vlan_s_tag,omitempty"`
+
+	// Vlan Tag information, vlanTag value specified for DOT1Q connections
+	VlanTag *float64 `json:"vlanTag,omitempty" tf:"vlan_tag,omitempty"`
 }
 
 type LinkProtocolParameters struct {
@@ -662,10 +1093,19 @@ type LinkProtocolParameters struct {
 	VlanTag *float64 `json:"vlanTag,omitempty" tf:"vlan_tag,omitempty"`
 }
 
+type NetworkInitParameters struct {
+
+	// Equinix-assigned Network identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
 type NetworkObservation struct {
 
 	// Unique Resource Identifier
 	Href *string `json:"href,omitempty" tf:"href,omitempty"`
+
+	// Equinix-assigned Network identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type NetworkParameters struct {
@@ -673,6 +1113,9 @@ type NetworkParameters struct {
 	// Equinix-assigned Network identifier
 	// +kubebuilder:validation:Optional
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
+type OperationInitParameters struct {
 }
 
 type OperationObservation struct {
@@ -686,6 +1129,12 @@ type OperationObservation struct {
 type OperationParameters struct {
 }
 
+type PortInitParameters struct {
+
+	// Equinix-assigned Port identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
 type PortObservation struct {
 
 	// Unique Resource Identifier
@@ -696,6 +1145,9 @@ type PortObservation struct {
 
 	// Redundancy Information
 	Redundancy []RedundancyObservation `json:"redundancy,omitempty" tf:"redundancy,omitempty"`
+
+	// Equinix-assigned Port identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type PortParameters struct {
@@ -705,11 +1157,17 @@ type PortParameters struct {
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
+type PortRedundancyInitParameters struct {
+}
+
 type PortRedundancyObservation struct {
 	Priority *string `json:"priority,omitempty" tf:"priority,omitempty"`
 }
 
 type PortRedundancyParameters struct {
+}
+
+type ProfileAccessPointTypeConfigsInitParameters struct {
 }
 
 type ProfileAccessPointTypeConfigsObservation struct {
@@ -719,6 +1177,15 @@ type ProfileAccessPointTypeConfigsObservation struct {
 }
 
 type ProfileAccessPointTypeConfigsParameters struct {
+}
+
+type ProfileInitParameters struct {
+
+	// Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Equinix assigned service profile identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type ProfileObservation struct {
@@ -734,17 +1201,26 @@ type ProfileObservation struct {
 
 	// Customer-assigned service profile name
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Equinix assigned service profile identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type ProfileParameters struct {
 
 	// Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
 
 	// Equinix assigned service profile identifier
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	UUID *string `json:"uuid" tf:"uuid,omitempty"`
+}
+
+type RedundancyInitParameters struct {
 }
 
 type RedundancyObservation struct {
@@ -754,10 +1230,19 @@ type RedundancyObservation struct {
 type RedundancyParameters struct {
 }
 
+type RouterInitParameters struct {
+
+	// Equinix-assigned virtual gateway identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
 type RouterObservation struct {
 
 	// Unique Resource Identifier
 	Href *string `json:"href,omitempty" tf:"href,omitempty"`
+
+	// Equinix-assigned virtual gateway identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type RouterParameters struct {
@@ -767,7 +1252,28 @@ type RouterParameters struct {
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
+type RoutingProtocolsInitParameters struct {
+
+	// Routing protocol instance state
+	State *string `json:"state,omitempty" tf:"state,omitempty"`
+
+	// Routing Protocol type
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Equinix-assigned Routing protocol identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
 type RoutingProtocolsObservation struct {
+
+	// Routing protocol instance state
+	State *string `json:"state,omitempty" tf:"state,omitempty"`
+
+	// Routing Protocol type
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Equinix-assigned Routing protocol identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type RoutingProtocolsParameters struct {
@@ -785,6 +1291,15 @@ type RoutingProtocolsParameters struct {
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
+type ServiceTokenInitParameters struct {
+
+	// Token type - VC_TOKEN
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Equinix-assigned service token identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
 type ServiceTokenObservation struct {
 
 	// Service token description
@@ -792,6 +1307,12 @@ type ServiceTokenObservation struct {
 
 	// An absolute URL that is the subject of the link's context
 	Href *string `json:"href,omitempty" tf:"href,omitempty"`
+
+	// Token type - VC_TOKEN
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Equinix-assigned service token identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type ServiceTokenParameters struct {
@@ -805,10 +1326,31 @@ type ServiceTokenParameters struct {
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
+type VirtualDeviceInitParameters struct {
+
+	// Customer-assigned Virtual Device Name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Virtual Device type
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Equinix-assigned Virtual Device identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
 type VirtualDeviceObservation struct {
 
 	// Unique Resource Identifier
 	Href *string `json:"href,omitempty" tf:"href,omitempty"`
+
+	// Customer-assigned Virtual Device Name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Virtual Device type
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Equinix-assigned Virtual Device identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type VirtualDeviceParameters struct {
@@ -824,6 +1366,9 @@ type VirtualDeviceParameters struct {
 	// Equinix-assigned Virtual Device identifier
 	// +kubebuilder:validation:Optional
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
+type ZSideAccessPointAccountInitParameters struct {
 }
 
 type ZSideAccessPointAccountObservation struct {
@@ -853,7 +1398,85 @@ type ZSideAccessPointAccountObservation struct {
 type ZSideAccessPointAccountParameters struct {
 }
 
+type ZSideAccessPointInitParameters struct {
+
+	// Account
+	Account []ZSideAccessPointAccountInitParameters `json:"account,omitempty" tf:"account,omitempty"`
+
+	// Authentication key for provider based connections
+	AuthenticationKey *string `json:"authenticationKey,omitempty" tf:"authentication_key,omitempty"`
+
+	// Cloud Router access point information
+	Gateway []AccessPointGatewayInitParameters `json:"gateway,omitempty" tf:"gateway,omitempty"`
+
+	// Virtual device interface
+	Interface []AccessPointInterfaceInitParameters `json:"interface,omitempty" tf:"interface,omitempty"`
+
+	// Connection link protocol
+	LinkProtocol []AccessPointLinkProtocolInitParameters `json:"linkProtocol,omitempty" tf:"link_protocol,omitempty"`
+
+	// Access point location
+	Location []ZSideAccessPointLocationInitParameters `json:"location,omitempty" tf:"location,omitempty"`
+
+	// network access point information
+	Network []AccessPointNetworkInitParameters `json:"network,omitempty" tf:"network,omitempty"`
+
+	// Peering Type- PRIVATE,MICROSOFT,PUBLIC, MANUAL
+	PeeringType *string `json:"peeringType,omitempty" tf:"peering_type,omitempty"`
+
+	// Port access point information
+	Port []AccessPointPortInitParameters `json:"port,omitempty" tf:"port,omitempty"`
+
+	// Service Profile
+	Profile []AccessPointProfileInitParameters `json:"profile,omitempty" tf:"profile,omitempty"`
+
+	// Provider assigned Connection Id
+	ProviderConnectionID *string `json:"providerConnectionId,omitempty" tf:"provider_connection_id,omitempty"`
+
+	// Cloud Router access point information
+	Router []AccessPointRouterInitParameters `json:"router,omitempty" tf:"router,omitempty"`
+
+	// Access point routing protocols configuration
+	RoutingProtocols []AccessPointRoutingProtocolsInitParameters `json:"routingProtocols,omitempty" tf:"routing_protocols,omitempty"`
+
+	// Access point seller region
+	SellerRegion *string `json:"sellerRegion,omitempty" tf:"seller_region,omitempty"`
+
+	// Access point type - COLO, VD, VG, SP, IGW, SUBNET, CLOUD_ROUTER, NETWORK
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Virtual device
+	VirtualDevice []AccessPointVirtualDeviceInitParameters `json:"virtualDevice,omitempty" tf:"virtual_device,omitempty"`
+}
+
+type ZSideAccessPointLocationInitParameters struct {
+
+	// IBX Code
+	Ibx *string `json:"ibx,omitempty" tf:"ibx,omitempty"`
+
+	// Access point metro code
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// Access point metro name
+	MetroName *string `json:"metroName,omitempty" tf:"metro_name,omitempty"`
+
+	// Access point region
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+}
+
 type ZSideAccessPointLocationObservation struct {
+
+	// IBX Code
+	Ibx *string `json:"ibx,omitempty" tf:"ibx,omitempty"`
+
+	// Access point metro code
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// Access point metro name
+	MetroName *string `json:"metroName,omitempty" tf:"metro_name,omitempty"`
+
+	// Access point region
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }
 
 type ZSideAccessPointLocationParameters struct {
@@ -878,35 +1501,51 @@ type ZSideAccessPointLocationParameters struct {
 type ZSideAccessPointObservation struct {
 
 	// Account
-	// +kubebuilder:validation:Optional
 	Account []ZSideAccessPointAccountObservation `json:"account,omitempty" tf:"account,omitempty"`
 
+	// Authentication key for provider based connections
+	AuthenticationKey *string `json:"authenticationKey,omitempty" tf:"authentication_key,omitempty"`
+
 	// Cloud Router access point information
-	// +kubebuilder:validation:Optional
 	Gateway []AccessPointGatewayObservation `json:"gateway,omitempty" tf:"gateway,omitempty"`
 
 	// Virtual device interface
-	// +kubebuilder:validation:Optional
 	Interface []AccessPointInterfaceObservation `json:"interface,omitempty" tf:"interface,omitempty"`
 
+	// Connection link protocol
+	LinkProtocol []AccessPointLinkProtocolObservation `json:"linkProtocol,omitempty" tf:"link_protocol,omitempty"`
+
+	// Access point location
+	Location []ZSideAccessPointLocationObservation `json:"location,omitempty" tf:"location,omitempty"`
+
 	// network access point information
-	// +kubebuilder:validation:Optional
 	Network []AccessPointNetworkObservation `json:"network,omitempty" tf:"network,omitempty"`
 
+	// Peering Type- PRIVATE,MICROSOFT,PUBLIC, MANUAL
+	PeeringType *string `json:"peeringType,omitempty" tf:"peering_type,omitempty"`
+
 	// Port access point information
-	// +kubebuilder:validation:Optional
 	Port []AccessPointPortObservation `json:"port,omitempty" tf:"port,omitempty"`
 
 	// Service Profile
-	// +kubebuilder:validation:Optional
 	Profile []AccessPointProfileObservation `json:"profile,omitempty" tf:"profile,omitempty"`
 
+	// Provider assigned Connection Id
+	ProviderConnectionID *string `json:"providerConnectionId,omitempty" tf:"provider_connection_id,omitempty"`
+
 	// Cloud Router access point information
-	// +kubebuilder:validation:Optional
 	Router []AccessPointRouterObservation `json:"router,omitempty" tf:"router,omitempty"`
 
+	// Access point routing protocols configuration
+	RoutingProtocols []AccessPointRoutingProtocolsObservation `json:"routingProtocols,omitempty" tf:"routing_protocols,omitempty"`
+
+	// Access point seller region
+	SellerRegion *string `json:"sellerRegion,omitempty" tf:"seller_region,omitempty"`
+
+	// Access point type - COLO, VD, VG, SP, IGW, SUBNET, CLOUD_ROUTER, NETWORK
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
 	// Virtual device
-	// +kubebuilder:validation:Optional
 	VirtualDevice []AccessPointVirtualDeviceObservation `json:"virtualDevice,omitempty" tf:"virtual_device,omitempty"`
 }
 
@@ -977,7 +1616,22 @@ type ZSideAccessPointParameters struct {
 	VirtualDevice []AccessPointVirtualDeviceParameters `json:"virtualDevice,omitempty" tf:"virtual_device,omitempty"`
 }
 
+type ZSideAdditionalInfoInitParameters struct {
+
+	// Additional information key
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// Additional information value
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
 type ZSideAdditionalInfoObservation struct {
+
+	// Additional information key
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// Additional information value
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type ZSideAdditionalInfoParameters struct {
@@ -991,14 +1645,27 @@ type ZSideAdditionalInfoParameters struct {
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
+type ZSideInitParameters struct {
+
+	// Point of access details
+	AccessPoint []ZSideAccessPointInitParameters `json:"accessPoint,omitempty" tf:"access_point,omitempty"`
+
+	// Connection side additional information
+	AdditionalInfo []ZSideAdditionalInfoInitParameters `json:"additionalInfo,omitempty" tf:"additional_info,omitempty"`
+
+	// For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets
+	ServiceToken []ZSideServiceTokenInitParameters `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+}
+
 type ZSideObservation struct {
 
 	// Point of access details
-	// +kubebuilder:validation:Optional
 	AccessPoint []ZSideAccessPointObservation `json:"accessPoint,omitempty" tf:"access_point,omitempty"`
 
+	// Connection side additional information
+	AdditionalInfo []ZSideAdditionalInfoObservation `json:"additionalInfo,omitempty" tf:"additional_info,omitempty"`
+
 	// For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets
-	// +kubebuilder:validation:Optional
 	ServiceToken []ZSideServiceTokenObservation `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
 }
 
@@ -1017,6 +1684,15 @@ type ZSideParameters struct {
 	ServiceToken []ZSideServiceTokenParameters `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
 }
 
+type ZSideServiceTokenInitParameters struct {
+
+	// Token type - VC_TOKEN
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Equinix-assigned service token identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
 type ZSideServiceTokenObservation struct {
 
 	// Service token description
@@ -1024,6 +1700,12 @@ type ZSideServiceTokenObservation struct {
 
 	// An absolute URL that is the subject of the link's context
 	Href *string `json:"href,omitempty" tf:"href,omitempty"`
+
+	// Token type - VC_TOKEN
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Equinix-assigned service token identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type ZSideServiceTokenParameters struct {
@@ -1041,6 +1723,17 @@ type ZSideServiceTokenParameters struct {
 type ConnectionSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ConnectionParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ConnectionInitParameters `json:"initProvider,omitempty"`
 }
 
 // ConnectionStatus defines the observed state of Connection.
@@ -1050,19 +1743,26 @@ type ConnectionStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Connection is the Schema for the Connections API. <no value>
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinix}
 type Connection struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ConnectionSpec   `json:"spec"`
-	Status            ConnectionStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.aSide) || (has(self.initProvider) && has(self.initProvider.aSide))",message="spec.forProvider.aSide is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.bandwidth) || (has(self.initProvider) && has(self.initProvider.bandwidth))",message="spec.forProvider.bandwidth is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.notifications) || (has(self.initProvider) && has(self.initProvider.notifications))",message="spec.forProvider.notifications is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || (has(self.initProvider) && has(self.initProvider.type))",message="spec.forProvider.type is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.zSide) || (has(self.initProvider) && has(self.initProvider.zSide))",message="spec.forProvider.zSide is a required parameter"
+	Spec   ConnectionSpec   `json:"spec"`
+	Status ConnectionStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
