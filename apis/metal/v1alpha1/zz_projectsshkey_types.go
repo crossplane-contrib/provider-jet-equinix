@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2021 The Crossplane Authors.
 
@@ -25,6 +29,30 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ProjectSSHKeyInitParameters struct {
+
+	// The name of the SSH key for identification.
+	// The name of the SSH key for identification
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The ID of parent project.
+	// The ID of parent project
+	// +crossplane:generate:reference:type=Project
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Reference to a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
+
+	// Selector for a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
+
+	// The public key. If this is a file, it can be read using the file interpolation function.
+	// The public key. If this is a file, it
+	PublicKey *string `json:"publicKey,omitempty" tf:"public_key,omitempty"`
+}
+
 type ProjectSSHKeyObservation struct {
 
 	// The timestamp for when the SSH key was created.
@@ -38,9 +66,21 @@ type ProjectSSHKeyObservation struct {
 	// The unique ID of the key.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The name of the SSH key for identification.
+	// The name of the SSH key for identification
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
 	// The ID of parent project (same as project_id).
 	// The UUID of the Equinix Metal API User who owns this key
 	OwnerID *string `json:"ownerId,omitempty" tf:"owner_id,omitempty"`
+
+	// The ID of parent project.
+	// The ID of parent project
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// The public key. If this is a file, it can be read using the file interpolation function.
+	// The public key. If this is a file, it
+	PublicKey *string `json:"publicKey,omitempty" tf:"public_key,omitempty"`
 
 	// The timestamp for the last time the SSH key was updated.
 	// The timestamp for the last time the SSH key was updated
@@ -51,8 +91,8 @@ type ProjectSSHKeyParameters struct {
 
 	// The name of the SSH key for identification.
 	// The name of the SSH key for identification
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The ID of parent project.
 	// The ID of parent project
@@ -70,14 +110,25 @@ type ProjectSSHKeyParameters struct {
 
 	// The public key. If this is a file, it can be read using the file interpolation function.
 	// The public key. If this is a file, it
-	// +kubebuilder:validation:Required
-	PublicKey *string `json:"publicKey" tf:"public_key,omitempty"`
+	// +kubebuilder:validation:Optional
+	PublicKey *string `json:"publicKey,omitempty" tf:"public_key,omitempty"`
 }
 
 // ProjectSSHKeySpec defines the desired state of ProjectSSHKey
 type ProjectSSHKeySpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ProjectSSHKeyParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ProjectSSHKeyInitParameters `json:"initProvider,omitempty"`
 }
 
 // ProjectSSHKeyStatus defines the observed state of ProjectSSHKey.
@@ -87,19 +138,22 @@ type ProjectSSHKeyStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // ProjectSSHKey is the Schema for the ProjectSSHKeys API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinix}
 type ProjectSSHKey struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ProjectSSHKeySpec   `json:"spec"`
-	Status            ProjectSSHKeyStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.publicKey) || (has(self.initProvider) && has(self.initProvider.publicKey))",message="spec.forProvider.publicKey is a required parameter"
+	Spec   ProjectSSHKeySpec   `json:"spec"`
+	Status ProjectSSHKeyStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

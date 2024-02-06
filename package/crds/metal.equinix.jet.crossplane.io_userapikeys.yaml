@@ -73,9 +73,26 @@ spec:
                   readOnly:
                     description: Flag indicating whether the API key shoud be read-only
                     type: boolean
-                required:
-                - description
-                - readOnly
+                type: object
+              initProvider:
+                description: THIS IS A BETA FIELD. It will be honored unless the Management
+                  Policies feature flag is disabled. InitProvider holds the same fields
+                  as ForProvider, with the exception of Identifier and other resource
+                  reference fields. The fields that are in InitProvider are merged
+                  into ForProvider when the resource is created. The same fields are
+                  also added to the terraform ignore_changes hook, to avoid updating
+                  them after creation. This is useful for fields that are required
+                  on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them,
+                  like an autoscaler.
+                properties:
+                  description:
+                    description: Description string for the User API Key resource.
+                      Description string for the API key
+                    type: string
+                  readOnly:
+                    description: Flag indicating whether the API key shoud be read-only
+                    type: boolean
                 type: object
               managementPolicies:
                 default:
@@ -237,13 +254,29 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.description is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.description)
+                || (has(self.initProvider) && has(self.initProvider.description))'
+            - message: spec.forProvider.readOnly is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.readOnly)
+                || (has(self.initProvider) && has(self.initProvider.readOnly))'
           status:
             description: UserAPIKeyStatus defines the observed state of UserAPIKey.
             properties:
               atProvider:
                 properties:
+                  description:
+                    description: Description string for the User API Key resource.
+                      Description string for the API key
+                    type: string
                   id:
                     type: string
+                  readOnly:
+                    description: Flag indicating whether the API key shoud be read-only
+                    type: boolean
                   userId:
                     description: UUID of the owner of the API key. UUID of user owning
                       this key

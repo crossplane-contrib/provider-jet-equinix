@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2021 The Crossplane Authors.
 
@@ -25,6 +29,25 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type IPAttachmentInitParameters struct {
+
+	// CIDR notation of subnet from block reserved in the same project
+	// and metro as the device.
+	CidrNotation *string `json:"cidrNotation,omitempty" tf:"cidr_notation,omitempty"`
+
+	// ID of device to which to assign the subnet.
+	// +crossplane:generate:reference:type=Device
+	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
+
+	// Reference to a Device to populate deviceId.
+	// +kubebuilder:validation:Optional
+	DeviceIDRef *v1.Reference `json:"deviceIdRef,omitempty" tf:"-"`
+
+	// Selector for a Device to populate deviceId.
+	// +kubebuilder:validation:Optional
+	DeviceIDSelector *v1.Selector `json:"deviceIdSelector,omitempty" tf:"-"`
+}
+
 type IPAttachmentObservation struct {
 	Address *string `json:"address,omitempty" tf:"address,omitempty"`
 
@@ -35,6 +58,13 @@ type IPAttachmentObservation struct {
 	// Length of CIDR prefix of the subnet as integer.
 	// Length of CIDR prefix of the block as integer
 	Cidr *float64 `json:"cidr,omitempty" tf:"cidr,omitempty"`
+
+	// CIDR notation of subnet from block reserved in the same project
+	// and metro as the device.
+	CidrNotation *string `json:"cidrNotation,omitempty" tf:"cidr_notation,omitempty"`
+
+	// ID of device to which to assign the subnet.
+	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
 
 	// IP address of gateway for the subnet.
 	Gateway *string `json:"gateway,omitempty" tf:"gateway,omitempty"`
@@ -69,8 +99,8 @@ type IPAttachmentParameters struct {
 
 	// CIDR notation of subnet from block reserved in the same project
 	// and metro as the device.
-	// +kubebuilder:validation:Required
-	CidrNotation *string `json:"cidrNotation" tf:"cidr_notation,omitempty"`
+	// +kubebuilder:validation:Optional
+	CidrNotation *string `json:"cidrNotation,omitempty" tf:"cidr_notation,omitempty"`
 
 	// ID of device to which to assign the subnet.
 	// +crossplane:generate:reference:type=Device
@@ -90,6 +120,17 @@ type IPAttachmentParameters struct {
 type IPAttachmentSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     IPAttachmentParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider IPAttachmentInitParameters `json:"initProvider,omitempty"`
 }
 
 // IPAttachmentStatus defines the observed state of IPAttachment.
@@ -99,19 +140,21 @@ type IPAttachmentStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // IPAttachment is the Schema for the IPAttachments API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinix}
 type IPAttachment struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              IPAttachmentSpec   `json:"spec"`
-	Status            IPAttachmentStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.cidrNotation) || (has(self.initProvider) && has(self.initProvider.cidrNotation))",message="spec.forProvider.cidrNotation is a required parameter"
+	Spec   IPAttachmentSpec   `json:"spec"`
+	Status IPAttachmentStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

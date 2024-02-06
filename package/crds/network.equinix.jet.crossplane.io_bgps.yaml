@@ -103,12 +103,38 @@ spec:
                   remoteIpAddress:
                     description: IP address of remote peer. IP address of remote peer
                     type: string
-                required:
-                - connectionId
-                - localAsn
-                - localIpAddress
-                - remoteAsn
-                - remoteIpAddress
+                type: object
+              initProvider:
+                description: THIS IS A BETA FIELD. It will be honored unless the Management
+                  Policies feature flag is disabled. InitProvider holds the same fields
+                  as ForProvider, with the exception of Identifier and other resource
+                  reference fields. The fields that are in InitProvider are merged
+                  into ForProvider when the resource is created. The same fields are
+                  also added to the terraform ignore_changes hook, to avoid updating
+                  them after creation. This is useful for fields that are required
+                  on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them,
+                  like an autoscaler.
+                properties:
+                  connectionId:
+                    description: identifier of a connection established between. network
+                      device and remote service provider that will be used for peering.
+                      Identifier of a connection established between network device
+                      and remote service provider that will be used for peering
+                    type: string
+                  localAsn:
+                    description: Local ASN number. Local ASN number
+                    type: number
+                  localIpAddress:
+                    description: IP address in CIDR format of a local device. IP address
+                      in CIDR format of a local device
+                    type: string
+                  remoteAsn:
+                    description: Remote ASN number. Remote ASN number
+                    type: number
+                  remoteIpAddress:
+                    description: IP address of remote peer. IP address of remote peer
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -270,11 +296,38 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.connectionId is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.connectionId)
+                || (has(self.initProvider) && has(self.initProvider.connectionId))'
+            - message: spec.forProvider.localAsn is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.localAsn)
+                || (has(self.initProvider) && has(self.initProvider.localAsn))'
+            - message: spec.forProvider.localIpAddress is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.localIpAddress)
+                || (has(self.initProvider) && has(self.initProvider.localIpAddress))'
+            - message: spec.forProvider.remoteAsn is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.remoteAsn)
+                || (has(self.initProvider) && has(self.initProvider.remoteAsn))'
+            - message: spec.forProvider.remoteIpAddress is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.remoteIpAddress)
+                || (has(self.initProvider) && has(self.initProvider.remoteIpAddress))'
           status:
             description: BGPStatus defines the observed state of BGP.
             properties:
               atProvider:
                 properties:
+                  connectionId:
+                    description: identifier of a connection established between. network
+                      device and remote service provider that will be used for peering.
+                      Identifier of a connection established between network device
+                      and remote service provider that will be used for peering
+                    type: string
                   deviceId:
                     description: unique identifier of a network device that is a local
                       peer in a given BGP peering configuration. Unique identifier
@@ -283,10 +336,23 @@ spec:
                     type: string
                   id:
                     type: string
+                  localAsn:
+                    description: Local ASN number. Local ASN number
+                    type: number
+                  localIpAddress:
+                    description: IP address in CIDR format of a local device. IP address
+                      in CIDR format of a local device
+                    type: string
                   provisioningStatus:
                     description: BGP peering configuration provisioning status, one
                       of PROVISIONING, PENDING_UPDATE, PROVISIONED, FAILED. BGP peering
                       configuration provisioning status
+                    type: string
+                  remoteAsn:
+                    description: Remote ASN number. Remote ASN number
+                    type: number
+                  remoteIpAddress:
+                    description: IP address of remote peer. IP address of remote peer
                     type: string
                   state:
                     description: BGP peer state, one of Idle, Connect, Active, OpenSent,

@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2021 The Crossplane Authors.
 
@@ -25,8 +29,64 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type FileInitParameters struct {
+
+	// Boolean value that determines device licensing mode, i.e.,
+	// bring your own license or subscription.
+	// Boolean value that determines device licensing mode: bring your own license or subscription
+	Byol *bool `json:"byol,omitempty" tf:"byol,omitempty"`
+
+	// Device type code.
+	// Device type code
+	DeviceTypeCode *string `json:"deviceTypeCode,omitempty" tf:"device_type_code,omitempty"`
+
+	// File name.
+	// File name
+	FileName *string `json:"fileName,omitempty" tf:"file_name,omitempty"`
+
+	// File upload location metro code. It should match the device location metro code.
+	// File upload location metro code
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// File process type (LICENSE or CLOUD_INIT).
+	// File process type (LICENSE or CLOUD_INIT)
+	ProcessType *string `json:"processType,omitempty" tf:"process_type,omitempty"`
+
+	// Boolean value that determines device management mode, i.e.,
+	// self-managed or Equinix-managed.
+	// Boolean value that determines device management mode: self-managed or equinix-managed
+	SelfManaged *bool `json:"selfManaged,omitempty" tf:"self_managed,omitempty"`
+}
+
 type FileObservation struct {
+
+	// Boolean value that determines device licensing mode, i.e.,
+	// bring your own license or subscription.
+	// Boolean value that determines device licensing mode: bring your own license or subscription
+	Byol *bool `json:"byol,omitempty" tf:"byol,omitempty"`
+
+	// Device type code.
+	// Device type code
+	DeviceTypeCode *string `json:"deviceTypeCode,omitempty" tf:"device_type_code,omitempty"`
+
+	// File name.
+	// File name
+	FileName *string `json:"fileName,omitempty" tf:"file_name,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// File upload location metro code. It should match the device location metro code.
+	// File upload location metro code
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// File process type (LICENSE or CLOUD_INIT).
+	// File process type (LICENSE or CLOUD_INIT)
+	ProcessType *string `json:"processType,omitempty" tf:"process_type,omitempty"`
+
+	// Boolean value that determines device management mode, i.e.,
+	// self-managed or Equinix-managed.
+	// Boolean value that determines device management mode: self-managed or equinix-managed
+	SelfManaged *bool `json:"selfManaged,omitempty" tf:"self_managed,omitempty"`
 
 	// File upload status.
 	// File upload status
@@ -42,45 +102,56 @@ type FileParameters struct {
 	// Boolean value that determines device licensing mode, i.e.,
 	// bring your own license or subscription.
 	// Boolean value that determines device licensing mode: bring your own license or subscription
-	// +kubebuilder:validation:Required
-	Byol *bool `json:"byol" tf:"byol,omitempty"`
+	// +kubebuilder:validation:Optional
+	Byol *bool `json:"byol,omitempty" tf:"byol,omitempty"`
 
 	// Uploaded file content, expected to be a UTF-8 encoded string.
 	// Uploaded file content, expected to be a UTF-8 encoded string
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	ContentSecretRef v1.SecretKeySelector `json:"contentSecretRef" tf:"-"`
 
 	// Device type code.
 	// Device type code
-	// +kubebuilder:validation:Required
-	DeviceTypeCode *string `json:"deviceTypeCode" tf:"device_type_code,omitempty"`
+	// +kubebuilder:validation:Optional
+	DeviceTypeCode *string `json:"deviceTypeCode,omitempty" tf:"device_type_code,omitempty"`
 
 	// File name.
 	// File name
-	// +kubebuilder:validation:Required
-	FileName *string `json:"fileName" tf:"file_name,omitempty"`
+	// +kubebuilder:validation:Optional
+	FileName *string `json:"fileName,omitempty" tf:"file_name,omitempty"`
 
 	// File upload location metro code. It should match the device location metro code.
 	// File upload location metro code
-	// +kubebuilder:validation:Required
-	MetroCode *string `json:"metroCode" tf:"metro_code,omitempty"`
+	// +kubebuilder:validation:Optional
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
 
 	// File process type (LICENSE or CLOUD_INIT).
 	// File process type (LICENSE or CLOUD_INIT)
-	// +kubebuilder:validation:Required
-	ProcessType *string `json:"processType" tf:"process_type,omitempty"`
+	// +kubebuilder:validation:Optional
+	ProcessType *string `json:"processType,omitempty" tf:"process_type,omitempty"`
 
 	// Boolean value that determines device management mode, i.e.,
 	// self-managed or Equinix-managed.
 	// Boolean value that determines device management mode: self-managed or equinix-managed
-	// +kubebuilder:validation:Required
-	SelfManaged *bool `json:"selfManaged" tf:"self_managed,omitempty"`
+	// +kubebuilder:validation:Optional
+	SelfManaged *bool `json:"selfManaged,omitempty" tf:"self_managed,omitempty"`
 }
 
 // FileSpec defines the desired state of File
 type FileSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     FileParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider FileInitParameters `json:"initProvider,omitempty"`
 }
 
 // FileStatus defines the observed state of File.
@@ -90,19 +161,27 @@ type FileStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // File is the Schema for the Files API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinix}
 type File struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              FileSpec   `json:"spec"`
-	Status            FileStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.byol) || (has(self.initProvider) && has(self.initProvider.byol))",message="spec.forProvider.byol is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.contentSecretRef)",message="spec.forProvider.contentSecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.deviceTypeCode) || (has(self.initProvider) && has(self.initProvider.deviceTypeCode))",message="spec.forProvider.deviceTypeCode is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.fileName) || (has(self.initProvider) && has(self.initProvider.fileName))",message="spec.forProvider.fileName is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.metroCode) || (has(self.initProvider) && has(self.initProvider.metroCode))",message="spec.forProvider.metroCode is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.processType) || (has(self.initProvider) && has(self.initProvider.processType))",message="spec.forProvider.processType is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.selfManaged) || (has(self.initProvider) && has(self.initProvider.selfManaged))",message="spec.forProvider.selfManaged is a required parameter"
+	Spec   FileSpec   `json:"spec"`
+	Status FileStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

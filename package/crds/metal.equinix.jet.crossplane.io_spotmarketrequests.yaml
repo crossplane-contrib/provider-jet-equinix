@@ -130,11 +130,6 @@ spec:
                           type: array
                         userdata:
                           type: string
-                      required:
-                      - billingCycle
-                      - hostname
-                      - operatingSystem
-                      - plan
                       type: object
                     type: array
                   maxBidPrice:
@@ -227,11 +222,175 @@ spec:
                       On resource creation - wait until all desired devices are active,
                       on resource destruction - wait until devices are removed
                     type: boolean
-                required:
-                - devicesMax
-                - devicesMin
-                - instanceParameters
-                - maxBidPrice
+                type: object
+              initProvider:
+                description: THIS IS A BETA FIELD. It will be honored unless the Management
+                  Policies feature flag is disabled. InitProvider holds the same fields
+                  as ForProvider, with the exception of Identifier and other resource
+                  reference fields. The fields that are in InitProvider are merged
+                  into ForProvider when the resource is created. The same fields are
+                  also added to the terraform ignore_changes hook, to avoid updating
+                  them after creation. This is useful for fields that are required
+                  on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them,
+                  like an autoscaler.
+                properties:
+                  devicesMax:
+                    description: Maximum number devices to be created. Maximum number
+                      devices to be created
+                    type: number
+                  devicesMin:
+                    description: Miniumum number devices to be created. Miniumum number
+                      devices to be created
+                    type: number
+                  facilities:
+                    description: (Deprecated) Facility IDs where devices should be
+                      created. Use metro instead; read the facility to metro migration
+                      guide Facility IDs where devices should be created
+                    items:
+                      type: string
+                    type: array
+                  instanceParameters:
+                    description: 'Key/Value pairs of parameters for devices provisioned
+                      from this request. Valid keys are: billing_cycle, plan, operating_system,
+                      hostname, termination_time, always_pxe, description, features,
+                      locked, project_ssh_keys, user_ssh_keys, userdata, customdata,
+                      ipxe_script_url, tags. You can find each parameter description
+                      in equinix_metal_device docs. Parameters for devices provisioned
+                      from this request. You can find the parameter description from
+                      the [equinix_metal_device doc](device.md)'
+                    items:
+                      properties:
+                        alwaysPxe:
+                          type: boolean
+                        billingCycle:
+                          type: string
+                        customdata:
+                          type: string
+                        description:
+                          type: string
+                        features:
+                          items:
+                            type: string
+                          type: array
+                        hostname:
+                          type: string
+                        ipxeScriptUrl:
+                          type: string
+                        locked:
+                          description: Blocks deletion of the SpotMarketRequest device
+                            until the lock is disabled.
+                          type: boolean
+                        operatingSystem:
+                          type: string
+                        plan:
+                          type: string
+                        projectSshKeys:
+                          items:
+                            type: string
+                          type: array
+                        tags:
+                          items:
+                            type: string
+                          type: array
+                        userSshKeys:
+                          items:
+                            type: string
+                          type: array
+                        userdata:
+                          type: string
+                      type: object
+                    type: array
+                  maxBidPrice:
+                    description: Maximum price user is willing to pay per hour per
+                      device. Maximum price user is willing to pay per hour per device
+                    type: number
+                  metro:
+                    description: Metro where devices should be created. Metro where
+                      devices should be created
+                    type: string
+                  projectId:
+                    description: Project ID. Project ID
+                    type: string
+                  projectIdRef:
+                    description: Reference to a Project to populate projectId.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  projectIdSelector:
+                    description: Selector for a Project to populate projectId.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  waitForDevices:
+                    description: On resource creation wait until all desired devices
+                      are active. On resource destruction wait until devices are removed.
+                      On resource creation - wait until all desired devices are active,
+                      on resource destruction - wait until devices are removed
+                    type: boolean
                 type: object
               managementPolicies:
                 default:
@@ -393,11 +552,43 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.devicesMax is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.devicesMax)
+                || (has(self.initProvider) && has(self.initProvider.devicesMax))'
+            - message: spec.forProvider.devicesMin is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.devicesMin)
+                || (has(self.initProvider) && has(self.initProvider.devicesMin))'
+            - message: spec.forProvider.instanceParameters is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.instanceParameters)
+                || (has(self.initProvider) && has(self.initProvider.instanceParameters))'
+            - message: spec.forProvider.maxBidPrice is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.maxBidPrice)
+                || (has(self.initProvider) && has(self.initProvider.maxBidPrice))'
           status:
             description: SpotMarketRequestStatus defines the observed state of SpotMarketRequest.
             properties:
               atProvider:
                 properties:
+                  devicesMax:
+                    description: Maximum number devices to be created. Maximum number
+                      devices to be created
+                    type: number
+                  devicesMin:
+                    description: Miniumum number devices to be created. Miniumum number
+                      devices to be created
+                    type: number
+                  facilities:
+                    description: (Deprecated) Facility IDs where devices should be
+                      created. Use metro instead; read the facility to metro migration
+                      guide Facility IDs where devices should be created
+                    items:
+                      type: string
+                    type: array
                   id:
                     description: The ID of the Spot Market Request.
                     type: string
@@ -412,12 +603,67 @@ spec:
                       the [equinix_metal_device doc](device.md)'
                     items:
                       properties:
+                        alwaysPxe:
+                          type: boolean
+                        billingCycle:
+                          type: string
+                        customdata:
+                          type: string
+                        description:
+                          type: string
+                        features:
+                          items:
+                            type: string
+                          type: array
+                        hostname:
+                          type: string
+                        ipxeScriptUrl:
+                          type: string
+                        locked:
+                          description: Blocks deletion of the SpotMarketRequest device
+                            until the lock is disabled.
+                          type: boolean
+                        operatingSystem:
+                          type: string
+                        plan:
+                          type: string
+                        projectSshKeys:
+                          items:
+                            type: string
+                          type: array
+                        tags:
+                          items:
+                            type: string
+                          type: array
                         terminationTime:
                           type: string
                         termintationTime:
                           type: string
+                        userSshKeys:
+                          items:
+                            type: string
+                          type: array
+                        userdata:
+                          type: string
                       type: object
                     type: array
+                  maxBidPrice:
+                    description: Maximum price user is willing to pay per hour per
+                      device. Maximum price user is willing to pay per hour per device
+                    type: number
+                  metro:
+                    description: Metro where devices should be created. Metro where
+                      devices should be created
+                    type: string
+                  projectId:
+                    description: Project ID. Project ID
+                    type: string
+                  waitForDevices:
+                    description: On resource creation wait until all desired devices
+                      are active. On resource destruction wait until devices are removed.
+                      On resource creation - wait until all desired devices are active,
+                      on resource destruction - wait until devices are removed
+                    type: boolean
                 type: object
               conditions:
                 description: Conditions of the resource.

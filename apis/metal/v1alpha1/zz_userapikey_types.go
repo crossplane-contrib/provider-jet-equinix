@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2021 The Crossplane Authors.
 
@@ -25,8 +29,26 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type UserAPIKeyInitParameters struct {
+
+	// Description string for the User API Key resource.
+	// Description string for the API key
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Flag indicating whether the API key shoud be read-only
+	ReadOnly *bool `json:"readOnly,omitempty" tf:"read_only,omitempty"`
+}
+
 type UserAPIKeyObservation struct {
+
+	// Description string for the User API Key resource.
+	// Description string for the API key
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Flag indicating whether the API key shoud be read-only
+	ReadOnly *bool `json:"readOnly,omitempty" tf:"read_only,omitempty"`
 
 	// UUID of the owner of the API key.
 	// UUID of user owning this key
@@ -37,18 +59,29 @@ type UserAPIKeyParameters struct {
 
 	// Description string for the User API Key resource.
 	// Description string for the API key
-	// +kubebuilder:validation:Required
-	Description *string `json:"description" tf:"description,omitempty"`
+	// +kubebuilder:validation:Optional
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// Flag indicating whether the API key shoud be read-only
-	// +kubebuilder:validation:Required
-	ReadOnly *bool `json:"readOnly" tf:"read_only,omitempty"`
+	// +kubebuilder:validation:Optional
+	ReadOnly *bool `json:"readOnly,omitempty" tf:"read_only,omitempty"`
 }
 
 // UserAPIKeySpec defines the desired state of UserAPIKey
 type UserAPIKeySpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     UserAPIKeyParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider UserAPIKeyInitParameters `json:"initProvider,omitempty"`
 }
 
 // UserAPIKeyStatus defines the observed state of UserAPIKey.
@@ -58,19 +91,22 @@ type UserAPIKeyStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // UserAPIKey is the Schema for the UserAPIKeys API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinix}
 type UserAPIKey struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              UserAPIKeySpec   `json:"spec"`
-	Status            UserAPIKeyStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.description) || (has(self.initProvider) && has(self.initProvider.description))",message="spec.forProvider.description is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.readOnly) || (has(self.initProvider) && has(self.initProvider.readOnly))",message="spec.forProvider.readOnly is a required parameter"
+	Spec   UserAPIKeySpec   `json:"spec"`
+	Status UserAPIKeyStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

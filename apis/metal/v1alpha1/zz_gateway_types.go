@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2021 The Crossplane Authors.
 
@@ -25,12 +29,78 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type GatewayInitParameters struct {
+
+	// UUID of Public or VRF IP Reservation to associate with the gateway, the
+	// reservation must be in the same metro as the VLAN, conflicts with private_ipv4_subnet_size.
+	// UUID of the Public or VRF IP Reservation to associate, must be in the same metro as the VLAN
+	// +crossplane:generate:reference:type=ReservedIPBlock
+	IPReservationID *string `json:"ipReservationId,omitempty" tf:"ip_reservation_id,omitempty"`
+
+	// Reference to a ReservedIPBlock to populate ipReservationId.
+	// +kubebuilder:validation:Optional
+	IPReservationIDRef *v1.Reference `json:"ipReservationIdRef,omitempty" tf:"-"`
+
+	// Selector for a ReservedIPBlock to populate ipReservationId.
+	// +kubebuilder:validation:Optional
+	IPReservationIDSelector *v1.Selector `json:"ipReservationIdSelector,omitempty" tf:"-"`
+
+	// Size of the private IPv4 subnet to create for this metal
+	// gateway, must be one of 8, 16, 32, 64, 128. Conflicts with ip_reservation_id.
+	// Size of the private IPv4 subnet to create for this gateway, one of [8 16 32 64 128]
+	PrivateIPv4SubnetSize *float64 `json:"privateIpv4SubnetSize,omitempty" tf:"private_ipv4_subnet_size,omitempty"`
+
+	// UUID of the project where the gateway is scoped to.
+	// UUID of the Project where the Gateway is scoped to
+	// +crossplane:generate:reference:type=Project
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Reference to a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
+
+	// Selector for a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
+
+	// UUID of the VLAN where the gateway is scoped to.
+	// UUID of the VLAN to associate
+	// +crossplane:generate:reference:type=Vlan
+	VlanID *string `json:"vlanId,omitempty" tf:"vlan_id,omitempty"`
+
+	// Reference to a Vlan to populate vlanId.
+	// +kubebuilder:validation:Optional
+	VlanIDRef *v1.Reference `json:"vlanIdRef,omitempty" tf:"-"`
+
+	// Selector for a Vlan to populate vlanId.
+	// +kubebuilder:validation:Optional
+	VlanIDSelector *v1.Selector `json:"vlanIdSelector,omitempty" tf:"-"`
+}
+
 type GatewayObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// UUID of Public or VRF IP Reservation to associate with the gateway, the
+	// reservation must be in the same metro as the VLAN, conflicts with private_ipv4_subnet_size.
+	// UUID of the Public or VRF IP Reservation to associate, must be in the same metro as the VLAN
+	IPReservationID *string `json:"ipReservationId,omitempty" tf:"ip_reservation_id,omitempty"`
+
+	// Size of the private IPv4 subnet to create for this metal
+	// gateway, must be one of 8, 16, 32, 64, 128. Conflicts with ip_reservation_id.
+	// Size of the private IPv4 subnet to create for this gateway, one of [8 16 32 64 128]
+	PrivateIPv4SubnetSize *float64 `json:"privateIpv4SubnetSize,omitempty" tf:"private_ipv4_subnet_size,omitempty"`
+
+	// UUID of the project where the gateway is scoped to.
+	// UUID of the Project where the Gateway is scoped to
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
 	// Status of the gateway resource.
 	// Status of the gateway resource
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
+
+	// UUID of the VLAN where the gateway is scoped to.
+	// UUID of the VLAN to associate
+	VlanID *string `json:"vlanId,omitempty" tf:"vlan_id,omitempty"`
 
 	// UUID of the VRF associated with the IP Reservation
 	// UUID of the VRF associated with the IP Reservation
@@ -93,6 +163,17 @@ type GatewayParameters struct {
 type GatewaySpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     GatewayParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider GatewayInitParameters `json:"initProvider,omitempty"`
 }
 
 // GatewayStatus defines the observed state of Gateway.
@@ -102,13 +183,14 @@ type GatewayStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Gateway is the Schema for the Gateways API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinix}
 type Gateway struct {
 	metav1.TypeMeta   `json:",inline"`

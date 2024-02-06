@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2021 The Crossplane Authors.
 
@@ -25,6 +29,9 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ActionsInitParameters struct {
+}
+
 type ActionsObservation struct {
 	Message *string `json:"message,omitempty" tf:"message,omitempty"`
 
@@ -36,6 +43,9 @@ type ActionsObservation struct {
 }
 
 type ActionsParameters struct {
+}
+
+type ActionsRequiredDataInitParameters struct {
 }
 
 type ActionsRequiredDataObservation struct {
@@ -54,20 +64,167 @@ type ActionsRequiredDataObservation struct {
 type ActionsRequiredDataParameters struct {
 }
 
+type AdditionalInfoInitParameters struct {
+
+	// secondary connection name
+	// Additional information key
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// additional information value
+	// Additional information value
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
 type AdditionalInfoObservation struct {
+
+	// secondary connection name
+	// Additional information key
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// additional information value
+	// Additional information value
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type AdditionalInfoParameters struct {
 
 	// secondary connection name
 	// Additional information key
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
 	// additional information value
 	// Additional information value
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Value *string `json:"value" tf:"value,omitempty"`
+}
+
+type L2ConnectionInitParameters struct {
+
+	// one or more additional information key-value objects
+	// One or more additional information key-value objects
+	AdditionalInfo []AdditionalInfoInitParameters `json:"additionalInfo,omitempty" tf:"additional_info,omitempty"`
+
+	// Unique identifier authorizing Equinix to provision a connection
+	// towards a cloud service provider. At Equinix, an Authorization Key is a generic term and is NOT
+	// encrypted on Equinix Fabric. Cloud Service Providers might use a different name to refer to this
+	// key such as Service Key or Authentication Key. Value depends on a provider service profile,
+	// more information on Equinix Fabric how to guide.
+	// Text field used to authorize connection on the provider side. Value depends on a provider service profile used for connection
+	AuthorizationKey *string `json:"authorizationKey,omitempty" tf:"authorization_key,omitempty"`
+
+	// Applicable with device_uuid, identifier of network interface
+	// on a given device, used for a connection. If not specified then first available interface will be
+	// selected.
+	// Identifier of network interface on a given device, used for a connection. If not specified then first available interface will be selected
+	DeviceInterfaceID *float64 `json:"deviceInterfaceId,omitempty" tf:"device_interface_id,omitempty"`
+
+	// Unique identifier of
+	// the Network Edge virtual device from which the connection would originate.
+	// Unique identifier of the Network Edge virtual device from which the connection would originate
+	DeviceUUID *string `json:"deviceUuid,omitempty" tf:"device_uuid,omitempty"`
+
+	// Connection name. An alpha-numeric 24 characters string which can include only
+	// hyphens and underscores
+	// Connection name. An alpha-numeric 24 characters string which can include only hyphens and underscores
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The type of peering to set up when connecting to Azure Express Route.
+	// Valid values: PRIVATE, MICROSOFT, MANUAL*, PUBLIC*.
+	// The type of peering to set up in case when connecting to Azure Express Route. One of PRIVATE, MICROSOFT, MANUAL, PUBLIC (MANUAL and PUBLIC are deprecated and not available for new connections)
+	NamedTag *string `json:"namedTag,omitempty" tf:"named_tag,omitempty"`
+
+	// A list of email addresses used for sending connection update
+	// notifications.
+	// A list of email addresses used for sending connection update notifications
+	// +listType=set
+	Notifications []*string `json:"notifications,omitempty" tf:"notifications,omitempty"`
+
+	// Unique identifier of
+	// the Equinix Fabric Port from which the connection would originate.
+	// Unique identifier of the buyer's port from which the connection would originate
+	PortUUID *string `json:"portUuid,omitempty" tf:"port_uuid,omitempty"`
+
+	// Unique identifier of the service provider's profile.
+	// Unique identifier of the service provider's service profile
+	// +crossplane:generate:reference:type=L2Serviceprofile
+	ProfileUUID *string `json:"profileUuid,omitempty" tf:"profile_uuid,omitempty"`
+
+	// Reference to a L2Serviceprofile to populate profileUuid.
+	// +kubebuilder:validation:Optional
+	ProfileUUIDRef *v1.Reference `json:"profileUuidRef,omitempty" tf:"-"`
+
+	// Selector for a L2Serviceprofile to populate profileUuid.
+	// +kubebuilder:validation:Optional
+	ProfileUUIDSelector *v1.Selector `json:"profileUuidSelector,omitempty" tf:"-"`
+
+	// Connection's purchase order number to reflect on the invoice
+	// Connection's purchase order number to reflect on the invoice
+	PurchaseOrderNumber *string `json:"purchaseOrderNumber,omitempty" tf:"purchase_order_number,omitempty"`
+
+	// Definition of secondary connection for redundant, HA
+	// connectivity. See Secondary Connection below for more details.
+	// Definition of secondary connection for redundant, HA connectivity
+	SecondaryConnection []SecondaryConnectionInitParameters `json:"secondaryConnection,omitempty" tf:"secondary_connection,omitempty"`
+
+	// The metro code that denotes the connection’s remote/destination
+	// side (z-side).
+	// The metro code that denotes the connection's remote side (z-side)
+	SellerMetroCode *string `json:"sellerMetroCode,omitempty" tf:"seller_metro_code,omitempty"`
+
+	// The region in which the seller port resides.
+	// The region in which the seller port resides
+	SellerRegion *string `json:"sellerRegion,omitempty" tf:"seller_region,omitempty"`
+
+	// - A-side
+	// service tokens authorize you to create a connection from a customer port, which created the token
+	// for you, to a service profile or your own port.
+	// More details in A-Side Fabric Service Tokens.
+	// Unique Equinix Fabric key given by a provider that grants you authorization to enable connectivity from a shared multi-tenant port (a-side)
+	ServiceToken *string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+
+	// Speed/Bandwidth to be allocated to the connection.
+	// Speed/Bandwidth to be allocated to the connection
+	Speed *float64 `json:"speed,omitempty" tf:"speed,omitempty"`
+
+	// Unit of the speed/bandwidth to be allocated to the connection.
+	// Unit of the speed/bandwidth to be allocated to the connection
+	SpeedUnit *string `json:"speedUnit,omitempty" tf:"speed_unit,omitempty"`
+
+	// C-Tag/Inner-Tag of the connection - a numeric character ranging from 2
+	// - 4094.
+	// C-Tag/Inner-Tag of the connection, a numeric character ranging from 2 - 4094
+	VlanCtag *float64 `json:"vlanCtag,omitempty" tf:"vlan_ctag,omitempty"`
+
+	// S-Tag/Outer-Tag of the connection - a numeric
+	// character ranging from 2 - 4094.
+	// S-Tag/Outer-Tag of the connection, a numeric character ranging from 2 - 4094
+	VlanStag *float64 `json:"vlanStag,omitempty" tf:"vlan_stag,omitempty"`
+
+	// Unique identifier of the port on the remote/destination side
+	// (z-side). Allows you to connect between your own ports or virtual devices across your company's
+	// Equinix Fabric deployment, with no need for a private service profile.
+	// Unique identifier of the port on the remote side (z-side)
+	ZsidePortUUID *string `json:"zsidePortUuid,omitempty" tf:"zside_port_uuid,omitempty"`
+
+	// - Z-side
+	// service tokens authorize you to create a connection from your port or virtual device to a customer
+	// port which created the token for you. zside_service_token cannot be used with secondary_connection.
+	// More details in Z-Side Fabric Service Tokens.
+	// Unique Equinix Fabric key given by a provider that grants you authorization to enable connectivity to a shared multi-tenant port (z-side)
+	ZsideServiceToken *string `json:"zsideServiceToken,omitempty" tf:"zside_service_token,omitempty"`
+
+	// C-Tag/Inner-Tag of the connection on the remote/destination
+	// side (z-side) - a numeric character ranging from 2 - 4094.
+	// secondary_connection is defined it will internally use same zside_vlan_ctag for the secondary
+	// connection.
+	// C-Tag/Inner-Tag of the connection on the remote side (z-side)
+	ZsideVlanCtag *float64 `json:"zsideVlanCtag,omitempty" tf:"zside_vlan_ctag,omitempty"`
+
+	// S-Tag/Outer-Tag of the connection on the remote/destination
+	// side (z-side) - a numeric character ranging from 2 - 4094.
+	// S-Tag/Outer-Tag of the connection on the remote side (z-side)
+	ZsideVlanStag *float64 `json:"zsideVlanStag,omitempty" tf:"zside_vlan_stag,omitempty"`
 }
 
 type L2ConnectionObservation struct {
@@ -76,11 +233,63 @@ type L2ConnectionObservation struct {
 	// One or more pending actions to complete connection provisioning
 	Actions []ActionsObservation `json:"actions,omitempty" tf:"actions,omitempty"`
 
+	// one or more additional information key-value objects
+	// One or more additional information key-value objects
+	AdditionalInfo []AdditionalInfoObservation `json:"additionalInfo,omitempty" tf:"additional_info,omitempty"`
+
+	// Unique identifier authorizing Equinix to provision a connection
+	// towards a cloud service provider. At Equinix, an Authorization Key is a generic term and is NOT
+	// encrypted on Equinix Fabric. Cloud Service Providers might use a different name to refer to this
+	// key such as Service Key or Authentication Key. Value depends on a provider service profile,
+	// more information on Equinix Fabric how to guide.
+	// Text field used to authorize connection on the provider side. Value depends on a provider service profile used for connection
+	AuthorizationKey *string `json:"authorizationKey,omitempty" tf:"authorization_key,omitempty"`
+
+	// Applicable with device_uuid, identifier of network interface
+	// on a given device, used for a connection. If not specified then first available interface will be
+	// selected.
+	// Identifier of network interface on a given device, used for a connection. If not specified then first available interface will be selected
+	DeviceInterfaceID *float64 `json:"deviceInterfaceId,omitempty" tf:"device_interface_id,omitempty"`
+
+	// Unique identifier of
+	// the Network Edge virtual device from which the connection would originate.
+	// Unique identifier of the Network Edge virtual device from which the connection would originate
+	DeviceUUID *string `json:"deviceUuid,omitempty" tf:"device_uuid,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Connection name. An alpha-numeric 24 characters string which can include only
+	// hyphens and underscores
+	// Connection name. An alpha-numeric 24 characters string which can include only hyphens and underscores
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The type of peering to set up when connecting to Azure Express Route.
+	// Valid values: PRIVATE, MICROSOFT, MANUAL*, PUBLIC*.
+	// The type of peering to set up in case when connecting to Azure Express Route. One of PRIVATE, MICROSOFT, MANUAL, PUBLIC (MANUAL and PUBLIC are deprecated and not available for new connections)
+	NamedTag *string `json:"namedTag,omitempty" tf:"named_tag,omitempty"`
+
+	// A list of email addresses used for sending connection update
+	// notifications.
+	// A list of email addresses used for sending connection update notifications
+	// +listType=set
+	Notifications []*string `json:"notifications,omitempty" tf:"notifications,omitempty"`
+
+	// Unique identifier of
+	// the Equinix Fabric Port from which the connection would originate.
+	// Unique identifier of the buyer's port from which the connection would originate
+	PortUUID *string `json:"portUuid,omitempty" tf:"port_uuid,omitempty"`
+
+	// Unique identifier of the service provider's profile.
+	// Unique identifier of the service provider's service profile
+	ProfileUUID *string `json:"profileUuid,omitempty" tf:"profile_uuid,omitempty"`
 
 	// Connection provisioning status on service provider's side.
 	// Connection provisioning status on service provider's side
 	ProviderStatus *string `json:"providerStatus,omitempty" tf:"provider_status,omitempty"`
+
+	// Connection's purchase order number to reflect on the invoice
+	// Connection's purchase order number to reflect on the invoice
+	PurchaseOrderNumber *string `json:"purchaseOrderNumber,omitempty" tf:"purchase_order_number,omitempty"`
 
 	// Unique identifier of group containing a primary and secondary connection.
 	// Unique identifier of group containing a primary and secondary connection
@@ -98,8 +307,31 @@ type L2ConnectionObservation struct {
 	// Definition of secondary connection for redundant, HA
 	// connectivity. See Secondary Connection below for more details.
 	// Definition of secondary connection for redundant, HA connectivity
-	// +kubebuilder:validation:Optional
 	SecondaryConnection []SecondaryConnectionObservation `json:"secondaryConnection,omitempty" tf:"secondary_connection,omitempty"`
+
+	// The metro code that denotes the connection’s remote/destination
+	// side (z-side).
+	// The metro code that denotes the connection's remote side (z-side)
+	SellerMetroCode *string `json:"sellerMetroCode,omitempty" tf:"seller_metro_code,omitempty"`
+
+	// The region in which the seller port resides.
+	// The region in which the seller port resides
+	SellerRegion *string `json:"sellerRegion,omitempty" tf:"seller_region,omitempty"`
+
+	// - A-side
+	// service tokens authorize you to create a connection from a customer port, which created the token
+	// for you, to a service profile or your own port.
+	// More details in A-Side Fabric Service Tokens.
+	// Unique Equinix Fabric key given by a provider that grants you authorization to enable connectivity from a shared multi-tenant port (a-side)
+	ServiceToken *string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+
+	// Speed/Bandwidth to be allocated to the connection.
+	// Speed/Bandwidth to be allocated to the connection
+	Speed *float64 `json:"speed,omitempty" tf:"speed,omitempty"`
+
+	// Unit of the speed/bandwidth to be allocated to the connection.
+	// Unit of the speed/bandwidth to be allocated to the connection
+	SpeedUnit *string `json:"speedUnit,omitempty" tf:"speed_unit,omitempty"`
 
 	// Connection provisioning status on Equinix Fabric side.
 	// Connection provisioning status on Equinix Fabric side
@@ -113,6 +345,41 @@ type L2ConnectionObservation struct {
 	// connection was created with a service_token (a-side) or zside_service_token (z-side).
 	// The Equinix Fabric Token the connection was created with. Applicable if the connection was created with a ServiceToken (a-side) or ZSideServiceToken (z-side)
 	VendorToken *string `json:"vendorToken,omitempty" tf:"vendor_token,omitempty"`
+
+	// C-Tag/Inner-Tag of the connection - a numeric character ranging from 2
+	// - 4094.
+	// C-Tag/Inner-Tag of the connection, a numeric character ranging from 2 - 4094
+	VlanCtag *float64 `json:"vlanCtag,omitempty" tf:"vlan_ctag,omitempty"`
+
+	// S-Tag/Outer-Tag of the connection - a numeric
+	// character ranging from 2 - 4094.
+	// S-Tag/Outer-Tag of the connection, a numeric character ranging from 2 - 4094
+	VlanStag *float64 `json:"vlanStag,omitempty" tf:"vlan_stag,omitempty"`
+
+	// Unique identifier of the port on the remote/destination side
+	// (z-side). Allows you to connect between your own ports or virtual devices across your company's
+	// Equinix Fabric deployment, with no need for a private service profile.
+	// Unique identifier of the port on the remote side (z-side)
+	ZsidePortUUID *string `json:"zsidePortUuid,omitempty" tf:"zside_port_uuid,omitempty"`
+
+	// - Z-side
+	// service tokens authorize you to create a connection from your port or virtual device to a customer
+	// port which created the token for you. zside_service_token cannot be used with secondary_connection.
+	// More details in Z-Side Fabric Service Tokens.
+	// Unique Equinix Fabric key given by a provider that grants you authorization to enable connectivity to a shared multi-tenant port (z-side)
+	ZsideServiceToken *string `json:"zsideServiceToken,omitempty" tf:"zside_service_token,omitempty"`
+
+	// C-Tag/Inner-Tag of the connection on the remote/destination
+	// side (z-side) - a numeric character ranging from 2 - 4094.
+	// secondary_connection is defined it will internally use same zside_vlan_ctag for the secondary
+	// connection.
+	// C-Tag/Inner-Tag of the connection on the remote side (z-side)
+	ZsideVlanCtag *float64 `json:"zsideVlanCtag,omitempty" tf:"zside_vlan_ctag,omitempty"`
+
+	// S-Tag/Outer-Tag of the connection on the remote/destination
+	// side (z-side) - a numeric character ranging from 2 - 4094.
+	// S-Tag/Outer-Tag of the connection on the remote side (z-side)
+	ZsideVlanStag *float64 `json:"zsideVlanStag,omitempty" tf:"zside_vlan_stag,omitempty"`
 }
 
 type L2ConnectionParameters struct {
@@ -147,8 +414,8 @@ type L2ConnectionParameters struct {
 	// Connection name. An alpha-numeric 24 characters string which can include only
 	// hyphens and underscores
 	// Connection name. An alpha-numeric 24 characters string which can include only hyphens and underscores
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The type of peering to set up when connecting to Azure Express Route.
 	// Valid values: PRIVATE, MICROSOFT, MANUAL*, PUBLIC*.
@@ -159,8 +426,9 @@ type L2ConnectionParameters struct {
 	// A list of email addresses used for sending connection update
 	// notifications.
 	// A list of email addresses used for sending connection update notifications
-	// +kubebuilder:validation:Required
-	Notifications []*string `json:"notifications" tf:"notifications,omitempty"`
+	// +kubebuilder:validation:Optional
+	// +listType=set
+	Notifications []*string `json:"notifications,omitempty" tf:"notifications,omitempty"`
 
 	// Unique identifier of
 	// the Equinix Fabric Port from which the connection would originate.
@@ -214,13 +482,13 @@ type L2ConnectionParameters struct {
 
 	// Speed/Bandwidth to be allocated to the connection.
 	// Speed/Bandwidth to be allocated to the connection
-	// +kubebuilder:validation:Required
-	Speed *float64 `json:"speed" tf:"speed,omitempty"`
+	// +kubebuilder:validation:Optional
+	Speed *float64 `json:"speed,omitempty" tf:"speed,omitempty"`
 
 	// Unit of the speed/bandwidth to be allocated to the connection.
 	// Unit of the speed/bandwidth to be allocated to the connection
-	// +kubebuilder:validation:Required
-	SpeedUnit *string `json:"speedUnit" tf:"speed_unit,omitempty"`
+	// +kubebuilder:validation:Optional
+	SpeedUnit *string `json:"speedUnit,omitempty" tf:"speed_unit,omitempty"`
 
 	// C-Tag/Inner-Tag of the connection - a numeric character ranging from 2
 	// - 4094.
@@ -264,6 +532,9 @@ type L2ConnectionParameters struct {
 	ZsideVlanStag *float64 `json:"zsideVlanStag,omitempty" tf:"zside_vlan_stag,omitempty"`
 }
 
+type RequiredDataInitParameters struct {
+}
+
 type RequiredDataObservation struct {
 	Editable *bool `json:"editable,omitempty" tf:"editable,omitempty"`
 
@@ -280,6 +551,9 @@ type RequiredDataObservation struct {
 type RequiredDataParameters struct {
 }
 
+type SecondaryConnectionActionsInitParameters struct {
+}
+
 type SecondaryConnectionActionsObservation struct {
 	Message *string `json:"message,omitempty" tf:"message,omitempty"`
 
@@ -293,11 +567,113 @@ type SecondaryConnectionActionsObservation struct {
 type SecondaryConnectionActionsParameters struct {
 }
 
+type SecondaryConnectionInitParameters struct {
+
+	// Unique identifier authorizing Equinix to provision a connection
+	// towards a cloud service provider. If not specified primary authorization_key will be used. However,
+	// some service providers may require different keys for each connection. More information on
+	// Equinix Fabric how to guide.
+	// Text field used to authorize connection on the provider side. Value depends on a provider service profile used for connection
+	AuthorizationKey *string `json:"authorizationKey,omitempty" tf:"authorization_key,omitempty"`
+
+	// Applicable with device_uuid, identifier of network interface
+	// on a given device. If not specified then first available interface will be selected.
+	// Identifier of network interface on a given device, used for a connection. If not specified then first available interface will be selected
+	DeviceInterfaceID *float64 `json:"deviceInterfaceId,omitempty" tf:"device_interface_id,omitempty"`
+
+	// Applicable with primary device_uuid. Identifier of the Network Edge
+	// virtual device from which the secondary connection would originate. If not specified primary
+	// device_uuid will be used.
+	// Unique identifier of the Network Edge virtual device from which the connection would originate
+	DeviceUUID *string `json:"deviceUuid,omitempty" tf:"device_uuid,omitempty"`
+
+	// secondary connection name
+	// Connection name. An alpha-numeric 24 characters string which can include only hyphens and underscores
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Applicable with primary port_uuid. Identifier of the Equinix Fabric Port from
+	// which the secondary connection would originate. If not specified primary port_uuid will be used.
+	// Unique identifier of the buyer's port from which the connection would originate
+	PortUUID *string `json:"portUuid,omitempty" tf:"port_uuid,omitempty"`
+
+	// Unique identifier of the service provider's profile.
+	// Unique identifier of the service provider's service profile
+	ProfileUUID *string `json:"profileUuid,omitempty" tf:"profile_uuid,omitempty"`
+
+	// The metro code that denotes the secondary connection’s
+	// destination (Z side). .
+	// The metro code that denotes the connection's remote side (z-side)
+	SellerMetroCode *string `json:"sellerMetroCode,omitempty" tf:"seller_metro_code,omitempty"`
+
+	// The region in which the seller port resides. If not specified
+	// primary seller_region will be used.
+	// The region in which the seller port resides
+	SellerRegion *string `json:"sellerRegion,omitempty" tf:"seller_region,omitempty"`
+
+	// Required with primary service_token. Unique Equinix Fabric key
+	// given by a provider that grants you authorization to enable connectivity from an Equinix Fabric Port or
+	// virtual device. Each connection (primary and secondary) requires a separate token.
+	// More details in Fabric Service Tokens.
+	// Unique Equinix Fabric key given by a provider that grants you authorization to enable connectivity from a shared multi-tenant port (a-side)
+	ServiceToken *string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+
+	// Speed/Bandwidth to be allocated to the secondary connection. If not
+	// specified primary speed will be used.
+	// Speed/Bandwidth to be allocated to the connection
+	Speed *float64 `json:"speed,omitempty" tf:"speed,omitempty"`
+
+	// Unit of the speed/bandwidth to be allocated to the secondary
+	// connection. If not specified primary speed_unit will be used.
+	// Unit of the speed/bandwidth to be allocated to the connection
+	SpeedUnit *string `json:"speedUnit,omitempty" tf:"speed_unit,omitempty"`
+
+	// Applicable with port_uuid. C-Tag/Inner-Tag of the secondary
+	// connection, a numeric character ranging from 2 - 4094.
+	// C-Tag/Inner-Tag of the connection, a numeric character ranging from 2 - 4094
+	VlanCtag *float64 `json:"vlanCtag,omitempty" tf:"vlan_ctag,omitempty"`
+
+	// S-Tag/Outer-Tag of the secondary connection, a
+	// numeric character ranging from 2 - 4094.
+	// S-Tag/Outer-Tag of the connection, a numeric character ranging from 2 - 4094
+	VlanStag *float64 `json:"vlanStag,omitempty" tf:"vlan_stag,omitempty"`
+}
+
 type SecondaryConnectionObservation struct {
 
 	// One or more pending actions to complete connection provisioning.
 	// One or more pending actions to complete connection provisioning
 	Actions []SecondaryConnectionActionsObservation `json:"actions,omitempty" tf:"actions,omitempty"`
+
+	// Unique identifier authorizing Equinix to provision a connection
+	// towards a cloud service provider. If not specified primary authorization_key will be used. However,
+	// some service providers may require different keys for each connection. More information on
+	// Equinix Fabric how to guide.
+	// Text field used to authorize connection on the provider side. Value depends on a provider service profile used for connection
+	AuthorizationKey *string `json:"authorizationKey,omitempty" tf:"authorization_key,omitempty"`
+
+	// Applicable with device_uuid, identifier of network interface
+	// on a given device. If not specified then first available interface will be selected.
+	// Identifier of network interface on a given device, used for a connection. If not specified then first available interface will be selected
+	DeviceInterfaceID *float64 `json:"deviceInterfaceId,omitempty" tf:"device_interface_id,omitempty"`
+
+	// Applicable with primary device_uuid. Identifier of the Network Edge
+	// virtual device from which the secondary connection would originate. If not specified primary
+	// device_uuid will be used.
+	// Unique identifier of the Network Edge virtual device from which the connection would originate
+	DeviceUUID *string `json:"deviceUuid,omitempty" tf:"device_uuid,omitempty"`
+
+	// secondary connection name
+	// Connection name. An alpha-numeric 24 characters string which can include only hyphens and underscores
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Applicable with primary port_uuid. Identifier of the Equinix Fabric Port from
+	// which the secondary connection would originate. If not specified primary port_uuid will be used.
+	// Unique identifier of the buyer's port from which the connection would originate
+	PortUUID *string `json:"portUuid,omitempty" tf:"port_uuid,omitempty"`
+
+	// Unique identifier of the service provider's profile.
+	// Unique identifier of the service provider's service profile
+	ProfileUUID *string `json:"profileUuid,omitempty" tf:"profile_uuid,omitempty"`
 
 	// Connection provisioning status on service provider's side.
 	// Connection provisioning status on service provider's side
@@ -316,6 +692,33 @@ type SecondaryConnectionObservation struct {
 	// Unique identifier of the redundant connection, applicable for HA connections
 	RedundantUUID *string `json:"redundantUuid,omitempty" tf:"redundant_uuid,omitempty"`
 
+	// The metro code that denotes the secondary connection’s
+	// destination (Z side). .
+	// The metro code that denotes the connection's remote side (z-side)
+	SellerMetroCode *string `json:"sellerMetroCode,omitempty" tf:"seller_metro_code,omitempty"`
+
+	// The region in which the seller port resides. If not specified
+	// primary seller_region will be used.
+	// The region in which the seller port resides
+	SellerRegion *string `json:"sellerRegion,omitempty" tf:"seller_region,omitempty"`
+
+	// Required with primary service_token. Unique Equinix Fabric key
+	// given by a provider that grants you authorization to enable connectivity from an Equinix Fabric Port or
+	// virtual device. Each connection (primary and secondary) requires a separate token.
+	// More details in Fabric Service Tokens.
+	// Unique Equinix Fabric key given by a provider that grants you authorization to enable connectivity from a shared multi-tenant port (a-side)
+	ServiceToken *string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+
+	// Speed/Bandwidth to be allocated to the secondary connection. If not
+	// specified primary speed will be used.
+	// Speed/Bandwidth to be allocated to the connection
+	Speed *float64 `json:"speed,omitempty" tf:"speed,omitempty"`
+
+	// Unit of the speed/bandwidth to be allocated to the secondary
+	// connection. If not specified primary speed_unit will be used.
+	// Unit of the speed/bandwidth to be allocated to the connection
+	SpeedUnit *string `json:"speedUnit,omitempty" tf:"speed_unit,omitempty"`
+
 	// Connection provisioning status on Equinix Fabric side.
 	// Connection provisioning status on Equinix Fabric side
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
@@ -328,6 +731,16 @@ type SecondaryConnectionObservation struct {
 	// connection was created with a service_token (a-side) or zside_service_token (z-side).
 	// The Equinix Fabric Token the connection was created with. Applicable if the connection was created with a ServiceToken (a-side) or ZSideServiceToken (z-side)
 	VendorToken *string `json:"vendorToken,omitempty" tf:"vendor_token,omitempty"`
+
+	// Applicable with port_uuid. C-Tag/Inner-Tag of the secondary
+	// connection, a numeric character ranging from 2 - 4094.
+	// C-Tag/Inner-Tag of the connection, a numeric character ranging from 2 - 4094
+	VlanCtag *float64 `json:"vlanCtag,omitempty" tf:"vlan_ctag,omitempty"`
+
+	// S-Tag/Outer-Tag of the secondary connection, a
+	// numeric character ranging from 2 - 4094.
+	// S-Tag/Outer-Tag of the connection, a numeric character ranging from 2 - 4094
+	VlanStag *float64 `json:"vlanStag,omitempty" tf:"vlan_stag,omitempty"`
 
 	// Unique identifier of the port on the remote/destination side
 	// (z-side). Allows you to connect between your own ports or virtual devices across your company's
@@ -373,7 +786,7 @@ type SecondaryConnectionParameters struct {
 
 	// secondary connection name
 	// Connection name. An alpha-numeric 24 characters string which can include only hyphens and underscores
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
 	// Applicable with primary port_uuid. Identifier of the Equinix Fabric Port from
@@ -436,6 +849,17 @@ type SecondaryConnectionParameters struct {
 type L2ConnectionSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     L2ConnectionParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider L2ConnectionInitParameters `json:"initProvider,omitempty"`
 }
 
 // L2ConnectionStatus defines the observed state of L2Connection.
@@ -445,19 +869,24 @@ type L2ConnectionStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // L2Connection is the Schema for the L2Connections API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinix}
 type L2Connection struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              L2ConnectionSpec   `json:"spec"`
-	Status            L2ConnectionStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.notifications) || (has(self.initProvider) && has(self.initProvider.notifications))",message="spec.forProvider.notifications is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.speed) || (has(self.initProvider) && has(self.initProvider.speed))",message="spec.forProvider.speed is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.speedUnit) || (has(self.initProvider) && has(self.initProvider.speedUnit))",message="spec.forProvider.speedUnit is a required parameter"
+	Spec   L2ConnectionSpec   `json:"spec"`
+	Status L2ConnectionStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

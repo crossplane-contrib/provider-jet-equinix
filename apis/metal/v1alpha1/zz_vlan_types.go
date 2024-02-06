@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2021 The Crossplane Authors.
 
@@ -25,10 +29,62 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type VlanInitParameters struct {
+
+	// Description string.
+	// Description string
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (Deprecated) Facility where to create the VLAN. Use metro instead; read the facility to metro migration guide
+	// Facility where to create the VLAN
+	Facility *string `json:"facility,omitempty" tf:"facility,omitempty"`
+
+	// Metro in which to create the VLAN
+	// Metro in which to create the VLAN
+	Metro *string `json:"metro,omitempty" tf:"metro,omitempty"`
+
+	// ID of parent project.
+	// ID of parent project
+	// +crossplane:generate:reference:type=Project
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Reference to a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
+
+	// Selector for a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
+
+	// VLAN ID, must be unique in metro.
+	// VLAN ID, must be unique in metro
+	Vxlan *float64 `json:"vxlan,omitempty" tf:"vxlan,omitempty"`
+}
+
 type VlanObservation struct {
+
+	// Description string.
+	// Description string
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (Deprecated) Facility where to create the VLAN. Use metro instead; read the facility to metro migration guide
+	// Facility where to create the VLAN
+	Facility *string `json:"facility,omitempty" tf:"facility,omitempty"`
 
 	// ID of the virtual network.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Metro in which to create the VLAN
+	// Metro in which to create the VLAN
+	Metro *string `json:"metro,omitempty" tf:"metro,omitempty"`
+
+	// ID of parent project.
+	// ID of parent project
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// VLAN ID, must be unique in metro.
+	// VLAN ID, must be unique in metro
+	Vxlan *float64 `json:"vxlan,omitempty" tf:"vxlan,omitempty"`
 }
 
 type VlanParameters struct {
@@ -72,6 +128,17 @@ type VlanParameters struct {
 type VlanSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     VlanParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider VlanInitParameters `json:"initProvider,omitempty"`
 }
 
 // VlanStatus defines the observed state of Vlan.
@@ -81,13 +148,14 @@ type VlanStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Vlan is the Schema for the Vlans API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinix}
 type Vlan struct {
 	metav1.TypeMeta   `json:",inline"`

@@ -180,9 +180,6 @@ spec:
                                       description: Equinix assigned service profile
                                         identifier
                                       type: string
-                                  required:
-                                  - type
-                                  - uuid
                                   type: object
                                 type: array
                               providerConnectionId:
@@ -301,9 +298,6 @@ spec:
                           description: Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS,
                             NOTIFICATIONS
                           type: string
-                      required:
-                      - emails
-                      - type
                       type: object
                     type: array
                   order:
@@ -453,9 +447,6 @@ spec:
                                       description: Equinix assigned service profile
                                         identifier
                                       type: string
-                                  required:
-                                  - type
-                                  - uuid
                                   type: object
                                 type: array
                               providerConnectionId:
@@ -543,13 +534,487 @@ spec:
                           type: array
                       type: object
                     type: array
-                required:
-                - aSide
-                - bandwidth
-                - name
-                - notifications
-                - type
-                - zSide
+                type: object
+              initProvider:
+                description: THIS IS A BETA FIELD. It will be honored unless the Management
+                  Policies feature flag is disabled. InitProvider holds the same fields
+                  as ForProvider, with the exception of Identifier and other resource
+                  reference fields. The fields that are in InitProvider are merged
+                  into ForProvider when the resource is created. The same fields are
+                  also added to the terraform ignore_changes hook, to avoid updating
+                  them after creation. This is useful for fields that are required
+                  on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them,
+                  like an autoscaler.
+                properties:
+                  aSide:
+                    description: Requester or Customer side connection configuration
+                      object of the multi-segment connection
+                    items:
+                      properties:
+                        accessPoint:
+                          description: Point of access details
+                          items:
+                            properties:
+                              account:
+                                description: Account
+                                items:
+                                  type: object
+                                type: array
+                              authenticationKey:
+                                description: Authentication key for provider based
+                                  connections
+                                type: string
+                              gateway:
+                                description: Cloud Router access point information
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: Equinix-assigned virtual gateway
+                                        identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              interface:
+                                description: Virtual device interface
+                                items:
+                                  properties:
+                                    type:
+                                      description: Interface type
+                                      type: string
+                                    uuid:
+                                      description: Equinix-assigned interface identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              linkProtocol:
+                                description: Connection link protocol
+                                items:
+                                  properties:
+                                    type:
+                                      description: Type of the link protocol - UNTAGGED,
+                                        DOT1Q, QINQ, EVPN_VXLAN
+                                      type: string
+                                    vlanCTag:
+                                      description: Vlan Customer Tag information,
+                                        vlanCTag value specified for QINQ connections
+                                      type: number
+                                    vlanSTag:
+                                      description: Vlan Provider Tag information,
+                                        vlanSTag value specified for QINQ connections
+                                      type: number
+                                    vlanTag:
+                                      description: Vlan Tag information, vlanTag value
+                                        specified for DOT1Q connections
+                                      type: number
+                                  type: object
+                                type: array
+                              location:
+                                description: Access point location
+                                items:
+                                  properties:
+                                    ibx:
+                                      description: IBX Code
+                                      type: string
+                                    metroCode:
+                                      description: Access point metro code
+                                      type: string
+                                    metroName:
+                                      description: Access point metro name
+                                      type: string
+                                    region:
+                                      description: Access point region
+                                      type: string
+                                  type: object
+                                type: array
+                              network:
+                                description: network access point information
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: Equinix-assigned Network identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              peeringType:
+                                description: Peering Type- PRIVATE,MICROSOFT,PUBLIC,
+                                  MANUAL
+                                type: string
+                              port:
+                                description: Port access point information
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: Equinix-assigned Port identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              profile:
+                                description: Service Profile
+                                items:
+                                  properties:
+                                    type:
+                                      description: Service profile type - L2_PROFILE,
+                                        L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                                      type: string
+                                    uuid:
+                                      description: Equinix assigned service profile
+                                        identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              providerConnectionId:
+                                description: Provider assigned Connection Id
+                                type: string
+                              router:
+                                description: Cloud Router access point information
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: Equinix-assigned virtual gateway
+                                        identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              routingProtocols:
+                                description: Access point routing protocols configuration
+                                items:
+                                  properties:
+                                    state:
+                                      description: Routing protocol instance state
+                                      type: string
+                                    type:
+                                      description: Routing Protocol type
+                                      type: string
+                                    uuid:
+                                      description: Equinix-assigned Routing protocol
+                                        identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              sellerRegion:
+                                description: Access point seller region
+                                type: string
+                              type:
+                                description: Access point type - COLO, VD, VG, SP,
+                                  IGW, SUBNET, CLOUD_ROUTER, NETWORK
+                                type: string
+                              virtualDevice:
+                                description: Virtual device
+                                items:
+                                  properties:
+                                    name:
+                                      description: Customer-assigned Virtual Device
+                                        Name
+                                      type: string
+                                    type:
+                                      description: Virtual Device type
+                                      type: string
+                                    uuid:
+                                      description: Equinix-assigned Virtual Device
+                                        identifier
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                        additionalInfo:
+                          description: Connection side additional information
+                          items:
+                            properties:
+                              key:
+                                description: Additional information key
+                                type: string
+                              value:
+                                description: Additional information value
+                                type: string
+                            type: object
+                          type: array
+                        serviceToken:
+                          description: For service token based connections, Service
+                            tokens authorize users to access protected resources and
+                            services. Resource owners can distribute the tokens to
+                            trusted partners and vendors, allowing selected third
+                            parties to work directly with Equinix network assets
+                          items:
+                            properties:
+                              type:
+                                description: Token type - VC_TOKEN
+                                type: string
+                              uuid:
+                                description: Equinix-assigned service token identifier
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  additionalInfo:
+                    description: Connection additional information
+                    items:
+                      additionalProperties:
+                        type: string
+                      type: object
+                    type: array
+                  bandwidth:
+                    description: Connection bandwidth in Mbps
+                    type: number
+                  name:
+                    description: Connection name. An alpha-numeric 24 characters string
+                      which can include only hyphens and underscores
+                    type: string
+                  notifications:
+                    description: Preferences for notifications on connection configuration
+                      or status changes
+                    items:
+                      properties:
+                        emails:
+                          description: Array of contact emails
+                          items:
+                            type: string
+                          type: array
+                        sendInterval:
+                          description: Send interval
+                          type: string
+                        type:
+                          description: Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS,
+                            NOTIFICATIONS
+                          type: string
+                      type: object
+                    type: array
+                  order:
+                    description: Order related to this connection information
+                    items:
+                      properties:
+                        billingTier:
+                          description: Billing tier for connection bandwidth
+                          type: string
+                        purchaseOrderNumber:
+                          description: Purchase order number
+                          type: string
+                      type: object
+                    type: array
+                  project:
+                    description: Project information
+                    items:
+                      type: object
+                    type: array
+                  redundancy:
+                    description: Redundancy Information
+                    items:
+                      properties:
+                        group:
+                          description: Redundancy group identifier
+                          type: string
+                        priority:
+                          description: Priority type- PRIMARY, SECONDARY
+                          type: string
+                      type: object
+                    type: array
+                  type:
+                    description: Defines the connection type like VG_VC, EVPL_VC,
+                      EPL_VC, EC_VC, IP_VC, IPWAN_VC,ACCESS_EPL_VC
+                    type: string
+                  zSide:
+                    description: Destination or Provider side connection configuration
+                      object of the multi-segment connection
+                    items:
+                      properties:
+                        accessPoint:
+                          description: Point of access details
+                          items:
+                            properties:
+                              account:
+                                description: Account
+                                items:
+                                  type: object
+                                type: array
+                              authenticationKey:
+                                description: Authentication key for provider based
+                                  connections
+                                type: string
+                              gateway:
+                                description: Cloud Router access point information
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: Equinix-assigned virtual gateway
+                                        identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              interface:
+                                description: Virtual device interface
+                                items:
+                                  properties:
+                                    type:
+                                      description: Interface type
+                                      type: string
+                                    uuid:
+                                      description: Equinix-assigned interface identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              linkProtocol:
+                                description: Connection link protocol
+                                items:
+                                  properties:
+                                    type:
+                                      description: Type of the link protocol - UNTAGGED,
+                                        DOT1Q, QINQ, EVPN_VXLAN
+                                      type: string
+                                    vlanCTag:
+                                      description: Vlan Customer Tag information,
+                                        vlanCTag value specified for QINQ connections
+                                      type: number
+                                    vlanSTag:
+                                      description: Vlan Provider Tag information,
+                                        vlanSTag value specified for QINQ connections
+                                      type: number
+                                    vlanTag:
+                                      description: Vlan Tag information, vlanTag value
+                                        specified for DOT1Q connections
+                                      type: number
+                                  type: object
+                                type: array
+                              location:
+                                description: Access point location
+                                items:
+                                  properties:
+                                    ibx:
+                                      description: IBX Code
+                                      type: string
+                                    metroCode:
+                                      description: Access point metro code
+                                      type: string
+                                    metroName:
+                                      description: Access point metro name
+                                      type: string
+                                    region:
+                                      description: Access point region
+                                      type: string
+                                  type: object
+                                type: array
+                              network:
+                                description: network access point information
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: Equinix-assigned Network identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              peeringType:
+                                description: Peering Type- PRIVATE,MICROSOFT,PUBLIC,
+                                  MANUAL
+                                type: string
+                              port:
+                                description: Port access point information
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: Equinix-assigned Port identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              profile:
+                                description: Service Profile
+                                items:
+                                  properties:
+                                    type:
+                                      description: Service profile type - L2_PROFILE,
+                                        L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                                      type: string
+                                    uuid:
+                                      description: Equinix assigned service profile
+                                        identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              providerConnectionId:
+                                description: Provider assigned Connection Id
+                                type: string
+                              router:
+                                description: Cloud Router access point information
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: Equinix-assigned virtual gateway
+                                        identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              routingProtocols:
+                                description: Access point routing protocols configuration
+                                items:
+                                  properties:
+                                    state:
+                                      description: Routing protocol instance state
+                                      type: string
+                                    type:
+                                      description: Routing Protocol type
+                                      type: string
+                                    uuid:
+                                      description: Equinix-assigned Routing protocol
+                                        identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              sellerRegion:
+                                description: Access point seller region
+                                type: string
+                              type:
+                                description: Access point type - COLO, VD, VG, SP,
+                                  IGW, SUBNET, CLOUD_ROUTER, NETWORK
+                                type: string
+                              virtualDevice:
+                                description: Virtual device
+                                items:
+                                  properties:
+                                    name:
+                                      description: Customer-assigned Virtual Device
+                                        Name
+                                      type: string
+                                    type:
+                                      description: Virtual Device type
+                                      type: string
+                                    uuid:
+                                      description: Equinix-assigned Virtual Device
+                                        identifier
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                        additionalInfo:
+                          description: Connection side additional information
+                          items:
+                            properties:
+                              key:
+                                description: Additional information key
+                                type: string
+                              value:
+                                description: Additional information value
+                                type: string
+                            type: object
+                          type: array
+                        serviceToken:
+                          description: For service token based connections, Service
+                            tokens authorize users to access protected resources and
+                            services. Resource owners can distribute the tokens to
+                            trusted partners and vendors, allowing selected third
+                            parties to work directly with Equinix network assets
+                          items:
+                            properties:
+                              type:
+                                description: Token type - VC_TOKEN
+                                type: string
+                              uuid:
+                                description: Equinix-assigned service token identifier
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
                 type: object
               managementPolicies:
                 default:
@@ -711,6 +1176,31 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.aSide is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.aSide)
+                || (has(self.initProvider) && has(self.initProvider.aSide))'
+            - message: spec.forProvider.bandwidth is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.bandwidth)
+                || (has(self.initProvider) && has(self.initProvider.bandwidth))'
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
+            - message: spec.forProvider.notifications is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.notifications)
+                || (has(self.initProvider) && has(self.initProvider.notifications))'
+            - message: spec.forProvider.type is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
+                || (has(self.initProvider) && has(self.initProvider.type))'
+            - message: spec.forProvider.zSide is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.zSide)
+                || (has(self.initProvider) && has(self.initProvider.zSide))'
           status:
             description: ConnectionStatus defines the observed state of Connection.
             properties:
@@ -752,12 +1242,20 @@ spec:
                                       type: string
                                   type: object
                                 type: array
+                              authenticationKey:
+                                description: Authentication key for provider based
+                                  connections
+                                type: string
                               gateway:
                                 description: Cloud Router access point information
                                 items:
                                   properties:
                                     href:
                                       description: Unique Resource Identifier
+                                      type: string
+                                    uuid:
+                                      description: Equinix-assigned virtual gateway
+                                        identifier
                                       type: string
                                   type: object
                                 type: array
@@ -768,6 +1266,52 @@ spec:
                                     id:
                                       description: id
                                       type: number
+                                    type:
+                                      description: Interface type
+                                      type: string
+                                    uuid:
+                                      description: Equinix-assigned interface identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              linkProtocol:
+                                description: Connection link protocol
+                                items:
+                                  properties:
+                                    type:
+                                      description: Type of the link protocol - UNTAGGED,
+                                        DOT1Q, QINQ, EVPN_VXLAN
+                                      type: string
+                                    vlanCTag:
+                                      description: Vlan Customer Tag information,
+                                        vlanCTag value specified for QINQ connections
+                                      type: number
+                                    vlanSTag:
+                                      description: Vlan Provider Tag information,
+                                        vlanSTag value specified for QINQ connections
+                                      type: number
+                                    vlanTag:
+                                      description: Vlan Tag information, vlanTag value
+                                        specified for DOT1Q connections
+                                      type: number
+                                  type: object
+                                type: array
+                              location:
+                                description: Access point location
+                                items:
+                                  properties:
+                                    ibx:
+                                      description: IBX Code
+                                      type: string
+                                    metroCode:
+                                      description: Access point metro code
+                                      type: string
+                                    metroName:
+                                      description: Access point metro name
+                                      type: string
+                                    region:
+                                      description: Access point region
+                                      type: string
                                   type: object
                                 type: array
                               network:
@@ -777,8 +1321,15 @@ spec:
                                     href:
                                       description: Unique Resource Identifier
                                       type: string
+                                    uuid:
+                                      description: Equinix-assigned Network identifier
+                                      type: string
                                   type: object
                                 type: array
+                              peeringType:
+                                description: Peering Type- PRIVATE,MICROSOFT,PUBLIC,
+                                  MANUAL
+                                type: string
                               port:
                                 description: Port access point information
                                 items:
@@ -797,6 +1348,9 @@ spec:
                                             type: string
                                         type: object
                                       type: array
+                                    uuid:
+                                      description: Equinix-assigned Port identifier
+                                      type: string
                                   type: object
                                 type: array
                               profile:
@@ -823,8 +1377,19 @@ spec:
                                       description: Customer-assigned service profile
                                         name
                                       type: string
+                                    type:
+                                      description: Service profile type - L2_PROFILE,
+                                        L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                                      type: string
+                                    uuid:
+                                      description: Equinix assigned service profile
+                                        identifier
+                                      type: string
                                   type: object
                                 type: array
+                              providerConnectionId:
+                                description: Provider assigned Connection Id
+                                type: string
                               router:
                                 description: Cloud Router access point information
                                 items:
@@ -832,8 +1397,35 @@ spec:
                                     href:
                                       description: Unique Resource Identifier
                                       type: string
+                                    uuid:
+                                      description: Equinix-assigned virtual gateway
+                                        identifier
+                                      type: string
                                   type: object
                                 type: array
+                              routingProtocols:
+                                description: Access point routing protocols configuration
+                                items:
+                                  properties:
+                                    state:
+                                      description: Routing protocol instance state
+                                      type: string
+                                    type:
+                                      description: Routing Protocol type
+                                      type: string
+                                    uuid:
+                                      description: Equinix-assigned Routing protocol
+                                        identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              sellerRegion:
+                                description: Access point seller region
+                                type: string
+                              type:
+                                description: Access point type - COLO, VD, VG, SP,
+                                  IGW, SUBNET, CLOUD_ROUTER, NETWORK
+                                type: string
                               virtualDevice:
                                 description: Virtual device
                                 items:
@@ -841,8 +1433,31 @@ spec:
                                     href:
                                       description: Unique Resource Identifier
                                       type: string
+                                    name:
+                                      description: Customer-assigned Virtual Device
+                                        Name
+                                      type: string
+                                    type:
+                                      description: Virtual Device type
+                                      type: string
+                                    uuid:
+                                      description: Equinix-assigned Virtual Device
+                                        identifier
+                                      type: string
                                   type: object
                                 type: array
+                            type: object
+                          type: array
+                        additionalInfo:
+                          description: Connection side additional information
+                          items:
+                            properties:
+                              key:
+                                description: Additional information key
+                                type: string
+                              value:
+                                description: Additional information value
+                                type: string
                             type: object
                           type: array
                         serviceToken:
@@ -859,6 +1474,12 @@ spec:
                               href:
                                 description: An absolute URL that is the subject of
                                   the link's context
+                                type: string
+                              type:
+                                description: Token type - VC_TOKEN
+                                type: string
+                              uuid:
+                                description: Equinix-assigned service token identifier
                                 type: string
                             type: object
                           type: array
@@ -885,6 +1506,16 @@ spec:
                           type: string
                       type: object
                     type: array
+                  additionalInfo:
+                    description: Connection additional information
+                    items:
+                      additionalProperties:
+                        type: string
+                      type: object
+                    type: array
+                  bandwidth:
+                    description: Connection bandwidth in Mbps
+                    type: number
                   changeLog:
                     description: Captures connection lifecycle change information
                     items:
@@ -927,6 +1558,29 @@ spec:
                   isRemote:
                     description: Connection property derived from access point locations
                     type: boolean
+                  name:
+                    description: Connection name. An alpha-numeric 24 characters string
+                      which can include only hyphens and underscores
+                    type: string
+                  notifications:
+                    description: Preferences for notifications on connection configuration
+                      or status changes
+                    items:
+                      properties:
+                        emails:
+                          description: Array of contact emails
+                          items:
+                            type: string
+                          type: array
+                        sendInterval:
+                          description: Send interval
+                          type: string
+                        type:
+                          description: Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS,
+                            NOTIFICATIONS
+                          type: string
+                      type: object
+                    type: array
                   operation:
                     description: Connection type-specific operational data
                     items:
@@ -965,11 +1619,17 @@ spec:
                     description: Order related to this connection information
                     items:
                       properties:
+                        billingTier:
+                          description: Billing tier for connection bandwidth
+                          type: string
                         orderId:
                           description: Order Identification
                           type: string
                         orderNumber:
                           description: Order Reference Number
+                          type: string
+                        purchaseOrderNumber:
+                          description: Purchase order number
                           type: string
                       type: object
                     type: array
@@ -985,8 +1645,24 @@ spec:
                           type: string
                       type: object
                     type: array
+                  redundancy:
+                    description: Redundancy Information
+                    items:
+                      properties:
+                        group:
+                          description: Redundancy group identifier
+                          type: string
+                        priority:
+                          description: Priority type- PRIMARY, SECONDARY
+                          type: string
+                      type: object
+                    type: array
                   state:
                     description: Connection overall state
+                    type: string
+                  type:
+                    description: Defines the connection type like VG_VC, EVPL_VC,
+                      EPL_VC, EC_VC, IP_VC, IPWAN_VC,ACCESS_EPL_VC
                     type: string
                   zSide:
                     description: Destination or Provider side connection configuration
@@ -1024,12 +1700,20 @@ spec:
                                       type: string
                                   type: object
                                 type: array
+                              authenticationKey:
+                                description: Authentication key for provider based
+                                  connections
+                                type: string
                               gateway:
                                 description: Cloud Router access point information
                                 items:
                                   properties:
                                     href:
                                       description: Unique Resource Identifier
+                                      type: string
+                                    uuid:
+                                      description: Equinix-assigned virtual gateway
+                                        identifier
                                       type: string
                                   type: object
                                 type: array
@@ -1040,6 +1724,52 @@ spec:
                                     id:
                                       description: id
                                       type: number
+                                    type:
+                                      description: Interface type
+                                      type: string
+                                    uuid:
+                                      description: Equinix-assigned interface identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              linkProtocol:
+                                description: Connection link protocol
+                                items:
+                                  properties:
+                                    type:
+                                      description: Type of the link protocol - UNTAGGED,
+                                        DOT1Q, QINQ, EVPN_VXLAN
+                                      type: string
+                                    vlanCTag:
+                                      description: Vlan Customer Tag information,
+                                        vlanCTag value specified for QINQ connections
+                                      type: number
+                                    vlanSTag:
+                                      description: Vlan Provider Tag information,
+                                        vlanSTag value specified for QINQ connections
+                                      type: number
+                                    vlanTag:
+                                      description: Vlan Tag information, vlanTag value
+                                        specified for DOT1Q connections
+                                      type: number
+                                  type: object
+                                type: array
+                              location:
+                                description: Access point location
+                                items:
+                                  properties:
+                                    ibx:
+                                      description: IBX Code
+                                      type: string
+                                    metroCode:
+                                      description: Access point metro code
+                                      type: string
+                                    metroName:
+                                      description: Access point metro name
+                                      type: string
+                                    region:
+                                      description: Access point region
+                                      type: string
                                   type: object
                                 type: array
                               network:
@@ -1049,8 +1779,15 @@ spec:
                                     href:
                                       description: Unique Resource Identifier
                                       type: string
+                                    uuid:
+                                      description: Equinix-assigned Network identifier
+                                      type: string
                                   type: object
                                 type: array
+                              peeringType:
+                                description: Peering Type- PRIVATE,MICROSOFT,PUBLIC,
+                                  MANUAL
+                                type: string
                               port:
                                 description: Port access point information
                                 items:
@@ -1069,6 +1806,9 @@ spec:
                                             type: string
                                         type: object
                                       type: array
+                                    uuid:
+                                      description: Equinix-assigned Port identifier
+                                      type: string
                                   type: object
                                 type: array
                               profile:
@@ -1095,8 +1835,19 @@ spec:
                                       description: Customer-assigned service profile
                                         name
                                       type: string
+                                    type:
+                                      description: Service profile type - L2_PROFILE,
+                                        L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                                      type: string
+                                    uuid:
+                                      description: Equinix assigned service profile
+                                        identifier
+                                      type: string
                                   type: object
                                 type: array
+                              providerConnectionId:
+                                description: Provider assigned Connection Id
+                                type: string
                               router:
                                 description: Cloud Router access point information
                                 items:
@@ -1104,8 +1855,35 @@ spec:
                                     href:
                                       description: Unique Resource Identifier
                                       type: string
+                                    uuid:
+                                      description: Equinix-assigned virtual gateway
+                                        identifier
+                                      type: string
                                   type: object
                                 type: array
+                              routingProtocols:
+                                description: Access point routing protocols configuration
+                                items:
+                                  properties:
+                                    state:
+                                      description: Routing protocol instance state
+                                      type: string
+                                    type:
+                                      description: Routing Protocol type
+                                      type: string
+                                    uuid:
+                                      description: Equinix-assigned Routing protocol
+                                        identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              sellerRegion:
+                                description: Access point seller region
+                                type: string
+                              type:
+                                description: Access point type - COLO, VD, VG, SP,
+                                  IGW, SUBNET, CLOUD_ROUTER, NETWORK
+                                type: string
                               virtualDevice:
                                 description: Virtual device
                                 items:
@@ -1113,8 +1891,31 @@ spec:
                                     href:
                                       description: Unique Resource Identifier
                                       type: string
+                                    name:
+                                      description: Customer-assigned Virtual Device
+                                        Name
+                                      type: string
+                                    type:
+                                      description: Virtual Device type
+                                      type: string
+                                    uuid:
+                                      description: Equinix-assigned Virtual Device
+                                        identifier
+                                      type: string
                                   type: object
                                 type: array
+                            type: object
+                          type: array
+                        additionalInfo:
+                          description: Connection side additional information
+                          items:
+                            properties:
+                              key:
+                                description: Additional information key
+                                type: string
+                              value:
+                                description: Additional information value
+                                type: string
                             type: object
                           type: array
                         serviceToken:
@@ -1131,6 +1932,12 @@ spec:
                               href:
                                 description: An absolute URL that is the subject of
                                   the link's context
+                                type: string
+                              type:
+                                description: Token type - VC_TOKEN
+                                type: string
+                              uuid:
+                                description: Equinix-assigned service token identifier
                                 type: string
                             type: object
                           type: array

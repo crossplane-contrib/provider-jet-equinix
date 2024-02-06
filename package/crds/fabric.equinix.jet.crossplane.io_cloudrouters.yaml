@@ -118,9 +118,6 @@ spec:
                           description: Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS,
                             NOTIFICATIONS
                           type: string
-                      required:
-                      - emails
-                      - type
                       type: object
                     type: array
                   order:
@@ -142,8 +139,6 @@ spec:
                         code:
                           description: Fabric Cloud Router package code
                           type: string
-                      required:
-                      - code
                       type: object
                     type: array
                   project:
@@ -161,12 +156,109 @@ spec:
                   type:
                     description: Defines the FCR type like XF_ROUTER
                     type: string
-                required:
-                - location
-                - name
-                - notifications
-                - package
-                - type
+                type: object
+              initProvider:
+                description: THIS IS A BETA FIELD. It will be honored unless the Management
+                  Policies feature flag is disabled. InitProvider holds the same fields
+                  as ForProvider, with the exception of Identifier and other resource
+                  reference fields. The fields that are in InitProvider are merged
+                  into ForProvider when the resource is created. The same fields are
+                  also added to the terraform ignore_changes hook, to avoid updating
+                  them after creation. This is useful for fields that are required
+                  on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them,
+                  like an autoscaler.
+                properties:
+                  account:
+                    description: Customer account information that is associated with
+                      this Fabric Cloud Router
+                    items:
+                      properties:
+                        accountNumber:
+                          description: Account Number
+                          type: number
+                      type: object
+                    type: array
+                  description:
+                    description: Customer-provided Fabric Cloud Router description
+                    type: string
+                  location:
+                    description: Fabric Cloud Router location
+                    items:
+                      properties:
+                        ibx:
+                          description: IBX Code
+                          type: string
+                        metroCode:
+                          description: Access point metro code
+                          type: string
+                        metroName:
+                          description: Access point metro name
+                          type: string
+                        region:
+                          description: Access point region
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: Fabric Cloud Router name. An alpha-numeric 24 characters
+                      string which can include only hyphens and underscores
+                    type: string
+                  notifications:
+                    description: Preferences for notifications on Fabric Cloud Router
+                      configuration or status changes
+                    items:
+                      properties:
+                        emails:
+                          description: Array of contact emails
+                          items:
+                            type: string
+                          type: array
+                        sendInterval:
+                          description: Send interval
+                          type: string
+                        type:
+                          description: Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS,
+                            NOTIFICATIONS
+                          type: string
+                      type: object
+                    type: array
+                  order:
+                    description: Order information related to this Fabric Cloud Router
+                    items:
+                      properties:
+                        billingTier:
+                          description: Billing tier for connection bandwidth
+                          type: string
+                        purchaseOrderNumber:
+                          description: Purchase order number
+                          type: string
+                      type: object
+                    type: array
+                  package:
+                    description: Fabric Cloud Router location
+                    items:
+                      properties:
+                        code:
+                          description: Fabric Cloud Router package code
+                          type: string
+                      type: object
+                    type: array
+                  project:
+                    description: Fabric Cloud Router project
+                    items:
+                      properties:
+                        href:
+                          description: Unique Resource URL
+                          type: string
+                        projectId:
+                          description: Project Id
+                          type: string
+                      type: object
+                    type: array
+                  type:
+                    description: Defines the FCR type like XF_ROUTER
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -328,11 +420,42 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.location is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.location)
+                || (has(self.initProvider) && has(self.initProvider.location))'
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
+            - message: spec.forProvider.notifications is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.notifications)
+                || (has(self.initProvider) && has(self.initProvider.notifications))'
+            - message: spec.forProvider.package is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.__package__)
+                || (has(self.initProvider) && has(self.initProvider.__package__))'
+            - message: spec.forProvider.type is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
+                || (has(self.initProvider) && has(self.initProvider.type))'
           status:
             description: CloudRouterStatus defines the observed state of CloudRouter.
             properties:
               atProvider:
                 properties:
+                  account:
+                    description: Customer account information that is associated with
+                      this Fabric Cloud Router
+                    items:
+                      properties:
+                        accountNumber:
+                          description: Account Number
+                          type: number
+                      type: object
+                    type: array
                   bgpIpv4RoutesCount:
                     description: Access point used and maximum number of IPv4 BGP
                       routes
@@ -375,6 +498,9 @@ spec:
                     description: Number of connections associated with this Access
                       point
                     type: number
+                  description:
+                    description: Customer-provided Fabric Cloud Router description
+                    type: string
                   equinixAsn:
                     description: Equinix ASN
                     type: number
@@ -383,20 +509,91 @@ spec:
                     type: string
                   id:
                     type: string
+                  location:
+                    description: Fabric Cloud Router location
+                    items:
+                      properties:
+                        ibx:
+                          description: IBX Code
+                          type: string
+                        metroCode:
+                          description: Access point metro code
+                          type: string
+                        metroName:
+                          description: Access point metro name
+                          type: string
+                        region:
+                          description: Access point region
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: Fabric Cloud Router name. An alpha-numeric 24 characters
+                      string which can include only hyphens and underscores
+                    type: string
+                  notifications:
+                    description: Preferences for notifications on Fabric Cloud Router
+                      configuration or status changes
+                    items:
+                      properties:
+                        emails:
+                          description: Array of contact emails
+                          items:
+                            type: string
+                          type: array
+                        sendInterval:
+                          description: Send interval
+                          type: string
+                        type:
+                          description: Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS,
+                            NOTIFICATIONS
+                          type: string
+                      type: object
+                    type: array
                   order:
                     description: Order information related to this Fabric Cloud Router
                     items:
                       properties:
+                        billingTier:
+                          description: Billing tier for connection bandwidth
+                          type: string
                         orderId:
                           description: Order Identification
                           type: string
                         orderNumber:
                           description: Order Reference Number
                           type: string
+                        purchaseOrderNumber:
+                          description: Purchase order number
+                          type: string
+                      type: object
+                    type: array
+                  package:
+                    description: Fabric Cloud Router location
+                    items:
+                      properties:
+                        code:
+                          description: Fabric Cloud Router package code
+                          type: string
+                      type: object
+                    type: array
+                  project:
+                    description: Fabric Cloud Router project
+                    items:
+                      properties:
+                        href:
+                          description: Unique Resource URL
+                          type: string
+                        projectId:
+                          description: Project Id
+                          type: string
                       type: object
                     type: array
                   state:
                     description: Fabric Cloud Router overall state
+                    type: string
+                  type:
+                    description: Defines the FCR type like XF_ROUTER
                     type: string
                 type: object
               conditions:

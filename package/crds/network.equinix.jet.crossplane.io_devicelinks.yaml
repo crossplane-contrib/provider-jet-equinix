@@ -83,8 +83,6 @@ spec:
                             for device link connection. Device network interface identifier
                             to use for device link connection
                           type: number
-                      required:
-                      - id
                       type: object
                     type: array
                   link:
@@ -121,12 +119,6 @@ spec:
                           description: connection throughput unit (Mbps or Gbps).
                             Connection throughput unit
                           type: string
-                      required:
-                      - accountNumber
-                      - dstMetroCode
-                      - srcMetroCode
-                      - throughput
-                      - throughputUnit
                       type: object
                     type: array
                   name:
@@ -136,9 +128,81 @@ spec:
                     description: device link subnet in CIDR format. Not required for
                       link between self configured devices. subnet
                     type: string
-                required:
-                - device
-                - name
+                type: object
+              initProvider:
+                description: THIS IS A BETA FIELD. It will be honored unless the Management
+                  Policies feature flag is disabled. InitProvider holds the same fields
+                  as ForProvider, with the exception of Identifier and other resource
+                  reference fields. The fields that are in InitProvider are merged
+                  into ForProvider when the resource is created. The same fields are
+                  also added to the terraform ignore_changes hook, to avoid updating
+                  them after creation. This is useful for fields that are required
+                  on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them,
+                  like an autoscaler.
+                properties:
+                  device:
+                    description: definition of one or more devices belonging to the
+                      device link. See Device section below for more details.
+                    items:
+                      properties:
+                        asn:
+                          description: Device ASN number. Not required for self configured
+                            devices. Device ASN number
+                          type: number
+                        id:
+                          description: Device identifier. Device identifier
+                          type: string
+                        interfaceId:
+                          description: Device network interface identifier to use
+                            for device link connection. Device network interface identifier
+                            to use for device link connection
+                          type: number
+                      type: object
+                    type: array
+                  link:
+                    description: definition of one or more, inter metro, connections
+                      belonging to the device link. See Link section below for more
+                      details. link
+                    items:
+                      properties:
+                        accountNumber:
+                          description: billing account number to be used for connection
+                            charges Billing account number to be used for connection
+                            charges
+                          type: string
+                        dstMetroCode:
+                          description: connection destination metro code. Connection
+                            destination metro code
+                          type: string
+                        dstZoneCode:
+                          description: (Deprecated) connection destination zone code
+                            is not required. Connection destination zone code
+                          type: string
+                        srcMetroCode:
+                          description: connection source metro code. Connection source
+                            metro code
+                          type: string
+                        srcZoneCode:
+                          description: (Deprecated) connection source zone code is
+                            not required. Connection source zone code
+                          type: string
+                        throughput:
+                          description: connection throughput. Connection throughput
+                          type: string
+                        throughputUnit:
+                          description: connection throughput unit (Mbps or Gbps).
+                            Connection throughput unit
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: device link name. name
+                    type: string
+                  subnet:
+                    description: device link subnet in CIDR format. Not required for
+                      link between self configured devices. subnet
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -300,6 +364,15 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.device is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.device)
+                || (has(self.initProvider) && has(self.initProvider.device))'
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
           status:
             description: DeviceLinkStatus defines the observed state of DeviceLink.
             properties:
@@ -310,6 +383,18 @@ spec:
                       device link. See Device section below for more details.
                     items:
                       properties:
+                        asn:
+                          description: Device ASN number. Not required for self configured
+                            devices. Device ASN number
+                          type: number
+                        id:
+                          description: Device identifier. Device identifier
+                          type: string
+                        interfaceId:
+                          description: Device network interface identifier to use
+                            for device link connection. Device network interface identifier
+                            to use for device link connection
+                          type: number
                         ipAddress:
                           description: IP address from device link subnet that was
                             assigned to the device Assigned IP address from device
@@ -326,10 +411,53 @@ spec:
                   id:
                     description: Device identifier.
                     type: string
+                  link:
+                    description: definition of one or more, inter metro, connections
+                      belonging to the device link. See Link section below for more
+                      details. link
+                    items:
+                      properties:
+                        accountNumber:
+                          description: billing account number to be used for connection
+                            charges Billing account number to be used for connection
+                            charges
+                          type: string
+                        dstMetroCode:
+                          description: connection destination metro code. Connection
+                            destination metro code
+                          type: string
+                        dstZoneCode:
+                          description: (Deprecated) connection destination zone code
+                            is not required. Connection destination zone code
+                          type: string
+                        srcMetroCode:
+                          description: connection source metro code. Connection source
+                            metro code
+                          type: string
+                        srcZoneCode:
+                          description: (Deprecated) connection source zone code is
+                            not required. Connection source zone code
+                          type: string
+                        throughput:
+                          description: connection throughput. Connection throughput
+                          type: string
+                        throughputUnit:
+                          description: connection throughput unit (Mbps or Gbps).
+                            Connection throughput unit
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: device link name. name
+                    type: string
                   status:
                     description: Device link provisioning status. One of PROVISIONING,
                       PROVISIONED, DEPROVISIONING, DEPROVISIONED, FAILED. Device link
                       provisioning status
+                    type: string
+                  subnet:
+                    description: device link subnet in CIDR format. Not required for
+                      link between self configured devices. subnet
                     type: string
                   uuid:
                     description: Device link unique identifier. Device link unique

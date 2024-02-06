@@ -1,0 +1,41 @@
+apiVersion: ecx.equinix.jet.crossplane.io/v1alpha1
+kind: L2Serviceprofile
+metadata:
+  annotations:
+    meta.upbound.io/example-id: ecx/v1alpha1/l2serviceprofile
+  labels:
+    testing.upbound.io/example-name: private-profile
+  name: private-profile
+spec:
+  forProvider:
+    bandwidthThresholdNotifications:
+    - John.Doe@example.com
+    - Marry.Doe@example.com
+    connectionNameLabel: Connection
+    description: my private profile
+    features:
+    - allowRemoteConnections: true
+      testProfile: false
+    name: private-profile
+    port:
+    - metroCode: NY
+      uuid: a867f685-422f-22f7-6de0-320a5c00abdd
+    - metroCode: NY
+      uuid: a867f685-4231-2317-6de0-320a5c00abdd
+    private: true
+    privateUserEmails:
+    - John.Doe@example.com
+    - Marry.Doe@example.com
+    profileStatuschangeNotifications:
+    - John.Doe@example.com
+    - Marry.Doe@example.com
+    speedBand:
+    - speed: 1000
+      speedUnit: MB
+    - speed: 500
+      speedUnit: MB
+    - speed: 100
+      speedUnit: MB
+    vcStatuschangeNotifications:
+    - John.Doe@example.com
+    - Marry.Doe@example.com

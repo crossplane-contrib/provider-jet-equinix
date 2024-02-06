@@ -96,6 +96,7 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   connectionNameLabel:
                     description: Custom name used for calling a connections e.g. circuit.
                       Defaults to Connection. Custom name used for calling a connections
@@ -131,8 +132,6 @@ spec:
                             profile can be used for test connections. Indicates whether
                             or not this profile can be used for test connections
                           type: boolean
-                      required:
-                      - allowRemoteConnections
                       type: object
                     type: array
                   integrationId:
@@ -181,9 +180,6 @@ spec:
                           description: Unique identifier of the port. Unique identifier
                             of the port
                           type: string
-                      required:
-                      - metroCode
-                      - uuid
                       type: object
                     type: array
                   private:
@@ -202,6 +198,7 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   profileStatuschangeNotifications:
                     description: A list of email addresses that will receive notifications
                       about profile status changes. A list of email addresses that
@@ -209,6 +206,7 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   redundancyRequired:
                     description: Boolean value that determines if your connections
                       will require redundancy. if yes, then users need to create a
@@ -244,9 +242,6 @@ spec:
                             service profile. One of MB, GB. Unit of the speed/bandwidth
                             supported by given service profile
                           type: string
-                      required:
-                      - speed
-                      - speedUnit
                       type: object
                     type: array
                   speedCustomizationAllowed:
@@ -275,13 +270,225 @@ spec:
                     items:
                       type: string
                     type: array
-                required:
-                - bandwidthThresholdNotifications
-                - features
-                - name
-                - port
-                - profileStatuschangeNotifications
-                - vcStatuschangeNotifications
+                    x-kubernetes-list-type: set
+                type: object
+              initProvider:
+                description: THIS IS A BETA FIELD. It will be honored unless the Management
+                  Policies feature flag is disabled. InitProvider holds the same fields
+                  as ForProvider, with the exception of Identifier and other resource
+                  reference fields. The fields that are in InitProvider are merged
+                  into ForProvider when the resource is created. The same fields are
+                  also added to the terraform ignore_changes hook, to avoid updating
+                  them after creation. This is useful for fields that are required
+                  on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them,
+                  like an autoscaler.
+                properties:
+                  apiIntegration:
+                    description: Boolean value that determines if API integration
+                      is enabled. It allows you to complete connection provisioning
+                      in less than five minutes. Without API Integration, additional
+                      manual steps will be required and the provisioning will likely
+                      take longer. Specifies the API integration ID that was provided
+                      to the customer during onboarding
+                    type: boolean
+                  authkeyLabel:
+                    description: Name of the authentication key label to be used by
+                      the Authentication Key service. It allows Service Providers
+                      with QinQ ports to accept groups of connections or VLANs from
+                      Dot1q customers. This is similar to S-Tag/C-Tag capabilities.
+                      Name of the authentication key label to be used by the Authentication
+                      Key service
+                    type: string
+                  bandwidthAlertThreshold:
+                    description: Specifies the port bandwidth threshold percentage.
+                      If the bandwidth limit is met or exceeded, an alert is sent
+                      to the seller. Specifies the port bandwidth threshold percentage.
+                      If the bandwidth limit is met or exceeded, an alert is sent
+                      to the seller
+                    type: number
+                  bandwidthThresholdNotifications:
+                    description: A list of email addresses that will receive notifications
+                      about bandwidth thresholds. A list of email addresses that will
+                      receive notifications about bandwidth thresholds
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  connectionNameLabel:
+                    description: Custom name used for calling a connections e.g. circuit.
+                      Defaults to Connection. Custom name used for calling a connections
+                      i.e. circuit. Defaults to Connection
+                    type: string
+                  ctagLabel:
+                    description: C-Tag/Inner-Tag label name for the connections. C-Tag/Inner-Tag
+                      label name for the connections
+                    type: string
+                  description:
+                    description: Description of the service profile. Description of
+                      the service profile
+                    type: string
+                  equinixManagedPortVlan:
+                    description: Applicable when api_integration is set to true. It
+                      indicates whether the port and VLAN details are managed by Equinix.
+                      Boolean value that indicates whether the port and VLAN details
+                      are managed by Equinix
+                    type: boolean
+                  features:
+                    description: Block of profile features configuration. See Features
+                      below for more details. Block of profile features configuration
+                    items:
+                      properties:
+                        allowRemoteConnections:
+                          description: Indicates whether or not connections to this
+                            profile can be created from remote metro locations. Indicates
+                            whether or not connections to this profile can be created
+                            from remote metro locations
+                          type: boolean
+                        testProfile:
+                          description: (Deprecated) Indicates whether or not this
+                            profile can be used for test connections. Indicates whether
+                            or not this profile can be used for test connections
+                          type: boolean
+                      type: object
+                    type: array
+                  integrationId:
+                    description: Specifies the API integration ID that was provided
+                      to the customer during onboarding. You can validate your API
+                      integration ID using the validateIntegrationId API. Specifies
+                      the API integration ID that was provided to the customer during
+                      onboarding
+                    type: string
+                  name:
+                    description: Name of the service profile. An alpha-numeric 50
+                      characters string which can include only hyphens and underscores.
+                      Name of the service profile. An alpha-numeric 50 characters
+                      string which can include only hyphens and underscores
+                    type: string
+                  oversubscription:
+                    description: You can set an alert for when a percentage of your
+                      profile has been sold. Service providers like to use this functionality
+                      to alert them when they need to add more ports or when they
+                      need to create a new service profile. Required with oversubscription_allowed,
+                      defaults to 1x. Oversubscription limit that will cause alerting.
+                      Default is 1x
+                    type: string
+                  oversubscriptionAllowed:
+                    description: Boolean value that determines if, regardless of the
+                      utilization, Equinix Fabric will continue to add connections
+                      to your links until we reach the oversubscription limit. By
+                      selecting this service, you acknowledge that you will manage
+                      decisions on when to increase capacity on these link. Boolean
+                      value that determines if, regardless of the utilization, Equinix
+                      Fabric will continue to add connections to your links until
+                      we reach the oversubscription limit
+                    type: boolean
+                  port:
+                    description: One or more definitions of ports residing in locations,
+                      from which your customers will be able to access services using
+                      this service profile. See Port below for more details. One or
+                      more definitions of ports associated with the profile
+                    items:
+                      properties:
+                        metroCode:
+                          description: The metro code of location where the port resides.
+                            Port location metro code
+                          type: string
+                        uuid:
+                          description: Unique identifier of the port. Unique identifier
+                            of the port
+                          type: string
+                      type: object
+                    type: array
+                  private:
+                    description: Boolean value that indicates whether or not this
+                      is a private profile, i.e. not public like AWS/Azure/Oracle/Google,
+                      etc. If private, it can only be available for creating connections
+                      if correct permissions are granted. Boolean value that indicates
+                      whether or not this is a private profile.
+                    type: boolean
+                  privateUserEmails:
+                    description: An array of users email ids who have permission to
+                      access this service profile. Argument is required when profile
+                      is set as private. A list of email addresses associated to users
+                      that will be allowed to access this service profile. Applicable
+                      for private profiles
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  profileStatuschangeNotifications:
+                    description: A list of email addresses that will receive notifications
+                      about profile status changes. A list of email addresses that
+                      will receive notifications about profile status changes
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  redundancyRequired:
+                    description: Boolean value that determines if your connections
+                      will require redundancy. if yes, then users need to create a
+                      secondary redundant connection. Boolean value that determines
+                      if yourconnections will require redundancy
+                    type: boolean
+                  secondaryVlanFromPrimary:
+                    description: Indicates whether the VLAN ID of. the secondary connection
+                      is the same as the primary connection. Indicates whether the
+                      VLAN ID of the secondary connection is the same as the primary
+                      connection
+                    type: boolean
+                  servicekeyAutogenerated:
+                    description: Boolean value that indicates whether multiple connections
+                      can be created with the same authorization key to connect to
+                      this service profile after the first connection has been approved
+                      by the seller. Boolean value that indicates whether multiple
+                      connections can be created with the same authorization key
+                    type: boolean
+                  speedBand:
+                    description: One or more definitions of supported speed/bandwidth.
+                      Argument is required when speed_from_api is set to false. See
+                      Speed Band below for more details. One or more definitions of
+                      supported speed/bandwidth configurations
+                    items:
+                      properties:
+                        speed:
+                          description: Speed/bandwidth supported by this service profile.
+                            Speed/bandwidth supported by given service profile
+                          type: number
+                        speedUnit:
+                          description: Unit of the speed/bandwidth supported by this
+                            service profile. One of MB, GB. Unit of the speed/bandwidth
+                            supported by given service profile
+                          type: string
+                      type: object
+                    type: array
+                  speedCustomizationAllowed:
+                    description: Boolean value that determines if customer is allowed
+                      to enter a custom connection speed. Boolean value that determines
+                      if customer is allowed to enter a custom connection speed
+                    type: boolean
+                  speedFromApi:
+                    description: Boolean valuta that determines if connection speed
+                      will be derived from an API call. Argument has to be specified
+                      when api_integration is enabled. Boolean valuta that determines
+                      if connection speed will be derived from an API call
+                    type: boolean
+                  tagType:
+                    description: 'Specifies additional tagging information required
+                      by the seller profile for Dot1Q to QinQ translation. See Enhance
+                      Dot1q to QinQ translation support for additional information.
+                      Valid values are: Specifies additional tagging information required
+                      by the seller profile for Dot1Q to QinQ translation'
+                    type: string
+                  vcStatuschangeNotifications:
+                    description: A list of email addresses that will receive notifications
+                      about connections approvals and rejections. A list of email
+                      addresses that will receive notifications about connections
+                      approvals and rejections
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
                 type: object
               managementPolicies:
                 default:
@@ -443,21 +650,254 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.bandwidthThresholdNotifications is a required
+                parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.bandwidthThresholdNotifications)
+                || (has(self.initProvider) && has(self.initProvider.bandwidthThresholdNotifications))'
+            - message: spec.forProvider.features is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.features)
+                || (has(self.initProvider) && has(self.initProvider.features))'
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
+            - message: spec.forProvider.port is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.port)
+                || (has(self.initProvider) && has(self.initProvider.port))'
+            - message: spec.forProvider.profileStatuschangeNotifications is a required
+                parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.profileStatuschangeNotifications)
+                || (has(self.initProvider) && has(self.initProvider.profileStatuschangeNotifications))'
+            - message: spec.forProvider.vcStatuschangeNotifications is a required
+                parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.vcStatuschangeNotifications)
+                || (has(self.initProvider) && has(self.initProvider.vcStatuschangeNotifications))'
           status:
             description: L2ServiceprofileStatus defines the observed state of L2Serviceprofile.
             properties:
               atProvider:
                 properties:
+                  apiIntegration:
+                    description: Boolean value that determines if API integration
+                      is enabled. It allows you to complete connection provisioning
+                      in less than five minutes. Without API Integration, additional
+                      manual steps will be required and the provisioning will likely
+                      take longer. Specifies the API integration ID that was provided
+                      to the customer during onboarding
+                    type: boolean
+                  authkeyLabel:
+                    description: Name of the authentication key label to be used by
+                      the Authentication Key service. It allows Service Providers
+                      with QinQ ports to accept groups of connections or VLANs from
+                      Dot1q customers. This is similar to S-Tag/C-Tag capabilities.
+                      Name of the authentication key label to be used by the Authentication
+                      Key service
+                    type: string
+                  bandwidthAlertThreshold:
+                    description: Specifies the port bandwidth threshold percentage.
+                      If the bandwidth limit is met or exceeded, an alert is sent
+                      to the seller. Specifies the port bandwidth threshold percentage.
+                      If the bandwidth limit is met or exceeded, an alert is sent
+                      to the seller
+                    type: number
+                  bandwidthThresholdNotifications:
+                    description: A list of email addresses that will receive notifications
+                      about bandwidth thresholds. A list of email addresses that will
+                      receive notifications about bandwidth thresholds
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  connectionNameLabel:
+                    description: Custom name used for calling a connections e.g. circuit.
+                      Defaults to Connection. Custom name used for calling a connections
+                      i.e. circuit. Defaults to Connection
+                    type: string
+                  ctagLabel:
+                    description: C-Tag/Inner-Tag label name for the connections. C-Tag/Inner-Tag
+                      label name for the connections
+                    type: string
+                  description:
+                    description: Description of the service profile. Description of
+                      the service profile
+                    type: string
+                  equinixManagedPortVlan:
+                    description: Applicable when api_integration is set to true. It
+                      indicates whether the port and VLAN details are managed by Equinix.
+                      Boolean value that indicates whether the port and VLAN details
+                      are managed by Equinix
+                    type: boolean
+                  features:
+                    description: Block of profile features configuration. See Features
+                      below for more details. Block of profile features configuration
+                    items:
+                      properties:
+                        allowRemoteConnections:
+                          description: Indicates whether or not connections to this
+                            profile can be created from remote metro locations. Indicates
+                            whether or not connections to this profile can be created
+                            from remote metro locations
+                          type: boolean
+                        testProfile:
+                          description: (Deprecated) Indicates whether or not this
+                            profile can be used for test connections. Indicates whether
+                            or not this profile can be used for test connections
+                          type: boolean
+                      type: object
+                    type: array
                   id:
                     type: string
+                  integrationId:
+                    description: Specifies the API integration ID that was provided
+                      to the customer during onboarding. You can validate your API
+                      integration ID using the validateIntegrationId API. Specifies
+                      the API integration ID that was provided to the customer during
+                      onboarding
+                    type: string
+                  name:
+                    description: Name of the service profile. An alpha-numeric 50
+                      characters string which can include only hyphens and underscores.
+                      Name of the service profile. An alpha-numeric 50 characters
+                      string which can include only hyphens and underscores
+                    type: string
+                  oversubscription:
+                    description: You can set an alert for when a percentage of your
+                      profile has been sold. Service providers like to use this functionality
+                      to alert them when they need to add more ports or when they
+                      need to create a new service profile. Required with oversubscription_allowed,
+                      defaults to 1x. Oversubscription limit that will cause alerting.
+                      Default is 1x
+                    type: string
+                  oversubscriptionAllowed:
+                    description: Boolean value that determines if, regardless of the
+                      utilization, Equinix Fabric will continue to add connections
+                      to your links until we reach the oversubscription limit. By
+                      selecting this service, you acknowledge that you will manage
+                      decisions on when to increase capacity on these link. Boolean
+                      value that determines if, regardless of the utilization, Equinix
+                      Fabric will continue to add connections to your links until
+                      we reach the oversubscription limit
+                    type: boolean
+                  port:
+                    description: One or more definitions of ports residing in locations,
+                      from which your customers will be able to access services using
+                      this service profile. See Port below for more details. One or
+                      more definitions of ports associated with the profile
+                    items:
+                      properties:
+                        metroCode:
+                          description: The metro code of location where the port resides.
+                            Port location metro code
+                          type: string
+                        uuid:
+                          description: Unique identifier of the port. Unique identifier
+                            of the port
+                          type: string
+                      type: object
+                    type: array
+                  private:
+                    description: Boolean value that indicates whether or not this
+                      is a private profile, i.e. not public like AWS/Azure/Oracle/Google,
+                      etc. If private, it can only be available for creating connections
+                      if correct permissions are granted. Boolean value that indicates
+                      whether or not this is a private profile.
+                    type: boolean
+                  privateUserEmails:
+                    description: An array of users email ids who have permission to
+                      access this service profile. Argument is required when profile
+                      is set as private. A list of email addresses associated to users
+                      that will be allowed to access this service profile. Applicable
+                      for private profiles
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  profileStatuschangeNotifications:
+                    description: A list of email addresses that will receive notifications
+                      about profile status changes. A list of email addresses that
+                      will receive notifications about profile status changes
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  redundancyRequired:
+                    description: Boolean value that determines if your connections
+                      will require redundancy. if yes, then users need to create a
+                      secondary redundant connection. Boolean value that determines
+                      if yourconnections will require redundancy
+                    type: boolean
+                  secondaryVlanFromPrimary:
+                    description: Indicates whether the VLAN ID of. the secondary connection
+                      is the same as the primary connection. Indicates whether the
+                      VLAN ID of the secondary connection is the same as the primary
+                      connection
+                    type: boolean
+                  servicekeyAutogenerated:
+                    description: Boolean value that indicates whether multiple connections
+                      can be created with the same authorization key to connect to
+                      this service profile after the first connection has been approved
+                      by the seller. Boolean value that indicates whether multiple
+                      connections can be created with the same authorization key
+                    type: boolean
+                  speedBand:
+                    description: One or more definitions of supported speed/bandwidth.
+                      Argument is required when speed_from_api is set to false. See
+                      Speed Band below for more details. One or more definitions of
+                      supported speed/bandwidth configurations
+                    items:
+                      properties:
+                        speed:
+                          description: Speed/bandwidth supported by this service profile.
+                            Speed/bandwidth supported by given service profile
+                          type: number
+                        speedUnit:
+                          description: Unit of the speed/bandwidth supported by this
+                            service profile. One of MB, GB. Unit of the speed/bandwidth
+                            supported by given service profile
+                          type: string
+                      type: object
+                    type: array
+                  speedCustomizationAllowed:
+                    description: Boolean value that determines if customer is allowed
+                      to enter a custom connection speed. Boolean value that determines
+                      if customer is allowed to enter a custom connection speed
+                    type: boolean
+                  speedFromApi:
+                    description: Boolean valuta that determines if connection speed
+                      will be derived from an API call. Argument has to be specified
+                      when api_integration is enabled. Boolean valuta that determines
+                      if connection speed will be derived from an API call
+                    type: boolean
                   state:
                     description: Service profile provisioning status. Service profile
                       provisioning status
+                    type: string
+                  tagType:
+                    description: 'Specifies additional tagging information required
+                      by the seller profile for Dot1Q to QinQ translation. See Enhance
+                      Dot1q to QinQ translation support for additional information.
+                      Valid values are: Specifies additional tagging information required
+                      by the seller profile for Dot1Q to QinQ translation'
                     type: string
                   uuid:
                     description: Unique identifier of the service profile. Unique
                       identifier of the service profile
                     type: string
+                  vcStatuschangeNotifications:
+                    description: A list of email addresses that will receive notifications
+                      about connections approvals and rejections. A list of email
+                      addresses that will receive notifications about connections
+                      approvals and rejections
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
                 type: object
               conditions:
                 description: Conditions of the resource.

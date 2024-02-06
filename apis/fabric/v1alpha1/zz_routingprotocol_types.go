@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2021 The Crossplane Authors.
 
@@ -25,7 +29,22 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type BGPIPv4InitParameters struct {
+
+	// Customer side peering ip
+	CustomerPeerIP *string `json:"customerPeerIp,omitempty" tf:"customer_peer_ip,omitempty"`
+
+	// Admin status for the BGP session
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+}
+
 type BGPIPv4Observation struct {
+
+	// Customer side peering ip
+	CustomerPeerIP *string `json:"customerPeerIp,omitempty" tf:"customer_peer_ip,omitempty"`
+
+	// Admin status for the BGP session
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
 	// Equinix side peering ip
 	EquinixPeerIP *string `json:"equinixPeerIp,omitempty" tf:"equinix_peer_ip,omitempty"`
@@ -34,7 +53,7 @@ type BGPIPv4Observation struct {
 type BGPIPv4Parameters struct {
 
 	// Customer side peering ip
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	CustomerPeerIP *string `json:"customerPeerIp" tf:"customer_peer_ip,omitempty"`
 
 	// Admin status for the BGP session
@@ -42,7 +61,22 @@ type BGPIPv4Parameters struct {
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 }
 
+type BGPIPv6InitParameters struct {
+
+	// Customer side peering ip
+	CustomerPeerIP *string `json:"customerPeerIp,omitempty" tf:"customer_peer_ip,omitempty"`
+
+	// Admin status for the BGP session
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+}
+
 type BGPIPv6Observation struct {
+
+	// Customer side peering ip
+	CustomerPeerIP *string `json:"customerPeerIp,omitempty" tf:"customer_peer_ip,omitempty"`
+
+	// Admin status for the BGP session
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
 	// Equinix side peering ip
 	EquinixPeerIP *string `json:"equinixPeerIp,omitempty" tf:"equinix_peer_ip,omitempty"`
@@ -51,7 +85,7 @@ type BGPIPv6Observation struct {
 type BGPIPv6Parameters struct {
 
 	// Customer side peering ip
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	CustomerPeerIP *string `json:"customerPeerIp" tf:"customer_peer_ip,omitempty"`
 
 	// Admin status for the BGP session
@@ -59,18 +93,36 @@ type BGPIPv6Parameters struct {
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 }
 
+type BfdInitParameters struct {
+
+	// Bidirectional Forwarding Detection enablement
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// Interval range between the received BFD control packets
+	Interval *string `json:"interval,omitempty" tf:"interval,omitempty"`
+}
+
 type BfdObservation struct {
+
+	// Bidirectional Forwarding Detection enablement
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// Interval range between the received BFD control packets
+	Interval *string `json:"interval,omitempty" tf:"interval,omitempty"`
 }
 
 type BfdParameters struct {
 
 	// Bidirectional Forwarding Detection enablement
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled" tf:"enabled,omitempty"`
 
 	// Interval range between the received BFD control packets
 	// +kubebuilder:validation:Optional
 	Interval *string `json:"interval,omitempty" tf:"interval,omitempty"`
+}
+
+type ChangeInitParameters struct {
 }
 
 type ChangeObservation struct {
@@ -84,17 +136,35 @@ type ChangeObservation struct {
 type ChangeParameters struct {
 }
 
+type DirectIPv4InitParameters struct {
+
+	// Equinix side Interface IP address
+	EquinixIfaceIP *string `json:"equinixIfaceIp,omitempty" tf:"equinix_iface_ip,omitempty"`
+}
+
 type DirectIPv4Observation struct {
+
+	// Equinix side Interface IP address
+	EquinixIfaceIP *string `json:"equinixIfaceIp,omitempty" tf:"equinix_iface_ip,omitempty"`
 }
 
 type DirectIPv4Parameters struct {
 
 	// Equinix side Interface IP address
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	EquinixIfaceIP *string `json:"equinixIfaceIp" tf:"equinix_iface_ip,omitempty"`
 }
 
+type DirectIPv6InitParameters struct {
+
+	// Equinix side Interface IP address
+	EquinixIfaceIP *string `json:"equinixIfaceIp,omitempty" tf:"equinix_iface_ip,omitempty"`
+}
+
 type DirectIPv6Observation struct {
+
+	// Equinix side Interface IP address
+	EquinixIfaceIP *string `json:"equinixIfaceIp,omitempty" tf:"equinix_iface_ip,omitempty"`
 }
 
 type DirectIPv6Parameters struct {
@@ -104,6 +174,9 @@ type DirectIPv6Parameters struct {
 	EquinixIfaceIP *string `json:"equinixIfaceIp,omitempty" tf:"equinix_iface_ip,omitempty"`
 }
 
+type OperationErrorsAdditionalInfoInitParameters struct {
+}
+
 type OperationErrorsAdditionalInfoObservation struct {
 	Property *string `json:"property,omitempty" tf:"property,omitempty"`
 
@@ -111,6 +184,9 @@ type OperationErrorsAdditionalInfoObservation struct {
 }
 
 type OperationErrorsAdditionalInfoParameters struct {
+}
+
+type OperationErrorsInitParameters struct {
 }
 
 type OperationErrorsObservation struct {
@@ -128,6 +204,9 @@ type OperationErrorsObservation struct {
 }
 
 type OperationErrorsParameters struct {
+}
+
+type RoutingProtocolChangeLogInitParameters struct {
 }
 
 type RoutingProtocolChangeLogObservation struct {
@@ -159,21 +238,79 @@ type RoutingProtocolChangeLogObservation struct {
 type RoutingProtocolChangeLogParameters struct {
 }
 
-type RoutingProtocolObservation struct {
+type RoutingProtocolInitParameters struct {
+
+	// BGP authorization key
+	BGPAuthKey *string `json:"bgpAuthKey,omitempty" tf:"bgp_auth_key,omitempty"`
 
 	// Routing Protocol BGP IPv4
-	// +kubebuilder:validation:Optional
+	BGPIPv4 []BGPIPv4InitParameters `json:"bgpIpv4,omitempty" tf:"bgp_ipv4,omitempty"`
+
+	// Routing Protocol BGP IPv6
+	BGPIPv6 []BGPIPv6InitParameters `json:"bgpIpv6,omitempty" tf:"bgp_ipv6,omitempty"`
+
+	// Bidirectional Forwarding Detection
+	Bfd []BfdInitParameters `json:"bfd,omitempty" tf:"bfd,omitempty"`
+
+	// Connection URI associated with Routing Protocol
+	ConnectionUUID *string `json:"connectionUuid,omitempty" tf:"connection_uuid,omitempty"`
+
+	// Customer-provided ASN
+	CustomerAsn *float64 `json:"customerAsn,omitempty" tf:"customer_asn,omitempty"`
+
+	// Customer-provided Fabric Routing Protocol description
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Routing Protocol Direct IPv4
+	DirectIPv4 []DirectIPv4InitParameters `json:"directIpv4,omitempty" tf:"direct_ipv4,omitempty"`
+
+	// Routing Protocol Direct IPv6
+	DirectIPv6 []DirectIPv6InitParameters `json:"directIpv6,omitempty" tf:"direct_ipv6,omitempty"`
+
+	// Routing Protocol name. An alpha-numeric 24 characters string which can include only hyphens and underscores
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Defines the routing protocol type like BGP or DIRECT
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Equinix-assigned routing protocol identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
+type RoutingProtocolObservation struct {
+
+	// BGP authorization key
+	BGPAuthKey *string `json:"bgpAuthKey,omitempty" tf:"bgp_auth_key,omitempty"`
+
+	// Routing Protocol BGP IPv4
 	BGPIPv4 []BGPIPv4Observation `json:"bgpIpv4,omitempty" tf:"bgp_ipv4,omitempty"`
 
 	// Routing Protocol BGP IPv6
-	// +kubebuilder:validation:Optional
 	BGPIPv6 []BGPIPv6Observation `json:"bgpIpv6,omitempty" tf:"bgp_ipv6,omitempty"`
+
+	// Bidirectional Forwarding Detection
+	Bfd []BfdObservation `json:"bfd,omitempty" tf:"bfd,omitempty"`
 
 	// Routing Protocol configuration Changes
 	Change []ChangeObservation `json:"change,omitempty" tf:"change,omitempty"`
 
 	// Captures Routing Protocol lifecycle change information
 	ChangeLog []RoutingProtocolChangeLogObservation `json:"changeLog,omitempty" tf:"change_log,omitempty"`
+
+	// Connection URI associated with Routing Protocol
+	ConnectionUUID *string `json:"connectionUuid,omitempty" tf:"connection_uuid,omitempty"`
+
+	// Customer-provided ASN
+	CustomerAsn *float64 `json:"customerAsn,omitempty" tf:"customer_asn,omitempty"`
+
+	// Customer-provided Fabric Routing Protocol description
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Routing Protocol Direct IPv4
+	DirectIPv4 []DirectIPv4Observation `json:"directIpv4,omitempty" tf:"direct_ipv4,omitempty"`
+
+	// Routing Protocol Direct IPv6
+	DirectIPv6 []DirectIPv6Observation `json:"directIpv6,omitempty" tf:"direct_ipv6,omitempty"`
 
 	// Equinix ASN
 	EquinixAsn *float64 `json:"equinixAsn,omitempty" tf:"equinix_asn,omitempty"`
@@ -183,11 +320,23 @@ type RoutingProtocolObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Routing Protocol name. An alpha-numeric 24 characters string which can include only hyphens and underscores
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
 	// Routing Protocol type-specific operational data
 	Operation []RoutingProtocolOperationObservation `json:"operation,omitempty" tf:"operation,omitempty"`
 
 	// Routing Protocol overall state
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
+
+	// Defines the routing protocol type like BGP or DIRECT
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Equinix-assigned routing protocol identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
+type RoutingProtocolOperationInitParameters struct {
 }
 
 type RoutingProtocolOperationObservation struct {
@@ -216,8 +365,8 @@ type RoutingProtocolParameters struct {
 	Bfd []BfdParameters `json:"bfd,omitempty" tf:"bfd,omitempty"`
 
 	// Connection URI associated with Routing Protocol
-	// +kubebuilder:validation:Required
-	ConnectionUUID *string `json:"connectionUuid" tf:"connection_uuid,omitempty"`
+	// +kubebuilder:validation:Optional
+	ConnectionUUID *string `json:"connectionUuid,omitempty" tf:"connection_uuid,omitempty"`
 
 	// Customer-provided ASN
 	// +kubebuilder:validation:Optional
@@ -252,6 +401,17 @@ type RoutingProtocolParameters struct {
 type RoutingProtocolSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     RoutingProtocolParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider RoutingProtocolInitParameters `json:"initProvider,omitempty"`
 }
 
 // RoutingProtocolStatus defines the observed state of RoutingProtocol.
@@ -261,19 +421,21 @@ type RoutingProtocolStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // RoutingProtocol is the Schema for the RoutingProtocols API. <no value>
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinix}
 type RoutingProtocol struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              RoutingProtocolSpec   `json:"spec"`
-	Status            RoutingProtocolStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.connectionUuid) || (has(self.initProvider) && has(self.initProvider.connectionUuid))",message="spec.forProvider.connectionUuid is a required parameter"
+	Spec   RoutingProtocolSpec   `json:"spec"`
+	Status RoutingProtocolStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

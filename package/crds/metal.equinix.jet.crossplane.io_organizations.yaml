@@ -88,11 +88,6 @@ spec:
                         zipCode:
                           description: Zip Code. Zip Code
                           type: string
-                      required:
-                      - address
-                      - city
-                      - country
-                      - zipCode
                       type: object
                     type: array
                   description:
@@ -110,9 +105,58 @@ spec:
                   website:
                     description: Website link. Website link
                     type: string
-                required:
-                - address
-                - name
+                type: object
+              initProvider:
+                description: THIS IS A BETA FIELD. It will be honored unless the Management
+                  Policies feature flag is disabled. InitProvider holds the same fields
+                  as ForProvider, with the exception of Identifier and other resource
+                  reference fields. The fields that are in InitProvider are merged
+                  into ForProvider when the resource is created. The same fields are
+                  also added to the terraform ignore_changes hook, to avoid updating
+                  them after creation. This is useful for fields that are required
+                  on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them,
+                  like an autoscaler.
+                properties:
+                  address:
+                    description: An object that has the address information. See Address
+                      below for more details. Address information block
+                    items:
+                      properties:
+                        address:
+                          description: Postal address. Postal address
+                          type: string
+                        city:
+                          description: City name. City name
+                          type: string
+                        country:
+                          description: Two letter country code (ISO 3166-1 alpha-2),
+                            e.g. US. Two letter country code (ISO 3166-1 alpha-2),
+                            e.g. US
+                          type: string
+                        state:
+                          description: State name. State name
+                          type: string
+                        zipCode:
+                          description: Zip Code. Zip Code
+                          type: string
+                      type: object
+                    type: array
+                  description:
+                    description: Description string. Description string
+                    type: string
+                  logo:
+                    description: Logo URL. Logo URL
+                    type: string
+                  name:
+                    description: The name of the Organization. The name of the Organization
+                    type: string
+                  twitter:
+                    description: Twitter handle. Twitter handle
+                    type: string
+                  website:
+                    description: Website link. Website link
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -274,20 +318,68 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.address is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.address)
+                || (has(self.initProvider) && has(self.initProvider.address))'
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
           status:
             description: OrganizationStatus defines the observed state of Organization.
             properties:
               atProvider:
                 properties:
+                  address:
+                    description: An object that has the address information. See Address
+                      below for more details. Address information block
+                    items:
+                      properties:
+                        address:
+                          description: Postal address. Postal address
+                          type: string
+                        city:
+                          description: City name. City name
+                          type: string
+                        country:
+                          description: Two letter country code (ISO 3166-1 alpha-2),
+                            e.g. US. Two letter country code (ISO 3166-1 alpha-2),
+                            e.g. US
+                          type: string
+                        state:
+                          description: State name. State name
+                          type: string
+                        zipCode:
+                          description: Zip Code. Zip Code
+                          type: string
+                      type: object
+                    type: array
                   created:
                     description: The timestamp for when the organization was created.
+                    type: string
+                  description:
+                    description: Description string. Description string
                     type: string
                   id:
                     description: The unique ID of the organization.
                     type: string
+                  logo:
+                    description: Logo URL. Logo URL
+                    type: string
+                  name:
+                    description: The name of the Organization. The name of the Organization
+                    type: string
+                  twitter:
+                    description: Twitter handle. Twitter handle
+                    type: string
                   updated:
                     description: The timestamp for the last time the organization
                       was updated.
+                    type: string
+                  website:
+                    description: Website link. Website link
                     type: string
                 type: object
               conditions:

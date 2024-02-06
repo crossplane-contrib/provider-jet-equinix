@@ -195,6 +195,243 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
+                  type:
+                    description: One of global_ipv4, public_ipv4, or vrf. Defaults
+                      to public_ipv4 for backward compatibility. Either global_ipv4,
+                      public_ipv4, or vrf. Defaults to public_ipv4.
+                    type: string
+                  vrfId:
+                    description: Only valid and required when type is vrf. VRF ID
+                      for type=vrf reservations. VRF ID for type=vrf reservations
+                    type: string
+                  vrfIdRef:
+                    description: Reference to a Vrf to populate vrfId.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  vrfIdSelector:
+                    description: Selector for a Vrf to populate vrfId.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  waitForState:
+                    description: 'Wait for the IP reservation block to reach a desired
+                      state on resource creation. One of: pending, created. The created
+                      state is default and recommended if the addresses are needed
+                      within the configuration. An error will be returned if a timeout
+                      or the denied state is encountered. Wait for the IP reservation
+                      block to reach a desired state on resource creation. One of:
+                      `pending`, `created`. The `created` state is default and recommended
+                      if the addresses are needed within the configuration. An error
+                      will be returned if a timeout or the `denied` state is encountered.'
+                    type: string
+                type: object
+              initProvider:
+                description: THIS IS A BETA FIELD. It will be honored unless the Management
+                  Policies feature flag is disabled. InitProvider holds the same fields
+                  as ForProvider, with the exception of Identifier and other resource
+                  reference fields. The fields that are in InitProvider are merged
+                  into ForProvider when the resource is created. The same fields are
+                  also added to the terraform ignore_changes hook, to avoid updating
+                  them after creation. This is useful for fields that are required
+                  on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them,
+                  like an autoscaler.
+                properties:
+                  cidr:
+                    description: Only valid as an argument and required when type
+                      is vrf. The size of the network to reserve from an existing
+                      VRF ip_range. cidr can only be specified with vrf_id. Range
+                      is 22-31. Virtual Circuits require 30-31. Other VRF resources
+                      must use a CIDR in the 22-29 range. the size of the network
+                      to reserve from an existing vrf ip_range. `cidr` can only be
+                      specified with `vrf_id`. Minimum range is 22-29, with 30-31
+                      supported and necessary for virtual-circuits
+                    type: number
+                  customData:
+                    description: This may be helpful for self-managed IPAM. The object
+                      must be valid JSON. This may be helpful for self-managed IPAM.
+                      The object must be valid JSON.
+                    type: string
+                  description:
+                    description: Arbitrary description. Arbitrary description
+                    type: string
+                  facility:
+                    description: (Deprecated) Facility where to allocate the public
+                      IP address block, makes sense only if type is public_ipv4 and
+                      must be empty if type is global_ipv4. Conflicts with metro.
+                      Use metro instead; read the facility to metro migration guide
+                      Facility where to allocate the public IP address block, makes
+                      sense only for type==public_ipv4, must be empty for type==global_ipv4,
+                      conflicts with metro
+                    type: string
+                  metro:
+                    description: Metro where to allocate the public IP address block,
+                      makes sense only if type is public_ipv4 and must be empty if
+                      type is global_ipv4. Conflicts with facility. Metro where to
+                      allocate the public IP address block, makes sense only for type==public_ipv4,
+                      must be empty for type==global_ipv4, conflicts with facility
+                    type: string
+                  network:
+                    description: Only valid as an argument and required when type
+                      is vrf. An unreserved network address from an existing ip_range
+                      in the specified VRF. an unreserved network address from an
+                      existing vrf ip_range. `network` can only be specified with
+                      vrf_id
+                    type: string
+                  projectId:
+                    description: The metal project ID where to allocate the address
+                      block. The metal project ID where to allocate the address block
+                    type: string
+                  projectIdRef:
+                    description: Reference to a Project to populate projectId.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  projectIdSelector:
+                    description: Selector for a Project to populate projectId.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  quantity:
+                    description: The number of allocated /32 addresses, a power of
+                      2. Required when type is not vrf. The number of allocated /32
+                      addresses, a power of 2
+                    type: number
+                  tags:
+                    description: String list of tags. Tags attached to the reserved
+                      block
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
                   type:
                     description: One of global_ipv4, public_ipv4, or vrf. Defaults
                       to public_ipv4 for backward compatibility. Either global_ipv4,
@@ -460,8 +697,35 @@ spec:
                     description: Address family as integer. One of 4 or 6. Address
                       family as integer (4 or 6)
                     type: number
+                  cidr:
+                    description: Only valid as an argument and required when type
+                      is vrf. The size of the network to reserve from an existing
+                      VRF ip_range. cidr can only be specified with vrf_id. Range
+                      is 22-31. Virtual Circuits require 30-31. Other VRF resources
+                      must use a CIDR in the 22-29 range. the size of the network
+                      to reserve from an existing vrf ip_range. `cidr` can only be
+                      specified with `vrf_id`. Minimum range is 22-29, with 30-31
+                      supported and necessary for virtual-circuits
+                    type: number
                   cidrNotation:
                     description: Address and mask in CIDR notation, e.g. 147.229.15.30/31.
+                    type: string
+                  customData:
+                    description: This may be helpful for self-managed IPAM. The object
+                      must be valid JSON. This may be helpful for self-managed IPAM.
+                      The object must be valid JSON.
+                    type: string
+                  description:
+                    description: Arbitrary description. Arbitrary description
+                    type: string
+                  facility:
+                    description: (Deprecated) Facility where to allocate the public
+                      IP address block, makes sense only if type is public_ipv4 and
+                      must be empty if type is global_ipv4. Conflicts with metro.
+                      Use metro instead; read the facility to metro migration guide
+                      Facility where to allocate the public IP address block, makes
+                      sense only for type==public_ipv4, must be empty for type==global_ipv4,
+                      conflicts with metro
                     type: string
                   gateway:
                     type: string
@@ -477,14 +741,64 @@ spec:
                     type: boolean
                   management:
                     type: boolean
+                  metro:
+                    description: Metro where to allocate the public IP address block,
+                      makes sense only if type is public_ipv4 and must be empty if
+                      type is global_ipv4. Conflicts with facility. Metro where to
+                      allocate the public IP address block, makes sense only for type==public_ipv4,
+                      must be empty for type==global_ipv4, conflicts with facility
+                    type: string
                   netmask:
                     description: Mask in decimal notation, e.g. 255.255.255.0. Mask
                       in decimal notation, e.g. 255.255.255.0
+                    type: string
+                  network:
+                    description: Only valid as an argument and required when type
+                      is vrf. An unreserved network address from an existing ip_range
+                      in the specified VRF. an unreserved network address from an
+                      existing vrf ip_range. `network` can only be specified with
+                      vrf_id
+                    type: string
+                  projectId:
+                    description: The metal project ID where to allocate the address
+                      block. The metal project ID where to allocate the address block
                     type: string
                   public:
                     description: Boolean flag whether addresses from a block are public.
                       Flag indicating whether IP block is addressable from the Internet
                     type: boolean
+                  quantity:
+                    description: The number of allocated /32 addresses, a power of
+                      2. Required when type is not vrf. The number of allocated /32
+                      addresses, a power of 2
+                    type: number
+                  tags:
+                    description: String list of tags. Tags attached to the reserved
+                      block
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  type:
+                    description: One of global_ipv4, public_ipv4, or vrf. Defaults
+                      to public_ipv4 for backward compatibility. Either global_ipv4,
+                      public_ipv4, or vrf. Defaults to public_ipv4.
+                    type: string
+                  vrfId:
+                    description: Only valid and required when type is vrf. VRF ID
+                      for type=vrf reservations. VRF ID for type=vrf reservations
+                    type: string
+                  waitForState:
+                    description: 'Wait for the IP reservation block to reach a desired
+                      state on resource creation. One of: pending, created. The created
+                      state is default and recommended if the addresses are needed
+                      within the configuration. An error will be returned if a timeout
+                      or the denied state is encountered. Wait for the IP reservation
+                      block to reach a desired state on resource creation. One of:
+                      `pending`, `created`. The `created` state is default and recommended
+                      if the addresses are needed within the configuration. An error
+                      will be returned if a timeout or the `denied` state is encountered.'
+                    type: string
                 type: object
               conditions:
                 description: Conditions of the resource.

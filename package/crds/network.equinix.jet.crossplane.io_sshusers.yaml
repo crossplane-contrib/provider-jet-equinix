@@ -72,6 +72,7 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   passwordSecretRef:
                     description: SSH user password. SSH user password
                     properties:
@@ -92,10 +93,29 @@ spec:
                   username:
                     description: SSH user login name. SSH user login name
                     type: string
-                required:
-                - deviceIds
-                - passwordSecretRef
-                - username
+                type: object
+              initProvider:
+                description: THIS IS A BETA FIELD. It will be honored unless the Management
+                  Policies feature flag is disabled. InitProvider holds the same fields
+                  as ForProvider, with the exception of Identifier and other resource
+                  reference fields. The fields that are in InitProvider are merged
+                  into ForProvider when the resource is created. The same fields are
+                  also added to the terraform ignore_changes hook, to avoid updating
+                  them after creation. This is useful for fields that are required
+                  on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them,
+                  like an autoscaler.
+                properties:
+                  deviceIds:
+                    description: list of device identifiers to which user will have
+                      access. list of device identifiers to which user will have access
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  username:
+                    description: SSH user login name. SSH user login name
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -257,12 +277,34 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.deviceIds is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.deviceIds)
+                || (has(self.initProvider) && has(self.initProvider.deviceIds))'
+            - message: spec.forProvider.passwordSecretRef is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.passwordSecretRef)'
+            - message: spec.forProvider.username is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.username)
+                || (has(self.initProvider) && has(self.initProvider.username))'
           status:
             description: SSHUserStatus defines the observed state of SSHUser.
             properties:
               atProvider:
                 properties:
+                  deviceIds:
+                    description: list of device identifiers to which user will have
+                      access. list of device identifiers to which user will have access
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
                   id:
+                    type: string
+                  username:
+                    description: SSH user login name. SSH user login name
                     type: string
                   uuid:
                     description: SSH user unique identifier. SSH user unique identifier

@@ -160,6 +160,7 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   roles:
                     description: Organization roles (admin, collaborator, limited_collaborator,
                       billing) Organization roles (owner, collaborator, limited_collaborator,
@@ -167,10 +168,122 @@ spec:
                     items:
                       type: string
                     type: array
-                required:
-                - invitee
-                - projectsIds
-                - roles
+                    x-kubernetes-list-type: set
+                type: object
+              initProvider:
+                description: THIS IS A BETA FIELD. It will be honored unless the Management
+                  Policies feature flag is disabled. InitProvider holds the same fields
+                  as ForProvider, with the exception of Identifier and other resource
+                  reference fields. The fields that are in InitProvider are merged
+                  into ForProvider when the resource is created. The same fields are
+                  also added to the terraform ignore_changes hook, to avoid updating
+                  them after creation. This is useful for fields that are required
+                  on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them,
+                  like an autoscaler.
+                properties:
+                  invitee:
+                    description: The email address of the user to invite The email
+                      address of the user to invite
+                    type: string
+                  message:
+                    description: A message to include in the emailed invitation. A
+                      message to the invitee (only used during the invitation stage)
+                    type: string
+                  organizationId:
+                    description: The organization to invite the user to The organization
+                      to invite the user to
+                    type: string
+                  organizationIdRef:
+                    description: Reference to a Organization to populate organizationId.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  organizationIdSelector:
+                    description: Selector for a Organization to populate organizationId.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  projectsIds:
+                    description: Project IDs the member has access to within the organization.
+                      If the member is an 'admin', the projects list should be empty.
+                      Project IDs the member has access to within the organization.
+                      If the member is an 'owner', the projects list should be empty.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  roles:
+                    description: Organization roles (admin, collaborator, limited_collaborator,
+                      billing) Organization roles (owner, collaborator, limited_collaborator,
+                      billing)
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
                 type: object
               managementPolicies:
                 default:
@@ -332,6 +445,19 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.invitee is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.invitee)
+                || (has(self.initProvider) && has(self.initProvider.invitee))'
+            - message: spec.forProvider.projectsIds is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.projectsIds)
+                || (has(self.initProvider) && has(self.initProvider.projectsIds))'
+            - message: spec.forProvider.roles is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.roles)
+                || (has(self.initProvider) && has(self.initProvider.roles))'
           status:
             description: OrganizationMemberStatus defines the observed state of OrganizationMember.
             properties:
@@ -350,11 +476,40 @@ spec:
                       (only known in the invitation stage) The user id of the user
                       that sent the invitation (only known in the invitation stage)
                     type: string
+                  invitee:
+                    description: The email address of the user to invite The email
+                      address of the user to invite
+                    type: string
+                  message:
+                    description: A message to include in the emailed invitation. A
+                      message to the invitee (only used during the invitation stage)
+                    type: string
                   nonce:
                     description: The nonce for the invitation (only known in the invitation
                       stage) The nonce for the invitation (only known in the invitation
                       stage)
                     type: string
+                  organizationId:
+                    description: The organization to invite the user to The organization
+                      to invite the user to
+                    type: string
+                  projectsIds:
+                    description: Project IDs the member has access to within the organization.
+                      If the member is an 'admin', the projects list should be empty.
+                      Project IDs the member has access to within the organization.
+                      If the member is an 'owner', the projects list should be empty.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  roles:
+                    description: Organization roles (admin, collaborator, limited_collaborator,
+                      billing) Organization roles (owner, collaborator, limited_collaborator,
+                      billing)
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
                   state:
                     description: The state of the membership ('invited' when an invitation
                       is open, 'active' when the user is an organization member) The

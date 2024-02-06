@@ -75,9 +75,28 @@ spec:
                       using the file interpolation function The public key. If this
                       is a file, it
                     type: string
-                required:
-                - name
-                - publicKey
+                type: object
+              initProvider:
+                description: THIS IS A BETA FIELD. It will be honored unless the Management
+                  Policies feature flag is disabled. InitProvider holds the same fields
+                  as ForProvider, with the exception of Identifier and other resource
+                  reference fields. The fields that are in InitProvider are merged
+                  into ForProvider when the resource is created. The same fields are
+                  also added to the terraform ignore_changes hook, to avoid updating
+                  them after creation. This is useful for fields that are required
+                  on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them,
+                  like an autoscaler.
+                properties:
+                  name:
+                    description: The name of the SSH key for identification The name
+                      of the SSH key for identification
+                    type: string
+                  publicKey:
+                    description: The public key. If this is a file, it can be read
+                      using the file interpolation function The public key. If this
+                      is a file, it
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -239,6 +258,15 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
+            - message: spec.forProvider.publicKey is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.publicKey)
+                || (has(self.initProvider) && has(self.initProvider.publicKey))'
           status:
             description: SSHKeyStatus defines the observed state of SSHKey.
             properties:
@@ -255,9 +283,18 @@ spec:
                   id:
                     description: The unique ID of the key.
                     type: string
+                  name:
+                    description: The name of the SSH key for identification The name
+                      of the SSH key for identification
+                    type: string
                   ownerId:
                     description: The UUID of the Equinix Metal API User who owns this
                       key. The UUID of the Equinix Metal API User who owns this key
+                    type: string
+                  publicKey:
+                    description: The public key. If this is a file, it can be read
+                      using the file interpolation function The public key. If this
+                      is a file, it
                     type: string
                   updated:
                     description: The timestamp for the last time the SSH key was updated.

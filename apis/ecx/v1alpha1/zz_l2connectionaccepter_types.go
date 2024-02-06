@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2021 The Crossplane Authors.
 
@@ -25,12 +29,31 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type L2ConnectionAccepterInitParameters struct {
+
+	// argument or AWS_PROFILE environmental variable
+	// AWS Profile Name for retrieving credentials from shared credentials file
+	AwsProfile *string `json:"awsProfile,omitempty" tf:"aws_profile,omitempty"`
+
+	// Identifier of Layer 2 connection that will be accepted.
+	// Identifier of layer 2 connection that will be accepted
+	ConnectionID *string `json:"connectionId,omitempty" tf:"connection_id,omitempty"`
+}
+
 type L2ConnectionAccepterObservation struct {
 
 	// Identifier of a hosted Direct Connect connection on AWS side,
 	// applicable for accepter resource with connections to AWS only.
 	// Identifier of a hosted Direct Connect connection on AWS side, applicable for accepter resource with connections to AWS only
 	AwsConnectionID *string `json:"awsConnectionId,omitempty" tf:"aws_connection_id,omitempty"`
+
+	// argument or AWS_PROFILE environmental variable
+	// AWS Profile Name for retrieving credentials from shared credentials file
+	AwsProfile *string `json:"awsProfile,omitempty" tf:"aws_profile,omitempty"`
+
+	// Identifier of Layer 2 connection that will be accepted.
+	// Identifier of layer 2 connection that will be accepted
+	ConnectionID *string `json:"connectionId,omitempty" tf:"connection_id,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
@@ -49,8 +72,8 @@ type L2ConnectionAccepterParameters struct {
 
 	// Identifier of Layer 2 connection that will be accepted.
 	// Identifier of layer 2 connection that will be accepted
-	// +kubebuilder:validation:Required
-	ConnectionID *string `json:"connectionId" tf:"connection_id,omitempty"`
+	// +kubebuilder:validation:Optional
+	ConnectionID *string `json:"connectionId,omitempty" tf:"connection_id,omitempty"`
 
 	// Secret Key used to accept connection on provider side.
 	// Secret Key used to accept connection on provider side
@@ -62,6 +85,17 @@ type L2ConnectionAccepterParameters struct {
 type L2ConnectionAccepterSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     L2ConnectionAccepterParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider L2ConnectionAccepterInitParameters `json:"initProvider,omitempty"`
 }
 
 // L2ConnectionAccepterStatus defines the observed state of L2ConnectionAccepter.
@@ -71,19 +105,21 @@ type L2ConnectionAccepterStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // L2ConnectionAccepter is the Schema for the L2ConnectionAccepters API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinix}
 type L2ConnectionAccepter struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              L2ConnectionAccepterSpec   `json:"spec"`
-	Status            L2ConnectionAccepterStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.connectionId) || (has(self.initProvider) && has(self.initProvider.connectionId))",message="spec.forProvider.connectionId is a required parameter"
+	Spec   L2ConnectionAccepterSpec   `json:"spec"`
+	Status L2ConnectionAccepterStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

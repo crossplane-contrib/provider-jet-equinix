@@ -112,8 +112,28 @@ spec:
                     - name
                     - namespace
                     type: object
-                required:
-                - connectionId
+                type: object
+              initProvider:
+                description: THIS IS A BETA FIELD. It will be honored unless the Management
+                  Policies feature flag is disabled. InitProvider holds the same fields
+                  as ForProvider, with the exception of Identifier and other resource
+                  reference fields. The fields that are in InitProvider are merged
+                  into ForProvider when the resource is created. The same fields are
+                  also added to the terraform ignore_changes hook, to avoid updating
+                  them after creation. This is useful for fields that are required
+                  on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them,
+                  like an autoscaler.
+                properties:
+                  awsProfile:
+                    description: argument or AWS_PROFILE environmental variable AWS
+                      Profile Name for retrieving credentials from shared credentials
+                      file
+                    type: string
+                  connectionId:
+                    description: Identifier of Layer 2 connection that will be accepted.
+                      Identifier of layer 2 connection that will be accepted
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -275,6 +295,11 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.connectionId is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.connectionId)
+                || (has(self.initProvider) && has(self.initProvider.connectionId))'
           status:
             description: L2ConnectionAccepterStatus defines the observed state of
               L2ConnectionAccepter.
@@ -287,6 +312,15 @@ spec:
                       to AWS only. Identifier of a hosted Direct Connect connection
                       on AWS side, applicable for accepter resource with connections
                       to AWS only
+                    type: string
+                  awsProfile:
+                    description: argument or AWS_PROFILE environmental variable AWS
+                      Profile Name for retrieving credentials from shared credentials
+                      file
+                    type: string
+                  connectionId:
+                    description: Identifier of Layer 2 connection that will be accepted.
+                      Identifier of layer 2 connection that will be accepted
                     type: string
                   id:
                     type: string

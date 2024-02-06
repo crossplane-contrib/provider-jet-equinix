@@ -110,14 +110,44 @@ spec:
                       mode, i.e., self-managed or Equinix-managed. Boolean value that
                       determines device management mode: self-managed or equinix-managed'
                     type: boolean
-                required:
-                - byol
-                - contentSecretRef
-                - deviceTypeCode
-                - fileName
-                - metroCode
-                - processType
-                - selfManaged
+                type: object
+              initProvider:
+                description: THIS IS A BETA FIELD. It will be honored unless the Management
+                  Policies feature flag is disabled. InitProvider holds the same fields
+                  as ForProvider, with the exception of Identifier and other resource
+                  reference fields. The fields that are in InitProvider are merged
+                  into ForProvider when the resource is created. The same fields are
+                  also added to the terraform ignore_changes hook, to avoid updating
+                  them after creation. This is useful for fields that are required
+                  on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them,
+                  like an autoscaler.
+                properties:
+                  byol:
+                    description: 'Boolean value that determines device licensing mode,
+                      i.e., bring your own license or subscription. Boolean value
+                      that determines device licensing mode: bring your own license
+                      or subscription'
+                    type: boolean
+                  deviceTypeCode:
+                    description: Device type code. Device type code
+                    type: string
+                  fileName:
+                    description: File name. File name
+                    type: string
+                  metroCode:
+                    description: File upload location metro code. It should match
+                      the device location metro code. File upload location metro code
+                    type: string
+                  processType:
+                    description: File process type (LICENSE or CLOUD_INIT). File process
+                      type (LICENSE or CLOUD_INIT)
+                    type: string
+                  selfManaged:
+                    description: 'Boolean value that determines device management
+                      mode, i.e., self-managed or Equinix-managed. Boolean value that
+                      determines device management mode: self-managed or equinix-managed'
+                    type: boolean
                 type: object
               managementPolicies:
                 default:
@@ -279,13 +309,66 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.byol is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.byol)
+                || (has(self.initProvider) && has(self.initProvider.byol))'
+            - message: spec.forProvider.contentSecretRef is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.contentSecretRef)'
+            - message: spec.forProvider.deviceTypeCode is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.deviceTypeCode)
+                || (has(self.initProvider) && has(self.initProvider.deviceTypeCode))'
+            - message: spec.forProvider.fileName is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.fileName)
+                || (has(self.initProvider) && has(self.initProvider.fileName))'
+            - message: spec.forProvider.metroCode is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.metroCode)
+                || (has(self.initProvider) && has(self.initProvider.metroCode))'
+            - message: spec.forProvider.processType is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.processType)
+                || (has(self.initProvider) && has(self.initProvider.processType))'
+            - message: spec.forProvider.selfManaged is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.selfManaged)
+                || (has(self.initProvider) && has(self.initProvider.selfManaged))'
           status:
             description: FileStatus defines the observed state of File.
             properties:
               atProvider:
                 properties:
+                  byol:
+                    description: 'Boolean value that determines device licensing mode,
+                      i.e., bring your own license or subscription. Boolean value
+                      that determines device licensing mode: bring your own license
+                      or subscription'
+                    type: boolean
+                  deviceTypeCode:
+                    description: Device type code. Device type code
+                    type: string
+                  fileName:
+                    description: File name. File name
+                    type: string
                   id:
                     type: string
+                  metroCode:
+                    description: File upload location metro code. It should match
+                      the device location metro code. File upload location metro code
+                    type: string
+                  processType:
+                    description: File process type (LICENSE or CLOUD_INIT). File process
+                      type (LICENSE or CLOUD_INIT)
+                    type: string
+                  selfManaged:
+                    description: 'Boolean value that determines device management
+                      mode, i.e., self-managed or Equinix-managed. Boolean value that
+                      determines device management mode: self-managed or equinix-managed'
+                    type: boolean
                   status:
                     description: File upload status. File upload status
                     type: string

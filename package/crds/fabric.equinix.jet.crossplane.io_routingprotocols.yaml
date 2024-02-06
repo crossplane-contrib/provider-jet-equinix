@@ -78,8 +78,6 @@ spec:
                           description: Interval range between the received BFD control
                             packets
                           type: string
-                      required:
-                      - enabled
                       type: object
                     type: array
                   bgpAuthKey:
@@ -95,8 +93,6 @@ spec:
                         enabled:
                           description: Admin status for the BGP session
                           type: boolean
-                      required:
-                      - customerPeerIp
                       type: object
                     type: array
                   bgpIpv6:
@@ -109,8 +105,6 @@ spec:
                         enabled:
                           description: Admin status for the BGP session
                           type: boolean
-                      required:
-                      - customerPeerIp
                       type: object
                     type: array
                   connectionUuid:
@@ -129,8 +123,6 @@ spec:
                         equinixIfaceIp:
                           description: Equinix side Interface IP address
                           type: string
-                      required:
-                      - equinixIfaceIp
                       type: object
                     type: array
                   directIpv6:
@@ -152,8 +144,96 @@ spec:
                   uuid:
                     description: Equinix-assigned routing protocol identifier
                     type: string
-                required:
-                - connectionUuid
+                type: object
+              initProvider:
+                description: THIS IS A BETA FIELD. It will be honored unless the Management
+                  Policies feature flag is disabled. InitProvider holds the same fields
+                  as ForProvider, with the exception of Identifier and other resource
+                  reference fields. The fields that are in InitProvider are merged
+                  into ForProvider when the resource is created. The same fields are
+                  also added to the terraform ignore_changes hook, to avoid updating
+                  them after creation. This is useful for fields that are required
+                  on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them,
+                  like an autoscaler.
+                properties:
+                  bfd:
+                    description: Bidirectional Forwarding Detection
+                    items:
+                      properties:
+                        enabled:
+                          description: Bidirectional Forwarding Detection enablement
+                          type: boolean
+                        interval:
+                          description: Interval range between the received BFD control
+                            packets
+                          type: string
+                      type: object
+                    type: array
+                  bgpAuthKey:
+                    description: BGP authorization key
+                    type: string
+                  bgpIpv4:
+                    description: Routing Protocol BGP IPv4
+                    items:
+                      properties:
+                        customerPeerIp:
+                          description: Customer side peering ip
+                          type: string
+                        enabled:
+                          description: Admin status for the BGP session
+                          type: boolean
+                      type: object
+                    type: array
+                  bgpIpv6:
+                    description: Routing Protocol BGP IPv6
+                    items:
+                      properties:
+                        customerPeerIp:
+                          description: Customer side peering ip
+                          type: string
+                        enabled:
+                          description: Admin status for the BGP session
+                          type: boolean
+                      type: object
+                    type: array
+                  connectionUuid:
+                    description: Connection URI associated with Routing Protocol
+                    type: string
+                  customerAsn:
+                    description: Customer-provided ASN
+                    type: number
+                  description:
+                    description: Customer-provided Fabric Routing Protocol description
+                    type: string
+                  directIpv4:
+                    description: Routing Protocol Direct IPv4
+                    items:
+                      properties:
+                        equinixIfaceIp:
+                          description: Equinix side Interface IP address
+                          type: string
+                      type: object
+                    type: array
+                  directIpv6:
+                    description: Routing Protocol Direct IPv6
+                    items:
+                      properties:
+                        equinixIfaceIp:
+                          description: Equinix side Interface IP address
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: Routing Protocol name. An alpha-numeric 24 characters
+                      string which can include only hyphens and underscores
+                    type: string
+                  type:
+                    description: Defines the routing protocol type like BGP or DIRECT
+                    type: string
+                  uuid:
+                    description: Equinix-assigned routing protocol identifier
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -315,15 +395,42 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.connectionUuid is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.connectionUuid)
+                || (has(self.initProvider) && has(self.initProvider.connectionUuid))'
           status:
             description: RoutingProtocolStatus defines the observed state of RoutingProtocol.
             properties:
               atProvider:
                 properties:
+                  bfd:
+                    description: Bidirectional Forwarding Detection
+                    items:
+                      properties:
+                        enabled:
+                          description: Bidirectional Forwarding Detection enablement
+                          type: boolean
+                        interval:
+                          description: Interval range between the received BFD control
+                            packets
+                          type: string
+                      type: object
+                    type: array
+                  bgpAuthKey:
+                    description: BGP authorization key
+                    type: string
                   bgpIpv4:
                     description: Routing Protocol BGP IPv4
                     items:
                       properties:
+                        customerPeerIp:
+                          description: Customer side peering ip
+                          type: string
+                        enabled:
+                          description: Admin status for the BGP session
+                          type: boolean
                         equinixPeerIp:
                           description: Equinix side peering ip
                           type: string
@@ -333,6 +440,12 @@ spec:
                     description: Routing Protocol BGP IPv6
                     items:
                       properties:
+                        customerPeerIp:
+                          description: Customer side peering ip
+                          type: string
+                        enabled:
+                          description: Admin status for the BGP session
+                          type: boolean
                         equinixPeerIp:
                           description: Equinix side peering ip
                           type: string
@@ -380,6 +493,33 @@ spec:
                           type: string
                       type: object
                     type: array
+                  connectionUuid:
+                    description: Connection URI associated with Routing Protocol
+                    type: string
+                  customerAsn:
+                    description: Customer-provided ASN
+                    type: number
+                  description:
+                    description: Customer-provided Fabric Routing Protocol description
+                    type: string
+                  directIpv4:
+                    description: Routing Protocol Direct IPv4
+                    items:
+                      properties:
+                        equinixIfaceIp:
+                          description: Equinix side Interface IP address
+                          type: string
+                      type: object
+                    type: array
+                  directIpv6:
+                    description: Routing Protocol Direct IPv6
+                    items:
+                      properties:
+                        equinixIfaceIp:
+                          description: Equinix side Interface IP address
+                          type: string
+                      type: object
+                    type: array
                   equinixAsn:
                     description: Equinix ASN
                     type: number
@@ -387,6 +527,10 @@ spec:
                     description: Routing Protocol URI information
                     type: string
                   id:
+                    type: string
+                  name:
+                    description: Routing Protocol name. An alpha-numeric 24 characters
+                      string which can include only hyphens and underscores
                     type: string
                   operation:
                     description: Routing Protocol type-specific operational data
@@ -420,6 +564,12 @@ spec:
                     type: array
                   state:
                     description: Routing Protocol overall state
+                    type: string
+                  type:
+                    description: Defines the routing protocol type like BGP or DIRECT
+                    type: string
+                  uuid:
+                    description: Equinix-assigned routing protocol identifier
                     type: string
                 type: object
               conditions:

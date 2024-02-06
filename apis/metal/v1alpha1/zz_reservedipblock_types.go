@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2021 The Crossplane Authors.
 
@@ -25,6 +29,78 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ReservedIPBlockInitParameters struct {
+
+	// Only valid as an argument and required when type is vrf. The size of the network to reserve from an existing VRF ip_range. cidr can only be specified with vrf_id. Range is 22-31. Virtual Circuits require 30-31. Other VRF resources must use a CIDR in the 22-29 range.
+	// the size of the network to reserve from an existing vrf ip_range. `cidr` can only be specified with `vrf_id`. Minimum range is 22-29, with 30-31 supported and necessary for virtual-circuits
+	Cidr *float64 `json:"cidr,omitempty" tf:"cidr,omitempty"`
+
+	// This may be helpful for self-managed IPAM. The object must be valid JSON. This may be helpful for self-managed IPAM. The object must be valid JSON.
+	CustomData *string `json:"customData,omitempty" tf:"custom_data,omitempty"`
+
+	// Arbitrary description.
+	// Arbitrary description
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (Deprecated) Facility where to allocate the public IP address block, makes sense only
+	// if type is public_ipv4 and must be empty if type is global_ipv4. Conflicts with metro. Use metro instead; read the facility to metro migration guide
+	// Facility where to allocate the public IP address block, makes sense only for type==public_ipv4, must be empty for type==global_ipv4, conflicts with metro
+	Facility *string `json:"facility,omitempty" tf:"facility,omitempty"`
+
+	// Metro where to allocate the public IP address block, makes sense only
+	// if type is public_ipv4 and must be empty if type is global_ipv4. Conflicts with facility.
+	// Metro where to allocate the public IP address block, makes sense only for type==public_ipv4, must be empty for type==global_ipv4, conflicts with facility
+	Metro *string `json:"metro,omitempty" tf:"metro,omitempty"`
+
+	// Only valid as an argument and required when type is vrf. An unreserved network address from an existing ip_range in the specified VRF.
+	// an unreserved network address from an existing vrf ip_range. `network` can only be specified with vrf_id
+	Network *string `json:"network,omitempty" tf:"network,omitempty"`
+
+	// The metal project ID where to allocate the address block.
+	// The metal project ID where to allocate the address block
+	// +crossplane:generate:reference:type=Project
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Reference to a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
+
+	// Selector for a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
+
+	// The number of allocated /32 addresses, a power of 2. Required when type is not vrf.
+	// The number of allocated /32 addresses, a power of 2
+	Quantity *float64 `json:"quantity,omitempty" tf:"quantity,omitempty"`
+
+	// String list of tags.
+	// Tags attached to the reserved block
+	// +listType=set
+	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
+
+	// One of global_ipv4, public_ipv4, or vrf. Defaults to public_ipv4 for backward
+	// compatibility.
+	// Either global_ipv4, public_ipv4, or vrf. Defaults to public_ipv4.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Only valid and required when type is vrf. VRF ID for type=vrf reservations.
+	// VRF ID for type=vrf reservations
+	// +crossplane:generate:reference:type=Vrf
+	VrfID *string `json:"vrfId,omitempty" tf:"vrf_id,omitempty"`
+
+	// Reference to a Vrf to populate vrfId.
+	// +kubebuilder:validation:Optional
+	VrfIDRef *v1.Reference `json:"vrfIdRef,omitempty" tf:"-"`
+
+	// Selector for a Vrf to populate vrfId.
+	// +kubebuilder:validation:Optional
+	VrfIDSelector *v1.Selector `json:"vrfIdSelector,omitempty" tf:"-"`
+
+	// Wait for the IP reservation block to reach a desired state on resource creation. One of: pending, created. The created state is default and recommended if the addresses are needed within the configuration. An error will be returned if a timeout or the denied state is encountered.
+	// Wait for the IP reservation block to reach a desired state on resource creation. One of: `pending`, `created`. The `created` state is default and recommended if the addresses are needed within the configuration. An error will be returned if a timeout or the `denied` state is encountered.
+	WaitForState *string `json:"waitForState,omitempty" tf:"wait_for_state,omitempty"`
+}
+
 type ReservedIPBlockObservation struct {
 	Address *string `json:"address,omitempty" tf:"address,omitempty"`
 
@@ -32,8 +108,24 @@ type ReservedIPBlockObservation struct {
 	// Address family as integer (4 or 6)
 	AddressFamily *float64 `json:"addressFamily,omitempty" tf:"address_family,omitempty"`
 
+	// Only valid as an argument and required when type is vrf. The size of the network to reserve from an existing VRF ip_range. cidr can only be specified with vrf_id. Range is 22-31. Virtual Circuits require 30-31. Other VRF resources must use a CIDR in the 22-29 range.
+	// the size of the network to reserve from an existing vrf ip_range. `cidr` can only be specified with `vrf_id`. Minimum range is 22-29, with 30-31 supported and necessary for virtual-circuits
+	Cidr *float64 `json:"cidr,omitempty" tf:"cidr,omitempty"`
+
 	// Address and mask in CIDR notation, e.g. 147.229.15.30/31.
 	CidrNotation *string `json:"cidrNotation,omitempty" tf:"cidr_notation,omitempty"`
+
+	// This may be helpful for self-managed IPAM. The object must be valid JSON. This may be helpful for self-managed IPAM. The object must be valid JSON.
+	CustomData *string `json:"customData,omitempty" tf:"custom_data,omitempty"`
+
+	// Arbitrary description.
+	// Arbitrary description
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (Deprecated) Facility where to allocate the public IP address block, makes sense only
+	// if type is public_ipv4 and must be empty if type is global_ipv4. Conflicts with metro. Use metro instead; read the facility to metro migration guide
+	// Facility where to allocate the public IP address block, makes sense only for type==public_ipv4, must be empty for type==global_ipv4, conflicts with metro
+	Facility *string `json:"facility,omitempty" tf:"facility,omitempty"`
 
 	Gateway *string `json:"gateway,omitempty" tf:"gateway,omitempty"`
 
@@ -49,13 +141,48 @@ type ReservedIPBlockObservation struct {
 
 	Management *bool `json:"management,omitempty" tf:"management,omitempty"`
 
+	// Metro where to allocate the public IP address block, makes sense only
+	// if type is public_ipv4 and must be empty if type is global_ipv4. Conflicts with facility.
+	// Metro where to allocate the public IP address block, makes sense only for type==public_ipv4, must be empty for type==global_ipv4, conflicts with facility
+	Metro *string `json:"metro,omitempty" tf:"metro,omitempty"`
+
 	// Mask in decimal notation, e.g. 255.255.255.0.
 	// Mask in decimal notation, e.g. 255.255.255.0
 	Netmask *string `json:"netmask,omitempty" tf:"netmask,omitempty"`
 
+	// Only valid as an argument and required when type is vrf. An unreserved network address from an existing ip_range in the specified VRF.
+	// an unreserved network address from an existing vrf ip_range. `network` can only be specified with vrf_id
+	Network *string `json:"network,omitempty" tf:"network,omitempty"`
+
+	// The metal project ID where to allocate the address block.
+	// The metal project ID where to allocate the address block
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
 	// Boolean flag whether addresses from a block are public.
 	// Flag indicating whether IP block is addressable from the Internet
 	Public *bool `json:"public,omitempty" tf:"public,omitempty"`
+
+	// The number of allocated /32 addresses, a power of 2. Required when type is not vrf.
+	// The number of allocated /32 addresses, a power of 2
+	Quantity *float64 `json:"quantity,omitempty" tf:"quantity,omitempty"`
+
+	// String list of tags.
+	// Tags attached to the reserved block
+	// +listType=set
+	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
+
+	// One of global_ipv4, public_ipv4, or vrf. Defaults to public_ipv4 for backward
+	// compatibility.
+	// Either global_ipv4, public_ipv4, or vrf. Defaults to public_ipv4.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Only valid and required when type is vrf. VRF ID for type=vrf reservations.
+	// VRF ID for type=vrf reservations
+	VrfID *string `json:"vrfId,omitempty" tf:"vrf_id,omitempty"`
+
+	// Wait for the IP reservation block to reach a desired state on resource creation. One of: pending, created. The created state is default and recommended if the addresses are needed within the configuration. An error will be returned if a timeout or the denied state is encountered.
+	// Wait for the IP reservation block to reach a desired state on resource creation. One of: `pending`, `created`. The `created` state is default and recommended if the addresses are needed within the configuration. An error will be returned if a timeout or the `denied` state is encountered.
+	WaitForState *string `json:"waitForState,omitempty" tf:"wait_for_state,omitempty"`
 }
 
 type ReservedIPBlockParameters struct {
@@ -113,6 +240,7 @@ type ReservedIPBlockParameters struct {
 	// String list of tags.
 	// Tags attached to the reserved block
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
 
 	// One of global_ipv4, public_ipv4, or vrf. Defaults to public_ipv4 for backward
@@ -145,6 +273,17 @@ type ReservedIPBlockParameters struct {
 type ReservedIPBlockSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ReservedIPBlockParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ReservedIPBlockInitParameters `json:"initProvider,omitempty"`
 }
 
 // ReservedIPBlockStatus defines the observed state of ReservedIPBlock.
@@ -154,13 +293,14 @@ type ReservedIPBlockStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // ReservedIPBlock is the Schema for the ReservedIPBlocks API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinix}
 type ReservedIPBlock struct {
 	metav1.TypeMeta   `json:",inline"`

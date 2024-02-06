@@ -107,9 +107,6 @@ spec:
                           - name
                           - namespace
                           type: object
-                      required:
-                      - asn
-                      - deploymentType
                       type: object
                     type: array
                   name:
@@ -206,8 +203,137 @@ spec:
                       need to belong to the same organization (passed with organization_id,
                       or default)
                     type: string
-                required:
-                - name
+                type: object
+              initProvider:
+                description: THIS IS A BETA FIELD. It will be honored unless the Management
+                  Policies feature flag is disabled. InitProvider holds the same fields
+                  as ForProvider, with the exception of Identifier and other resource
+                  reference fields. The fields that are in InitProvider are merged
+                  into ForProvider when the resource is created. The same fields are
+                  also added to the terraform ignore_changes hook, to avoid updating
+                  them after creation. This is useful for fields that are required
+                  on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them,
+                  like an autoscaler.
+                properties:
+                  backendTransfer:
+                    description: Enable or disable Backend Transfer, default is false.
+                      Enable or disable [Backend Transfer](https://metal.equinix.com/developers/docs/networking/backend-transfer/),
+                      default is false
+                    type: boolean
+                  bgpConfig:
+                    description: Optional BGP settings. Refer to Equinix Metal guide
+                      for BGP. Optional BGP settings. Refer to [Equinix Metal guide
+                      for BGP](https://metal.equinix.com/developers/docs/networking/local-global-bgp/)
+                    items:
+                      properties:
+                        asn:
+                          description: Autonomous System Number for local BGP deployment.
+                            Autonomous System Number for local BGP deployment
+                          type: number
+                        deploymentType:
+                          description: local or global, the local is likely to be
+                            usable immediately, the global will need to be reviewed
+                            by Equinix Metal engineers. "local" or "global", the local
+                            is likely to be usable immediately, the global will need
+                            to be review by Equinix Metal engineers
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: The name of the project.  The maximum length is 80
+                      characters The name of the project.  The maximum length is 80
+                      characters.
+                    type: string
+                  organizationId:
+                    description: The UUID of organization under which you want to
+                      create the project. If you leave it out, the project will be
+                      created under your the default organization of your account.
+                      The UUID of organization under which you want to create the
+                      project. If you leave it out, the project will be create under
+                      your the default organization of your account
+                    type: string
+                  organizationIdRef:
+                    description: Reference to a Organization to populate organizationId.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  organizationIdSelector:
+                    description: Selector for a Organization to populate organizationId.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  paymentMethodId:
+                    description: The UUID of payment method for this project. The
+                      payment method and the project need to belong to the same organization
+                      (passed with organization_id, or default). The UUID of payment
+                      method for this project. The payment method and the project
+                      need to belong to the same organization (passed with organization_id,
+                      or default)
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -369,17 +495,38 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
           status:
             description: ProjectStatus defines the observed state of Project.
             properties:
               atProvider:
                 properties:
+                  backendTransfer:
+                    description: Enable or disable Backend Transfer, default is false.
+                      Enable or disable [Backend Transfer](https://metal.equinix.com/developers/docs/networking/backend-transfer/),
+                      default is false
+                    type: boolean
                   bgpConfig:
                     description: Optional BGP settings. Refer to Equinix Metal guide
                       for BGP. Optional BGP settings. Refer to [Equinix Metal guide
                       for BGP](https://metal.equinix.com/developers/docs/networking/local-global-bgp/)
                     items:
                       properties:
+                        asn:
+                          description: Autonomous System Number for local BGP deployment.
+                            Autonomous System Number for local BGP deployment
+                          type: number
+                        deploymentType:
+                          description: local or global, the local is likely to be
+                            usable immediately, the global will need to be reviewed
+                            by Equinix Metal engineers. "local" or "global", the local
+                            is likely to be usable immediately, the global will need
+                            to be review by Equinix Metal engineers
+                          type: string
                         maxPrefix:
                           description: The maximum number of route filters allowed
                             per server. The maximum number of route filters allowed
@@ -397,6 +544,27 @@ spec:
                     type: string
                   id:
                     description: The unique ID of the project.
+                    type: string
+                  name:
+                    description: The name of the project.  The maximum length is 80
+                      characters The name of the project.  The maximum length is 80
+                      characters.
+                    type: string
+                  organizationId:
+                    description: The UUID of organization under which you want to
+                      create the project. If you leave it out, the project will be
+                      created under your the default organization of your account.
+                      The UUID of organization under which you want to create the
+                      project. If you leave it out, the project will be create under
+                      your the default organization of your account
+                    type: string
+                  paymentMethodId:
+                    description: The UUID of payment method for this project. The
+                      payment method and the project need to belong to the same organization
+                      (passed with organization_id, or default). The UUID of payment
+                      method for this project. The payment method and the project
+                      need to belong to the same organization (passed with organization_id,
+                      or default)
                     type: string
                   updated:
                     description: The timestamp for the last time the project was updated.

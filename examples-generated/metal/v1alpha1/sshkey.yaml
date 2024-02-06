@@ -1,0 +1,33 @@
+apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
+kind: SSHKey
+metadata:
+  annotations:
+    meta.upbound.io/example-id: metal/v1alpha1/sshkey
+  labels:
+    testing.upbound.io/example-name: key1
+  name: key1
+spec:
+  forProvider:
+    name: terraform-1
+    publicKey: ${file("/home/terraform/.ssh/id_rsa.pub")}
+
+---
+
+apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
+kind: Device
+metadata:
+  annotations:
+    meta.upbound.io/example-id: metal/v1alpha1/sshkey
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    billingCycle: hourly
+    hostname: test-device
+    metro: sv
+    operatingSystem: ubuntu_20_04
+    plan: c3.small.x86
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
