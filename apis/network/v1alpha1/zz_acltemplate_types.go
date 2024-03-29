@@ -75,6 +75,12 @@ type ACLTemplateParameters struct {
 	// ACL template name
 	// +kubebuilder:validation:Required
 	Name *string `json:"name" tf:"name,omitempty"`
+
+	// Unique Identifier for the project resource where the acl template is scoped to.If you
+	// leave it out, the ACL template will be created under the default project id of your organization.
+	// The unique identifier of Project Resource to which ACL template is scoped to
+	// +kubebuilder:validation:Optional
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 }
 
 type DeviceDetailsObservation struct {

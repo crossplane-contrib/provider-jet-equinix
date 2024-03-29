@@ -41,7 +41,7 @@ type GatewayParameters struct {
 
 	// UUID of Public or VRF IP Reservation to associate with the gateway, the
 	// reservation must be in the same metro as the VLAN, conflicts with private_ipv4_subnet_size.
-	// UUID of the Public or VRF IP Reservation to associate, must be in the same metro as the VLAN
+	// UUID of the Public or VRF IP Reservation to associate
 	// +crossplane:generate:reference:type=ReservedIPBlock
 	// +kubebuilder:validation:Optional
 	IPReservationID *string `json:"ipReservationId,omitempty" tf:"ip_reservation_id,omitempty"`
@@ -56,7 +56,7 @@ type GatewayParameters struct {
 
 	// Size of the private IPv4 subnet to create for this metal
 	// gateway, must be one of 8, 16, 32, 64, 128. Conflicts with ip_reservation_id.
-	// Size of the private IPv4 subnet to create for this gateway, one of [8 16 32 64 128]
+	// Size of the private IPv4 subnet to create for this gateway
 	// +kubebuilder:validation:Optional
 	PrivateIPv4SubnetSize *float64 `json:"privateIpv4SubnetSize,omitempty" tf:"private_ipv4_subnet_size,omitempty"`
 

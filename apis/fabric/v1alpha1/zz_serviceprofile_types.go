@@ -30,7 +30,7 @@ type APIConfigObservation struct {
 
 type APIConfigParameters struct {
 
-	// Setting indicating whether the API is available (true) or not (false)
+	// Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
 	// +kubebuilder:validation:Optional
 	APIAvailable *bool `json:"apiAvailable,omitempty" tf:"api_available,omitempty"`
 
@@ -38,7 +38,7 @@ type APIConfigParameters struct {
 	// +kubebuilder:validation:Optional
 	AllowOverSubscription *bool `json:"allowOverSubscription,omitempty" tf:"allow_over_subscription,omitempty"`
 
-	// Bandwidth from api
+	// Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
 	// +kubebuilder:validation:Optional
 	BandwidthFromAPI *bool `json:"bandwidthFromApi,omitempty" tf:"bandwidth_from_api,omitempty"`
 
@@ -50,11 +50,11 @@ type APIConfigParameters struct {
 	// +kubebuilder:validation:Optional
 	EquinixManagedVlan *bool `json:"equinixManagedVlan,omitempty" tf:"equinix_managed_vlan,omitempty"`
 
-	// Integration id
+	// A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
 	// +kubebuilder:validation:Optional
 	IntegrationID *string `json:"integrationId,omitempty" tf:"integration_id,omitempty"`
 
-	// A cap on over subscription
+	// Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
 	// +kubebuilder:validation:Optional
 	OverSubscriptionLimit *float64 `json:"overSubscriptionLimit,omitempty" tf:"over_subscription_limit,omitempty"`
 }
@@ -64,15 +64,15 @@ type AuthenticationKeyObservation struct {
 
 type AuthenticationKeyParameters struct {
 
-	// Description
+	// Description of authorization key
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// Label
+	// Name of the parameter that must be provided to authorize the connection.
 	// +kubebuilder:validation:Optional
 	Label *string `json:"label,omitempty" tf:"label,omitempty"`
 
-	// Required
+	// Requirement to configure an authentication key.
 	// +kubebuilder:validation:Optional
 	Required *bool `json:"required,omitempty" tf:"required,omitempty"`
 }
@@ -112,15 +112,15 @@ type LinkProtocolConfigObservation struct {
 
 type LinkProtocolConfigParameters struct {
 
-	// Port Encapsulation
+	// Data frames encapsulation standard.UNTAGGED - Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
 	// +kubebuilder:validation:Optional
 	Encapsulation *string `json:"encapsulation,omitempty" tf:"encapsulation,omitempty"`
 
-	// Encapsulation strategy
+	// Additional tagging information required by the seller profile.
 	// +kubebuilder:validation:Optional
 	EncapsulationStrategy *string `json:"encapsulationStrategy,omitempty" tf:"encapsulation_strategy,omitempty"`
 
-	// Reuse vlan sTag
+	// Automatically accept subsequent DOT1Q to QINQ connections that use the same authentication key. These connections will have the same VLAN S-tag assigned as the initial connection.
 	// +kubebuilder:validation:Optional
 	ReuseVlanSTag *bool `json:"reuseVlanSTag,omitempty" tf:"reuse_vlan_s_tag,omitempty"`
 }
@@ -305,41 +305,24 @@ type ServiceProfileAccessPointTypeConfigsParameters struct {
 }
 
 type ServiceProfileAccountObservation struct {
+	AccountName *string `json:"accountName,omitempty" tf:"account_name,omitempty"`
+
+	AccountNumber *float64 `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
+
+	GlobalCustID *string `json:"globalCustId,omitempty" tf:"global_cust_id,omitempty"`
+
+	GlobalOrgID *string `json:"globalOrgId,omitempty" tf:"global_org_id,omitempty"`
+
+	GlobalOrganizationName *string `json:"globalOrganizationName,omitempty" tf:"global_organization_name,omitempty"`
+
+	OrgID *float64 `json:"orgId,omitempty" tf:"org_id,omitempty"`
+
+	OrganizationName *string `json:"organizationName,omitempty" tf:"organization_name,omitempty"`
+
+	UcmID *string `json:"ucmId,omitempty" tf:"ucm_id,omitempty"`
 }
 
 type ServiceProfileAccountParameters struct {
-
-	// Account Name
-	// +kubebuilder:validation:Optional
-	AccountName *string `json:"accountName,omitempty" tf:"account_name,omitempty"`
-
-	// Account Number
-	// +kubebuilder:validation:Optional
-	AccountNumber *float64 `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
-
-	// Global Customer organization identifier
-	// +kubebuilder:validation:Optional
-	GlobalCustID *string `json:"globalCustId,omitempty" tf:"global_cust_id,omitempty"`
-
-	// Global organization identifier
-	// +kubebuilder:validation:Optional
-	GlobalOrgID *string `json:"globalOrgId,omitempty" tf:"global_org_id,omitempty"`
-
-	// Global organization name
-	// +kubebuilder:validation:Optional
-	GlobalOrganizationName *string `json:"globalOrganizationName,omitempty" tf:"global_organization_name,omitempty"`
-
-	// Customer organization identifier
-	// +kubebuilder:validation:Optional
-	OrgID *float64 `json:"orgId,omitempty" tf:"org_id,omitempty"`
-
-	// Customer organization name
-	// +kubebuilder:validation:Optional
-	OrganizationName *string `json:"organizationName,omitempty" tf:"organization_name,omitempty"`
-
-	// Enterprise datastore id
-	// +kubebuilder:validation:Optional
-	UcmID *string `json:"ucmId,omitempty" tf:"ucm_id,omitempty"`
 }
 
 type ServiceProfileChangeLogObservation struct {
@@ -395,6 +378,9 @@ type ServiceProfileObservation struct {
 	// +kubebuilder:validation:Optional
 	AccessPointTypeConfigs []ServiceProfileAccessPointTypeConfigsObservation `json:"accessPointTypeConfigs,omitempty" tf:"access_point_type_configs,omitempty"`
 
+	// Service Profile Owner Account Information
+	Account []ServiceProfileAccountObservation `json:"account,omitempty" tf:"account,omitempty"`
+
 	// Captures connection lifecycle change information
 	ChangeLog []ServiceProfileChangeLogObservation `json:"changeLog,omitempty" tf:"change_log,omitempty"`
 
@@ -416,10 +402,6 @@ type ServiceProfileParameters struct {
 	// Access point config information
 	// +kubebuilder:validation:Optional
 	AccessPointTypeConfigs []ServiceProfileAccessPointTypeConfigsParameters `json:"accessPointTypeConfigs,omitempty" tf:"access_point_type_configs,omitempty"`
-
-	// Account
-	// +kubebuilder:validation:Optional
-	Account []ServiceProfileAccountParameters `json:"account,omitempty" tf:"account,omitempty"`
 
 	// Array of contact emails
 	// +kubebuilder:validation:Optional
@@ -457,7 +439,7 @@ type ServiceProfileParameters struct {
 	// +kubebuilder:validation:Optional
 	Project []ServiceProfileProjectParameters `json:"project,omitempty" tf:"project,omitempty"`
 
-	// Self Profile
+	// Self Profile indicating if the profile is created for customer's  self use
 	// +kubebuilder:validation:Optional
 	SelfProfile *bool `json:"selfProfile,omitempty" tf:"self_profile,omitempty"`
 
@@ -486,12 +468,13 @@ type ServiceProfileProjectObservation struct {
 
 	// Unique Resource URL
 	Href *string `json:"href,omitempty" tf:"href,omitempty"`
-
-	// Project Id
-	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 }
 
 type ServiceProfileProjectParameters struct {
+
+	// Project Id
+	// +kubebuilder:validation:Optional
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 }
 
 type VirtualDevicesLocationObservation struct {

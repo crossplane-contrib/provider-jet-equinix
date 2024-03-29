@@ -94,6 +94,12 @@ type DeviceLinkParameters struct {
 	// +kubebuilder:validation:Required
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// Unique Identifier for the project resource where the device link is scoped to.If you
+	// leave it out, the device link will be created under the default project id of your organization.
+	// project_id
+	// +kubebuilder:validation:Optional
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
 	// device link subnet in CIDR format. Not required for link
 	// between self configured devices.
 	// subnet

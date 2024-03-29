@@ -45,7 +45,7 @@ type BGPConfigParameters struct {
 
 	// local or global, the local is likely to be usable immediately, the
 	// global will need to be reviewed by Equinix Metal engineers.
-	// "local" or "global", the local is likely to be usable immediately, the global will need to be review by Equinix Metal engineers
+	// The BGP deployment type, either 'local' or 'global'. The local is likely to be usable immediately, the global will need to be review by Equinix Metal engineers
 	// +kubebuilder:validation:Required
 	DeploymentType *string `json:"deploymentType" tf:"deployment_type,omitempty"`
 
@@ -58,7 +58,7 @@ type BGPConfigParameters struct {
 type ProjectObservation struct {
 
 	// Optional BGP settings. Refer to Equinix Metal guide for BGP.
-	// Optional BGP settings. Refer to [Equinix Metal guide for BGP](https://metal.equinix.com/developers/docs/networking/local-global-bgp/)
+	// Address information block
 	// +kubebuilder:validation:Optional
 	BGPConfig []BGPConfigObservation `json:"bgpConfig,omitempty" tf:"bgp_config,omitempty"`
 
@@ -77,7 +77,7 @@ type ProjectObservation struct {
 type ProjectParameters struct {
 
 	// Optional BGP settings. Refer to Equinix Metal guide for BGP.
-	// Optional BGP settings. Refer to [Equinix Metal guide for BGP](https://metal.equinix.com/developers/docs/networking/local-global-bgp/)
+	// Address information block
 	// +kubebuilder:validation:Optional
 	BGPConfig []BGPConfigParameters `json:"bgpConfig,omitempty" tf:"bgp_config,omitempty"`
 
@@ -87,13 +87,13 @@ type ProjectParameters struct {
 	BackendTransfer *bool `json:"backendTransfer,omitempty" tf:"backend_transfer,omitempty"`
 
 	// The name of the project.  The maximum length is 80 characters
-	// The name of the project.  The maximum length is 80 characters.
+	// The name of the project. The maximum length is 80 characters
 	// +kubebuilder:validation:Required
 	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The UUID of organization under which you want to create the project. If you
 	// leave it out, the project will be created under your the default organization of your account.
-	// The UUID of organization under which you want to create the project. If you leave it out, the project will be create under your the default organization of your account
+	// The UUID of organization under which the project is created
 	// +crossplane:generate:reference:type=Organization
 	// +kubebuilder:validation:Optional
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`

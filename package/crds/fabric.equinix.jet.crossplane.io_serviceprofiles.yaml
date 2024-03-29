@@ -95,11 +95,14 @@ spec:
                                   default is false
                                 type: boolean
                               apiAvailable:
-                                description: Setting indicating whether the API is
-                                  available (true) or not (false)
+                                description: Indicates if it's possible to establish
+                                  connections based on the given service profile using
+                                  the Equinix Fabric API.
                                 type: boolean
                               bandwidthFromApi:
-                                description: Bandwidth from api
+                                description: Indicates if the connection bandwidth
+                                  can be obtained directly from the cloud service
+                                  provider.
                                 type: boolean
                               equinixManagedPort:
                                 description: Setting indicating that the port is managed
@@ -110,10 +113,18 @@ spec:
                                   by Equinix (true) or not (false)
                                 type: boolean
                               integrationId:
-                                description: Integration id
+                                description: A unique identifier issued during onboarding
+                                  and used to integrate the customer's service profile
+                                  with the Equinix Fabric API.
                                 type: string
                               overSubscriptionLimit:
-                                description: A cap on over subscription
+                                description: Port bandwidth multiplier that determines
+                                  the total bandwidth that can be allocated to users
+                                  creating connections to your services. For example,
+                                  a 10 Gbps port combined with an overSubscriptionLimit
+                                  parameter value of 10 allows your subscribers to
+                                  create connections with a total bandwidth of 100
+                                  Gbps.
                                 type: number
                             type: object
                           type: array
@@ -122,13 +133,15 @@ spec:
                           items:
                             properties:
                               description:
-                                description: Description
+                                description: Description of authorization key
                                 type: string
                               label:
-                                description: Label
+                                description: Name of the parameter that must be provided
+                                  to authorize the connection.
                                 type: string
                               required:
-                                description: Required
+                                description: Requirement to configure an authentication
+                                  key.
                                 type: boolean
                             type: object
                           type: array
@@ -150,13 +163,20 @@ spec:
                           items:
                             properties:
                               encapsulation:
-                                description: Port Encapsulation
+                                description: Data frames encapsulation standard.UNTAGGED
+                                  - Untagged encapsulation for EPL connections. DOT1Q
+                                  - DOT1Q encapsulation standard. QINQ - QINQ encapsulation
+                                  standard.
                                 type: string
                               encapsulationStrategy:
-                                description: Encapsulation strategy
+                                description: Additional tagging information required
+                                  by the seller profile.
                                 type: string
                               reuseVlanSTag:
-                                description: Reuse vlan sTag
+                                description: Automatically accept subsequent DOT1Q
+                                  to QINQ connections that use the same authentication
+                                  key. These connections will have the same VLAN S-tag
+                                  assigned as the initial connection.
                                 type: boolean
                             type: object
                           type: array
@@ -170,36 +190,6 @@ spec:
                           type: string
                       required:
                       - type
-                      type: object
-                    type: array
-                  account:
-                    description: Account
-                    items:
-                      properties:
-                        accountName:
-                          description: Account Name
-                          type: string
-                        accountNumber:
-                          description: Account Number
-                          type: number
-                        globalCustId:
-                          description: Global Customer organization identifier
-                          type: string
-                        globalOrgId:
-                          description: Global organization identifier
-                          type: string
-                        globalOrganizationName:
-                          description: Global organization name
-                          type: string
-                        orgId:
-                          description: Customer organization identifier
-                          type: number
-                        organizationName:
-                          description: Customer organization name
-                          type: string
-                        ucmId:
-                          description: Enterprise datastore id
-                          type: string
                       type: object
                     type: array
                   allowedEmails:
@@ -366,10 +356,15 @@ spec:
                   project:
                     description: Project information
                     items:
+                      properties:
+                        projectId:
+                          description: Project Id
+                          type: string
                       type: object
                     type: array
                   selfProfile:
-                    description: Self Profile
+                    description: Self Profile indicating if the profile is created
+                      for customer's  self use
                     type: boolean
                   state:
                     description: Service profile state - ACTIVE, PENDING_APPROVAL,
@@ -613,6 +608,28 @@ spec:
                           type: string
                       type: object
                     type: array
+                  account:
+                    description: Service Profile Owner Account Information
+                    items:
+                      properties:
+                        accountName:
+                          type: string
+                        accountNumber:
+                          type: number
+                        globalCustId:
+                          type: string
+                        globalOrgId:
+                          type: string
+                        globalOrganizationName:
+                          type: string
+                        orgId:
+                          type: number
+                        organizationName:
+                          type: string
+                        ucmId:
+                          type: string
+                      type: object
+                    type: array
                   changeLog:
                     description: Captures connection lifecycle change information
                     items:
@@ -654,9 +671,6 @@ spec:
                       properties:
                         href:
                           description: Unique Resource URL
-                          type: string
-                        projectId:
-                          description: Project Id
                           type: string
                       type: object
                     type: array

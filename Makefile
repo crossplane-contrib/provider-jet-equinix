@@ -121,7 +121,8 @@ pull-docs:
 	fi
 	@git -C "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" sparse-checkout set "$(TERRAFORM_DOCS_PATH)"
 	@echo "Removing examples known to cause parser errors for examples-generated"
-	@rm -f "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/equinix_metal_port_vlan_attachment.md"
+	@rm -f "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/equinix_metal_port_vlan_attachment.md" \
+		"$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/equinix_fabric_routing_protocol.md"
 
  generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
 

@@ -76,6 +76,9 @@ spec:
                   description:
                     description: Customer-provided Fabric Cloud Router description
                     type: string
+                  href:
+                    description: Fabric Cloud Router URI information
+                    type: string
                   location:
                     description: Fabric Cloud Router location
                     items:
@@ -127,13 +130,19 @@ spec:
                         billingTier:
                           description: Billing tier for connection bandwidth
                           type: string
+                        orderId:
+                          description: Order Identification
+                          type: string
+                        orderNumber:
+                          description: Order Reference Number
+                          type: string
                         purchaseOrderNumber:
                           description: Purchase order number
                           type: string
                       type: object
                     type: array
                   package:
-                    description: Fabric Cloud Router location
+                    description: Fabric Cloud Router Package Type
                     items:
                       properties:
                         code:
@@ -144,7 +153,9 @@ spec:
                       type: object
                     type: array
                   project:
-                    description: Fabric Cloud Router project
+                    description: 'Customer resource hierarchy project information.Applicable
+                      to customers onboarded to Equinix Identity and Access Management.
+                      For more information see Identity and Access Management: Projects'
                     items:
                       properties:
                         href:
@@ -156,13 +167,19 @@ spec:
                       type: object
                     type: array
                   type:
-                    description: Defines the FCR type like XF_ROUTER
+                    description: Defines the FCR type like; XF_ROUTER
+                    type: string
+                  uuid:
+                    description: Equinix-assigned Fabric Cloud Router identifier
                     type: string
                 required:
+                - account
                 - location
                 - name
                 - notifications
+                - order
                 - package
+                - project
                 - type
                 type: object
               providerConfigRef:
@@ -342,12 +359,12 @@ spec:
               atProvider:
                 properties:
                   bgpIpv4RoutesCount:
-                    description: Access point used and maximum number of IPv4 BGP
-                      routes
+                    description: Number of IPv4 BGP routes in use (including non-distinct
+                      prefixes)
                     type: number
                   bgpIpv6RoutesCount:
-                    description: Access point used and maximum number of IPv6 BGP
-                      routes
+                    description: Number of IPv6 BGP routes in use (including non-distinct
+                      prefixes)
                     type: number
                   changeLog:
                     description: Captures Fabric Cloud Router lifecycle change information
@@ -380,29 +397,20 @@ spec:
                       type: object
                     type: array
                   connectionsCount:
-                    description: Number of connections associated with this Access
-                      point
+                    description: Number of connections associated with this Fabric
+                      Cloud Router instance
+                    type: number
+                  distinctIpv4PrefixesCount:
+                    description: Number of distinct IPv4 routes
+                    type: number
+                  distinctIpv6PrefixesCount:
+                    description: Number of distinct IPv6 routes
                     type: number
                   equinixAsn:
                     description: Equinix ASN
                     type: number
-                  href:
-                    description: Fabric Cloud Router URI information
-                    type: string
                   id:
                     type: string
-                  order:
-                    description: Order information related to this Fabric Cloud Router
-                    items:
-                      properties:
-                        orderId:
-                          description: Order Identification
-                          type: string
-                        orderNumber:
-                          description: Order Reference Number
-                          type: string
-                      type: object
-                    type: array
                   state:
                     description: Fabric Cloud Router overall state
                     type: string

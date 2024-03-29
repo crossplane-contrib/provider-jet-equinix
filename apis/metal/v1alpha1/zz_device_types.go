@@ -66,10 +66,6 @@ type DeviceObservation struct {
 	// The ID of the device.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// Whether the device is locked.
-	// Whether the device is locked
-	Locked *bool `json:"locked,omitempty" tf:"locked,omitempty"`
-
 	// The device's private and public IP (v4 and v6) network details. See
 	// Network Attribute below for more details.
 	// The device's private and public IP (v4 and v6) network details. When a device is run without any special network configuration, it will have 3 addresses: public ipv4, private ipv4 and ipv6
@@ -182,6 +178,11 @@ type DeviceParameters struct {
 	// URL pointing to a hosted iPXE script. More
 	// +kubebuilder:validation:Optional
 	IpxeScriptURL *string `json:"ipxeScriptUrl,omitempty" tf:"ipxe_script_url,omitempty"`
+
+	// Whether the device is locked or unlocked. Locking a device prevents you from deleting or reinstalling the device or performing a firmware update on the device, and it prevents an instance with a termination time set from being reclaimed, even if the termination time was reached
+	// Whether the device is locked or unlocked. Locking a device prevents you from deleting or reinstalling the device or performing a firmware update on the device, and it prevents an instance with a termination time set from being reclaimed, even if the termination time was reached
+	// +kubebuilder:validation:Optional
+	Locked *bool `json:"locked,omitempty" tf:"locked,omitempty"`
 
 	// Metro area for the new device. Conflicts with facilities.
 	// Metro area for the new device. Conflicts with facilities

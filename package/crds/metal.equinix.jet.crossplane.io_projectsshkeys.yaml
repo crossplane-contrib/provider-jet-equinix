@@ -145,8 +145,7 @@ spec:
                     type: object
                   publicKey:
                     description: The public key. If this is a file, it can be read
-                      using the file interpolation function. The public key. If this
-                      is a file, it
+                      using the file interpolation function. The public key
                     type: string
                 required:
                 - name

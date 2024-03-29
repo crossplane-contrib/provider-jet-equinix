@@ -69,7 +69,7 @@ type ProjectSSHKeyParameters struct {
 	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
 	// The public key. If this is a file, it can be read using the file interpolation function.
-	// The public key. If this is a file, it
+	// The public key
 	// +kubebuilder:validation:Required
 	PublicKey *string `json:"publicKey" tf:"public_key,omitempty"`
 }

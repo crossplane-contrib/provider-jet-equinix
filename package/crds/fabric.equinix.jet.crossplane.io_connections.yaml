@@ -82,7 +82,8 @@ spec:
                                   connections
                                 type: string
                               gateway:
-                                description: Cloud Router access point information
+                                description: '**Deprecated** `gateway` Use `router`
+                                  attribute instead'
                                 items:
                                   properties:
                                     uuid:
@@ -95,6 +96,9 @@ spec:
                                 description: Virtual device interface
                                 items:
                                   properties:
+                                    id:
+                                      description: id
+                                      type: number
                                     type:
                                       description: Interface type
                                       type: string
@@ -187,26 +191,11 @@ spec:
                                 type: string
                               router:
                                 description: Cloud Router access point information
+                                  that replaces `gateway`
                                 items:
                                   properties:
                                     uuid:
                                       description: Equinix-assigned virtual gateway
-                                        identifier
-                                      type: string
-                                  type: object
-                                type: array
-                              routingProtocols:
-                                description: Access point routing protocols configuration
-                                items:
-                                  properties:
-                                    state:
-                                      description: Routing protocol instance state
-                                      type: string
-                                    type:
-                                      description: Routing Protocol type
-                                      type: string
-                                    uuid:
-                                      description: Equinix-assigned Routing protocol
                                         identifier
                                       type: string
                                   type: object
@@ -277,6 +266,9 @@ spec:
                   bandwidth:
                     description: Connection bandwidth in Mbps
                     type: number
+                  description:
+                    description: Customer-provided connection description
+                    type: string
                   name:
                     description: Connection name. An alpha-numeric 24 characters string
                       which can include only hyphens and underscores
@@ -304,11 +296,17 @@ spec:
                       type: object
                     type: array
                   order:
-                    description: Order related to this connection information
+                    description: Order details
                     items:
                       properties:
                         billingTier:
                           description: Billing tier for connection bandwidth
+                          type: string
+                        orderId:
+                          description: Order Identification
+                          type: string
+                        orderNumber:
+                          description: Order Reference Number
                           type: string
                         purchaseOrderNumber:
                           description: Purchase order number
@@ -318,23 +316,31 @@ spec:
                   project:
                     description: Project information
                     items:
+                      properties:
+                        projectId:
+                          description: Project Id
+                          type: string
                       type: object
                     type: array
                   redundancy:
-                    description: Redundancy Information
+                    description: Connection Redundancy Configuration
                     items:
                       properties:
                         group:
-                          description: Redundancy group identifier
+                          description: Redundancy group identifier (Use the redundancy.0.group
+                            UUID of primary connection; e.g. one(equinix_fabric_connection.primary_port_connection.redundancy).group
+                            or equinix_fabric_connection.primary_port_connection.redundancy.0.group)
                           type: string
                         priority:
-                          description: Priority type- PRIMARY, SECONDARY
+                          description: Connection priority in redundancy group - PRIMARY,
+                            SECONDARY
                           type: string
                       type: object
                     type: array
                   type:
-                    description: Defines the connection type like VG_VC, EVPL_VC,
-                      EPL_VC, EC_VC, IP_VC, IPWAN_VC,ACCESS_EPL_VC
+                    description: Defines the connection type like EVPL_VC, EPL_VC,
+                      IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC,
+                      EC_VC
                     type: string
                   zSide:
                     description: Destination or Provider side connection configuration
@@ -355,7 +361,8 @@ spec:
                                   connections
                                 type: string
                               gateway:
-                                description: Cloud Router access point information
+                                description: '**Deprecated** `gateway` Use `router`
+                                  attribute instead'
                                 items:
                                   properties:
                                     uuid:
@@ -368,6 +375,9 @@ spec:
                                 description: Virtual device interface
                                 items:
                                   properties:
+                                    id:
+                                      description: id
+                                      type: number
                                     type:
                                       description: Interface type
                                       type: string
@@ -460,26 +470,11 @@ spec:
                                 type: string
                               router:
                                 description: Cloud Router access point information
+                                  that replaces `gateway`
                                 items:
                                   properties:
                                     uuid:
                                       description: Equinix-assigned virtual gateway
-                                        identifier
-                                      type: string
-                                  type: object
-                                type: array
-                              routingProtocols:
-                                description: Access point routing protocols configuration
-                                items:
-                                  properties:
-                                    state:
-                                      description: Routing protocol instance state
-                                      type: string
-                                    type:
-                                      description: Routing Protocol type
-                                      type: string
-                                    uuid:
-                                      description: Equinix-assigned Routing protocol
                                         identifier
                                       type: string
                                   type: object
@@ -545,6 +540,7 @@ spec:
                 - bandwidth
                 - name
                 - notifications
+                - order
                 - type
                 - zSide
                 type: object
@@ -738,44 +734,44 @@ spec:
                                 items:
                                   properties:
                                     accountName:
-                                      description: Account Name
+                                      description: Legal name of the accountholder.
                                       type: string
                                     accountNumber:
-                                      description: Account Number
+                                      description: Equinix-assigned account number.
                                       type: number
                                     globalCustId:
-                                      description: Global Customer organization identifier
+                                      description: Equinix-assigned ID of the subscriber's
+                                        parent organization.
                                       type: string
                                     globalOrgId:
-                                      description: Global organization identifier
+                                      description: Equinix-assigned ID of the subscriber's
+                                        parent organization.
                                       type: string
                                     globalOrganizationName:
-                                      description: Global organization name
+                                      description: Equinix-assigned name of the subscriber's
+                                        parent organization.
                                       type: string
                                     orgId:
-                                      description: Customer organization identifier
+                                      description: Equinix-assigned ID of the subscriber's
+                                        organization.
                                       type: number
                                     organizationName:
-                                      description: Customer organization name
+                                      description: Equinix-assigned name of the subscriber's
+                                        organization.
+                                      type: string
+                                    ucmId:
+                                      description: Enterprise datastore id
                                       type: string
                                   type: object
                                 type: array
                               gateway:
-                                description: Cloud Router access point information
+                                description: '**Deprecated** `gateway` Use `router`
+                                  attribute instead'
                                 items:
                                   properties:
                                     href:
                                       description: Unique Resource Identifier
                                       type: string
-                                  type: object
-                                type: array
-                              interface:
-                                description: Virtual device interface
-                                items:
-                                  properties:
-                                    id:
-                                      description: id
-                                      type: number
                                   type: object
                                 type: array
                               network:
@@ -801,6 +797,10 @@ spec:
                                       description: Redundancy Information
                                       items:
                                         properties:
+                                          enabled:
+                                            type: boolean
+                                          group:
+                                            type: string
                                           priority:
                                             type: string
                                         type: object
@@ -835,6 +835,7 @@ spec:
                                 type: array
                               router:
                                 description: Cloud Router access point information
+                                  that replaces `gateway`
                                 items:
                                   properties:
                                     href:
@@ -890,6 +891,8 @@ spec:
                         orgId:
                           type: number
                         organizationName:
+                          type: string
+                        ucmId:
                           type: string
                       type: object
                     type: array
@@ -969,18 +972,6 @@ spec:
                           type: string
                       type: object
                     type: array
-                  order:
-                    description: Order related to this connection information
-                    items:
-                      properties:
-                        orderId:
-                          description: Order Identification
-                          type: string
-                        orderNumber:
-                          description: Order Reference Number
-                          type: string
-                      type: object
-                    type: array
                   project:
                     description: Project information
                     items:
@@ -988,13 +979,13 @@ spec:
                         href:
                           description: Unique Resource URL
                           type: string
-                        projectId:
-                          description: Project Id
-                          type: string
                       type: object
                     type: array
                   state:
                     description: Connection overall state
+                    type: string
+                  uuid:
+                    description: Equinix-assigned connection identifier
                     type: string
                   zSide:
                     description: Destination or Provider side connection configuration
@@ -1010,44 +1001,44 @@ spec:
                                 items:
                                   properties:
                                     accountName:
-                                      description: Account Name
+                                      description: Legal name of the accountholder.
                                       type: string
                                     accountNumber:
-                                      description: Account Number
+                                      description: Equinix-assigned account number.
                                       type: number
                                     globalCustId:
-                                      description: Global Customer organization identifier
+                                      description: Equinix-assigned ID of the subscriber's
+                                        parent organization.
                                       type: string
                                     globalOrgId:
-                                      description: Global organization identifier
+                                      description: Equinix-assigned ID of the subscriber's
+                                        parent organization.
                                       type: string
                                     globalOrganizationName:
-                                      description: Global organization name
+                                      description: Equinix-assigned name of the subscriber's
+                                        parent organization.
                                       type: string
                                     orgId:
-                                      description: Customer organization identifier
+                                      description: Equinix-assigned ID of the subscriber's
+                                        organization.
                                       type: number
                                     organizationName:
-                                      description: Customer organization name
+                                      description: Equinix-assigned name of the subscriber's
+                                        organization.
+                                      type: string
+                                    ucmId:
+                                      description: Enterprise datastore id
                                       type: string
                                   type: object
                                 type: array
                               gateway:
-                                description: Cloud Router access point information
+                                description: '**Deprecated** `gateway` Use `router`
+                                  attribute instead'
                                 items:
                                   properties:
                                     href:
                                       description: Unique Resource Identifier
                                       type: string
-                                  type: object
-                                type: array
-                              interface:
-                                description: Virtual device interface
-                                items:
-                                  properties:
-                                    id:
-                                      description: id
-                                      type: number
                                   type: object
                                 type: array
                               network:
@@ -1073,6 +1064,10 @@ spec:
                                       description: Redundancy Information
                                       items:
                                         properties:
+                                          enabled:
+                                            type: boolean
+                                          group:
+                                            type: string
                                           priority:
                                             type: string
                                         type: object
@@ -1107,6 +1102,7 @@ spec:
                                 type: array
                               router:
                                 description: Cloud Router access point information
+                                  that replaces `gateway`
                                 items:
                                   properties:
                                     href:

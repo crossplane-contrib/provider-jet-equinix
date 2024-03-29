@@ -73,17 +73,6 @@ type BfdParameters struct {
 	Interval *string `json:"interval,omitempty" tf:"interval,omitempty"`
 }
 
-type ChangeObservation struct {
-	Href *string `json:"href,omitempty" tf:"href,omitempty"`
-
-	Type *string `json:"type,omitempty" tf:"type,omitempty"`
-
-	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
-}
-
-type ChangeParameters struct {
-}
-
 type DirectIPv4Observation struct {
 }
 
@@ -159,6 +148,17 @@ type RoutingProtocolChangeLogObservation struct {
 type RoutingProtocolChangeLogParameters struct {
 }
 
+type RoutingProtocolChangeObservation struct {
+	Href *string `json:"href,omitempty" tf:"href,omitempty"`
+
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
+type RoutingProtocolChangeParameters struct {
+}
+
 type RoutingProtocolObservation struct {
 
 	// Routing Protocol BGP IPv4
@@ -170,7 +170,7 @@ type RoutingProtocolObservation struct {
 	BGPIPv6 []BGPIPv6Observation `json:"bgpIpv6,omitempty" tf:"bgp_ipv6,omitempty"`
 
 	// Routing Protocol configuration Changes
-	Change []ChangeObservation `json:"change,omitempty" tf:"change,omitempty"`
+	Change []RoutingProtocolChangeObservation `json:"change,omitempty" tf:"change,omitempty"`
 
 	// Captures Routing Protocol lifecycle change information
 	ChangeLog []RoutingProtocolChangeLogObservation `json:"changeLog,omitempty" tf:"change_log,omitempty"`

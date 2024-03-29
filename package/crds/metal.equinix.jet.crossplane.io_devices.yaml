@@ -198,6 +198,17 @@ spec:
                       is in the Custom iPXE doc. URL pointing to a hosted iPXE script.
                       More
                     type: string
+                  locked:
+                    description: Whether the device is locked or unlocked. Locking
+                      a device prevents you from deleting or reinstalling the device
+                      or performing a firmware update on the device, and it prevents
+                      an instance with a termination time set from being reclaimed,
+                      even if the termination time was reached Whether the device
+                      is locked or unlocked. Locking a device prevents you from deleting
+                      or reinstalling the device or performing a firmware update on
+                      the device, and it prevents an instance with a termination time
+                      set from being reclaimed, even if the termination time was reached
+                    type: boolean
                   metro:
                     description: Metro area for the new device. Conflicts with facilities.
                       Metro area for the new device. Conflicts with facilities
@@ -631,10 +642,6 @@ spec:
                   id:
                     description: The ID of the device.
                     type: string
-                  locked:
-                    description: Whether the device is locked. Whether the device
-                      is locked
-                    type: boolean
                   network:
                     description: 'The device''s private and public IP (v4 and v6)
                       network details. See Network Attribute below for more details.

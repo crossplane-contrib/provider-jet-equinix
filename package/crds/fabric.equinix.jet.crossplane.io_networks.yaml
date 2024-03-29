@@ -5,18 +5,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.8.0
   creationTimestamp: null
-  name: organizations.metal.equinix.jet.crossplane.io
+  name: networks.fabric.equinix.jet.crossplane.io
 spec:
-  group: metal.equinix.jet.crossplane.io
+  group: fabric.equinix.jet.crossplane.io
   names:
     categories:
     - crossplane
     - managed
     - equinix
-    kind: Organization
-    listKind: OrganizationList
-    plural: organizations
-    singular: organization
+    kind: Network
+    listKind: NetworkList
+    plural: networks
+    singular: network
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Organization is the Schema for the Organizations API.
+        description: Network is the Schema for the Networks API. <no value>
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -50,7 +50,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: OrganizationSpec defines the desired state of Organization
+            description: NetworkSpec defines the desired state of Network
             properties:
               deletionPolicy:
                 default: Delete
@@ -63,52 +63,73 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  address:
-                    description: An object that has the address information. See Address
-                      below for more details. Address information block
+                  location:
+                    description: Fabric Network location
                     items:
                       properties:
-                        address:
-                          description: Postal address. Postal address
+                        ibx:
+                          description: IBX Code
                           type: string
-                        city:
-                          description: City name. City name
+                        metroCode:
+                          description: Access point metro code
                           type: string
-                        country:
-                          description: Two letter country code (ISO 3166-1 alpha-2),
-                            e.g. US. Two letter country code (ISO 3166-1 alpha-2),
-                            e.g. US
+                        metroName:
+                          description: Access point metro name
                           type: string
-                        state:
-                          description: State name. State name
+                        region:
+                          description: Access point region
                           type: string
-                        zipCode:
-                          description: Zip Code. Zip Code
-                          type: string
-                      required:
-                      - address
-                      - city
-                      - country
-                      - zipCode
                       type: object
                     type: array
-                  description:
-                    description: Description string. Description string
-                    type: string
-                  logo:
-                    description: Logo URL. Logo URL
-                    type: string
                   name:
-                    description: The name of the Organization. The name of the Organization
+                    description: Fabric Network name. An alpha-numeric 24 characters
+                      string which can include only hyphens and underscores
                     type: string
-                  twitter:
-                    description: Twitter handle. Twitter handle
+                  notifications:
+                    description: Preferences for notifications on Fabric Network configuration
+                      or status changes
+                    items:
+                      properties:
+                        emails:
+                          description: Array of contact emails
+                          items:
+                            type: string
+                          type: array
+                        sendInterval:
+                          description: Send interval
+                          type: string
+                        type:
+                          description: Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS,
+                            NOTIFICATIONS
+                          type: string
+                      required:
+                      - emails
+                      - type
+                      type: object
+                    type: array
+                  project:
+                    description: Fabric Network project
+                    items:
+                      properties:
+                        projectId:
+                          description: Customer project identifier
+                          type: string
+                      required:
+                      - projectId
+                      type: object
+                    type: array
+                  scope:
+                    description: Fabric Network scope
                     type: string
-                  website:
-                    description: Website link. Website link
+                  type:
+                    description: Supported Network types - EVPLAN, EPLAN, IPWAN
                     type: string
                 required:
                 - name
+                - notifications
+                - project
+                - scope
+                - type
                 type: object
               providerConfigRef:
                 default:
@@ -282,19 +303,75 @@ spec:
             - forProvider
             type: object
           status:
-            description: OrganizationStatus defines the observed state of Organization.
+            description: NetworkStatus defines the observed state of Network.
             properties:
               atProvider:
                 properties:
-                  created:
-                    description: The timestamp for when the organization was created.
+                  change:
+                    description: Information on asset change operation
+                    items:
+                      properties:
+                        href:
+                          type: string
+                        type:
+                          type: string
+                        uuid:
+                          type: string
+                      type: object
+                    type: array
+                  changeLog:
+                    description: A permanent record of asset creation, modification,
+                      or deletion
+                    items:
+                      properties:
+                        createdBy:
+                          type: string
+                        createdByEmail:
+                          type: string
+                        createdByFullName:
+                          type: string
+                        createdDateTime:
+                          type: string
+                        deletedBy:
+                          type: string
+                        deletedByEmail:
+                          type: string
+                        deletedByFullName:
+                          type: string
+                        deletedDateTime:
+                          type: string
+                        updatedBy:
+                          type: string
+                        updatedByEmail:
+                          type: string
+                        updatedByFullName:
+                          type: string
+                        updatedDateTime:
+                          type: string
+                      type: object
+                    type: array
+                  connectionsCount:
+                    description: Number of connections associated with this network
+                    type: number
+                  href:
+                    description: Fabric Network URI information
                     type: string
                   id:
-                    description: The unique ID of the organization.
                     type: string
-                  updated:
-                    description: The timestamp for the last time the organization
-                      was updated.
+                  operation:
+                    description: Network operation information that is associated
+                      with this Fabric Network
+                    items:
+                      properties:
+                        equinixStatus:
+                          type: string
+                      type: object
+                    type: array
+                  state:
+                    description: Fabric Network overall state
+                    type: string
+                  uuid:
+                    description: Equinix-assigned network identifier
                     type: string
                 type: object
               conditions:
