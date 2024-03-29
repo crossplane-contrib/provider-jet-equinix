@@ -121,6 +121,13 @@ spec:
                   name:
                     description: ACL template name. ACL template name
                     type: string
+                  projectId:
+                    description: Unique Identifier for the project resource where
+                      the acl template is scoped to.If you leave it out, the ACL template
+                      will be created under the default project id of your organization.
+                      The unique identifier of Project Resource to which ACL template
+                      is scoped to
+                    type: string
                 required:
                 - inboundRule
                 - name

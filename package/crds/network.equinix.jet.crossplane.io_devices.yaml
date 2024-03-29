@@ -354,9 +354,18 @@ spec:
                       or INTERNET-ACCESS-WITH-PRVT-MGMT'
                     type: string
                   coreCount:
-                    description: Number of CPU cores used by device. Number of CPU
-                      cores used by device
+                    description: 'Number of CPU cores used by device. (NOTE: Use this
+                      field to resize your device. When resizing your HA devices,
+                      primary device will be upgraded first. If the upgrade failed,
+                      device will be automatically rolled back to the previous state
+                      with original core number.) Number of CPU cores used by device'
                     type: number
+                  diverseDeviceId:
+                    description: Unique ID of an existing device. Use this field to
+                      let Equinix know if you want your new device to be in a different
+                      location from any existing virtual device. This field is only
+                      meaningful for single devices. Unique ID of an existing device
+                    type: string
                   hostname:
                     description: Device hostname prefix. Device hostname prefix
                     type: string
@@ -408,6 +417,13 @@ spec:
                   packageCode:
                     description: Device software package code. Device software package
                       code
+                    type: string
+                  projectId:
+                    description: Unique Identifier for the project resource where
+                      the device is scoped to.If you leave it out, the device will
+                      be created under the default project id of your organization.
+                      The unique identifier of Project Resource to which device is
+                      scoped to
                     type: string
                   purchaseOrderNumber:
                     description: Purchase order number associated with a device order.
@@ -809,6 +825,12 @@ spec:
                           type: number
                       type: object
                     type: array
+                  diverseDeviceName:
+                    description: Name of the device with diverse device UUID. This
+                      field is returned in device details if the device is created
+                      by passing diverse_device_id. Diverse Device Name of an existing
+                      device
+                    type: string
                   ibx:
                     description: Device location Equinix Business Exchange name. Device
                       location Equinix Business Exchange name
@@ -845,7 +867,8 @@ spec:
                           description: Device provisioning status. Possible values
                             are INITIALIZING, PROVISIONING, WAITING_FOR_PRIMARY, WAITING_FOR_SECONDARY,
                             WAITING_FOR_REPLICA_CLUSTER_NODES, CLUSTER_SETUP_IN_PROGRESS,
-                            FAILED, PROVISIONED, DEPROVISIONING, DEPROVISIONED.
+                            FAILED, PROVISIONED, DEPROVISIONING, DEPROVISIONED, RESOURCE_UPGRADE_IN_PROGRESS,
+                            RESOURCE_UPGRADE_FAILED.
                           type: string
                         type:
                           description: interface type.
@@ -915,7 +938,8 @@ spec:
                                   values are INITIALIZING, PROVISIONING, WAITING_FOR_PRIMARY,
                                   WAITING_FOR_SECONDARY, WAITING_FOR_REPLICA_CLUSTER_NODES,
                                   CLUSTER_SETUP_IN_PROGRESS, FAILED, PROVISIONED,
-                                  DEPROVISIONING, DEPROVISIONED.
+                                  DEPROVISIONING, DEPROVISIONED, RESOURCE_UPGRADE_IN_PROGRESS,
+                                  RESOURCE_UPGRADE_FAILED.
                                 type: string
                               type:
                                 description: interface type.
@@ -926,6 +950,13 @@ spec:
                           description: Device license registration status. Possible
                             values are APPLYING_LICENSE, REGISTERED, APPLIED, WAITING_FOR_CLUSTER_SETUP,
                             REGISTRATION_FAILED. Device license registration status
+                          type: string
+                        projectId:
+                          description: Unique Identifier for the project resource
+                            where the device is scoped to.If you leave it out, the
+                            device will be created under the default project id of
+                            your organization. The unique identifier of Project Resource
+                            to which device is scoped to
                           type: string
                         redundancyType:
                           description: Device redundancy type applicable for HA devices,
@@ -952,8 +983,8 @@ spec:
                           description: Device provisioning status. Possible values
                             are INITIALIZING, PROVISIONING, WAITING_FOR_PRIMARY, WAITING_FOR_SECONDARY,
                             WAITING_FOR_REPLICA_CLUSTER_NODES, CLUSTER_SETUP_IN_PROGRESS,
-                            FAILED, PROVISIONED, DEPROVISIONING, DEPROVISIONED. Device
-                            provisioning status
+                            FAILED, PROVISIONED, DEPROVISIONING, DEPROVISIONED, RESOURCE_UPGRADE_IN_PROGRESS,
+                            RESOURCE_UPGRADE_FAILED. Device provisioning status
                           type: string
                         uuid:
                           description: Device unique identifier. Device unique identifier
@@ -976,7 +1007,8 @@ spec:
                     description: Device provisioning status. Possible values are INITIALIZING,
                       PROVISIONING, WAITING_FOR_PRIMARY, WAITING_FOR_SECONDARY, WAITING_FOR_REPLICA_CLUSTER_NODES,
                       CLUSTER_SETUP_IN_PROGRESS, FAILED, PROVISIONED, DEPROVISIONING,
-                      DEPROVISIONED. Device provisioning status
+                      DEPROVISIONED, RESOURCE_UPGRADE_IN_PROGRESS, RESOURCE_UPGRADE_FAILED.
+                      Device provisioning status
                     type: string
                   uuid:
                     description: Device unique identifier. Device unique identifier

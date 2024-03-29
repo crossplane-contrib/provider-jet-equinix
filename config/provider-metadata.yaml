@@ -448,15 +448,18 @@ resources:
         importStatements: []
     equinix_fabric_cloud_router Resource - terraform-provider-equinix:
         subCategory: Fabric
-        description: Fabric V4 API compatible resource allows creation and management of Equinix Fabric Cloud Router ~> Note Equinix Fabric v4 resources and datasources are currently in Beta. The interfaces related to equinix_fabric_ resources and datasources may change ahead of general availability. Please, do not hesitate to report any problems that you experience by opening a new issue https://github.com/equinix/terraform-provider-equinix/issues/new?template=bug.md
+        description: Fabric V4 API compatible resource allows creation and management of Equinix Fabric Cloud Router
         name: equinix_fabric_cloud_router Resource - terraform-provider-equinix
         title: equinix_fabric_cloud_router Resource - terraform-provider-equinix
         argumentDocs:
-            account: '(Block Set, Max: 1) Customer account information that is associated with this Fabric Cloud Router (see below for nested schema)'
+            account: '(Block Set, Min: 1, Max: 1) Customer account information that is associated with this Fabric Cloud Router (see below for nested schema)'
             account_number: (Number) Account Number
+            bgp_ipv4_routes_count: (Number) Number of IPv4 BGP routes in use (including non-distinct prefixes)
+            bgp_ipv6_routes_count: (Number) Number of IPv6 BGP routes in use (including non-distinct prefixes)
             billing_tier: (String) Billing tier for connection bandwidth
             change_log: (Set of Object) Captures Fabric Cloud Router lifecycle change information (see below for nested schema)
             code: (String) Fabric Cloud Router package code
+            connections_count: (Number) Number of connections associated with this Fabric Cloud Router instance
             create: (String)
             created_by: (String)
             created_by_email: (String)
@@ -468,6 +471,8 @@ resources:
             deleted_by_full_name: (String)
             deleted_date_time: (String)
             description: (String) Customer-provided Fabric Cloud Router description
+            distinct_ipv4_prefixes_count: (Number) Number of distinct IPv4 routes
+            distinct_ipv6_prefixes_count: (Number) Number of distinct IPv6 routes
             emails: (List of String) Array of contact emails
             equinix_asn: (Number) Equinix ASN
             href: (String) Fabric Cloud Router URI information
@@ -478,11 +483,11 @@ resources:
             metro_name: (String) Access point metro name
             name: (String) Fabric Cloud Router name. An alpha-numeric 24 characters string which can include only hyphens and underscores
             notifications: '(Block List, Min: 1) Preferences for notifications on Fabric Cloud Router configuration or status changes (see below for nested schema)'
-            order: '(Block Set, Max: 1) Order information related to this Fabric Cloud Router (see below for nested schema)'
+            order: '(Block Set, Min: 1, Max: 1) Order information related to this Fabric Cloud Router (see below for nested schema)'
             order_id: (String) Order Identification
             order_number: (String) Order Reference Number
-            package: '(Block Set, Min: 1, Max: 1) Fabric Cloud Router package (see below for nested schema)'
-            project: (Block Set) Fabric Cloud Router project (see below for nested schema)
+            package: '(Block Set, Min: 1, Max: 1) Fabric Cloud Router Package Type (see below for nested schema)'
+            project: '(Block Set, Min: 1, Max: 1) Customer resource hierarchy project information.Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects (see below for nested schema)'
             project_id: (String) Project Id
             purchase_order_number: (String) Purchase order number
             read: (String)
@@ -490,26 +495,27 @@ resources:
             send_interval: (String) Send interval
             state: (String) Fabric Cloud Router overall state
             timeouts: (Block, Optional) (see below for nested schema)
-            type: (String) Defines the FCR type like XF_GATEWAY
+            type: (String) Defines the FCR type like; XF_ROUTER
             update: (String)
             updated_by: (String)
             updated_by_email: (String)
             updated_by_full_name: (String)
             updated_date_time: (String)
+            uuid: (String) Equinix-assigned Fabric Cloud Router identifier
         importStatements: []
     equinix_fabric_connection Resource - terraform-provider-equinix:
         subCategory: Fabric
-        description: Fabric V4 API compatible resource allows creation and management of Equinix Fabric connection ~> Note Equinix Fabric v4 resources and datasources are currently in Beta. The interfaces related to equinix_fabric_ resources and datasources may change ahead of general availability. Please, do not hesitate to report any problems that you experience by opening a new issue https://github.com/equinix/terraform-provider-equinix/issues/new?template=bug.md
+        description: Fabric V4 API compatible resource allows creation and management of Equinix Fabric connection
         name: equinix_fabric_connection Resource - terraform-provider-equinix
         title: equinix_fabric_connection Resource - terraform-provider-equinix
         argumentDocs:
-            a_side: '(Block Set, Min: 1) Requester or Customer side connection configuration object of the multi-segment connection (see below for nested schema)'
-            access_point: (Block Set) Point of access details (see below for nested schema)
+            a_side: '(Block Set, Min: 1, Max: 1) Requester or Customer side connection configuration object of the multi-segment connection (see below for nested schema)'
+            access_point: '(Block Set, Max: 1) Point of access details (see below for nested schema)'
             access_point_type_configs: (List of Object) Access point config information (see below for nested schema)
             account: (Set of Object) Customer account information that is associated with this connection (see below for nested schema)
-            account_name: (String)
-            account_number: (Number)
-            additional_info: (Block List) Connection additional information (see below for nested schema)
+            account_name: (String) Legal name of the accountholder.
+            account_number: (Number) Equinix-assigned account number.
+            additional_info: (List of Map of String) Connection additional information
             authentication_key: (String) Authentication key for provider based connections
             bandwidth: (Number) Connection bandwidth in Mbps
             billing_tier: (String) Billing tier for connection bandwidth
@@ -525,44 +531,45 @@ resources:
             deleted_by_email: (String)
             deleted_by_full_name: (String)
             deleted_date_time: (String)
-            description: (String) User-provided service description
+            description: (String) Customer-provided connection description
             details: (String)
             direction: (String) Connection directionality from the requester point of view
             emails: (List of String) Array of contact emails
+            enabled: (Boolean)
             equinix_status: (String)
             error_code: (String)
             error_message: (String)
             errors: (List of Object) (see below for nested schema)
-            gateway: Use router attribute instead; (Block Set) (see below for nested schema)
-            global_cust_id: (String)
-            global_org_id: (String)
-            global_organization_name: (String)
+            gateway: '(Block Set, Max: 1, Deprecated) Deprecated gateway Use router attribute instead (see below for nested schema)'
+            global_cust_id: (String) Equinix-assigned ID of the subscriber's parent organization.
+            global_org_id: (String) Equinix-assigned ID of the subscriber's parent organization.
+            global_organization_name: (String) Equinix-assigned name of the subscriber's parent organization.
             group: (String)
             help: (String)
             href: (String) Connection URI information
             ibx: (String) IBX Code
             id: (String) The ID of this resource.
-            interface: (Block Set) Virtual device interface (see below for nested schema)
+            interface: '(Block Set, Max: 1) Virtual device interface (see below for nested schema)'
             is_remote: (Boolean) Connection property derived from access point locations
             key: (String) Additional information key
-            link_protocol: (Block Set) Connection link protocol (see below for nested schema)
-            location: (Block Set) Access point location (see below for nested schema)
+            link_protocol: '(Block Set, Max: 1) Connection link protocol (see below for nested schema)'
+            location: '(Block Set, Max: 1) Access point location (see below for nested schema)'
             metro_code: (String) Access point metro code
             metro_name: (String) Access point metro name
             name: (String) Connection name. An alpha-numeric 24 characters string which can include only hyphens and underscores
-            network: (Block Set) Simplified Network (see below for nested schema)
+            network: '(Block Set, Max: 1) network access point information (see below for nested schema)'
             notifications: '(Block List, Min: 1) Preferences for notifications on connection configuration or status changes (see below for nested schema)'
             operation: (Set of Object) Connection type-specific operational data (see below for nested schema)
-            order: (Block Set) Order related to this connection information (see below for nested schema)
+            order: '(Block Set, Min: 1, Max: 1) Order details (see below for nested schema)'
             order_id: (String) Order Identification
             order_number: (String) Order Reference Number
-            org_id: (Number)
-            organization_name: (String)
+            org_id: (Number) Equinix-assigned ID of the subscriber's organization.
+            organization_name: (String) Equinix-assigned name of the subscriber's organization.
             peering_type: (String) Peering Type- PRIVATE,MICROSOFT,PUBLIC, MANUAL
-            port: (Block Set) Port access point information (see below for nested schema)
+            port: '(Block Set, Max: 1) Port access point information (see below for nested schema)'
             priority: (String)
-            profile: (Block Set) Service Profile (see below for nested schema)
-            project: (Block Set) Project information (see below for nested schema)
+            profile: '(Block Set, Max: 1) Service Profile (see below for nested schema)'
+            project: '(Block Set, Max: 1) Project information (see below for nested schema)'
             project_id: (String) Project Id
             property: (String)
             provider_connection_id: (String) Provider assigned Connection Id
@@ -570,107 +577,96 @@ resources:
             purchase_order_number: (String) Purchase order number
             read: (String)
             reason: (String)
-            redundancy: (Block Set) Redundancy Information (see below for nested schema)
+            redundancy: '(Block Set, Max: 1) Connection Redundancy Configuration (see below for nested schema)'
             region: (String) Access point region
-            router: (Block Set) Cloud Router access point information that replaces gateway (refers to below for nested schema)
-            routing_protocols: (Block List) Access point routing protocols configuration (see below for nested schema)
+            router: '(Block Set, Max: 1) Cloud Router access point information that replaces gateway (see below for nested schema)'
             seller_region: (String) Access point seller region
             send_interval: (String) Send interval
-            service_token: (Block Set) For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets (see below for nested schema)
+            service_token: '(Block Set, Max: 1) For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets (see below for nested schema)'
             state: (String) Connection overall state
             timeouts: (Block, Optional) (see below for nested schema)
-            type: (String) Defines the connection type like VG_VC, EVPL_VC, EPL_VC, EC_VC, IP_VC, ACCESS_EPL_VC
+            type: (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+            ucm_id: (String) Enterprise datastore id
             update: (String)
             updated_by: (String)
             updated_by_email: (String)
             updated_by_full_name: (String)
             updated_date_time: (String)
-            uuid: (String) Equinix-assigned virtual gateway identifier
+            uuid: (String) Equinix-assigned connection identifier
             value: (String) Additional information value
-            virtual_device: (Block Set) Virtual device (see below for nested schema)
+            virtual_device: '(Block Set, Max: 1) Virtual device (see below for nested schema)'
             vlan_c_tag: (Number) Vlan Customer Tag information, vlanCTag value specified for QINQ connections
             vlan_s_tag: (Number) Vlan Provider Tag information, vlanSTag value specified for QINQ connections
             vlan_tag: (Number) Vlan Tag information, vlanTag value specified for DOT1Q connections
-            z_side: '(Block Set, Min: 1) Destination or Provider side connection configuration object of the multi-segment connection (see below for nested schema)'
+            z_side: '(Block Set, Min: 1, Max: 1) Destination or Provider side connection configuration object of the multi-segment connection (see below for nested schema)'
         importStatements: []
-    equinix_fabric_routing_protocol Resource - terraform-provider-equinix:
+    equinix_fabric_network Resource - terraform-provider-equinix:
         subCategory: Fabric
-        description: Fabric V4 API compatible resource allows creation and management of Equinix Fabric connection ~> Note Equinix Fabric v4 resources and datasources are currently in Beta. The interfaces related to equinix_fabric_ resources and datasources may change ahead of general availability. Please, do not hesitate to report any problems that you experience by opening a new issue https://github.com/equinix/terraform-provider-equinix/issues/new?template=bug.md
-        name: equinix_fabric_routing_protocol Resource - terraform-provider-equinix
-        title: equinix_fabric_routing_protocol Resource - terraform-provider-equinix
+        description: Fabric V4 API compatible resource allows creation and management of Equinix Fabric Network
+        name: equinix_fabric_network Resource - terraform-provider-equinix
+        title: equinix_fabric_network Resource - terraform-provider-equinix
         argumentDocs:
-            additional_info: (List of Object) (see below for nested schema)
-            bfd: (Block Set) Bidirectional Forwarding Detection (see below for nested schema)
-            bgp_auth_key: (String) BGP authorization key
-            bgp_ipv4: (Block Set) Routing Protocol BGP IPv4 (see below for nested schema)
-            bgp_ipv6: (Block Set) Routing Protocol BGP IPv6 (see below for nested schema)
-            change: (Set of Object) Routing Protocol configuration Changes (see below for nested schema)
-            change_log: (Set of Object) Captures Routing Protocol lifecycle change information (see below for nested schema)
-            connection_uuid: (String) Connection URI associated with Routing Protocol
-            correlation_id: (String)
+            change: (Set of Object) Information on asset change operation (see below for nested schema)
+            change_log: (Set of Object) A permanent record of asset creation, modification, or deletion (see below for nested schema)
+            connections_count: (Number) Number of connections associated with this network
             create: (String)
             created_by: (String)
             created_by_email: (String)
             created_by_full_name: (String)
             created_date_time: (String)
-            customer_asn: (Number) Customer-provided ASN
-            customer_peer_ip: (String) Customer side peering ip
             delete: (String)
             deleted_by: (String)
             deleted_by_email: (String)
             deleted_by_full_name: (String)
             deleted_date_time: (String)
-            description: (String) Customer-provided Fabric Routing Protocol description
-            details: (String)
-            direct_ipv4: (Block Set) Routing Protocol Direct IPv4 (see below for nested schema)
-            direct_ipv6: (Block Set) Routing Protocol Direct IPv6 (see below for nested schema)
-            enabled: (Boolean) Bidirectional Forwarding Detection enablement
-            equinix_asn: (Number) Equinix ASN
-            equinix_iface_ip: (String) Equinix side Interface IP address
-            equinix_peer_ip: (String) Equinix side peering ip
-            error_code: (String)
-            error_message: (String)
-            errors: (List of Object) (see below for nested schema)
-            help: (String)
-            href: (String) Routing Protocol URI information
+            emails: (List of String) Array of contact emails
+            equinix_status: (String)
+            href: (String) Fabric Network URI information
+            ibx: (String) IBX Code
             id: (String) The ID of this resource.
-            interval: (String) Interval range between the received BFD control packets
-            name: (String) Routing Protocol name. An alpha-numeric 24 characters string which can include only hyphens and underscores
-            operation: (Set of Object) Routing Protocol type-specific operational data (see below for nested schema)
-            property: (String)
+            location: '(Block Set, Max: 1) Fabric Network location (see below for nested schema)'
+            metro_code: (String) Access point metro code
+            metro_name: (String) Access point metro name
+            name: (String) Fabric Network name. An alpha-numeric 24 characters string which can include only hyphens and underscores
+            notifications: '(Block List, Min: 1) Preferences for notifications on Fabric Network configuration or status changes (see below for nested schema)'
+            operation: (Set of Object) Network operation information that is associated with this Fabric Network (see below for nested schema)
+            project: '(Block Set, Min: 1) Fabric Network project (see below for nested schema)'
+            project_id: (String) Customer project identifier
             read: (String)
-            reason: (String)
-            state: (String) Routing Protocol overall state
+            region: (String) Access point region
+            scope: (String) Fabric Network scope
+            send_interval: (String) Send interval
+            state: (String) Fabric Network overall state
             timeouts: (Block, Optional) (see below for nested schema)
-            type: (String) Defines the routing protocol type like BGP or DIRECT
+            type: (String) Supported Network types - EVPLAN, EPLAN, IPWAN
             update: (String)
             updated_by: (String)
             updated_by_email: (String)
             updated_by_full_name: (String)
             updated_date_time: (String)
-            uuid: (String) Equinix-assigned routing protocol identifier
+            uuid: (String) Equinix-assigned network identifier
         importStatements: []
     equinix_fabric_service_profile Resource - terraform-provider-equinix:
         subCategory: Fabric
-        description: Fabric V4 API compatible resource allows creation and management of Equinix Fabric Service Profile ~> Note Equinix Fabric v4 resources and datasources are currently in Beta. The interfaces related to equinix_fabric_ resources and datasources may change ahead of general availability. Please, do not hesitate to report any problems that you experience by opening a new issue https://github.com/equinix/terraform-provider-equinix/issues/new?template=bug.md
+        description: Fabric V4 API compatible resource allows creation and management of Equinix Fabric Service Profile
         name: equinix_fabric_service_profile Resource - terraform-provider-equinix
         title: equinix_fabric_service_profile Resource - terraform-provider-equinix
         argumentDocs:
             access_point_type_configs: (Block List) Access point config information (see below for nested schema)
-            account: (Block Set) Account (see below for nested schema)
-            account_name: (String) Account Name
-            account_number: (Number) Account Number
+            account: (Set of Object) Service Profile Owner Account Information (see below for nested schema)
+            account_name: (String)
+            account_number: (Number)
             allow_bandwidth_auto_approval: (Boolean) Setting to enable or disable the ability of the buyer to change connection bandwidth without approval of the seller
             allow_bandwidth_upgrade: (Boolean) Availability of a bandwidth upgrade. The default is false
             allow_custom_bandwidth: (Boolean) Setting to enable or disable the ability of the buyer to customize the bandwidth
             allow_over_subscription: (Boolean) Setting showing that oversubscription support is available (true) or not (false). The default is false
             allow_remote_connections: (Boolean) Setting to allow or prohibit remote connections to the service profile
             allowed_emails: (List of String) Array of contact emails
-            api_available: (Boolean) Setting indicating whether the API is available (true) or not (false)
-            api_config: (Block Set) Api configuration details (see below for nested schema)
-            authentication_key: (Block Set) Authentication key details (see below for nested schema)
+            api_available: (Boolean) Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
+            api_config: '(Block Set, Max: 1) Api configuration details (see below for nested schema)'
+            authentication_key: '(Block Set, Max: 1) Authentication key details (see below for nested schema)'
             bandwidth_alert_threshold: (Number) Percentage of port bandwidth at which an allocation alert is generated
-            bandwidth_from_api: (Boolean) Bandwidth from api
+            bandwidth_from_api: (Boolean) Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
             capture_in_email: (Boolean) Required field
             change_log: (Set of Object) Captures connection lifecycle change information (see below for nested schema)
             code: (String) Metro Code - Example SV
@@ -693,44 +689,44 @@ resources:
             display_name: (String) Display Name
             emails: (List of String) Array of contact emails
             enable_auto_generate_service_key: (Boolean) Enable auto generate service key
-            encapsulation: (String) Port Encapsulation
-            encapsulation_strategy: (String) Encapsulation strategy
+            encapsulation: (String) Data frames encapsulation standard.UNTAGGED - Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
+            encapsulation_strategy: (String) Additional tagging information required by the seller profile.
             equinix_managed_port: (Boolean) Setting indicating that the port is managed by Equinix (true) or not (false)
             equinix_managed_vlan: (Boolean) Setting indicating that the VLAN is managed by Equinix (true) or not (false)
-            global_cust_id: (String) Global Customer organization identifier
-            global_org_id: (String) Global organization identifier
-            global_organization_name: (String) Global organization name
+            global_cust_id: (String)
+            global_org_id: (String)
+            global_organization_name: (String)
             href: (String) Service Profile URI response attribute
             ibx: (String) IBX Code
             ibxs: (List of String) IBX- Equinix International Business Exchange list
             id: (String) The ID of this resource.
             in_trail: (Boolean) In Trail
-            integration_id: (String) Integration id
+            integration_id: (String) A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
             interface_uuid: (String) Device Interface Uuid
-            label: (String) Label
-            link_protocol_config: (Block Set) Link protocol configuration details (see below for nested schema)
-            location: (Block Set) Colo/Port Location (see below for nested schema)
+            label: (String) Name of the parameter that must be provided to authorize the connection.
+            link_protocol_config: '(Block Set, Max: 1) Link protocol configuration details (see below for nested schema)'
+            location: '(Block Set, Max: 1) Colo/Port Location (see below for nested schema)'
             logo: (String) Logo
-            marketing_info: (Block Set) Marketing Info (see below for nested schema)
+            marketing_info: '(Block Set, Max: 1) Marketing Info (see below for nested schema)'
             metro_code: (String) Access point metro code
             metro_name: (String) Access point metro name
             metros: (Block List) Access point config information (see below for nested schema)
             name: (String) Customer-assigned service profile name
             notifications: (Block List) Preferences for notifications on connection configuration or status changes (see below for nested schema)
             options: (List of String) Options
-            org_id: (Number) Customer organization identifier
-            organization_name: (String) Customer organization name
-            over_subscription_limit: (Number) A cap on over subscription
+            org_id: (Number)
+            organization_name: (String)
+            over_subscription_limit: (Number) Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
             ports: (Block List) Ports (see below for nested schema)
             process_step: (Block List) Process Step (see below for nested schema)
-            project: (Block Set) Project information (see below for nested schema)
+            project: '(Block Set, Max: 1) Project information (see below for nested schema)'
             project_id: (String) Project Id
             promotion: (Boolean) Promotion
             read: (String)
             region: (String) Access point region
-            required: (Boolean) Required
-            reuse_vlan_s_tag: (Boolean) Reuse vlan sTag
-            self_profile: (Boolean) Self Profile
+            required: (Boolean) Requirement to configure an authentication key.
+            reuse_vlan_s_tag: (Boolean) Automatically accept subsequent DOT1Q to QINQ connections that use the same authentication key. These connections will have the same VLAN S-tag assigned as the initial connection.
+            self_profile: (Boolean) Self Profile indicating if the profile is created for customer's  self use
             seller_region: (String) Seller Region
             seller_region_description: (String) Seller Region details
             seller_regions: (Map of String) Seller Regions
@@ -742,7 +738,7 @@ resources:
             timeouts: (Block, Optional) (see below for nested schema)
             title: (String) Title
             type: (String) Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
-            ucm_id: (String) Enterprise datastore id
+            ucm_id: (String)
             update: (String)
             updated_by: (String)
             updated_by_email: (String)
@@ -881,7 +877,10 @@ resources:
                   "redundancy": "primary",
                   "service_token_type": "z_side",
                   "speed": "200Mbps",
-                  "type": "shared"
+                  "type": "shared",
+                  "vlans": [
+                    "${equinix_metal_vlan.example.vxlan}"
+                  ]
                 }
               references:
                 project_id: local.project_id
@@ -898,6 +897,11 @@ resources:
                       "vlan_stag": 1020,
                       "zside_service_token": "${equinix_metal_connection.example.service_tokens.0.id}"
                     }
+                equinix_metal_vlan.example: |-
+                    {
+                      "metro": "FR",
+                      "project_id": "${local.my_project_id}"
+                    }
             - name: example
               manifest: |-
                 {
@@ -906,7 +910,11 @@ resources:
                   "name": "tf-port-to-metal-legacy",
                   "project_id": "${local.my_project_id}",
                   "redundancy": "redundant",
-                  "type": "shared"
+                  "type": "shared",
+                  "vlans": [
+                    "${equinix_metal_vlan.example1.vxlan}",
+                    "${equinix_metal_vlan.example2.vxlan}"
+                  ]
                 }
               references:
                 project_id: local.my_project_id
@@ -922,6 +930,16 @@ resources:
                       "speed": "200",
                       "speed_unit": "MB",
                       "vlan_stag": 1020
+                    }
+                equinix_metal_vlan.example1: |-
+                    {
+                      "metro": "SV",
+                      "project_id": "${local.my_project_id}"
+                    }
+                equinix_metal_vlan.example2: |-
+                    {
+                      "metro": "SV",
+                      "project_id": "${local.my_project_id}"
                     }
         argumentDocs:
             contact_email: '- (Optional) The preferred email used for communication and notifications about the Equinix Fabric interconnection. Required when using a Project API key. Optional and defaults to the primary user email address when using a User API key.'
@@ -939,7 +957,7 @@ resources:
             redundancy: '- (Required) Connection redundancy - redundant or primary.'
             service_token_type: '- (Optional) Only used with shared connection. Type of service token to use for the connection, a_side or z_side. (NOTE: To support the legacy non-automated way to create connections, terraform will not check if )'
             service_tokens: '- List of connection service tokens with attributes required to configure the connection in Equinix Fabric with the equinix_ecx_l2_connection resource or from the Equinix Fabric Portal. Scehma of service_token is described in documentation of the equinix_metal_connection datasource.'
-            speed: '- (Required) Connection speed - one of 50Mbps, 200Mbps, 500Mbps, 1Gbps, 2Gbps, 5Gbps, 10Gbps.'
+            speed: '- (Required) Connection speed -  Values must be in the format ''Mbps'' or ''Gpbs'', for example ''100Mbps'' or ''50Gbps''.  Actual supported values will depend on the connection type and whether the connection uses VLANs or VRF.'
             status: '- Status of the connection resource.'
             tags: '- (Optional) String list of tags.'
             token: '- (Deprecated) Fabric Token required to configure the connection in Equinix Fabric with the equinix_ecx_l2_connection resource or from the Equinix Fabric Portal. If your organization already has connection service tokens enabled, use service_tokens instead.'
@@ -1099,7 +1117,7 @@ resources:
             ipxe_script_url: |-
                 - (Optional) URL pointing to a hosted iPXE script. More information is in the
                 Custom iPXE doc.
-            locked: '- Whether the device is locked.'
+            locked: '- Whether the device is locked or unlocked. Locking a device prevents you from deleting or reinstalling the device or performing a firmware update on the device, and it prevents an instance with a termination time set from being reclaimed, even if the termination time was reached'
             mac: '- MAC address assigned to the port.'
             metro: '- (Optional) Metro area for the new device. Conflicts with facilities.'
             name: '- Name of the port (e.g. eth0, or bond0).'
@@ -1205,7 +1223,7 @@ resources:
                     {
                       "metro": "sv",
                       "project_id": "${local.project_id}",
-                      "quantity": 2
+                      "quantity": 8
                     }
                 equinix_metal_vlan.test: |-
                     {
@@ -1214,6 +1232,7 @@ resources:
                       "project_id": "${local.project_id}"
                     }
         argumentDocs:
+            delete: '- (Default 20m)'
             ip_reservation_id: |-
                 - (Optional) UUID of Public or VRF IP Reservation to associate with the gateway, the
                 reservation must be in the same metro as the VLAN, conflicts with private_ipv4_subnet_size.
@@ -1763,7 +1782,8 @@ resources:
                       "subnet": "172.16.25.0/24"
                     }
                   ],
-                  "name": "test"
+                  "name": "test",
+                  "project_id": "a86d7112-d740-4758-9c9c-31e66373746b"
                 }
         argumentDocs:
             description: '- (Optional) ACL template description, up to 200 characters.'
@@ -1792,6 +1812,9 @@ resources:
             inbound_rule.subnets: '- (Deprecated) Inbound traffic source IP subnets in CIDR format.'
             metro_code: '- (Deprecated) ACL template location metro code.'
             name: '- (Required) ACL template name.'
+            project_id: |-
+                -  (Optional) Unique Identifier for the project resource where the acl template is scoped to.If you
+                leave it out, the ACL template will be created under the default project id of your organization.
             uuid: '- Unique identifier of ACL template resource.'
         importStatements: []
     equinix_network_bgp:
@@ -1993,6 +2016,37 @@ resources:
               references:
                 account_number: data.equinix_network_account.sv.number
                 metro_code: data.equinix_network_account.sv.metro_code
+            - name: vsrx-single
+              manifest: |-
+                {
+                  "account_number": "${data.equinix_network_account.sv.number}",
+                  "acl_template_id": "3e548c02-9164-4197-aa23-05b1f644883c",
+                  "additional_bandwidth": 5,
+                  "byol": true,
+                  "core_count": 2,
+                  "diverse_device_id": "ed7891bd-15b4-4f72-ac56-d96cfdacddcc",
+                  "hostname": "VSRX",
+                  "metro_code": "${data.equinix_network_account.sv.metro_code}",
+                  "name": "tf-c8kv-sdwan",
+                  "notifications": [
+                    "test@equinix.com"
+                  ],
+                  "package_code": "STD",
+                  "project_id": "a86d7112-d740-4758-9c9c-31e66373746b",
+                  "self_managed": true,
+                  "ssh_key": [
+                    {
+                      "key_name": "valid-key-name",
+                      "username": "test-username"
+                    }
+                  ],
+                  "term_length": 12,
+                  "type_code": "VSRX",
+                  "version": "23.2R1.13"
+                }
+              references:
+                account_number: data.equinix_network_account.sv.number
+                metro_code: data.equinix_network_account.sv.metro_code
             - name: arista-ha
               manifest: |-
                 {
@@ -2087,7 +2141,14 @@ resources:
             connectivity: |-
                 - (Optional) Device accessibility (INTERNET-ACCESS or PRIVATE or INTERNET-ACCESS-WITH-PRVT-MGMT).
                 If not specified, default will be INTERNET-ACCESS
-            core_count: '- (Required) Number of CPU cores used by device.'
+            core_count: '- (Required) Number of CPU cores used by device. (NOTE: Use this field to resize your device. When resizing your HA devices, primary device will be upgraded first. If the upgrade failed, device will be automatically rolled back to the previous state with original core number.)'
+            diverse_device_id: |-
+                - (Optional) Unique ID of an existing device.
+                Use this field to let Equinix know if you want your new device to be in a different location from any existing virtual
+                device. This field is only meaningful for single devices.
+            diverse_device_name: |-
+                - Name of the device with diverse device UUID. This field is returned in device details if the
+                device is created by passing diverse_device_id.
             hostname: '- (Optional) Device hostname prefix.'
             ibx: '- Device location Equinix Business Exchange name.'
             id: '- interface identifier.'
@@ -2121,6 +2182,9 @@ resources:
             operational_status: '- interface operational status. One of up, down.'
             order_reference: '- (Optional) Name/number used to identify device order on the invoice.'
             package_code: '- (Required) Device software package code.'
+            project_id: |-
+                - (Optional) Unique Identifier for the project resource where the device is scoped to.If you
+                leave it out, the device will be created under the default project id of your organization.
             purchase_order_number: '- (Optional) Purchase order number associated with a device order.'
             redundancy_type: |-
                 - Device redundancy type applicable for HA devices, either
@@ -2174,7 +2238,7 @@ resources:
                 - Device provisioning status. Possible values are
                 INITIALIZING, PROVISIONING, WAITING_FOR_PRIMARY, WAITING_FOR_SECONDARY,
                 WAITING_FOR_REPLICA_CLUSTER_NODES, CLUSTER_SETUP_IN_PROGRESS, FAILED, PROVISIONED,
-                DEPROVISIONING, DEPROVISIONED.
+                DEPROVISIONING, DEPROVISIONED, RESOURCE_UPGRADE_IN_PROGRESS, RESOURCE_UPGRADE_FAILED.
             term_length: '- (Required) Device term length.'
             throughput: '- (Optional) Device license throughput.'
             throughput_unit: '- (Optional) License throughput unit. One of Mbps or Gbps.'
@@ -2220,6 +2284,7 @@ resources:
                     }
                   ],
                   "name": "test-link",
+                  "project_id": "a86d7112-d740-4758-9c9c-31e66373746b",
                   "subnet": "192.168.40.64/27"
                 }
               references:
@@ -2253,6 +2318,9 @@ resources:
             link.throughput: '- (Required) connection throughput.'
             link.throughput_unit: '- (Required) connection throughput unit (Mbps or Gbps).'
             name: '- (Required) device link name.'
+            project_id: |-
+                - (Optional) Unique Identifier for the project resource where the device link is scoped to.If you
+                leave it out, the device link will be created under the default project id of your organization.
             status: |-
                 - Device link provisioning status. One of PROVISIONING, PROVISIONED,
                 DEPROVISIONING, DEPROVISIONED, FAILED.
@@ -2301,11 +2369,15 @@ resources:
               manifest: |-
                 {
                   "name": "johnKent",
+                  "project_id": "a86d7112-d740-4758-9c9c-31e66373746b",
                   "public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDpXGdxljAyPp9vH97436U171cX",
                   "type": "RSA"
                 }
         argumentDocs:
             name: '- (Required) The name of SSH key used for identification.'
+            project_id: |-
+                - (Optional) Unique Identifier for the project resource where the SSH key is scoped to.If you
+                leave it out, the ssh key will be created under the default project id of your organization.
             public_key: |-
                 - (Required) The SSH public key. If this is a file, it can be read using the file
                 interpolation function.

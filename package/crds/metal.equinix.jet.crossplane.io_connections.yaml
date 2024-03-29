@@ -69,9 +69,7 @@ spec:
                       a Project API key. Optional and defaults to the primary user
                       email address when using a User API key. The preferred email
                       used for communication and notifications about the Equinix Fabric
-                      interconnection. Required when using a Project API key. Optional
-                      and defaults to the primary user email address when using a
-                      User API key
+                      interconnection
                     type: string
                   description:
                     description: Description for the connection resource. Description
@@ -261,10 +259,14 @@ spec:
                       token to use for the connection, a_side or z_side
                     type: string
                   speed:
-                    description: Connection speed - one of 50Mbps, 200Mbps, 500Mbps,
-                      1Gbps, 2Gbps, 5Gbps, 10Gbps. Port speed. Required for a_side
-                      connections. Allowed values are 50Mbps, 200Mbps, 500Mbps, 1Gbps,
-                      2Gbps, 5Gbps, 10Gbps
+                    description: Connection speed -  Values must be in the format
+                      'Mbps' or 'Gpbs', for example '100Mbps' or '50Gbps'.  Actual
+                      supported values will depend on the connection type and whether
+                      the connection uses VLANs or VRF. Connection speed -  Values
+                      must be in the format '<number>Mbps' or '<number>Gpbs', for
+                      example '100Mbps' or '50Gbps'.  Actual supported values will
+                      depend on the connection type and whether the connection uses
+                      VLANs or VRF.
                     type: string
                   tags:
                     description: String list of tags. Tags attached to the connection
@@ -283,6 +285,13 @@ spec:
                       vlans for Redundant connection
                     items:
                       type: number
+                    type: array
+                  vrfs:
+                    description: Only used with shared connection. VRFs to attach.
+                      Pass one VRF for Primary/Single connection and two VRFs for
+                      Redundant connection
+                    items:
+                      type: string
                     type: array
                 required:
                 - name
@@ -485,8 +494,10 @@ spec:
                         role:
                           type: string
                         speed:
-                          description: Connection speed - one of 50Mbps, 200Mbps,
-                            500Mbps, 1Gbps, 2Gbps, 5Gbps, 10Gbps.
+                          description: Connection speed -  Values must be in the format
+                            'Mbps' or 'Gpbs', for example '100Mbps' or '50Gbps'.  Actual
+                            supported values will depend on the connection type and
+                            whether the connection uses VLANs or VRF.
                           type: number
                         status:
                           description: Status of the connection resource.
@@ -513,8 +524,10 @@ spec:
                         id:
                           type: string
                         maxAllowedSpeed:
-                          description: Connection speed - one of 50Mbps, 200Mbps,
-                            500Mbps, 1Gbps, 2Gbps, 5Gbps, 10Gbps.
+                          description: Connection speed -  Values must be in the format
+                            'Mbps' or 'Gpbs', for example '100Mbps' or '50Gbps'.  Actual
+                            supported values will depend on the connection type and
+                            whether the connection uses VLANs or VRF.
                           type: string
                         role:
                           type: string

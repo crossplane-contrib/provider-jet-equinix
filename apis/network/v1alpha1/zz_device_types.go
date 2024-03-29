@@ -80,6 +80,11 @@ type DeviceObservation struct {
 	// +kubebuilder:validation:Optional
 	ClusterDetails []ClusterDetailsObservation `json:"clusterDetails,omitempty" tf:"cluster_details,omitempty"`
 
+	// Name of the device with diverse device UUID. This field is returned in device details if the
+	// device is created by passing diverse_device_id.
+	// Diverse Device Name of an existing device
+	DiverseDeviceName *string `json:"diverseDeviceName,omitempty" tf:"diverse_device_name,omitempty"`
+
 	// interface identifier.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
@@ -127,7 +132,7 @@ type DeviceObservation struct {
 	// Device provisioning status. Possible values are
 	// INITIALIZING, PROVISIONING, WAITING_FOR_PRIMARY, WAITING_FOR_SECONDARY,
 	// WAITING_FOR_REPLICA_CLUSTER_NODES, CLUSTER_SETUP_IN_PROGRESS, FAILED, PROVISIONED,
-	// DEPROVISIONING, DEPROVISIONED.
+	// DEPROVISIONING, DEPROVISIONED, RESOURCE_UPGRADE_IN_PROGRESS, RESOURCE_UPGRADE_FAILED.
 	// Device provisioning status
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
@@ -181,10 +186,17 @@ type DeviceParameters struct {
 	// +kubebuilder:validation:Optional
 	Connectivity *string `json:"connectivity,omitempty" tf:"connectivity,omitempty"`
 
-	// Number of CPU cores used by device.
+	// Number of CPU cores used by device. (NOTE: Use this field to resize your device. When resizing your HA devices, primary device will be upgraded first. If the upgrade failed, device will be automatically rolled back to the previous state with original core number.)
 	// Number of CPU cores used by device
 	// +kubebuilder:validation:Required
 	CoreCount *float64 `json:"coreCount" tf:"core_count,omitempty"`
+
+	// Unique ID of an existing device.
+	// Use this field to let Equinix know if you want your new device to be in a different location from any existing virtual
+	// device. This field is only meaningful for single devices.
+	// Unique ID of an existing device
+	// +kubebuilder:validation:Optional
+	DiverseDeviceID *string `json:"diverseDeviceId,omitempty" tf:"diverse_device_id,omitempty"`
 
 	// Device hostname prefix.
 	// Device hostname prefix
@@ -245,6 +257,12 @@ type DeviceParameters struct {
 	// Device software package code
 	// +kubebuilder:validation:Required
 	PackageCode *string `json:"packageCode" tf:"package_code,omitempty"`
+
+	// Unique Identifier for the project resource where the device is scoped to.If you
+	// leave it out, the device will be created under the default project id of your organization.
+	// The unique identifier of Project Resource to which device is scoped to
+	// +kubebuilder:validation:Optional
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
 	// Purchase order number associated with a device order.
 	// Purchase order number associated with a device order
@@ -343,7 +361,7 @@ type InterfaceObservation struct {
 	// Device provisioning status. Possible values are
 	// INITIALIZING, PROVISIONING, WAITING_FOR_PRIMARY, WAITING_FOR_SECONDARY,
 	// WAITING_FOR_REPLICA_CLUSTER_NODES, CLUSTER_SETUP_IN_PROGRESS, FAILED, PROVISIONED,
-	// DEPROVISIONING, DEPROVISIONED.
+	// DEPROVISIONING, DEPROVISIONED, RESOURCE_UPGRADE_IN_PROGRESS, RESOURCE_UPGRADE_FAILED.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
 	// interface type.
@@ -491,7 +509,7 @@ type SecondaryDeviceInterfaceObservation struct {
 	// Device provisioning status. Possible values are
 	// INITIALIZING, PROVISIONING, WAITING_FOR_PRIMARY, WAITING_FOR_SECONDARY,
 	// WAITING_FOR_REPLICA_CLUSTER_NODES, CLUSTER_SETUP_IN_PROGRESS, FAILED, PROVISIONED,
-	// DEPROVISIONING, DEPROVISIONED.
+	// DEPROVISIONING, DEPROVISIONED, RESOURCE_UPGRADE_IN_PROGRESS, RESOURCE_UPGRADE_FAILED.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
 	// interface type.
@@ -521,6 +539,11 @@ type SecondaryDeviceObservation struct {
 	// Device license registration status
 	LicenseStatus *string `json:"licenseStatus,omitempty" tf:"license_status,omitempty"`
 
+	// Unique Identifier for the project resource where the device is scoped to.If you
+	// leave it out, the device will be created under the default project id of your organization.
+	// The unique identifier of Project Resource to which device is scoped to
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
 	// Device redundancy type applicable for HA devices, either
 	// primary or secondary.
 	// Device redundancy type applicable for HA devices, either primary or secondary
@@ -545,7 +568,7 @@ type SecondaryDeviceObservation struct {
 	// Device provisioning status. Possible values are
 	// INITIALIZING, PROVISIONING, WAITING_FOR_PRIMARY, WAITING_FOR_SECONDARY,
 	// WAITING_FOR_REPLICA_CLUSTER_NODES, CLUSTER_SETUP_IN_PROGRESS, FAILED, PROVISIONED,
-	// DEPROVISIONING, DEPROVISIONED.
+	// DEPROVISIONING, DEPROVISIONED, RESOURCE_UPGRADE_IN_PROGRESS, RESOURCE_UPGRADE_FAILED.
 	// Device provisioning status
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 

@@ -14,6 +14,7 @@ import (
 	l2serviceprofile "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/ecx/l2serviceprofile"
 	cloudrouter "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/fabric/cloudrouter"
 	connection "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/fabric/connection"
+	network "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/fabric/network"
 	routingprotocol "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/fabric/routingprotocol"
 	serviceprofile "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/fabric/serviceprofile"
 	bgpsession "github.com/crossplane-contrib/provider-jet-equinix/internal/controller/metal/bgpsession"
@@ -55,6 +56,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		l2serviceprofile.Setup,
 		cloudrouter.Setup,
 		connection.Setup,
+		network.Setup,
 		routingprotocol.Setup,
 		serviceprofile.Setup,
 		bgpsession.Setup,

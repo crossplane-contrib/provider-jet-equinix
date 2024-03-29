@@ -20,6 +20,7 @@ spec:
       srcPort: any
       subnet: 172.16.25.0/24
     name: test
+    projectId: a86d7112-d740-4758-9c9c-31e66373746b
 
 ---
 

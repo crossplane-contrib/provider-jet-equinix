@@ -67,6 +67,13 @@ spec:
                     description: The name of SSH key used for identification. The
                       name of SSH key used for identification
                     type: string
+                  projectId:
+                    description: Unique Identifier for the project resource where
+                      the SSH key is scoped to.If you leave it out, the ssh key will
+                      be created under the default project id of your organization.
+                      The unique identifier of Project Resource to which ssh key is
+                      scoped to
+                    type: string
                   publicKey:
                     description: The SSH public key. If this is a file, it can be
                       read using the file interpolation function. The SSH public key.

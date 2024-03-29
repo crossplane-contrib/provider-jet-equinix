@@ -9,7 +9,7 @@ GOLANGCILINT_VERSION ?= 1.50.0
 export TERRAFORM_VERSION := 1.3.1
 
 export TERRAFORM_PROVIDER_SOURCE := equinix/equinix
-export TERRAFORM_PROVIDER_VERSION := 1.20.0
+export TERRAFORM_PROVIDER_VERSION := 1.33.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME := terraform-provider-equinix
 export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX := https://releases.hashicorp.com/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}/${TERRAFORM_PROVIDER_VERSION}
 export TERRAFORM_NATIVE_PROVIDER_BINARY := ${TERRAFORM_PROVIDER_DOWNLOAD_NAME}_v${TERRAFORM_PROVIDER_VERSION}
@@ -121,7 +121,8 @@ pull-docs:
 	fi
 	@git -C "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" sparse-checkout set "$(TERRAFORM_DOCS_PATH)"
 	@echo "Removing examples known to cause parser errors for examples-generated"
-	@rm -f "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/equinix_metal_port_vlan_attachment.md"
+	@rm -f "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/equinix_metal_port_vlan_attachment.md" \
+		"$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/equinix_fabric_routing_protocol.md"
 
  generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
 

@@ -53,26 +53,29 @@ type ASideParameters struct {
 
 type AccessPointAccountObservation struct {
 
-	// Account Name
+	// Legal name of the accountholder.
 	AccountName *string `json:"accountName,omitempty" tf:"account_name,omitempty"`
 
-	// Account Number
+	// Equinix-assigned account number.
 	AccountNumber *float64 `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
 
-	// Global Customer organization identifier
+	// Equinix-assigned ID of the subscriber's parent organization.
 	GlobalCustID *string `json:"globalCustId,omitempty" tf:"global_cust_id,omitempty"`
 
-	// Global organization identifier
+	// Equinix-assigned ID of the subscriber's parent organization.
 	GlobalOrgID *string `json:"globalOrgId,omitempty" tf:"global_org_id,omitempty"`
 
-	// Global organization name
+	// Equinix-assigned name of the subscriber's parent organization.
 	GlobalOrganizationName *string `json:"globalOrganizationName,omitempty" tf:"global_organization_name,omitempty"`
 
-	// Customer organization identifier
+	// Equinix-assigned ID of the subscriber's organization.
 	OrgID *float64 `json:"orgId,omitempty" tf:"org_id,omitempty"`
 
-	// Customer organization name
+	// Equinix-assigned name of the subscriber's organization.
 	OrganizationName *string `json:"organizationName,omitempty" tf:"organization_name,omitempty"`
+
+	// Enterprise datastore id
+	UcmID *string `json:"ucmId,omitempty" tf:"ucm_id,omitempty"`
 }
 
 type AccessPointAccountParameters struct {
@@ -92,12 +95,13 @@ type AccessPointGatewayParameters struct {
 }
 
 type AccessPointInterfaceObservation struct {
-
-	// id
-	ID *float64 `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type AccessPointInterfaceParameters struct {
+
+	// id
+	// +kubebuilder:validation:Optional
+	ID *float64 `json:"id,omitempty" tf:"id,omitempty"`
 
 	// Interface type
 	// +kubebuilder:validation:Optional
@@ -171,13 +175,9 @@ type AccessPointObservation struct {
 	// +kubebuilder:validation:Optional
 	Account []AccessPointAccountObservation `json:"account,omitempty" tf:"account,omitempty"`
 
-	// Cloud Router access point information
+	// **Deprecated** `gateway` Use `router` attribute instead
 	// +kubebuilder:validation:Optional
 	Gateway []GatewayObservation `json:"gateway,omitempty" tf:"gateway,omitempty"`
-
-	// Virtual device interface
-	// +kubebuilder:validation:Optional
-	Interface []InterfaceObservation `json:"interface,omitempty" tf:"interface,omitempty"`
 
 	// network access point information
 	// +kubebuilder:validation:Optional
@@ -191,7 +191,7 @@ type AccessPointObservation struct {
 	// +kubebuilder:validation:Optional
 	Profile []ProfileObservation `json:"profile,omitempty" tf:"profile,omitempty"`
 
-	// Cloud Router access point information
+	// Cloud Router access point information that replaces `gateway`
 	// +kubebuilder:validation:Optional
 	Router []RouterObservation `json:"router,omitempty" tf:"router,omitempty"`
 
@@ -210,7 +210,7 @@ type AccessPointParameters struct {
 	// +kubebuilder:validation:Optional
 	AuthenticationKey *string `json:"authenticationKey,omitempty" tf:"authentication_key,omitempty"`
 
-	// Cloud Router access point information
+	// **Deprecated** `gateway` Use `router` attribute instead
 	// +kubebuilder:validation:Optional
 	Gateway []GatewayParameters `json:"gateway,omitempty" tf:"gateway,omitempty"`
 
@@ -246,13 +246,9 @@ type AccessPointParameters struct {
 	// +kubebuilder:validation:Optional
 	ProviderConnectionID *string `json:"providerConnectionId,omitempty" tf:"provider_connection_id,omitempty"`
 
-	// Cloud Router access point information
+	// Cloud Router access point information that replaces `gateway`
 	// +kubebuilder:validation:Optional
 	Router []RouterParameters `json:"router,omitempty" tf:"router,omitempty"`
-
-	// Access point routing protocols configuration
-	// +kubebuilder:validation:Optional
-	RoutingProtocols []RoutingProtocolsParameters `json:"routingProtocols,omitempty" tf:"routing_protocols,omitempty"`
 
 	// Access point seller region
 	// +kubebuilder:validation:Optional
@@ -325,24 +321,6 @@ type AccessPointRouterParameters struct {
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
-type AccessPointRoutingProtocolsObservation struct {
-}
-
-type AccessPointRoutingProtocolsParameters struct {
-
-	// Routing protocol instance state
-	// +kubebuilder:validation:Optional
-	State *string `json:"state,omitempty" tf:"state,omitempty"`
-
-	// Routing Protocol type
-	// +kubebuilder:validation:Optional
-	Type *string `json:"type,omitempty" tf:"type,omitempty"`
-
-	// Equinix-assigned Routing protocol identifier
-	// +kubebuilder:validation:Optional
-	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
-}
-
 type AccessPointTypeConfigsObservation struct {
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
@@ -401,6 +379,8 @@ type ConnectionAccountObservation struct {
 	OrgID *float64 `json:"orgId,omitempty" tf:"org_id,omitempty"`
 
 	OrganizationName *string `json:"organizationName,omitempty" tf:"organization_name,omitempty"`
+
+	UcmID *string `json:"ucmId,omitempty" tf:"ucm_id,omitempty"`
 }
 
 type ConnectionAccountParameters struct {
@@ -479,10 +459,6 @@ type ConnectionObservation struct {
 	// Connection type-specific operational data
 	Operation []OperationObservation `json:"operation,omitempty" tf:"operation,omitempty"`
 
-	// Order related to this connection information
-	// +kubebuilder:validation:Optional
-	Order []ConnectionOrderObservation `json:"order,omitempty" tf:"order,omitempty"`
-
 	// Project information
 	// +kubebuilder:validation:Optional
 	Project []ConnectionProjectObservation `json:"project,omitempty" tf:"project,omitempty"`
@@ -490,18 +466,15 @@ type ConnectionObservation struct {
 	// Connection overall state
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
 
+	// Equinix-assigned connection identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+
 	// Destination or Provider side connection configuration object of the multi-segment connection
 	// +kubebuilder:validation:Required
 	ZSide []ZSideObservation `json:"zSide,omitempty" tf:"z_side,omitempty"`
 }
 
 type ConnectionOrderObservation struct {
-
-	// Order Identification
-	OrderID *string `json:"orderId,omitempty" tf:"order_id,omitempty"`
-
-	// Order Reference Number
-	OrderNumber *string `json:"orderNumber,omitempty" tf:"order_number,omitempty"`
 }
 
 type ConnectionOrderParameters struct {
@@ -509,6 +482,14 @@ type ConnectionOrderParameters struct {
 	// Billing tier for connection bandwidth
 	// +kubebuilder:validation:Optional
 	BillingTier *string `json:"billingTier,omitempty" tf:"billing_tier,omitempty"`
+
+	// Order Identification
+	// +kubebuilder:validation:Optional
+	OrderID *string `json:"orderId,omitempty" tf:"order_id,omitempty"`
+
+	// Order Reference Number
+	// +kubebuilder:validation:Optional
+	OrderNumber *string `json:"orderNumber,omitempty" tf:"order_number,omitempty"`
 
 	// Purchase order number
 	// +kubebuilder:validation:Optional
@@ -529,6 +510,10 @@ type ConnectionParameters struct {
 	// +kubebuilder:validation:Required
 	Bandwidth *float64 `json:"bandwidth" tf:"bandwidth,omitempty"`
 
+	// Customer-provided connection description
+	// +kubebuilder:validation:Optional
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
 	// Connection name. An alpha-numeric 24 characters string which can include only hyphens and underscores
 	// +kubebuilder:validation:Required
 	Name *string `json:"name" tf:"name,omitempty"`
@@ -537,19 +522,19 @@ type ConnectionParameters struct {
 	// +kubebuilder:validation:Required
 	Notifications []ConnectionNotificationsParameters `json:"notifications" tf:"notifications,omitempty"`
 
-	// Order related to this connection information
-	// +kubebuilder:validation:Optional
-	Order []ConnectionOrderParameters `json:"order,omitempty" tf:"order,omitempty"`
+	// Order details
+	// +kubebuilder:validation:Required
+	Order []ConnectionOrderParameters `json:"order" tf:"order,omitempty"`
 
 	// Project information
 	// +kubebuilder:validation:Optional
 	Project []ConnectionProjectParameters `json:"project,omitempty" tf:"project,omitempty"`
 
-	// Redundancy Information
+	// Connection Redundancy Configuration
 	// +kubebuilder:validation:Optional
 	Redundancy []ConnectionRedundancyParameters `json:"redundancy,omitempty" tf:"redundancy,omitempty"`
 
-	// Defines the connection type like VG_VC, EVPL_VC, EPL_VC, EC_VC, IP_VC, IPWAN_VC,ACCESS_EPL_VC
+	// Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
 	// +kubebuilder:validation:Required
 	Type *string `json:"type" tf:"type,omitempty"`
 
@@ -562,12 +547,13 @@ type ConnectionProjectObservation struct {
 
 	// Unique Resource URL
 	Href *string `json:"href,omitempty" tf:"href,omitempty"`
-
-	// Project Id
-	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 }
 
 type ConnectionProjectParameters struct {
+
+	// Project Id
+	// +kubebuilder:validation:Optional
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 }
 
 type ConnectionRedundancyObservation struct {
@@ -575,11 +561,11 @@ type ConnectionRedundancyObservation struct {
 
 type ConnectionRedundancyParameters struct {
 
-	// Redundancy group identifier
+	// Redundancy group identifier (Use the redundancy.0.group UUID of primary connection; e.g. one(equinix_fabric_connection.primary_port_connection.redundancy).group or equinix_fabric_connection.primary_port_connection.redundancy.0.group)
 	// +kubebuilder:validation:Optional
 	Group *string `json:"group,omitempty" tf:"group,omitempty"`
 
-	// Priority type- PRIMARY, SECONDARY
+	// Connection priority in redundancy group - PRIMARY, SECONDARY
 	// +kubebuilder:validation:Optional
 	Priority *string `json:"priority,omitempty" tf:"priority,omitempty"`
 }
@@ -624,12 +610,13 @@ type GatewayParameters struct {
 }
 
 type InterfaceObservation struct {
-
-	// id
-	ID *float64 `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type InterfaceParameters struct {
+
+	// id
+	// +kubebuilder:validation:Optional
+	ID *float64 `json:"id,omitempty" tf:"id,omitempty"`
 
 	// Interface type
 	// +kubebuilder:validation:Optional
@@ -706,6 +693,10 @@ type PortParameters struct {
 }
 
 type PortRedundancyObservation struct {
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	Group *string `json:"group,omitempty" tf:"group,omitempty"`
+
 	Priority *string `json:"priority,omitempty" tf:"priority,omitempty"`
 }
 
@@ -748,6 +739,10 @@ type ProfileParameters struct {
 }
 
 type RedundancyObservation struct {
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	Group *string `json:"group,omitempty" tf:"group,omitempty"`
+
 	Priority *string `json:"priority,omitempty" tf:"priority,omitempty"`
 }
 
@@ -763,24 +758,6 @@ type RouterObservation struct {
 type RouterParameters struct {
 
 	// Equinix-assigned virtual gateway identifier
-	// +kubebuilder:validation:Optional
-	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
-}
-
-type RoutingProtocolsObservation struct {
-}
-
-type RoutingProtocolsParameters struct {
-
-	// Routing protocol instance state
-	// +kubebuilder:validation:Optional
-	State *string `json:"state,omitempty" tf:"state,omitempty"`
-
-	// Routing Protocol type
-	// +kubebuilder:validation:Optional
-	Type *string `json:"type,omitempty" tf:"type,omitempty"`
-
-	// Equinix-assigned Routing protocol identifier
 	// +kubebuilder:validation:Optional
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
@@ -828,26 +805,29 @@ type VirtualDeviceParameters struct {
 
 type ZSideAccessPointAccountObservation struct {
 
-	// Account Name
+	// Legal name of the accountholder.
 	AccountName *string `json:"accountName,omitempty" tf:"account_name,omitempty"`
 
-	// Account Number
+	// Equinix-assigned account number.
 	AccountNumber *float64 `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
 
-	// Global Customer organization identifier
+	// Equinix-assigned ID of the subscriber's parent organization.
 	GlobalCustID *string `json:"globalCustId,omitempty" tf:"global_cust_id,omitempty"`
 
-	// Global organization identifier
+	// Equinix-assigned ID of the subscriber's parent organization.
 	GlobalOrgID *string `json:"globalOrgId,omitempty" tf:"global_org_id,omitempty"`
 
-	// Global organization name
+	// Equinix-assigned name of the subscriber's parent organization.
 	GlobalOrganizationName *string `json:"globalOrganizationName,omitempty" tf:"global_organization_name,omitempty"`
 
-	// Customer organization identifier
+	// Equinix-assigned ID of the subscriber's organization.
 	OrgID *float64 `json:"orgId,omitempty" tf:"org_id,omitempty"`
 
-	// Customer organization name
+	// Equinix-assigned name of the subscriber's organization.
 	OrganizationName *string `json:"organizationName,omitempty" tf:"organization_name,omitempty"`
+
+	// Enterprise datastore id
+	UcmID *string `json:"ucmId,omitempty" tf:"ucm_id,omitempty"`
 }
 
 type ZSideAccessPointAccountParameters struct {
@@ -881,13 +861,9 @@ type ZSideAccessPointObservation struct {
 	// +kubebuilder:validation:Optional
 	Account []ZSideAccessPointAccountObservation `json:"account,omitempty" tf:"account,omitempty"`
 
-	// Cloud Router access point information
+	// **Deprecated** `gateway` Use `router` attribute instead
 	// +kubebuilder:validation:Optional
 	Gateway []AccessPointGatewayObservation `json:"gateway,omitempty" tf:"gateway,omitempty"`
-
-	// Virtual device interface
-	// +kubebuilder:validation:Optional
-	Interface []AccessPointInterfaceObservation `json:"interface,omitempty" tf:"interface,omitempty"`
 
 	// network access point information
 	// +kubebuilder:validation:Optional
@@ -901,7 +877,7 @@ type ZSideAccessPointObservation struct {
 	// +kubebuilder:validation:Optional
 	Profile []AccessPointProfileObservation `json:"profile,omitempty" tf:"profile,omitempty"`
 
-	// Cloud Router access point information
+	// Cloud Router access point information that replaces `gateway`
 	// +kubebuilder:validation:Optional
 	Router []AccessPointRouterObservation `json:"router,omitempty" tf:"router,omitempty"`
 
@@ -920,7 +896,7 @@ type ZSideAccessPointParameters struct {
 	// +kubebuilder:validation:Optional
 	AuthenticationKey *string `json:"authenticationKey,omitempty" tf:"authentication_key,omitempty"`
 
-	// Cloud Router access point information
+	// **Deprecated** `gateway` Use `router` attribute instead
 	// +kubebuilder:validation:Optional
 	Gateway []AccessPointGatewayParameters `json:"gateway,omitempty" tf:"gateway,omitempty"`
 
@@ -956,13 +932,9 @@ type ZSideAccessPointParameters struct {
 	// +kubebuilder:validation:Optional
 	ProviderConnectionID *string `json:"providerConnectionId,omitempty" tf:"provider_connection_id,omitempty"`
 
-	// Cloud Router access point information
+	// Cloud Router access point information that replaces `gateway`
 	// +kubebuilder:validation:Optional
 	Router []AccessPointRouterParameters `json:"router,omitempty" tf:"router,omitempty"`
-
-	// Access point routing protocols configuration
-	// +kubebuilder:validation:Optional
-	RoutingProtocols []AccessPointRoutingProtocolsParameters `json:"routingProtocols,omitempty" tf:"routing_protocols,omitempty"`
 
 	// Access point seller region
 	// +kubebuilder:validation:Optional

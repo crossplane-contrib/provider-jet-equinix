@@ -73,8 +73,8 @@ type OrganizationParameters struct {
 	// An object that has the address information. See Address
 	// below for more details.
 	// Address information block
-	// +kubebuilder:validation:Required
-	Address []AddressParameters `json:"address" tf:"address,omitempty"`
+	// +kubebuilder:validation:Optional
+	Address []AddressParameters `json:"address,omitempty" tf:"address,omitempty"`
 
 	// Description string.
 	// Description string

@@ -129,6 +129,12 @@ spec:
                   name:
                     description: device link name. name
                     type: string
+                  projectId:
+                    description: Unique Identifier for the project resource where
+                      the device link is scoped to.If you leave it out, the device
+                      link will be created under the default project id of your organization.
+                      project_id
+                    type: string
                   subnet:
                     description: device link subnet in CIDR format. Not required for
                       link between self configured devices. subnet

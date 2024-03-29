@@ -9,6 +9,7 @@ metadata:
 spec:
   forProvider:
     name: johnKent
+    projectId: a86d7112-d740-4758-9c9c-31e66373746b
     publicKey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDpXGdxljAyPp9vH97436U171cX
     type: RSA
 

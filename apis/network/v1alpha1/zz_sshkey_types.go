@@ -40,6 +40,12 @@ type SSHKeyParameters_2 struct {
 	// +kubebuilder:validation:Required
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// Unique Identifier for the project resource where the SSH key is scoped to.If you
+	// leave it out, the ssh key will be created under the default project id of your organization.
+	// The unique identifier of Project Resource to which ssh key is scoped to
+	// +kubebuilder:validation:Optional
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
 	// The SSH public key. If this is a file, it can be read using the file
 	// interpolation function.
 	// The SSH public key. If this is a file, it can be read using the file interpolation function

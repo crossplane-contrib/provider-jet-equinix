@@ -67,8 +67,7 @@ spec:
                     description: UUID of Public or VRF IP Reservation to associate
                       with the gateway, the reservation must be in the same metro
                       as the VLAN, conflicts with private_ipv4_subnet_size. UUID of
-                      the Public or VRF IP Reservation to associate, must be in the
-                      same metro as the VLAN
+                      the Public or VRF IP Reservation to associate
                     type: string
                   ipReservationIdRef:
                     description: Reference to a ReservedIPBlock to populate ipReservationId.
@@ -147,7 +146,7 @@ spec:
                     description: Size of the private IPv4 subnet to create for this
                       metal gateway, must be one of 8, 16, 32, 64, 128. Conflicts
                       with ip_reservation_id. Size of the private IPv4 subnet to create
-                      for this gateway, one of [8 16 32 64 128]
+                      for this gateway
                     type: number
                   projectId:
                     description: UUID of the project where the gateway is scoped to.

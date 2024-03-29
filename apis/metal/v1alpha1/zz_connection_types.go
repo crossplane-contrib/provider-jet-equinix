@@ -50,7 +50,7 @@ type ConnectionObservation struct {
 type ConnectionParameters struct {
 
 	// The preferred email used for communication and notifications about the Equinix Fabric interconnection. Required when using a Project API key. Optional and defaults to the primary user email address when using a User API key.
-	// The preferred email used for communication and notifications about the Equinix Fabric interconnection. Required when using a Project API key. Optional and defaults to the primary user email address when using a User API key
+	// The preferred email used for communication and notifications about the Equinix Fabric interconnection
 	// +kubebuilder:validation:Optional
 	ContactEmail *string `json:"contactEmail,omitempty" tf:"contact_email,omitempty"`
 
@@ -116,8 +116,8 @@ type ConnectionParameters struct {
 	// +kubebuilder:validation:Optional
 	ServiceTokenType *string `json:"serviceTokenType,omitempty" tf:"service_token_type,omitempty"`
 
-	// Connection speed - one of 50Mbps, 200Mbps, 500Mbps, 1Gbps, 2Gbps, 5Gbps, 10Gbps.
-	// Port speed. Required for a_side connections. Allowed values are 50Mbps, 200Mbps, 500Mbps, 1Gbps, 2Gbps, 5Gbps, 10Gbps
+	// Connection speed -  Values must be in the format 'Mbps' or 'Gpbs', for example '100Mbps' or '50Gbps'.  Actual supported values will depend on the connection type and whether the connection uses VLANs or VRF.
+	// Connection speed -  Values must be in the format '<number>Mbps' or '<number>Gpbs', for example '100Mbps' or '50Gbps'.  Actual supported values will depend on the connection type and whether the connection uses VLANs or VRF.
 	// +kubebuilder:validation:Optional
 	Speed *string `json:"speed,omitempty" tf:"speed,omitempty"`
 
@@ -135,6 +135,10 @@ type ConnectionParameters struct {
 	// Only used with shared connection. VLANs to attach. Pass one vlan for Primary/Single connection and two vlans for Redundant connection
 	// +kubebuilder:validation:Optional
 	Vlans []*float64 `json:"vlans,omitempty" tf:"vlans,omitempty"`
+
+	// Only used with shared connection. VRFs to attach. Pass one VRF for Primary/Single connection and two VRFs for Redundant connection
+	// +kubebuilder:validation:Optional
+	Vrfs []*string `json:"vrfs,omitempty" tf:"vrfs,omitempty"`
 }
 
 type PortsObservation struct {
@@ -148,7 +152,7 @@ type PortsObservation struct {
 
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
-	// Connection speed - one of 50Mbps, 200Mbps, 500Mbps, 1Gbps, 2Gbps, 5Gbps, 10Gbps.
+	// Connection speed -  Values must be in the format 'Mbps' or 'Gpbs', for example '100Mbps' or '50Gbps'.  Actual supported values will depend on the connection type and whether the connection uses VLANs or VRF.
 	Speed *float64 `json:"speed,omitempty" tf:"speed,omitempty"`
 
 	// Status of the connection resource.
@@ -165,7 +169,7 @@ type ServiceTokensObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// Connection speed - one of 50Mbps, 200Mbps, 500Mbps, 1Gbps, 2Gbps, 5Gbps, 10Gbps.
+	// Connection speed -  Values must be in the format 'Mbps' or 'Gpbs', for example '100Mbps' or '50Gbps'.  Actual supported values will depend on the connection type and whether the connection uses VLANs or VRF.
 	MaxAllowedSpeed *string `json:"maxAllowedSpeed,omitempty" tf:"max_allowed_speed,omitempty"`
 
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
