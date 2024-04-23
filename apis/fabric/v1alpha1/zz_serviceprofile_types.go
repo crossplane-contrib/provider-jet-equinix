@@ -451,9 +451,13 @@ type ServiceProfileParameters struct {
 	// +kubebuilder:validation:Optional
 	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
 
-	// Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+	// Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE, IA_PROFILE
 	// +kubebuilder:validation:Required
 	Type *string `json:"type" tf:"type,omitempty"`
+
+	// Flips view between buyer and seller representation. Available values : aSide, zSide. Default value : aSide
+	// +kubebuilder:validation:Optional
+	ViewPoint *string `json:"viewPoint,omitempty" tf:"view_point,omitempty"`
 
 	// Virtual Devices
 	// +kubebuilder:validation:Optional

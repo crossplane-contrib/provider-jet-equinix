@@ -275,7 +275,7 @@ spec:
                     type: array
                   type:
                     description: Connection type - dedicated or shared. Connection
-                      type - dedicated or shared
+                      type - dedicated, shared or shared_port_vlan
                     type: string
                   vlans:
                     description: Only used with shared connection. Vlans to attach.
@@ -474,6 +474,12 @@ spec:
             properties:
               atProvider:
                 properties:
+                  authorizationCode:
+                    description: Only used with Fabric Shared connection. Fabric uses
+                      this token to be able to give more detailed information about
+                      the Metal end of the network, when viewing resources from within
+                      Fabric.
+                    type: string
                   id:
                     type: string
                   ports:

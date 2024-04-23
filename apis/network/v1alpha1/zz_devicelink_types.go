@@ -83,14 +83,20 @@ type DeviceLinkParameters struct {
 	// +kubebuilder:validation:Required
 	Device []DeviceLinkDeviceParameters `json:"device" tf:"device,omitempty"`
 
-	// definition of one or more, inter metro, connections belonging
+	// (Deprecated) definition of one or more, inter metro, connections belonging
 	// to the device link. See Link section below for more details.
-	// link
+	// Definition of one or more, inter metro connections belonging to the device link
 	// +kubebuilder:validation:Optional
 	Link []LinkParameters `json:"link,omitempty" tf:"link,omitempty"`
 
+	// definition of one or more, inter metro, connections belonging
+	// to the device link. See Metro Link section below for more details.
+	// Definition of one or more, inter or intra metro connections belonging to the device link
+	// +kubebuilder:validation:Optional
+	MetroLink []MetroLinkParameters `json:"metroLink,omitempty" tf:"metro_link,omitempty"`
+
 	// device link name.
-	// name
+	// Device link name
 	// +kubebuilder:validation:Required
 	Name *string `json:"name" tf:"name,omitempty"`
 
@@ -100,9 +106,15 @@ type DeviceLinkParameters struct {
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
+	// Whether the connection should be created through
+	// Fabric's primary or secondary port. Supported values: PRIMARY (Default), SECONDARY, HYBRID
+	// (Optional) Whether the connection should be created through Fabric's primary or secondary port. Supported values: `PRIMARY` (Default), `SECONDARY`, `HYBRID`
+	// +kubebuilder:validation:Optional
+	RedundancyType *string `json:"redundancyType,omitempty" tf:"redundancy_type,omitempty"`
+
 	// device link subnet in CIDR format. Not required for link
 	// between self configured devices.
-	// subnet
+	// Device link subnet CIDR.
 	// +kubebuilder:validation:Optional
 	Subnet *string `json:"subnet,omitempty" tf:"subnet,omitempty"`
 }
@@ -137,6 +149,32 @@ type LinkParameters struct {
 	// Connection source zone code
 	// +kubebuilder:validation:Optional
 	SrcZoneCode *string `json:"srcZoneCode,omitempty" tf:"src_zone_code,omitempty"`
+
+	// connection throughput.
+	// Connection throughput
+	// +kubebuilder:validation:Required
+	Throughput *string `json:"throughput" tf:"throughput,omitempty"`
+
+	// connection throughput unit (Mbps or Gbps).
+	// Connection throughput unit
+	// +kubebuilder:validation:Required
+	ThroughputUnit *string `json:"throughputUnit" tf:"throughput_unit,omitempty"`
+}
+
+type MetroLinkObservation struct {
+}
+
+type MetroLinkParameters struct {
+
+	// billing account number to be used for
+	// connection charges
+	// Billing account number to be used for connection charges
+	// +kubebuilder:validation:Required
+	AccountNumber *string `json:"accountNumber" tf:"account_number,omitempty"`
+
+	// connection metro code.
+	// +kubebuilder:validation:Required
+	MetroCode *string `json:"metroCode" tf:"metro_code,omitempty"`
 
 	// connection throughput.
 	// Connection throughput

@@ -175,7 +175,7 @@ spec:
                                   properties:
                                     type:
                                       description: Service profile type - L2_PROFILE,
-                                        L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                                        L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE, IA_PROFILE
                                       type: string
                                     uuid:
                                       description: Equinix assigned service profile
@@ -186,9 +186,6 @@ spec:
                                   - uuid
                                   type: object
                                 type: array
-                              providerConnectionId:
-                                description: Provider assigned Connection Id
-                                type: string
                               router:
                                 description: Cloud Router access point information
                                   that replaces `gateway`
@@ -340,7 +337,7 @@ spec:
                   type:
                     description: Defines the connection type like EVPL_VC, EPL_VC,
                       IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC,
-                      EC_VC
+                      IA_VC, EC_VC
                     type: string
                   zSide:
                     description: Destination or Provider side connection configuration
@@ -454,7 +451,7 @@ spec:
                                   properties:
                                     type:
                                       description: Service profile type - L2_PROFILE,
-                                        L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                                        L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE, IA_PROFILE
                                       type: string
                                     uuid:
                                       description: Equinix assigned service profile
@@ -465,9 +462,6 @@ spec:
                                   - uuid
                                   type: object
                                 type: array
-                              providerConnectionId:
-                                description: Provider assigned Connection Id
-                                type: string
                               router:
                                 description: Cloud Router access point information
                                   that replaces `gateway`
@@ -540,7 +534,6 @@ spec:
                 - bandwidth
                 - name
                 - notifications
-                - order
                 - type
                 - zSide
                 type: object
@@ -833,6 +826,9 @@ spec:
                                       type: string
                                   type: object
                                 type: array
+                              providerConnectionId:
+                                description: Provider assigned Connection Id
+                                type: string
                               router:
                                 description: Cloud Router access point information
                                   that replaces `gateway`
@@ -1100,6 +1096,9 @@ spec:
                                       type: string
                                   type: object
                                 type: array
+                              providerConnectionId:
+                                description: Provider assigned Connection Id
+                                type: string
                               router:
                                 description: Cloud Router access point information
                                   that replaces `gateway`
