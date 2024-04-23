@@ -120,14 +120,14 @@ type CloudRouterParameters struct {
 	Notifications []NotificationsParameters `json:"notifications" tf:"notifications,omitempty"`
 
 	// Order information related to this Fabric Cloud Router
-	// +kubebuilder:validation:Required
-	Order []OrderParameters `json:"order" tf:"order,omitempty"`
+	// +kubebuilder:validation:Optional
+	Order []OrderParameters `json:"order,omitempty" tf:"order,omitempty"`
 
 	// Fabric Cloud Router Package Type
 	// +kubebuilder:validation:Required
 	Package []PackageParameters `json:"package" tf:"package,omitempty"`
 
-	// Customer resource hierarchy project information.Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects
+	// Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects
 	// +kubebuilder:validation:Required
 	Project []ProjectParameters `json:"project" tf:"project,omitempty"`
 

@@ -153,9 +153,10 @@ spec:
                       type: object
                     type: array
                   project:
-                    description: 'Customer resource hierarchy project information.Applicable
-                      to customers onboarded to Equinix Identity and Access Management.
-                      For more information see Identity and Access Management: Projects'
+                    description: 'Customer resource hierarchy project information.
+                      Applicable to customers onboarded to Equinix Identity and Access
+                      Management. For more information see Identity and Access Management:
+                      Projects'
                     items:
                       properties:
                         href:
@@ -177,7 +178,6 @@ spec:
                 - location
                 - name
                 - notifications
-                - order
                 - package
                 - project
                 - type

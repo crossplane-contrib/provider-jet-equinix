@@ -488,6 +488,11 @@ func (in *AccessPointObservation) DeepCopyInto(out *AccessPointObservation) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.ProviderConnectionID != nil {
+		in, out := &in.ProviderConnectionID, &out.ProviderConnectionID
+		*out = new(string)
+		**out = **in
+	}
 	if in.Router != nil {
 		in, out := &in.Router, &out.Router
 		*out = make([]RouterObservation, len(*in))
@@ -580,11 +585,6 @@ func (in *AccessPointParameters) DeepCopyInto(out *AccessPointParameters) {
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
-	}
-	if in.ProviderConnectionID != nil {
-		in, out := &in.ProviderConnectionID, &out.ProviderConnectionID
-		*out = new(string)
-		**out = **in
 	}
 	if in.Router != nil {
 		in, out := &in.Router, &out.Router
@@ -4929,6 +4929,11 @@ func (in *ServiceProfileParameters) DeepCopyInto(out *ServiceProfileParameters) 
 		*out = new(string)
 		**out = **in
 	}
+	if in.ViewPoint != nil {
+		in, out := &in.ViewPoint, &out.ViewPoint
+		*out = new(string)
+		**out = **in
+	}
 	if in.VirtualDevices != nil {
 		in, out := &in.VirtualDevices, &out.VirtualDevices
 		*out = make([]VirtualDevicesParameters, len(*in))
@@ -5387,6 +5392,11 @@ func (in *ZSideAccessPointObservation) DeepCopyInto(out *ZSideAccessPointObserva
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.ProviderConnectionID != nil {
+		in, out := &in.ProviderConnectionID, &out.ProviderConnectionID
+		*out = new(string)
+		**out = **in
+	}
 	if in.Router != nil {
 		in, out := &in.Router, &out.Router
 		*out = make([]AccessPointRouterObservation, len(*in))
@@ -5479,11 +5489,6 @@ func (in *ZSideAccessPointParameters) DeepCopyInto(out *ZSideAccessPointParamete
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
-	}
-	if in.ProviderConnectionID != nil {
-		in, out := &in.ProviderConnectionID, &out.ProviderConnectionID
-		*out = new(string)
-		**out = **in
 	}
 	if in.Router != nil {
 		in, out := &in.Router, &out.Router

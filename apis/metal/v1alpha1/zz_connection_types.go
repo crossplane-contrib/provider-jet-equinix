@@ -26,6 +26,10 @@ import (
 )
 
 type ConnectionObservation struct {
+
+	// Only used with Fabric Shared connection. Fabric uses this token to be able to give more detailed information about the Metal end of the network, when viewing resources from within Fabric.
+	AuthorizationCode *string `json:"authorizationCode,omitempty" tf:"authorization_code,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// List of connection ports - primary (ports[0]) and secondary (ports[1]). Schema of
@@ -127,7 +131,7 @@ type ConnectionParameters struct {
 	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
 
 	// Connection type - dedicated or shared.
-	// Connection type - dedicated or shared
+	// Connection type - dedicated, shared or shared_port_vlan
 	// +kubebuilder:validation:Required
 	Type *string `json:"type" tf:"type,omitempty"`
 

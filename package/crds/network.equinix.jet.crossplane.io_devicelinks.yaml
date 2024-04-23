@@ -85,9 +85,10 @@ spec:
                       type: object
                     type: array
                   link:
-                    description: definition of one or more, inter metro, connections
-                      belonging to the device link. See Link section below for more
-                      details. link
+                    description: (Deprecated) definition of one or more, inter metro,
+                      connections belonging to the device link. See Link section below
+                      for more details. Definition of one or more, inter metro connections
+                      belonging to the device link
                     items:
                       properties:
                         accountNumber:
@@ -126,8 +127,37 @@ spec:
                       - throughputUnit
                       type: object
                     type: array
+                  metroLink:
+                    description: definition of one or more, inter metro, connections
+                      belonging to the device link. See Metro Link section below for
+                      more details. Definition of one or more, inter or intra metro
+                      connections belonging to the device link
+                    items:
+                      properties:
+                        accountNumber:
+                          description: billing account number to be used for connection
+                            charges Billing account number to be used for connection
+                            charges
+                          type: string
+                        metroCode:
+                          description: connection metro code.
+                          type: string
+                        throughput:
+                          description: connection throughput. Connection throughput
+                          type: string
+                        throughputUnit:
+                          description: connection throughput unit (Mbps or Gbps).
+                            Connection throughput unit
+                          type: string
+                      required:
+                      - accountNumber
+                      - metroCode
+                      - throughput
+                      - throughputUnit
+                      type: object
+                    type: array
                   name:
-                    description: device link name. name
+                    description: device link name. Device link name
                     type: string
                   projectId:
                     description: Unique Identifier for the project resource where
@@ -135,9 +165,16 @@ spec:
                       link will be created under the default project id of your organization.
                       project_id
                     type: string
+                  redundancyType:
+                    description: 'Whether the connection should be created through
+                      Fabric''s primary or secondary port. Supported values: PRIMARY
+                      (Default), SECONDARY, HYBRID (Optional) Whether the connection
+                      should be created through Fabric''s primary or secondary port.
+                      Supported values: `PRIMARY` (Default), `SECONDARY`, `HYBRID`'
+                    type: string
                   subnet:
                     description: device link subnet in CIDR format. Not required for
-                      link between self configured devices. subnet
+                      link between self configured devices. Device link subnet CIDR.
                     type: string
                 required:
                 - device

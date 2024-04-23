@@ -377,7 +377,11 @@ spec:
                     type: array
                   type:
                     description: Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE,
-                      ECMC_PROFILE
+                      ECMC_PROFILE, IA_PROFILE
+                    type: string
+                  viewPoint:
+                    description: 'Flips view between buyer and seller representation.
+                      Available values : aSide, zSide. Default value : aSide'
                     type: string
                   virtualDevices:
                     description: Virtual Devices

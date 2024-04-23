@@ -487,7 +487,7 @@ resources:
             order_id: (String) Order Identification
             order_number: (String) Order Reference Number
             package: '(Block Set, Min: 1, Max: 1) Fabric Cloud Router Package Type (see below for nested schema)'
-            project: '(Block Set, Min: 1, Max: 1) Customer resource hierarchy project information.Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects (see below for nested schema)'
+            project: '(Block Set, Min: 1, Max: 1) Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects (see below for nested schema)'
             project_id: (String) Project Id
             purchase_order_number: (String) Purchase order number
             read: (String)
@@ -2293,6 +2293,12 @@ resources:
                 link.dst_metro_code: equinix_network_device.test.secondary_device[0].metro_code
                 link.src_metro_code: equinix_network_device.test.metro_code
         argumentDocs:
+            Metro link.account_number: |-
+                - (Required) billing account number to be used for
+                connection charges
+            Metro link.metro_code: '- (Required) connection metro code.'
+            Metro link.throughput: '- (Required) connection throughput.'
+            Metro link.throughput_unit: '- (Required) connection throughput unit (Mbps or Gbps).'
             device: |-
                 - (Required) definition of one or more devices belonging to the
                 device link. See Device section below for more details.
@@ -2306,7 +2312,7 @@ resources:
                 - device link provisioning status on a given device. One of PROVISIONING,
                 PROVISIONED, DEPROVISIONING, DEPROVISIONED, FAILED.
             link: |-
-                - (Optional) definition of one or more, inter metro, connections belonging
+                - (Deprecated) definition of one or more, inter metro, connections belonging
                 to the device link. See Link section below for more details.
             link.account_number: |-
                 - (Required) billing account number to be used for
@@ -2317,10 +2323,16 @@ resources:
             link.src_zone_code: '- (Deprecated) connection source zone code is not required.'
             link.throughput: '- (Required) connection throughput.'
             link.throughput_unit: '- (Required) connection throughput unit (Mbps or Gbps).'
+            metro_link: |-
+                - (Optional) definition of one or more, inter metro, connections belonging
+                to the device link. See Metro Link section below for more details.
             name: '- (Required) device link name.'
             project_id: |-
                 - (Optional) Unique Identifier for the project resource where the device link is scoped to.If you
                 leave it out, the device link will be created under the default project id of your organization.
+            redundancy_type: |-
+                - (Optional) Whether the connection should be created through
+                Fabric's primary or secondary port. Supported values: PRIMARY (Default), SECONDARY, HYBRID
             status: |-
                 - Device link provisioning status. One of PROVISIONING, PROVISIONED,
                 DEPROVISIONING, DEPROVISIONED, FAILED.

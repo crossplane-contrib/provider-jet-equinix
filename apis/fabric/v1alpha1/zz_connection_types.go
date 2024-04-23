@@ -191,6 +191,9 @@ type AccessPointObservation struct {
 	// +kubebuilder:validation:Optional
 	Profile []ProfileObservation `json:"profile,omitempty" tf:"profile,omitempty"`
 
+	// Provider assigned Connection Id
+	ProviderConnectionID *string `json:"providerConnectionId,omitempty" tf:"provider_connection_id,omitempty"`
+
 	// Cloud Router access point information that replaces `gateway`
 	// +kubebuilder:validation:Optional
 	Router []RouterObservation `json:"router,omitempty" tf:"router,omitempty"`
@@ -241,10 +244,6 @@ type AccessPointParameters struct {
 	// Service Profile
 	// +kubebuilder:validation:Optional
 	Profile []ProfileParameters `json:"profile,omitempty" tf:"profile,omitempty"`
-
-	// Provider assigned Connection Id
-	// +kubebuilder:validation:Optional
-	ProviderConnectionID *string `json:"providerConnectionId,omitempty" tf:"provider_connection_id,omitempty"`
 
 	// Cloud Router access point information that replaces `gateway`
 	// +kubebuilder:validation:Optional
@@ -299,7 +298,7 @@ type AccessPointProfileObservation struct {
 
 type AccessPointProfileParameters struct {
 
-	// Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+	// Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE, IA_PROFILE
 	// +kubebuilder:validation:Required
 	Type *string `json:"type" tf:"type,omitempty"`
 
@@ -523,8 +522,8 @@ type ConnectionParameters struct {
 	Notifications []ConnectionNotificationsParameters `json:"notifications" tf:"notifications,omitempty"`
 
 	// Order details
-	// +kubebuilder:validation:Required
-	Order []ConnectionOrderParameters `json:"order" tf:"order,omitempty"`
+	// +kubebuilder:validation:Optional
+	Order []ConnectionOrderParameters `json:"order,omitempty" tf:"order,omitempty"`
 
 	// Project information
 	// +kubebuilder:validation:Optional
@@ -534,7 +533,7 @@ type ConnectionParameters struct {
 	// +kubebuilder:validation:Optional
 	Redundancy []ConnectionRedundancyParameters `json:"redundancy,omitempty" tf:"redundancy,omitempty"`
 
-	// Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+	// Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, IA_VC, EC_VC
 	// +kubebuilder:validation:Required
 	Type *string `json:"type" tf:"type,omitempty"`
 
@@ -729,7 +728,7 @@ type ProfileObservation struct {
 
 type ProfileParameters struct {
 
-	// Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+	// Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE, IA_PROFILE
 	// +kubebuilder:validation:Required
 	Type *string `json:"type" tf:"type,omitempty"`
 
@@ -877,6 +876,9 @@ type ZSideAccessPointObservation struct {
 	// +kubebuilder:validation:Optional
 	Profile []AccessPointProfileObservation `json:"profile,omitempty" tf:"profile,omitempty"`
 
+	// Provider assigned Connection Id
+	ProviderConnectionID *string `json:"providerConnectionId,omitempty" tf:"provider_connection_id,omitempty"`
+
 	// Cloud Router access point information that replaces `gateway`
 	// +kubebuilder:validation:Optional
 	Router []AccessPointRouterObservation `json:"router,omitempty" tf:"router,omitempty"`
@@ -927,10 +929,6 @@ type ZSideAccessPointParameters struct {
 	// Service Profile
 	// +kubebuilder:validation:Optional
 	Profile []AccessPointProfileParameters `json:"profile,omitempty" tf:"profile,omitempty"`
-
-	// Provider assigned Connection Id
-	// +kubebuilder:validation:Optional
-	ProviderConnectionID *string `json:"providerConnectionId,omitempty" tf:"provider_connection_id,omitempty"`
 
 	// Cloud Router access point information that replaces `gateway`
 	// +kubebuilder:validation:Optional
