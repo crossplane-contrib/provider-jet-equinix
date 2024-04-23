@@ -4,7 +4,7 @@
 PROJECT_NAME := provider-jet-equinix
 PROJECT_REPO := github.com/crossplane-contrib/$(PROJECT_NAME)
 GO_REQUIRED_VERSION ?= 1.19
-GOLANGCILINT_VERSION ?= 1.50.0
+GOLANGCILINT_VERSION ?= 1.57.2
 
 export TERRAFORM_VERSION := 1.3.1
 
