@@ -1,6 +1,6 @@
 module github.com/crossplane-contrib/provider-jet-equinix
 
-go 1.19
+go 1.22.5
 
 require (
 	github.com/crossplane/crossplane-runtime v0.19.2
