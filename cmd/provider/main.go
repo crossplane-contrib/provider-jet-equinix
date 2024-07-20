@@ -23,6 +23,7 @@ import (
 	"time"
 
 	xpv1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	"github.com/crossplane/crossplane-runtime/pkg/certificates"
 	xpcontroller "github.com/crossplane/crossplane-runtime/pkg/controller"
 	"github.com/crossplane/crossplane-runtime/pkg/feature"
 	"github.com/crossplane/crossplane-runtime/pkg/logging"
@@ -56,6 +57,8 @@ func main() {
 
 		namespace                  = app.Flag("namespace", "Namespace used to set as default scope in default secret store config.").Default("crossplane-system").Envar("POD_NAMESPACE").String()
 		enableExternalSecretStores = app.Flag("enable-external-secret-stores", "Enable support for ExternalSecretStores.").Default("false").Envar("ENABLE_EXTERNAL_SECRET_STORES").Bool()
+		essTLSCertsPath            = app.Flag("ess-tls-cert-dir", "Path of ESS TLS certificates.").Envar("ESS_TLS_CERTS_DIR").String()
+		enableManagementPolicies   = app.Flag("enable-management-policies", "Enable support for ManagementPolicies.").Default("true").Envar("ENABLE_MANAGEMENT_POLICIES").Bool()
 	)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 
@@ -105,12 +108,26 @@ func main() {
 		OperationTrackerStore: upcontroller.NewOperationStore(log),
 	}
 
+	if *enableManagementPolicies {
+		o.Features.Enable(features.EnableBetaManagementPolicies)
+		log.Info("Beta feature enabled", "flag", features.EnableBetaManagementPolicies)
+	}
+
 	if *enableExternalSecretStores {
 		o.SecretStoreConfigGVK = &v1alpha1.StoreConfigGroupVersionKind
 		log.Info("Alpha feature enabled", "flag", features.EnableAlphaExternalSecretStores)
 
+		o.ESSOptions = &upcontroller.ESSOptions{}
+		if *essTLSCertsPath != "" {
+			log.Info("ESS TLS certificates path is set. Loading mTLS configuration.")
+			tCfg, err := certificates.LoadMTLSConfig(filepath.Join(*essTLSCertsPath, "ca.crt"), filepath.Join(*essTLSCertsPath, "tls.crt"), filepath.Join(*essTLSCertsPath, "tls.key"), false)
+			kingpin.FatalIfError(err, "Cannot load ESS TLS config.")
+
+			o.ESSOptions.TLSConfig = tCfg
+		}
+
 		// Ensure default store config exists.
-		kingpin.FatalIfError(resource.Ignore(kerrors.IsAlreadyExists, mgr.GetClient().Create(context.Background(), &v1alpha1.StoreConfig{
+		kingpin.FatalIfError(resource.Ignore(kerrors.IsAlreadyExists, mgr.GetClient().Create(ctx, &v1alpha1.StoreConfig{
 			ObjectMeta: metav1.ObjectMeta{
 				Name: "default",
 			},
@@ -121,6 +138,7 @@ func main() {
 					DefaultScope: *namespace,
 				},
 			},
+			Status: v1alpha1.StoreConfigStatus{},
 		})), "cannot create default store config")
 	}
 
