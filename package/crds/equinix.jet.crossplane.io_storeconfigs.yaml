@@ -31,8 +31,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: A StoreConfig configures how GCP controller should store connection
-          details.
+        description: A StoreConfig configures how Equinix controller should store
+          connection details.
         properties:
           apiVersion:
             description: |-

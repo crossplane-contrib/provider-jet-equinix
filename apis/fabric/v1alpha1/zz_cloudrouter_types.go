@@ -96,7 +96,7 @@ type CloudRouterInitParameters struct {
 
 	// (Block Set, Min: 1, Max: 1) Customer account information that is associated with this Fabric Cloud Router (see below for nested schema)
 	// Customer account information that is associated with this Fabric Cloud Router
-	Account []AccountInitParameters `json:"account,omitempty" tf:"account,omitempty"`
+	Account *AccountInitParameters `json:"account,omitempty" tf:"account,omitempty"`
 
 	// provided Fabric Cloud Router description
 	// Customer-provided Fabric Cloud Router description
@@ -108,7 +108,7 @@ type CloudRouterInitParameters struct {
 
 	// (Block Set, Min: 1, Max: 1) Fabric Cloud Router location (see below for nested schema)
 	// Fabric Cloud Router location
-	Location []LocationInitParameters `json:"location,omitempty" tf:"location,omitempty"`
+	Location *LocationInitParameters `json:"location,omitempty" tf:"location,omitempty"`
 
 	// numeric 24 characters string which can include only hyphens and underscores
 	// Fabric Cloud Router name. An alpha-numeric 24 characters string which can include only hyphens and underscores
@@ -120,15 +120,15 @@ type CloudRouterInitParameters struct {
 
 	// (Block Set, Min: 1, Max: 1) Order information related to this Fabric Cloud Router (see below for nested schema)
 	// Order information related to this Fabric Cloud Router
-	Order []OrderInitParameters `json:"order,omitempty" tf:"order,omitempty"`
+	Order *OrderInitParameters `json:"order,omitempty" tf:"order,omitempty"`
 
 	// (Block Set, Min: 1, Max: 1) Fabric Cloud Router Package Type (see below for nested schema)
 	// Fabric Cloud Router Package Type
-	Package []PackageInitParameters `json:"package,omitempty" tf:"package,omitempty"`
+	Package *PackageInitParameters `json:"package,omitempty" tf:"package,omitempty"`
 
 	// (Block Set, Min: 1, Max: 1) Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects (see below for nested schema)
 	// Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects
-	Project []ProjectInitParameters `json:"project,omitempty" tf:"project,omitempty"`
+	Project *ProjectInitParameters `json:"project,omitempty" tf:"project,omitempty"`
 
 	// (String) Defines the FCR type like; XF_ROUTER
 	// Defines the FCR type like; XF_ROUTER
@@ -143,7 +143,7 @@ type CloudRouterObservation struct {
 
 	// (Block Set, Min: 1, Max: 1) Customer account information that is associated with this Fabric Cloud Router (see below for nested schema)
 	// Customer account information that is associated with this Fabric Cloud Router
-	Account []AccountObservation `json:"account,omitempty" tf:"account,omitempty"`
+	Account *AccountObservation `json:"account,omitempty" tf:"account,omitempty"`
 
 	// distinct prefixes)
 	// Number of IPv4 BGP routes in use (including non-distinct prefixes)
@@ -186,7 +186,7 @@ type CloudRouterObservation struct {
 
 	// (Block Set, Min: 1, Max: 1) Fabric Cloud Router location (see below for nested schema)
 	// Fabric Cloud Router location
-	Location []LocationObservation `json:"location,omitempty" tf:"location,omitempty"`
+	Location *LocationObservation `json:"location,omitempty" tf:"location,omitempty"`
 
 	// numeric 24 characters string which can include only hyphens and underscores
 	// Fabric Cloud Router name. An alpha-numeric 24 characters string which can include only hyphens and underscores
@@ -198,15 +198,15 @@ type CloudRouterObservation struct {
 
 	// (Block Set, Min: 1, Max: 1) Order information related to this Fabric Cloud Router (see below for nested schema)
 	// Order information related to this Fabric Cloud Router
-	Order []OrderObservation `json:"order,omitempty" tf:"order,omitempty"`
+	Order *OrderObservation `json:"order,omitempty" tf:"order,omitempty"`
 
 	// (Block Set, Min: 1, Max: 1) Fabric Cloud Router Package Type (see below for nested schema)
 	// Fabric Cloud Router Package Type
-	Package []PackageObservation `json:"package,omitempty" tf:"package,omitempty"`
+	Package *PackageObservation `json:"package,omitempty" tf:"package,omitempty"`
 
 	// (Block Set, Min: 1, Max: 1) Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects (see below for nested schema)
 	// Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects
-	Project []ProjectObservation `json:"project,omitempty" tf:"project,omitempty"`
+	Project *ProjectObservation `json:"project,omitempty" tf:"project,omitempty"`
 
 	// (String) Fabric Cloud Router overall state
 	// Fabric Cloud Router overall state
@@ -226,7 +226,7 @@ type CloudRouterParameters struct {
 	// (Block Set, Min: 1, Max: 1) Customer account information that is associated with this Fabric Cloud Router (see below for nested schema)
 	// Customer account information that is associated with this Fabric Cloud Router
 	// +kubebuilder:validation:Optional
-	Account []AccountParameters `json:"account,omitempty" tf:"account,omitempty"`
+	Account *AccountParameters `json:"account,omitempty" tf:"account,omitempty"`
 
 	// provided Fabric Cloud Router description
 	// Customer-provided Fabric Cloud Router description
@@ -241,7 +241,7 @@ type CloudRouterParameters struct {
 	// (Block Set, Min: 1, Max: 1) Fabric Cloud Router location (see below for nested schema)
 	// Fabric Cloud Router location
 	// +kubebuilder:validation:Optional
-	Location []LocationParameters `json:"location,omitempty" tf:"location,omitempty"`
+	Location *LocationParameters `json:"location,omitempty" tf:"location,omitempty"`
 
 	// numeric 24 characters string which can include only hyphens and underscores
 	// Fabric Cloud Router name. An alpha-numeric 24 characters string which can include only hyphens and underscores
@@ -256,17 +256,17 @@ type CloudRouterParameters struct {
 	// (Block Set, Min: 1, Max: 1) Order information related to this Fabric Cloud Router (see below for nested schema)
 	// Order information related to this Fabric Cloud Router
 	// +kubebuilder:validation:Optional
-	Order []OrderParameters `json:"order,omitempty" tf:"order,omitempty"`
+	Order *OrderParameters `json:"order,omitempty" tf:"order,omitempty"`
 
 	// (Block Set, Min: 1, Max: 1) Fabric Cloud Router Package Type (see below for nested schema)
 	// Fabric Cloud Router Package Type
 	// +kubebuilder:validation:Optional
-	Package []PackageParameters `json:"package,omitempty" tf:"package,omitempty"`
+	Package *PackageParameters `json:"package,omitempty" tf:"package,omitempty"`
 
 	// (Block Set, Min: 1, Max: 1) Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects (see below for nested schema)
 	// Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects
 	// +kubebuilder:validation:Optional
-	Project []ProjectParameters `json:"project,omitempty" tf:"project,omitempty"`
+	Project *ProjectParameters `json:"project,omitempty" tf:"project,omitempty"`
 
 	// (String) Defines the FCR type like; XF_ROUTER
 	// Defines the FCR type like; XF_ROUTER

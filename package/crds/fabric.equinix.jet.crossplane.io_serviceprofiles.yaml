@@ -104,68 +104,64 @@ spec:
                           description: |-
                             (Block Set, Max: 1) Api configuration details (see below for nested schema)
                             Api configuration details
-                          items:
-                            properties:
-                              allowOverSubscription:
-                                description: |-
-                                  (Boolean) Setting showing that oversubscription support is available (true) or not (false). The default is false
-                                  Setting showing that oversubscription support is available (true) or not (false). The default is false
-                                type: boolean
-                              apiAvailable:
-                                description: |-
-                                  (Boolean) Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
-                                  Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
-                                type: boolean
-                              bandwidthFromApi:
-                                description: |-
-                                  (Boolean) Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
-                                  Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
-                                type: boolean
-                              equinixManagedPort:
-                                description: |-
-                                  (Boolean) Setting indicating that the port is managed by Equinix (true) or not (false)
-                                  Setting indicating that the port is managed by Equinix (true) or not (false)
-                                type: boolean
-                              equinixManagedVlan:
-                                description: |-
-                                  (Boolean) Setting indicating that the VLAN is managed by Equinix (true) or not (false)
-                                  Setting indicating that the VLAN is managed by Equinix (true) or not (false)
-                                type: boolean
-                              integrationId:
-                                description: |-
-                                  (String) A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
-                                  A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
-                                type: string
-                              overSubscriptionLimit:
-                                description: |-
-                                  (Number) Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
-                                  Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
-                                type: number
-                            type: object
-                          type: array
+                          properties:
+                            allowOverSubscription:
+                              description: |-
+                                (Boolean) Setting showing that oversubscription support is available (true) or not (false). The default is false
+                                Setting showing that oversubscription support is available (true) or not (false). The default is false
+                              type: boolean
+                            apiAvailable:
+                              description: |-
+                                (Boolean) Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
+                                Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
+                              type: boolean
+                            bandwidthFromApi:
+                              description: |-
+                                (Boolean) Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
+                                Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
+                              type: boolean
+                            equinixManagedPort:
+                              description: |-
+                                (Boolean) Setting indicating that the port is managed by Equinix (true) or not (false)
+                                Setting indicating that the port is managed by Equinix (true) or not (false)
+                              type: boolean
+                            equinixManagedVlan:
+                              description: |-
+                                (Boolean) Setting indicating that the VLAN is managed by Equinix (true) or not (false)
+                                Setting indicating that the VLAN is managed by Equinix (true) or not (false)
+                              type: boolean
+                            integrationId:
+                              description: |-
+                                (String) A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
+                                A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
+                              type: string
+                            overSubscriptionLimit:
+                              description: |-
+                                (Number) Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
+                                Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
+                              type: number
+                          type: object
                         authenticationKey:
                           description: |-
                             (Block Set, Max: 1) Authentication key details (see below for nested schema)
                             Authentication key details
-                          items:
-                            properties:
-                              description:
-                                description: |-
-                                  provided service description
-                                  Description of authorization key
-                                type: string
-                              label:
-                                description: |-
-                                  (String) Name of the parameter that must be provided to authorize the connection.
-                                  Name of the parameter that must be provided to authorize the connection.
-                                type: string
-                              required:
-                                description: |-
-                                  (Boolean) Requirement to configure an authentication key.
-                                  Requirement to configure an authentication key.
-                                type: boolean
-                            type: object
-                          type: array
+                          properties:
+                            description:
+                              description: |-
+                                provided service description
+                                Description of authorization key
+                              type: string
+                            label:
+                              description: |-
+                                (String) Name of the parameter that must be provided to authorize the connection.
+                                Name of the parameter that must be provided to authorize the connection.
+                              type: string
+                            required:
+                              description: |-
+                                (Boolean) Requirement to configure an authentication key.
+                                Requirement to configure an authentication key.
+                              type: boolean
+                          type: object
                         bandwidthAlertThreshold:
                           description: |-
                             (Number) Percentage of port bandwidth at which an allocation alert is generated
@@ -190,25 +186,23 @@ spec:
                           description: |-
                             (Block Set, Max: 1) Link protocol configuration details (see below for nested schema)
                             Link protocol configuration details
-                          items:
-                            properties:
-                              encapsulation:
-                                description: |-
-                                  Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
-                                  Data frames encapsulation standard.UNTAGGED - Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
-                                type: string
-                              encapsulationStrategy:
-                                description: |-
-                                  (String) Additional tagging information required by the seller profile.
-                                  Additional tagging information required by the seller profile.
-                                type: string
-                              reuseVlanSTag:
-                                description: |-
-                                  tag assigned as the initial connection.
-                                  Automatically accept subsequent DOT1Q to QINQ connections that use the same authentication key. These connections will have the same VLAN S-tag assigned as the initial connection.
-                                type: boolean
-                            type: object
-                          type: array
+                          properties:
+                            encapsulation:
+                              description: |-
+                                Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
+                                Data frames encapsulation standard.UNTAGGED - Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
+                              type: string
+                            encapsulationStrategy:
+                              description: |-
+                                (String) Additional tagging information required by the seller profile.
+                                Additional tagging information required by the seller profile.
+                              type: string
+                            reuseVlanSTag:
+                              description: |-
+                                tag assigned as the initial connection.
+                                Automatically accept subsequent DOT1Q to QINQ connections that use the same authentication key. These connections will have the same VLAN S-tag assigned as the initial connection.
+                              type: boolean
+                          type: object
                         supportedBandwidths:
                           description: |-
                             (List of Number) Supported bandwidths
@@ -279,43 +273,41 @@ spec:
                     description: |-
                       (Block Set, Max: 1) Marketing Info (see below for nested schema)
                       Marketing Info
-                    items:
-                      properties:
-                        logo:
-                          description: |-
-                            (String) Logo
-                            Logo
-                          type: string
-                        processStep:
-                          description: |-
-                            (Block List) Process Step (see below for nested schema)
-                            Process Step
-                          items:
-                            properties:
-                              description:
-                                description: |-
-                                  provided service description
-                                  Description
-                                type: string
-                              subTitle:
-                                description: |-
-                                  (String) Sub Title
-                                  Sub Title
-                                type: string
-                              title:
-                                description: |-
-                                  (String) Title
-                                  Title
-                                type: string
-                            type: object
-                          type: array
-                        promotion:
-                          description: |-
-                            (Boolean) Promotion
-                            Promotion
-                          type: boolean
-                      type: object
-                    type: array
+                    properties:
+                      logo:
+                        description: |-
+                          (String) Logo
+                          Logo
+                        type: string
+                      processStep:
+                        description: |-
+                          (Block List) Process Step (see below for nested schema)
+                          Process Step
+                        items:
+                          properties:
+                            description:
+                              description: |-
+                                provided service description
+                                Description
+                              type: string
+                            subTitle:
+                              description: |-
+                                (String) Sub Title
+                                Sub Title
+                              type: string
+                            title:
+                              description: |-
+                                (String) Title
+                                Title
+                              type: string
+                          type: object
+                        type: array
+                      promotion:
+                        description: |-
+                          (Boolean) Promotion
+                          Promotion
+                        type: boolean
+                    type: object
                   metros:
                     description: |-
                       (Block List) Access point config information (see below for nested schema)
@@ -404,30 +396,28 @@ spec:
                           description: |-
                             (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
                             Colo/Port Location
-                          items:
-                            properties:
-                              ibx:
-                                description: |-
-                                  (String) IBX Code
-                                  IBX Code
-                                type: string
-                              metroCode:
-                                description: |-
-                                  (String) Access point metro code
-                                  Access point metro code
-                                type: string
-                              metroName:
-                                description: |-
-                                  (String) Access point metro name
-                                  Access point metro name
-                                type: string
-                              region:
-                                description: |-
-                                  (String) Access point region
-                                  Access point region
-                                type: string
-                            type: object
-                          type: array
+                          properties:
+                            ibx:
+                              description: |-
+                                (String) IBX Code
+                                IBX Code
+                              type: string
+                            metroCode:
+                              description: |-
+                                (String) Access point metro code
+                                Access point metro code
+                              type: string
+                            metroName:
+                              description: |-
+                                (String) Access point metro name
+                                Access point metro name
+                              type: string
+                            region:
+                              description: |-
+                                (String) Access point region
+                                Access point region
+                              type: string
+                          type: object
                         sellerRegion:
                           description: |-
                             (String) Seller Region
@@ -454,15 +444,13 @@ spec:
                     description: |-
                       (Block Set, Max: 1) Project information (see below for nested schema)
                       Project information
-                    items:
-                      properties:
-                        projectId:
-                          description: |-
-                            (String) Project Id
-                            Project Id
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      projectId:
+                        description: |-
+                          (String) Project Id
+                          Project Id
+                        type: string
+                    type: object
                   selfProfile:
                     description: |-
                       (Boolean) Self Profile indicating if the profile is created for customer's self use
@@ -504,30 +492,28 @@ spec:
                           description: |-
                             (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
                             Device Location
-                          items:
-                            properties:
-                              ibx:
-                                description: |-
-                                  (String) IBX Code
-                                  IBX Code
-                                type: string
-                              metroCode:
-                                description: |-
-                                  (String) Access point metro code
-                                  Access point metro code
-                                type: string
-                              metroName:
-                                description: |-
-                                  (String) Access point metro name
-                                  Access point metro name
-                                type: string
-                              region:
-                                description: |-
-                                  (String) Access point region
-                                  Access point region
-                                type: string
-                            type: object
-                          type: array
+                          properties:
+                            ibx:
+                              description: |-
+                                (String) IBX Code
+                                IBX Code
+                              type: string
+                            metroCode:
+                              description: |-
+                                (String) Access point metro code
+                                Access point metro code
+                              type: string
+                            metroName:
+                              description: |-
+                                (String) Access point metro name
+                                Access point metro name
+                              type: string
+                            region:
+                              description: |-
+                                (String) Access point region
+                                Access point region
+                              type: string
+                          type: object
                         type:
                           description: |-
                             L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
@@ -589,68 +575,64 @@ spec:
                           description: |-
                             (Block Set, Max: 1) Api configuration details (see below for nested schema)
                             Api configuration details
-                          items:
-                            properties:
-                              allowOverSubscription:
-                                description: |-
-                                  (Boolean) Setting showing that oversubscription support is available (true) or not (false). The default is false
-                                  Setting showing that oversubscription support is available (true) or not (false). The default is false
-                                type: boolean
-                              apiAvailable:
-                                description: |-
-                                  (Boolean) Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
-                                  Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
-                                type: boolean
-                              bandwidthFromApi:
-                                description: |-
-                                  (Boolean) Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
-                                  Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
-                                type: boolean
-                              equinixManagedPort:
-                                description: |-
-                                  (Boolean) Setting indicating that the port is managed by Equinix (true) or not (false)
-                                  Setting indicating that the port is managed by Equinix (true) or not (false)
-                                type: boolean
-                              equinixManagedVlan:
-                                description: |-
-                                  (Boolean) Setting indicating that the VLAN is managed by Equinix (true) or not (false)
-                                  Setting indicating that the VLAN is managed by Equinix (true) or not (false)
-                                type: boolean
-                              integrationId:
-                                description: |-
-                                  (String) A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
-                                  A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
-                                type: string
-                              overSubscriptionLimit:
-                                description: |-
-                                  (Number) Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
-                                  Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
-                                type: number
-                            type: object
-                          type: array
+                          properties:
+                            allowOverSubscription:
+                              description: |-
+                                (Boolean) Setting showing that oversubscription support is available (true) or not (false). The default is false
+                                Setting showing that oversubscription support is available (true) or not (false). The default is false
+                              type: boolean
+                            apiAvailable:
+                              description: |-
+                                (Boolean) Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
+                                Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
+                              type: boolean
+                            bandwidthFromApi:
+                              description: |-
+                                (Boolean) Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
+                                Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
+                              type: boolean
+                            equinixManagedPort:
+                              description: |-
+                                (Boolean) Setting indicating that the port is managed by Equinix (true) or not (false)
+                                Setting indicating that the port is managed by Equinix (true) or not (false)
+                              type: boolean
+                            equinixManagedVlan:
+                              description: |-
+                                (Boolean) Setting indicating that the VLAN is managed by Equinix (true) or not (false)
+                                Setting indicating that the VLAN is managed by Equinix (true) or not (false)
+                              type: boolean
+                            integrationId:
+                              description: |-
+                                (String) A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
+                                A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
+                              type: string
+                            overSubscriptionLimit:
+                              description: |-
+                                (Number) Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
+                                Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
+                              type: number
+                          type: object
                         authenticationKey:
                           description: |-
                             (Block Set, Max: 1) Authentication key details (see below for nested schema)
                             Authentication key details
-                          items:
-                            properties:
-                              description:
-                                description: |-
-                                  provided service description
-                                  Description of authorization key
-                                type: string
-                              label:
-                                description: |-
-                                  (String) Name of the parameter that must be provided to authorize the connection.
-                                  Name of the parameter that must be provided to authorize the connection.
-                                type: string
-                              required:
-                                description: |-
-                                  (Boolean) Requirement to configure an authentication key.
-                                  Requirement to configure an authentication key.
-                                type: boolean
-                            type: object
-                          type: array
+                          properties:
+                            description:
+                              description: |-
+                                provided service description
+                                Description of authorization key
+                              type: string
+                            label:
+                              description: |-
+                                (String) Name of the parameter that must be provided to authorize the connection.
+                                Name of the parameter that must be provided to authorize the connection.
+                              type: string
+                            required:
+                              description: |-
+                                (Boolean) Requirement to configure an authentication key.
+                                Requirement to configure an authentication key.
+                              type: boolean
+                          type: object
                         bandwidthAlertThreshold:
                           description: |-
                             (Number) Percentage of port bandwidth at which an allocation alert is generated
@@ -675,25 +657,23 @@ spec:
                           description: |-
                             (Block Set, Max: 1) Link protocol configuration details (see below for nested schema)
                             Link protocol configuration details
-                          items:
-                            properties:
-                              encapsulation:
-                                description: |-
-                                  Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
-                                  Data frames encapsulation standard.UNTAGGED - Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
-                                type: string
-                              encapsulationStrategy:
-                                description: |-
-                                  (String) Additional tagging information required by the seller profile.
-                                  Additional tagging information required by the seller profile.
-                                type: string
-                              reuseVlanSTag:
-                                description: |-
-                                  tag assigned as the initial connection.
-                                  Automatically accept subsequent DOT1Q to QINQ connections that use the same authentication key. These connections will have the same VLAN S-tag assigned as the initial connection.
-                                type: boolean
-                            type: object
-                          type: array
+                          properties:
+                            encapsulation:
+                              description: |-
+                                Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
+                                Data frames encapsulation standard.UNTAGGED - Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
+                              type: string
+                            encapsulationStrategy:
+                              description: |-
+                                (String) Additional tagging information required by the seller profile.
+                                Additional tagging information required by the seller profile.
+                              type: string
+                            reuseVlanSTag:
+                              description: |-
+                                tag assigned as the initial connection.
+                                Automatically accept subsequent DOT1Q to QINQ connections that use the same authentication key. These connections will have the same VLAN S-tag assigned as the initial connection.
+                              type: boolean
+                          type: object
                         supportedBandwidths:
                           description: |-
                             (List of Number) Supported bandwidths
@@ -764,43 +744,41 @@ spec:
                     description: |-
                       (Block Set, Max: 1) Marketing Info (see below for nested schema)
                       Marketing Info
-                    items:
-                      properties:
-                        logo:
-                          description: |-
-                            (String) Logo
-                            Logo
-                          type: string
-                        processStep:
-                          description: |-
-                            (Block List) Process Step (see below for nested schema)
-                            Process Step
-                          items:
-                            properties:
-                              description:
-                                description: |-
-                                  provided service description
-                                  Description
-                                type: string
-                              subTitle:
-                                description: |-
-                                  (String) Sub Title
-                                  Sub Title
-                                type: string
-                              title:
-                                description: |-
-                                  (String) Title
-                                  Title
-                                type: string
-                            type: object
-                          type: array
-                        promotion:
-                          description: |-
-                            (Boolean) Promotion
-                            Promotion
-                          type: boolean
-                      type: object
-                    type: array
+                    properties:
+                      logo:
+                        description: |-
+                          (String) Logo
+                          Logo
+                        type: string
+                      processStep:
+                        description: |-
+                          (Block List) Process Step (see below for nested schema)
+                          Process Step
+                        items:
+                          properties:
+                            description:
+                              description: |-
+                                provided service description
+                                Description
+                              type: string
+                            subTitle:
+                              description: |-
+                                (String) Sub Title
+                                Sub Title
+                              type: string
+                            title:
+                              description: |-
+                                (String) Title
+                                Title
+                              type: string
+                          type: object
+                        type: array
+                      promotion:
+                        description: |-
+                          (Boolean) Promotion
+                          Promotion
+                        type: boolean
+                    type: object
                   metros:
                     description: |-
                       (Block List) Access point config information (see below for nested schema)
@@ -889,30 +867,28 @@ spec:
                           description: |-
                             (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
                             Colo/Port Location
-                          items:
-                            properties:
-                              ibx:
-                                description: |-
-                                  (String) IBX Code
-                                  IBX Code
-                                type: string
-                              metroCode:
-                                description: |-
-                                  (String) Access point metro code
-                                  Access point metro code
-                                type: string
-                              metroName:
-                                description: |-
-                                  (String) Access point metro name
-                                  Access point metro name
-                                type: string
-                              region:
-                                description: |-
-                                  (String) Access point region
-                                  Access point region
-                                type: string
-                            type: object
-                          type: array
+                          properties:
+                            ibx:
+                              description: |-
+                                (String) IBX Code
+                                IBX Code
+                              type: string
+                            metroCode:
+                              description: |-
+                                (String) Access point metro code
+                                Access point metro code
+                              type: string
+                            metroName:
+                              description: |-
+                                (String) Access point metro name
+                                Access point metro name
+                              type: string
+                            region:
+                              description: |-
+                                (String) Access point region
+                                Access point region
+                              type: string
+                          type: object
                         sellerRegion:
                           description: |-
                             (String) Seller Region
@@ -939,15 +915,13 @@ spec:
                     description: |-
                       (Block Set, Max: 1) Project information (see below for nested schema)
                       Project information
-                    items:
-                      properties:
-                        projectId:
-                          description: |-
-                            (String) Project Id
-                            Project Id
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      projectId:
+                        description: |-
+                          (String) Project Id
+                          Project Id
+                        type: string
+                    type: object
                   selfProfile:
                     description: |-
                       (Boolean) Self Profile indicating if the profile is created for customer's self use
@@ -989,30 +963,28 @@ spec:
                           description: |-
                             (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
                             Device Location
-                          items:
-                            properties:
-                              ibx:
-                                description: |-
-                                  (String) IBX Code
-                                  IBX Code
-                                type: string
-                              metroCode:
-                                description: |-
-                                  (String) Access point metro code
-                                  Access point metro code
-                                type: string
-                              metroName:
-                                description: |-
-                                  (String) Access point metro name
-                                  Access point metro name
-                                type: string
-                              region:
-                                description: |-
-                                  (String) Access point region
-                                  Access point region
-                                type: string
-                            type: object
-                          type: array
+                          properties:
+                            ibx:
+                              description: |-
+                                (String) IBX Code
+                                IBX Code
+                              type: string
+                            metroCode:
+                              description: |-
+                                (String) Access point metro code
+                                Access point metro code
+                              type: string
+                            metroName:
+                              description: |-
+                                (String) Access point metro name
+                                Access point metro name
+                              type: string
+                            region:
+                              description: |-
+                                (String) Access point region
+                                Access point region
+                              type: string
+                          type: object
                         type:
                           description: |-
                             L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
@@ -1246,68 +1218,64 @@ spec:
                           description: |-
                             (Block Set, Max: 1) Api configuration details (see below for nested schema)
                             Api configuration details
-                          items:
-                            properties:
-                              allowOverSubscription:
-                                description: |-
-                                  (Boolean) Setting showing that oversubscription support is available (true) or not (false). The default is false
-                                  Setting showing that oversubscription support is available (true) or not (false). The default is false
-                                type: boolean
-                              apiAvailable:
-                                description: |-
-                                  (Boolean) Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
-                                  Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
-                                type: boolean
-                              bandwidthFromApi:
-                                description: |-
-                                  (Boolean) Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
-                                  Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
-                                type: boolean
-                              equinixManagedPort:
-                                description: |-
-                                  (Boolean) Setting indicating that the port is managed by Equinix (true) or not (false)
-                                  Setting indicating that the port is managed by Equinix (true) or not (false)
-                                type: boolean
-                              equinixManagedVlan:
-                                description: |-
-                                  (Boolean) Setting indicating that the VLAN is managed by Equinix (true) or not (false)
-                                  Setting indicating that the VLAN is managed by Equinix (true) or not (false)
-                                type: boolean
-                              integrationId:
-                                description: |-
-                                  (String) A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
-                                  A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
-                                type: string
-                              overSubscriptionLimit:
-                                description: |-
-                                  (Number) Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
-                                  Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
-                                type: number
-                            type: object
-                          type: array
+                          properties:
+                            allowOverSubscription:
+                              description: |-
+                                (Boolean) Setting showing that oversubscription support is available (true) or not (false). The default is false
+                                Setting showing that oversubscription support is available (true) or not (false). The default is false
+                              type: boolean
+                            apiAvailable:
+                              description: |-
+                                (Boolean) Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
+                                Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
+                              type: boolean
+                            bandwidthFromApi:
+                              description: |-
+                                (Boolean) Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
+                                Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
+                              type: boolean
+                            equinixManagedPort:
+                              description: |-
+                                (Boolean) Setting indicating that the port is managed by Equinix (true) or not (false)
+                                Setting indicating that the port is managed by Equinix (true) or not (false)
+                              type: boolean
+                            equinixManagedVlan:
+                              description: |-
+                                (Boolean) Setting indicating that the VLAN is managed by Equinix (true) or not (false)
+                                Setting indicating that the VLAN is managed by Equinix (true) or not (false)
+                              type: boolean
+                            integrationId:
+                              description: |-
+                                (String) A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
+                                A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
+                              type: string
+                            overSubscriptionLimit:
+                              description: |-
+                                (Number) Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
+                                Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
+                              type: number
+                          type: object
                         authenticationKey:
                           description: |-
                             (Block Set, Max: 1) Authentication key details (see below for nested schema)
                             Authentication key details
-                          items:
-                            properties:
-                              description:
-                                description: |-
-                                  provided service description
-                                  Description of authorization key
-                                type: string
-                              label:
-                                description: |-
-                                  (String) Name of the parameter that must be provided to authorize the connection.
-                                  Name of the parameter that must be provided to authorize the connection.
-                                type: string
-                              required:
-                                description: |-
-                                  (Boolean) Requirement to configure an authentication key.
-                                  Requirement to configure an authentication key.
-                                type: boolean
-                            type: object
-                          type: array
+                          properties:
+                            description:
+                              description: |-
+                                provided service description
+                                Description of authorization key
+                              type: string
+                            label:
+                              description: |-
+                                (String) Name of the parameter that must be provided to authorize the connection.
+                                Name of the parameter that must be provided to authorize the connection.
+                              type: string
+                            required:
+                              description: |-
+                                (Boolean) Requirement to configure an authentication key.
+                                Requirement to configure an authentication key.
+                              type: boolean
+                          type: object
                         bandwidthAlertThreshold:
                           description: |-
                             (Number) Percentage of port bandwidth at which an allocation alert is generated
@@ -1332,25 +1300,23 @@ spec:
                           description: |-
                             (Block Set, Max: 1) Link protocol configuration details (see below for nested schema)
                             Link protocol configuration details
-                          items:
-                            properties:
-                              encapsulation:
-                                description: |-
-                                  Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
-                                  Data frames encapsulation standard.UNTAGGED - Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
-                                type: string
-                              encapsulationStrategy:
-                                description: |-
-                                  (String) Additional tagging information required by the seller profile.
-                                  Additional tagging information required by the seller profile.
-                                type: string
-                              reuseVlanSTag:
-                                description: |-
-                                  tag assigned as the initial connection.
-                                  Automatically accept subsequent DOT1Q to QINQ connections that use the same authentication key. These connections will have the same VLAN S-tag assigned as the initial connection.
-                                type: boolean
-                            type: object
-                          type: array
+                          properties:
+                            encapsulation:
+                              description: |-
+                                Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
+                                Data frames encapsulation standard.UNTAGGED - Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
+                              type: string
+                            encapsulationStrategy:
+                              description: |-
+                                (String) Additional tagging information required by the seller profile.
+                                Additional tagging information required by the seller profile.
+                              type: string
+                            reuseVlanSTag:
+                              description: |-
+                                tag assigned as the initial connection.
+                                Automatically accept subsequent DOT1Q to QINQ connections that use the same authentication key. These connections will have the same VLAN S-tag assigned as the initial connection.
+                              type: boolean
+                          type: object
                         supportedBandwidths:
                           description: |-
                             (List of Number) Supported bandwidths
@@ -1510,43 +1476,41 @@ spec:
                     description: |-
                       (Block Set, Max: 1) Marketing Info (see below for nested schema)
                       Marketing Info
-                    items:
-                      properties:
-                        logo:
-                          description: |-
-                            (String) Logo
-                            Logo
-                          type: string
-                        processStep:
-                          description: |-
-                            (Block List) Process Step (see below for nested schema)
-                            Process Step
-                          items:
-                            properties:
-                              description:
-                                description: |-
-                                  provided service description
-                                  Description
-                                type: string
-                              subTitle:
-                                description: |-
-                                  (String) Sub Title
-                                  Sub Title
-                                type: string
-                              title:
-                                description: |-
-                                  (String) Title
-                                  Title
-                                type: string
-                            type: object
-                          type: array
-                        promotion:
-                          description: |-
-                            (Boolean) Promotion
-                            Promotion
-                          type: boolean
-                      type: object
-                    type: array
+                    properties:
+                      logo:
+                        description: |-
+                          (String) Logo
+                          Logo
+                        type: string
+                      processStep:
+                        description: |-
+                          (Block List) Process Step (see below for nested schema)
+                          Process Step
+                        items:
+                          properties:
+                            description:
+                              description: |-
+                                provided service description
+                                Description
+                              type: string
+                            subTitle:
+                              description: |-
+                                (String) Sub Title
+                                Sub Title
+                              type: string
+                            title:
+                              description: |-
+                                (String) Title
+                                Title
+                              type: string
+                          type: object
+                        type: array
+                      promotion:
+                        description: |-
+                          (Boolean) Promotion
+                          Promotion
+                        type: boolean
+                    type: object
                   metros:
                     description: |-
                       (Block List) Access point config information (see below for nested schema)
@@ -1635,30 +1599,28 @@ spec:
                           description: |-
                             (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
                             Colo/Port Location
-                          items:
-                            properties:
-                              ibx:
-                                description: |-
-                                  (String) IBX Code
-                                  IBX Code
-                                type: string
-                              metroCode:
-                                description: |-
-                                  (String) Access point metro code
-                                  Access point metro code
-                                type: string
-                              metroName:
-                                description: |-
-                                  (String) Access point metro name
-                                  Access point metro name
-                                type: string
-                              region:
-                                description: |-
-                                  (String) Access point region
-                                  Access point region
-                                type: string
-                            type: object
-                          type: array
+                          properties:
+                            ibx:
+                              description: |-
+                                (String) IBX Code
+                                IBX Code
+                              type: string
+                            metroCode:
+                              description: |-
+                                (String) Access point metro code
+                                Access point metro code
+                              type: string
+                            metroName:
+                              description: |-
+                                (String) Access point metro name
+                                Access point metro name
+                              type: string
+                            region:
+                              description: |-
+                                (String) Access point region
+                                Access point region
+                              type: string
+                          type: object
                         sellerRegion:
                           description: |-
                             (String) Seller Region
@@ -1685,20 +1647,18 @@ spec:
                     description: |-
                       (Block Set, Max: 1) Project information (see below for nested schema)
                       Project information
-                    items:
-                      properties:
-                        href:
-                          description: |-
-                            (String) Service Profile URI response attribute
-                            Unique Resource URL
-                          type: string
-                        projectId:
-                          description: |-
-                            (String) Project Id
-                            Project Id
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      href:
+                        description: |-
+                          (String) Service Profile URI response attribute
+                          Unique Resource URL
+                        type: string
+                      projectId:
+                        description: |-
+                          (String) Project Id
+                          Project Id
+                        type: string
+                    type: object
                   selfProfile:
                     description: |-
                       (Boolean) Self Profile indicating if the profile is created for customer's self use
@@ -1745,30 +1705,28 @@ spec:
                           description: |-
                             (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
                             Device Location
-                          items:
-                            properties:
-                              ibx:
-                                description: |-
-                                  (String) IBX Code
-                                  IBX Code
-                                type: string
-                              metroCode:
-                                description: |-
-                                  (String) Access point metro code
-                                  Access point metro code
-                                type: string
-                              metroName:
-                                description: |-
-                                  (String) Access point metro name
-                                  Access point metro name
-                                type: string
-                              region:
-                                description: |-
-                                  (String) Access point region
-                                  Access point region
-                                type: string
-                            type: object
-                          type: array
+                          properties:
+                            ibx:
+                              description: |-
+                                (String) IBX Code
+                                IBX Code
+                              type: string
+                            metroCode:
+                              description: |-
+                                (String) Access point metro code
+                                Access point metro code
+                              type: string
+                            metroName:
+                              description: |-
+                                (String) Access point metro name
+                                Access point metro name
+                              type: string
+                            region:
+                              description: |-
+                                (String) Access point region
+                                Access point region
+                              type: string
+                          type: object
                         type:
                           description: |-
                             L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE

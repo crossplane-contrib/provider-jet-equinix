@@ -153,7 +153,7 @@ type SpotMarketRequestInitParameters struct {
 
 	// Key/Value pairs of parameters for devices provisioned from this request. Valid keys are: billing_cycle, plan, operating_system, hostname, termination_time, always_pxe, description, features, locked, project_ssh_keys, user_ssh_keys, userdata, customdata, ipxe_script_url, tags. You can find each parameter description in equinix_metal_device docs.
 	// Parameters for devices provisioned from this request. You can find the parameter description from the [equinix_metal_device doc](device.md)
-	InstanceParameters []InstanceParametersInitParameters `json:"instanceParameters,omitempty" tf:"instance_parameters,omitempty"`
+	InstanceParameters *InstanceParametersInitParameters `json:"instanceParameters,omitempty" tf:"instance_parameters,omitempty"`
 
 	// Maximum price user is willing to pay per hour per device.
 	// Maximum price user is willing to pay per hour per device
@@ -200,7 +200,7 @@ type SpotMarketRequestObservation struct {
 
 	// Key/Value pairs of parameters for devices provisioned from this request. Valid keys are: billing_cycle, plan, operating_system, hostname, termination_time, always_pxe, description, features, locked, project_ssh_keys, user_ssh_keys, userdata, customdata, ipxe_script_url, tags. You can find each parameter description in equinix_metal_device docs.
 	// Parameters for devices provisioned from this request. You can find the parameter description from the [equinix_metal_device doc](device.md)
-	InstanceParameters []InstanceParametersObservation `json:"instanceParameters,omitempty" tf:"instance_parameters,omitempty"`
+	InstanceParameters *InstanceParametersObservation `json:"instanceParameters,omitempty" tf:"instance_parameters,omitempty"`
 
 	// Maximum price user is willing to pay per hour per device.
 	// Maximum price user is willing to pay per hour per device
@@ -239,7 +239,7 @@ type SpotMarketRequestParameters struct {
 	// Key/Value pairs of parameters for devices provisioned from this request. Valid keys are: billing_cycle, plan, operating_system, hostname, termination_time, always_pxe, description, features, locked, project_ssh_keys, user_ssh_keys, userdata, customdata, ipxe_script_url, tags. You can find each parameter description in equinix_metal_device docs.
 	// Parameters for devices provisioned from this request. You can find the parameter description from the [equinix_metal_device doc](device.md)
 	// +kubebuilder:validation:Optional
-	InstanceParameters []InstanceParametersParameters `json:"instanceParameters,omitempty" tf:"instance_parameters,omitempty"`
+	InstanceParameters *InstanceParametersParameters `json:"instanceParameters,omitempty" tf:"instance_parameters,omitempty"`
 
 	// Maximum price user is willing to pay per hour per device.
 	// Maximum price user is willing to pay per hour per device

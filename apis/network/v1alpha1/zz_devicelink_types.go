@@ -193,7 +193,17 @@ type LinkInitParameters struct {
 
 	// billing account number to be used for connection charges
 	// Billing account number to be used for connection charges
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/network/v1alpha1.Device
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("account_number",false)
 	AccountNumber *string `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
+
+	// Reference to a Device in network to populate accountNumber.
+	// +kubebuilder:validation:Optional
+	AccountNumberRef *v1.Reference `json:"accountNumberRef,omitempty" tf:"-"`
+
+	// Selector for a Device in network to populate accountNumber.
+	// +kubebuilder:validation:Optional
+	AccountNumberSelector *v1.Selector `json:"accountNumberSelector,omitempty" tf:"-"`
 
 	// connection destination metro code.
 	// Connection destination metro code
@@ -205,7 +215,17 @@ type LinkInitParameters struct {
 
 	// connection source metro code.
 	// Connection source metro code
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/network/v1alpha1.Device
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("metro_code",false)
 	SrcMetroCode *string `json:"srcMetroCode,omitempty" tf:"src_metro_code,omitempty"`
+
+	// Reference to a Device in network to populate srcMetroCode.
+	// +kubebuilder:validation:Optional
+	SrcMetroCodeRef *v1.Reference `json:"srcMetroCodeRef,omitempty" tf:"-"`
+
+	// Selector for a Device in network to populate srcMetroCode.
+	// +kubebuilder:validation:Optional
+	SrcMetroCodeSelector *v1.Selector `json:"srcMetroCodeSelector,omitempty" tf:"-"`
 
 	// (Deprecated) connection source zone code is not required.
 	// Connection source zone code
@@ -255,8 +275,18 @@ type LinkParameters struct {
 
 	// billing account number to be used for connection charges
 	// Billing account number to be used for connection charges
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/network/v1alpha1.Device
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("account_number",false)
 	// +kubebuilder:validation:Optional
-	AccountNumber *string `json:"accountNumber" tf:"account_number,omitempty"`
+	AccountNumber *string `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
+
+	// Reference to a Device in network to populate accountNumber.
+	// +kubebuilder:validation:Optional
+	AccountNumberRef *v1.Reference `json:"accountNumberRef,omitempty" tf:"-"`
+
+	// Selector for a Device in network to populate accountNumber.
+	// +kubebuilder:validation:Optional
+	AccountNumberSelector *v1.Selector `json:"accountNumberSelector,omitempty" tf:"-"`
 
 	// connection destination metro code.
 	// Connection destination metro code
@@ -270,8 +300,18 @@ type LinkParameters struct {
 
 	// connection source metro code.
 	// Connection source metro code
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/network/v1alpha1.Device
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("metro_code",false)
 	// +kubebuilder:validation:Optional
-	SrcMetroCode *string `json:"srcMetroCode" tf:"src_metro_code,omitempty"`
+	SrcMetroCode *string `json:"srcMetroCode,omitempty" tf:"src_metro_code,omitempty"`
+
+	// Reference to a Device in network to populate srcMetroCode.
+	// +kubebuilder:validation:Optional
+	SrcMetroCodeRef *v1.Reference `json:"srcMetroCodeRef,omitempty" tf:"-"`
+
+	// Selector for a Device in network to populate srcMetroCode.
+	// +kubebuilder:validation:Optional
+	SrcMetroCodeSelector *v1.Selector `json:"srcMetroCodeSelector,omitempty" tf:"-"`
 
 	// (Deprecated) connection source zone code is not required.
 	// Connection source zone code

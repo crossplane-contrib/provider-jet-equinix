@@ -130,7 +130,7 @@ type StoreConfigStatus struct {
 
 // +kubebuilder:object:root=true
 
-// A StoreConfig configures how GCP controller should store connection details.
+// A StoreConfig configures how Equinix controller should store connection details.
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:printcolumn:name="TYPE",type="string",JSONPath=".spec.type"
 // +kubebuilder:printcolumn:name="DEFAULT-SCOPE",type="string",JSONPath=".spec.defaultScope"

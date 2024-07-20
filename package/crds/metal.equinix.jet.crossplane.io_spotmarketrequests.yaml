@@ -93,48 +93,46 @@ spec:
                     description: |-
                       Key/Value pairs of parameters for devices provisioned from this request. Valid keys are: billing_cycle, plan, operating_system, hostname, termination_time, always_pxe, description, features, locked, project_ssh_keys, user_ssh_keys, userdata, customdata, ipxe_script_url, tags. You can find each parameter description in equinix_metal_device docs.
                       Parameters for devices provisioned from this request. You can find the parameter description from the [equinix_metal_device doc](device.md)
-                    items:
-                      properties:
-                        alwaysPxe:
-                          type: boolean
-                        billingCycle:
+                    properties:
+                      alwaysPxe:
+                        type: boolean
+                      billingCycle:
+                        type: string
+                      customdata:
+                        type: string
+                      description:
+                        type: string
+                      features:
+                        items:
                           type: string
-                        customdata:
+                        type: array
+                      hostname:
+                        type: string
+                      ipxeScriptUrl:
+                        type: string
+                      locked:
+                        description: Blocks deletion of the SpotMarketRequest device
+                          until the lock is disabled.
+                        type: boolean
+                      operatingSystem:
+                        type: string
+                      plan:
+                        type: string
+                      projectSshKeys:
+                        items:
                           type: string
-                        description:
+                        type: array
+                      tags:
+                        items:
                           type: string
-                        features:
-                          items:
-                            type: string
-                          type: array
-                        hostname:
+                        type: array
+                      userSshKeys:
+                        items:
                           type: string
-                        ipxeScriptUrl:
-                          type: string
-                        locked:
-                          description: Blocks deletion of the SpotMarketRequest device
-                            until the lock is disabled.
-                          type: boolean
-                        operatingSystem:
-                          type: string
-                        plan:
-                          type: string
-                        projectSshKeys:
-                          items:
-                            type: string
-                          type: array
-                        tags:
-                          items:
-                            type: string
-                          type: array
-                        userSshKeys:
-                          items:
-                            type: string
-                          type: array
-                        userdata:
-                          type: string
-                      type: object
-                    type: array
+                        type: array
+                      userdata:
+                        type: string
+                    type: object
                   maxBidPrice:
                     description: |-
                       Maximum price user is willing to pay per hour per device.
@@ -264,48 +262,46 @@ spec:
                     description: |-
                       Key/Value pairs of parameters for devices provisioned from this request. Valid keys are: billing_cycle, plan, operating_system, hostname, termination_time, always_pxe, description, features, locked, project_ssh_keys, user_ssh_keys, userdata, customdata, ipxe_script_url, tags. You can find each parameter description in equinix_metal_device docs.
                       Parameters for devices provisioned from this request. You can find the parameter description from the [equinix_metal_device doc](device.md)
-                    items:
-                      properties:
-                        alwaysPxe:
-                          type: boolean
-                        billingCycle:
+                    properties:
+                      alwaysPxe:
+                        type: boolean
+                      billingCycle:
+                        type: string
+                      customdata:
+                        type: string
+                      description:
+                        type: string
+                      features:
+                        items:
                           type: string
-                        customdata:
+                        type: array
+                      hostname:
+                        type: string
+                      ipxeScriptUrl:
+                        type: string
+                      locked:
+                        description: Blocks deletion of the SpotMarketRequest device
+                          until the lock is disabled.
+                        type: boolean
+                      operatingSystem:
+                        type: string
+                      plan:
+                        type: string
+                      projectSshKeys:
+                        items:
                           type: string
-                        description:
+                        type: array
+                      tags:
+                        items:
                           type: string
-                        features:
-                          items:
-                            type: string
-                          type: array
-                        hostname:
+                        type: array
+                      userSshKeys:
+                        items:
                           type: string
-                        ipxeScriptUrl:
-                          type: string
-                        locked:
-                          description: Blocks deletion of the SpotMarketRequest device
-                            until the lock is disabled.
-                          type: boolean
-                        operatingSystem:
-                          type: string
-                        plan:
-                          type: string
-                        projectSshKeys:
-                          items:
-                            type: string
-                          type: array
-                        tags:
-                          items:
-                            type: string
-                          type: array
-                        userSshKeys:
-                          items:
-                            type: string
-                          type: array
-                        userdata:
-                          type: string
-                      type: object
-                    type: array
+                        type: array
+                      userdata:
+                        type: string
+                    type: object
                   maxBidPrice:
                     description: |-
                       Maximum price user is willing to pay per hour per device.
@@ -614,52 +610,50 @@ spec:
                     description: |-
                       Key/Value pairs of parameters for devices provisioned from this request. Valid keys are: billing_cycle, plan, operating_system, hostname, termination_time, always_pxe, description, features, locked, project_ssh_keys, user_ssh_keys, userdata, customdata, ipxe_script_url, tags. You can find each parameter description in equinix_metal_device docs.
                       Parameters for devices provisioned from this request. You can find the parameter description from the [equinix_metal_device doc](device.md)
-                    items:
-                      properties:
-                        alwaysPxe:
-                          type: boolean
-                        billingCycle:
+                    properties:
+                      alwaysPxe:
+                        type: boolean
+                      billingCycle:
+                        type: string
+                      customdata:
+                        type: string
+                      description:
+                        type: string
+                      features:
+                        items:
                           type: string
-                        customdata:
+                        type: array
+                      hostname:
+                        type: string
+                      ipxeScriptUrl:
+                        type: string
+                      locked:
+                        description: Blocks deletion of the SpotMarketRequest device
+                          until the lock is disabled.
+                        type: boolean
+                      operatingSystem:
+                        type: string
+                      plan:
+                        type: string
+                      projectSshKeys:
+                        items:
                           type: string
-                        description:
+                        type: array
+                      tags:
+                        items:
                           type: string
-                        features:
-                          items:
-                            type: string
-                          type: array
-                        hostname:
+                        type: array
+                      terminationTime:
+                        type: string
+                      termintationTime:
+                        type: string
+                      userSshKeys:
+                        items:
                           type: string
-                        ipxeScriptUrl:
-                          type: string
-                        locked:
-                          description: Blocks deletion of the SpotMarketRequest device
-                            until the lock is disabled.
-                          type: boolean
-                        operatingSystem:
-                          type: string
-                        plan:
-                          type: string
-                        projectSshKeys:
-                          items:
-                            type: string
-                          type: array
-                        tags:
-                          items:
-                            type: string
-                          type: array
-                        terminationTime:
-                          type: string
-                        termintationTime:
-                          type: string
-                        userSshKeys:
-                          items:
-                            type: string
-                          type: array
-                        userdata:
-                          type: string
-                      type: object
-                    type: array
+                        type: array
+                      userdata:
+                        type: string
+                    type: object
                   maxBidPrice:
                     description: |-
                       Maximum price user is willing to pay per hour per device.

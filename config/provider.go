@@ -22,6 +22,7 @@ import (
 	_ "embed"
 
 	upconfig "github.com/crossplane/upjet/pkg/config"
+	"github.com/crossplane/upjet/pkg/registry/reference"
 	conversiontfjson "github.com/crossplane/upjet/pkg/types/conversion/tfjson"
 	"github.com/equinix/terraform-provider-equinix/equinix"
 	framework "github.com/equinix/terraform-provider-equinix/equinix/provider"
@@ -77,23 +78,18 @@ func GetProvider(_ context.Context, generationProvider bool) (*upconfig.Provider
 	fwProvider := framework.CreateFrameworkProvider(version.ProviderVersion)
 
 	pc := upconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
-		upconfig.WithShortName("equinix"),
+		upconfig.WithShortName(resourcePrefix),
 		upconfig.WithRootGroup("equinix.jet.crossplane.io"),
-		// upconfig.WithReferenceInjectors([]config.ReferenceInjector{reference.NewInjector("github.com/crossplane-contrib/provider-jet-equinix")}),
-		upconfig.WithDefaultResourceOptions(
-			KnownReferencers(),
-			IdentifierAssignedByEquinix(),
-			SkipOptCompLateInitialization(),
-		),
-		upconfig.WithFeaturesPackage("internal/features"),
-		upconfig.WithTerraformProvider(p),
-		upconfig.WithTerraformPluginFrameworkProvider(fwProvider),
 		upconfig.WithIncludeList([]string{
 			".*",
 		}),
-		upconfig.WithSkipList([]string{
-			// ".*", // helpful when debugging to minimize the number of resources
-		}),
+		//
+		upconfig.WithReferenceInjectors([]upconfig.ReferenceInjector{reference.NewInjector(modulePath)}),
+		upconfig.WithFeaturesPackage("internal/features"),
+		upconfig.WithTerraformProvider(p),
+		upconfig.WithTerraformPluginFrameworkProvider(fwProvider),
+		upconfig.WithSchemaTraversers(&upconfig.SingletonListEmbedder{}),
+		// upconfig.WithSkipList([]string{".*"}), // helpful when debugging to minimize the number of resources
 		// config.WithTerraformPluginSDKIncludeList(resourceList(terraformSDKIncludeList)),
 		// config.WithTerraformPluginFrameworkIncludeList(resourceList(terraformPluginFrameworkExternalNameConfigs)),
 		upconfig.WithBasePackages(upconfig.BasePackages{
@@ -106,6 +102,11 @@ func GetProvider(_ context.Context, generationProvider bool) (*upconfig.Provider
 				"internal/controller/providerconfig",
 			},
 		}),
+		upconfig.WithDefaultResourceOptions(
+			KnownReferencers(),
+			IdentifierAssignedByEquinix(),
+			SkipOptCompLateInitialization(),
+		),
 	)
 
 	for _, configure := range []func(provider *upconfig.Provider){

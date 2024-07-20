@@ -454,7 +454,7 @@ type PortsInitParameters struct {
 
 	// (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
 	// Colo/Port Location
-	Location []PortsLocationInitParameters `json:"location,omitempty" tf:"location,omitempty"`
+	Location *PortsLocationInitParameters `json:"location,omitempty" tf:"location,omitempty"`
 
 	// (String) Seller Region
 	// Seller Region
@@ -542,7 +542,7 @@ type PortsObservation struct {
 
 	// (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
 	// Colo/Port Location
-	Location []PortsLocationObservation `json:"location,omitempty" tf:"location,omitempty"`
+	Location *PortsLocationObservation `json:"location,omitempty" tf:"location,omitempty"`
 
 	// (String) Seller Region
 	// Seller Region
@@ -571,7 +571,7 @@ type PortsParameters struct {
 	// (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
 	// Colo/Port Location
 	// +kubebuilder:validation:Optional
-	Location []PortsLocationParameters `json:"location,omitempty" tf:"location,omitempty"`
+	Location *PortsLocationParameters `json:"location,omitempty" tf:"location,omitempty"`
 
 	// (String) Seller Region
 	// Seller Region
@@ -646,7 +646,7 @@ type ServiceProfileAccessPointTypeConfigsInitParameters struct {
 
 	// (Block Set, Max: 1) Api configuration details (see below for nested schema)
 	// Api configuration details
-	APIConfig []APIConfigInitParameters `json:"apiConfig,omitempty" tf:"api_config,omitempty"`
+	APIConfig *APIConfigInitParameters `json:"apiConfig,omitempty" tf:"api_config,omitempty"`
 
 	// (Boolean) Setting to enable or disable the ability of the buyer to change connection bandwidth without approval of the seller
 	// Setting to enable or disable the ability of the buyer to change connection bandwidth without approval of the seller
@@ -666,7 +666,7 @@ type ServiceProfileAccessPointTypeConfigsInitParameters struct {
 
 	// (Block Set, Max: 1) Authentication key details (see below for nested schema)
 	// Authentication key details
-	AuthenticationKey []AuthenticationKeyInitParameters `json:"authenticationKey,omitempty" tf:"authentication_key,omitempty"`
+	AuthenticationKey *AuthenticationKeyInitParameters `json:"authenticationKey,omitempty" tf:"authentication_key,omitempty"`
 
 	// (Number) Percentage of port bandwidth at which an allocation alert is generated
 	// Percentage of port bandwidth at which an allocation alert is generated
@@ -686,7 +686,7 @@ type ServiceProfileAccessPointTypeConfigsInitParameters struct {
 
 	// (Block Set, Max: 1) Link protocol configuration details (see below for nested schema)
 	// Link protocol configuration details
-	LinkProtocolConfig []LinkProtocolConfigInitParameters `json:"linkProtocolConfig,omitempty" tf:"link_protocol_config,omitempty"`
+	LinkProtocolConfig *LinkProtocolConfigInitParameters `json:"linkProtocolConfig,omitempty" tf:"link_protocol_config,omitempty"`
 
 	// (List of Number) Supported bandwidths
 	// Supported bandwidths
@@ -701,7 +701,7 @@ type ServiceProfileAccessPointTypeConfigsObservation struct {
 
 	// (Block Set, Max: 1) Api configuration details (see below for nested schema)
 	// Api configuration details
-	APIConfig []APIConfigObservation `json:"apiConfig,omitempty" tf:"api_config,omitempty"`
+	APIConfig *APIConfigObservation `json:"apiConfig,omitempty" tf:"api_config,omitempty"`
 
 	// (Boolean) Setting to enable or disable the ability of the buyer to change connection bandwidth without approval of the seller
 	// Setting to enable or disable the ability of the buyer to change connection bandwidth without approval of the seller
@@ -721,7 +721,7 @@ type ServiceProfileAccessPointTypeConfigsObservation struct {
 
 	// (Block Set, Max: 1) Authentication key details (see below for nested schema)
 	// Authentication key details
-	AuthenticationKey []AuthenticationKeyObservation `json:"authenticationKey,omitempty" tf:"authentication_key,omitempty"`
+	AuthenticationKey *AuthenticationKeyObservation `json:"authenticationKey,omitempty" tf:"authentication_key,omitempty"`
 
 	// (Number) Percentage of port bandwidth at which an allocation alert is generated
 	// Percentage of port bandwidth at which an allocation alert is generated
@@ -741,7 +741,7 @@ type ServiceProfileAccessPointTypeConfigsObservation struct {
 
 	// (Block Set, Max: 1) Link protocol configuration details (see below for nested schema)
 	// Link protocol configuration details
-	LinkProtocolConfig []LinkProtocolConfigObservation `json:"linkProtocolConfig,omitempty" tf:"link_protocol_config,omitempty"`
+	LinkProtocolConfig *LinkProtocolConfigObservation `json:"linkProtocolConfig,omitempty" tf:"link_protocol_config,omitempty"`
 
 	// (List of Number) Supported bandwidths
 	// Supported bandwidths
@@ -761,7 +761,7 @@ type ServiceProfileAccessPointTypeConfigsParameters struct {
 	// (Block Set, Max: 1) Api configuration details (see below for nested schema)
 	// Api configuration details
 	// +kubebuilder:validation:Optional
-	APIConfig []APIConfigParameters `json:"apiConfig,omitempty" tf:"api_config,omitempty"`
+	APIConfig *APIConfigParameters `json:"apiConfig,omitempty" tf:"api_config,omitempty"`
 
 	// (Boolean) Setting to enable or disable the ability of the buyer to change connection bandwidth without approval of the seller
 	// Setting to enable or disable the ability of the buyer to change connection bandwidth without approval of the seller
@@ -786,7 +786,7 @@ type ServiceProfileAccessPointTypeConfigsParameters struct {
 	// (Block Set, Max: 1) Authentication key details (see below for nested schema)
 	// Authentication key details
 	// +kubebuilder:validation:Optional
-	AuthenticationKey []AuthenticationKeyParameters `json:"authenticationKey,omitempty" tf:"authentication_key,omitempty"`
+	AuthenticationKey *AuthenticationKeyParameters `json:"authenticationKey,omitempty" tf:"authentication_key,omitempty"`
 
 	// (Number) Percentage of port bandwidth at which an allocation alert is generated
 	// Percentage of port bandwidth at which an allocation alert is generated
@@ -811,7 +811,7 @@ type ServiceProfileAccessPointTypeConfigsParameters struct {
 	// (Block Set, Max: 1) Link protocol configuration details (see below for nested schema)
 	// Link protocol configuration details
 	// +kubebuilder:validation:Optional
-	LinkProtocolConfig []LinkProtocolConfigParameters `json:"linkProtocolConfig,omitempty" tf:"link_protocol_config,omitempty"`
+	LinkProtocolConfig *LinkProtocolConfigParameters `json:"linkProtocolConfig,omitempty" tf:"link_protocol_config,omitempty"`
 
 	// (List of Number) Supported bandwidths
 	// Supported bandwidths
@@ -922,7 +922,7 @@ type ServiceProfileInitParameters struct {
 
 	// (Block Set, Max: 1) Marketing Info (see below for nested schema)
 	// Marketing Info
-	MarketingInfo []MarketingInfoInitParameters `json:"marketingInfo,omitempty" tf:"marketing_info,omitempty"`
+	MarketingInfo *MarketingInfoInitParameters `json:"marketingInfo,omitempty" tf:"marketing_info,omitempty"`
 
 	// (Block List) Access point config information (see below for nested schema)
 	// Access point config information
@@ -942,7 +942,7 @@ type ServiceProfileInitParameters struct {
 
 	// (Block Set, Max: 1) Project information (see below for nested schema)
 	// Project information
-	Project []ServiceProfileProjectInitParameters `json:"project,omitempty" tf:"project,omitempty"`
+	Project *ServiceProfileProjectInitParameters `json:"project,omitempty" tf:"project,omitempty"`
 
 	// (Boolean) Self Profile indicating if the profile is created for customer's self use
 	// Self Profile indicating if the profile is created for customer's  self use
@@ -1055,7 +1055,7 @@ type ServiceProfileObservation struct {
 
 	// (Block Set, Max: 1) Marketing Info (see below for nested schema)
 	// Marketing Info
-	MarketingInfo []MarketingInfoObservation `json:"marketingInfo,omitempty" tf:"marketing_info,omitempty"`
+	MarketingInfo *MarketingInfoObservation `json:"marketingInfo,omitempty" tf:"marketing_info,omitempty"`
 
 	// (Block List) Access point config information (see below for nested schema)
 	// Access point config information
@@ -1075,7 +1075,7 @@ type ServiceProfileObservation struct {
 
 	// (Block Set, Max: 1) Project information (see below for nested schema)
 	// Project information
-	Project []ServiceProfileProjectObservation `json:"project,omitempty" tf:"project,omitempty"`
+	Project *ServiceProfileProjectObservation `json:"project,omitempty" tf:"project,omitempty"`
 
 	// (Boolean) Self Profile indicating if the profile is created for customer's self use
 	// Self Profile indicating if the profile is created for customer's  self use
@@ -1134,7 +1134,7 @@ type ServiceProfileParameters struct {
 	// (Block Set, Max: 1) Marketing Info (see below for nested schema)
 	// Marketing Info
 	// +kubebuilder:validation:Optional
-	MarketingInfo []MarketingInfoParameters `json:"marketingInfo,omitempty" tf:"marketing_info,omitempty"`
+	MarketingInfo *MarketingInfoParameters `json:"marketingInfo,omitempty" tf:"marketing_info,omitempty"`
 
 	// (Block List) Access point config information (see below for nested schema)
 	// Access point config information
@@ -1159,7 +1159,7 @@ type ServiceProfileParameters struct {
 	// (Block Set, Max: 1) Project information (see below for nested schema)
 	// Project information
 	// +kubebuilder:validation:Optional
-	Project []ServiceProfileProjectParameters `json:"project,omitempty" tf:"project,omitempty"`
+	Project *ServiceProfileProjectParameters `json:"project,omitempty" tf:"project,omitempty"`
 
 	// (Boolean) Self Profile indicating if the profile is created for customer's self use
 	// Self Profile indicating if the profile is created for customer's  self use
@@ -1230,7 +1230,7 @@ type VirtualDevicesInitParameters struct {
 
 	// (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
 	// Device Location
-	Location []VirtualDevicesLocationInitParameters `json:"location,omitempty" tf:"location,omitempty"`
+	Location *VirtualDevicesLocationInitParameters `json:"location,omitempty" tf:"location,omitempty"`
 
 	// L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
 	// Virtual Device Type
@@ -1310,7 +1310,7 @@ type VirtualDevicesObservation struct {
 
 	// (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
 	// Device Location
-	Location []VirtualDevicesLocationObservation `json:"location,omitempty" tf:"location,omitempty"`
+	Location *VirtualDevicesLocationObservation `json:"location,omitempty" tf:"location,omitempty"`
 
 	// L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
 	// Virtual Device Type
@@ -1331,7 +1331,7 @@ type VirtualDevicesParameters struct {
 	// (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
 	// Device Location
 	// +kubebuilder:validation:Optional
-	Location []VirtualDevicesLocationParameters `json:"location,omitempty" tf:"location,omitempty"`
+	Location *VirtualDevicesLocationParameters `json:"location,omitempty" tf:"location,omitempty"`
 
 	// L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
 	// Virtual Device Type

@@ -11,6 +11,7 @@ require (
 	github.com/hashicorp/terraform-json v0.22.1
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.34.0
 	github.com/pkg/errors v0.9.1
+	github.com/prometheus/client_golang v1.18.0
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 	k8s.io/apimachinery v0.29.1
 	k8s.io/client-go v0.29.1
@@ -102,7 +103,6 @@ require (
 	github.com/muvaf/typewriter v0.0.0-20220131201631-921e94e8e8d7 // indirect
 	github.com/oklog/run v1.0.0 // indirect
 	github.com/packethost/packngo v0.31.0 // indirect
-	github.com/prometheus/client_golang v1.18.0 // indirect
 	github.com/prometheus/client_model v0.5.0 // indirect
 	github.com/prometheus/common v0.45.0 // indirect
 	github.com/prometheus/procfs v0.12.0 // indirect
