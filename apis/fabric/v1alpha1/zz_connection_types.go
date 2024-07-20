@@ -29,7 +29,7 @@ type ASideInitParameters struct {
 
 	// (Block Set, Max: 1) Point of access details (see below for nested schema)
 	// Point of access details
-	AccessPoint []AccessPointInitParameters `json:"accessPoint,omitempty" tf:"access_point,omitempty"`
+	AccessPoint *AccessPointInitParameters `json:"accessPoint,omitempty" tf:"access_point,omitempty"`
 
 	// (List of Map of String) Connection additional information
 	// Connection side additional information
@@ -37,14 +37,14 @@ type ASideInitParameters struct {
 
 	// (Block Set, Max: 1) For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets (see below for nested schema)
 	// For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets
-	ServiceToken []ServiceTokenInitParameters `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+	ServiceToken *ServiceTokenInitParameters `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
 }
 
 type ASideObservation struct {
 
 	// (Block Set, Max: 1) Point of access details (see below for nested schema)
 	// Point of access details
-	AccessPoint []AccessPointObservation `json:"accessPoint,omitempty" tf:"access_point,omitempty"`
+	AccessPoint *AccessPointObservation `json:"accessPoint,omitempty" tf:"access_point,omitempty"`
 
 	// (List of Map of String) Connection additional information
 	// Connection side additional information
@@ -52,7 +52,7 @@ type ASideObservation struct {
 
 	// (Block Set, Max: 1) For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets (see below for nested schema)
 	// For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets
-	ServiceToken []ServiceTokenObservation `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+	ServiceToken *ServiceTokenObservation `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
 }
 
 type ASideParameters struct {
@@ -60,7 +60,7 @@ type ASideParameters struct {
 	// (Block Set, Max: 1) Point of access details (see below for nested schema)
 	// Point of access details
 	// +kubebuilder:validation:Optional
-	AccessPoint []AccessPointParameters `json:"accessPoint,omitempty" tf:"access_point,omitempty"`
+	AccessPoint *AccessPointParameters `json:"accessPoint,omitempty" tf:"access_point,omitempty"`
 
 	// (List of Map of String) Connection additional information
 	// Connection side additional information
@@ -70,7 +70,7 @@ type ASideParameters struct {
 	// (Block Set, Max: 1) For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets (see below for nested schema)
 	// For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets
 	// +kubebuilder:validation:Optional
-	ServiceToken []ServiceTokenParameters `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+	ServiceToken *ServiceTokenParameters `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
 }
 
 type AccessPointAccountInitParameters struct {
@@ -152,23 +152,23 @@ type AccessPointInitParameters struct {
 
 	// (Block Set, Max: 1, Deprecated) Deprecated gateway Use router attribute instead (see below for nested schema)
 	// **Deprecated** `gateway` Use `router` attribute instead
-	Gateway []GatewayInitParameters `json:"gateway,omitempty" tf:"gateway,omitempty"`
+	Gateway *GatewayInitParameters `json:"gateway,omitempty" tf:"gateway,omitempty"`
 
 	// (Block Set, Max: 1) Virtual device interface (see below for nested schema)
 	// Virtual device interface
-	Interface []InterfaceInitParameters `json:"interface,omitempty" tf:"interface,omitempty"`
+	Interface *InterfaceInitParameters `json:"interface,omitempty" tf:"interface,omitempty"`
 
 	// (Block Set, Max: 1) Connection link protocol (see below for nested schema)
 	// Connection link protocol
-	LinkProtocol []LinkProtocolInitParameters `json:"linkProtocol,omitempty" tf:"link_protocol,omitempty"`
+	LinkProtocol *LinkProtocolInitParameters `json:"linkProtocol,omitempty" tf:"link_protocol,omitempty"`
 
 	// (Block Set, Max: 1) Access point location (see below for nested schema)
 	// Access point location
-	Location []AccessPointLocationInitParameters `json:"location,omitempty" tf:"location,omitempty"`
+	Location *AccessPointLocationInitParameters `json:"location,omitempty" tf:"location,omitempty"`
 
 	// (Block Set, Max: 1) network access point information (see below for nested schema)
 	// network access point information
-	Network []NetworkInitParameters `json:"network,omitempty" tf:"network,omitempty"`
+	Network *NetworkInitParameters `json:"network,omitempty" tf:"network,omitempty"`
 
 	// PRIVATE,MICROSOFT,PUBLIC, MANUAL
 	// Peering Type- PRIVATE,MICROSOFT,PUBLIC, MANUAL
@@ -176,15 +176,15 @@ type AccessPointInitParameters struct {
 
 	// (Block Set, Max: 1) Port access point information (see below for nested schema)
 	// Port access point information
-	Port []PortInitParameters `json:"port,omitempty" tf:"port,omitempty"`
+	Port *PortInitParameters `json:"port,omitempty" tf:"port,omitempty"`
 
 	// (Block Set, Max: 1) Service Profile (see below for nested schema)
 	// Service Profile
-	Profile []ProfileInitParameters `json:"profile,omitempty" tf:"profile,omitempty"`
+	Profile *ProfileInitParameters `json:"profile,omitempty" tf:"profile,omitempty"`
 
 	// (Block Set, Max: 1) Cloud Router access point information that replaces gateway (see below for nested schema)
 	// Cloud Router access point information that replaces `gateway`
-	Router []RouterInitParameters `json:"router,omitempty" tf:"router,omitempty"`
+	Router *RouterInitParameters `json:"router,omitempty" tf:"router,omitempty"`
 
 	// (String) Access point seller region
 	// Access point seller region
@@ -196,7 +196,7 @@ type AccessPointInitParameters struct {
 
 	// (Block Set, Max: 1) Virtual device (see below for nested schema)
 	// Virtual device
-	VirtualDevice []VirtualDeviceInitParameters `json:"virtualDevice,omitempty" tf:"virtual_device,omitempty"`
+	VirtualDevice *VirtualDeviceInitParameters `json:"virtualDevice,omitempty" tf:"virtual_device,omitempty"`
 }
 
 type AccessPointInterfaceInitParameters struct {
@@ -407,23 +407,23 @@ type AccessPointObservation struct {
 
 	// (Block Set, Max: 1, Deprecated) Deprecated gateway Use router attribute instead (see below for nested schema)
 	// **Deprecated** `gateway` Use `router` attribute instead
-	Gateway []GatewayObservation `json:"gateway,omitempty" tf:"gateway,omitempty"`
+	Gateway *GatewayObservation `json:"gateway,omitempty" tf:"gateway,omitempty"`
 
 	// (Block Set, Max: 1) Virtual device interface (see below for nested schema)
 	// Virtual device interface
-	Interface []InterfaceObservation `json:"interface,omitempty" tf:"interface,omitempty"`
+	Interface *InterfaceObservation `json:"interface,omitempty" tf:"interface,omitempty"`
 
 	// (Block Set, Max: 1) Connection link protocol (see below for nested schema)
 	// Connection link protocol
-	LinkProtocol []LinkProtocolObservation `json:"linkProtocol,omitempty" tf:"link_protocol,omitempty"`
+	LinkProtocol *LinkProtocolObservation `json:"linkProtocol,omitempty" tf:"link_protocol,omitempty"`
 
 	// (Block Set, Max: 1) Access point location (see below for nested schema)
 	// Access point location
-	Location []AccessPointLocationObservation `json:"location,omitempty" tf:"location,omitempty"`
+	Location *AccessPointLocationObservation `json:"location,omitempty" tf:"location,omitempty"`
 
 	// (Block Set, Max: 1) network access point information (see below for nested schema)
 	// network access point information
-	Network []NetworkObservation `json:"network,omitempty" tf:"network,omitempty"`
+	Network *NetworkObservation `json:"network,omitempty" tf:"network,omitempty"`
 
 	// PRIVATE,MICROSOFT,PUBLIC, MANUAL
 	// Peering Type- PRIVATE,MICROSOFT,PUBLIC, MANUAL
@@ -431,11 +431,11 @@ type AccessPointObservation struct {
 
 	// (Block Set, Max: 1) Port access point information (see below for nested schema)
 	// Port access point information
-	Port []PortObservation `json:"port,omitempty" tf:"port,omitempty"`
+	Port *PortObservation `json:"port,omitempty" tf:"port,omitempty"`
 
 	// (Block Set, Max: 1) Service Profile (see below for nested schema)
 	// Service Profile
-	Profile []ProfileObservation `json:"profile,omitempty" tf:"profile,omitempty"`
+	Profile *ProfileObservation `json:"profile,omitempty" tf:"profile,omitempty"`
 
 	// (String) Provider assigned Connection Id
 	// Provider assigned Connection Id
@@ -443,7 +443,7 @@ type AccessPointObservation struct {
 
 	// (Block Set, Max: 1) Cloud Router access point information that replaces gateway (see below for nested schema)
 	// Cloud Router access point information that replaces `gateway`
-	Router []RouterObservation `json:"router,omitempty" tf:"router,omitempty"`
+	Router *RouterObservation `json:"router,omitempty" tf:"router,omitempty"`
 
 	// (String) Access point seller region
 	// Access point seller region
@@ -455,7 +455,7 @@ type AccessPointObservation struct {
 
 	// (Block Set, Max: 1) Virtual device (see below for nested schema)
 	// Virtual device
-	VirtualDevice []VirtualDeviceObservation `json:"virtualDevice,omitempty" tf:"virtual_device,omitempty"`
+	VirtualDevice *VirtualDeviceObservation `json:"virtualDevice,omitempty" tf:"virtual_device,omitempty"`
 }
 
 type AccessPointParameters struct {
@@ -473,27 +473,27 @@ type AccessPointParameters struct {
 	// (Block Set, Max: 1, Deprecated) Deprecated gateway Use router attribute instead (see below for nested schema)
 	// **Deprecated** `gateway` Use `router` attribute instead
 	// +kubebuilder:validation:Optional
-	Gateway []GatewayParameters `json:"gateway,omitempty" tf:"gateway,omitempty"`
+	Gateway *GatewayParameters `json:"gateway,omitempty" tf:"gateway,omitempty"`
 
 	// (Block Set, Max: 1) Virtual device interface (see below for nested schema)
 	// Virtual device interface
 	// +kubebuilder:validation:Optional
-	Interface []InterfaceParameters `json:"interface,omitempty" tf:"interface,omitempty"`
+	Interface *InterfaceParameters `json:"interface,omitempty" tf:"interface,omitempty"`
 
 	// (Block Set, Max: 1) Connection link protocol (see below for nested schema)
 	// Connection link protocol
 	// +kubebuilder:validation:Optional
-	LinkProtocol []LinkProtocolParameters `json:"linkProtocol,omitempty" tf:"link_protocol,omitempty"`
+	LinkProtocol *LinkProtocolParameters `json:"linkProtocol,omitempty" tf:"link_protocol,omitempty"`
 
 	// (Block Set, Max: 1) Access point location (see below for nested schema)
 	// Access point location
 	// +kubebuilder:validation:Optional
-	Location []AccessPointLocationParameters `json:"location,omitempty" tf:"location,omitempty"`
+	Location *AccessPointLocationParameters `json:"location,omitempty" tf:"location,omitempty"`
 
 	// (Block Set, Max: 1) network access point information (see below for nested schema)
 	// network access point information
 	// +kubebuilder:validation:Optional
-	Network []NetworkParameters `json:"network,omitempty" tf:"network,omitempty"`
+	Network *NetworkParameters `json:"network,omitempty" tf:"network,omitempty"`
 
 	// PRIVATE,MICROSOFT,PUBLIC, MANUAL
 	// Peering Type- PRIVATE,MICROSOFT,PUBLIC, MANUAL
@@ -503,17 +503,17 @@ type AccessPointParameters struct {
 	// (Block Set, Max: 1) Port access point information (see below for nested schema)
 	// Port access point information
 	// +kubebuilder:validation:Optional
-	Port []PortParameters `json:"port,omitempty" tf:"port,omitempty"`
+	Port *PortParameters `json:"port,omitempty" tf:"port,omitempty"`
 
 	// (Block Set, Max: 1) Service Profile (see below for nested schema)
 	// Service Profile
 	// +kubebuilder:validation:Optional
-	Profile []ProfileParameters `json:"profile,omitempty" tf:"profile,omitempty"`
+	Profile *ProfileParameters `json:"profile,omitempty" tf:"profile,omitempty"`
 
 	// (Block Set, Max: 1) Cloud Router access point information that replaces gateway (see below for nested schema)
 	// Cloud Router access point information that replaces `gateway`
 	// +kubebuilder:validation:Optional
-	Router []RouterParameters `json:"router,omitempty" tf:"router,omitempty"`
+	Router *RouterParameters `json:"router,omitempty" tf:"router,omitempty"`
 
 	// (String) Access point seller region
 	// Access point seller region
@@ -528,7 +528,7 @@ type AccessPointParameters struct {
 	// (Block Set, Max: 1) Virtual device (see below for nested schema)
 	// Virtual device
 	// +kubebuilder:validation:Optional
-	VirtualDevice []VirtualDeviceParameters `json:"virtualDevice,omitempty" tf:"virtual_device,omitempty"`
+	VirtualDevice *VirtualDeviceParameters `json:"virtualDevice,omitempty" tf:"virtual_device,omitempty"`
 }
 
 type AccessPointPortInitParameters struct {
@@ -826,7 +826,7 @@ type ConnectionInitParameters struct {
 
 	// segment connection (see below for nested schema)
 	// Requester or Customer side connection configuration object of the multi-segment connection
-	ASide []ASideInitParameters `json:"aSide,omitempty" tf:"a_side,omitempty"`
+	ASide *ASideInitParameters `json:"aSide,omitempty" tf:"a_side,omitempty"`
 
 	// (List of Map of String) Connection additional information
 	// Connection additional information
@@ -850,15 +850,15 @@ type ConnectionInitParameters struct {
 
 	// (Block Set, Min: 1, Max: 1) Order details (see below for nested schema)
 	// Order details
-	Order []ConnectionOrderInitParameters `json:"order,omitempty" tf:"order,omitempty"`
+	Order *ConnectionOrderInitParameters `json:"order,omitempty" tf:"order,omitempty"`
 
 	// (Block Set, Max: 1) Project information (see below for nested schema)
 	// Project information
-	Project []ConnectionProjectInitParameters `json:"project,omitempty" tf:"project,omitempty"`
+	Project *ConnectionProjectInitParameters `json:"project,omitempty" tf:"project,omitempty"`
 
 	// (Block Set, Max: 1) Connection Redundancy Configuration (see below for nested schema)
 	// Connection Redundancy Configuration
-	Redundancy []ConnectionRedundancyInitParameters `json:"redundancy,omitempty" tf:"redundancy,omitempty"`
+	Redundancy *ConnectionRedundancyInitParameters `json:"redundancy,omitempty" tf:"redundancy,omitempty"`
 
 	// (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
 	// Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, IA_VC, EC_VC
@@ -866,7 +866,7 @@ type ConnectionInitParameters struct {
 
 	// segment connection (see below for nested schema)
 	// Destination or Provider side connection configuration object of the multi-segment connection
-	ZSide []ZSideInitParameters `json:"zSide,omitempty" tf:"z_side,omitempty"`
+	ZSide *ZSideInitParameters `json:"zSide,omitempty" tf:"z_side,omitempty"`
 }
 
 type ConnectionNotificationsInitParameters struct {
@@ -921,7 +921,7 @@ type ConnectionObservation struct {
 
 	// segment connection (see below for nested schema)
 	// Requester or Customer side connection configuration object of the multi-segment connection
-	ASide []ASideObservation `json:"aSide,omitempty" tf:"a_side,omitempty"`
+	ASide *ASideObservation `json:"aSide,omitempty" tf:"a_side,omitempty"`
 
 	// (Set of Object) Customer account information that is associated with this connection (see below for nested schema)
 	// Customer account information that is associated with this connection
@@ -972,15 +972,15 @@ type ConnectionObservation struct {
 
 	// (Block Set, Min: 1, Max: 1) Order details (see below for nested schema)
 	// Order details
-	Order []ConnectionOrderObservation `json:"order,omitempty" tf:"order,omitempty"`
+	Order *ConnectionOrderObservation `json:"order,omitempty" tf:"order,omitempty"`
 
 	// (Block Set, Max: 1) Project information (see below for nested schema)
 	// Project information
-	Project []ConnectionProjectObservation `json:"project,omitempty" tf:"project,omitempty"`
+	Project *ConnectionProjectObservation `json:"project,omitempty" tf:"project,omitempty"`
 
 	// (Block Set, Max: 1) Connection Redundancy Configuration (see below for nested schema)
 	// Connection Redundancy Configuration
-	Redundancy []ConnectionRedundancyObservation `json:"redundancy,omitempty" tf:"redundancy,omitempty"`
+	Redundancy *ConnectionRedundancyObservation `json:"redundancy,omitempty" tf:"redundancy,omitempty"`
 
 	// (String) Connection overall state
 	// Connection overall state
@@ -996,7 +996,7 @@ type ConnectionObservation struct {
 
 	// segment connection (see below for nested schema)
 	// Destination or Provider side connection configuration object of the multi-segment connection
-	ZSide []ZSideObservation `json:"zSide,omitempty" tf:"z_side,omitempty"`
+	ZSide *ZSideObservation `json:"zSide,omitempty" tf:"z_side,omitempty"`
 }
 
 type ConnectionOrderInitParameters struct {
@@ -1065,7 +1065,7 @@ type ConnectionParameters struct {
 	// segment connection (see below for nested schema)
 	// Requester or Customer side connection configuration object of the multi-segment connection
 	// +kubebuilder:validation:Optional
-	ASide []ASideParameters `json:"aSide,omitempty" tf:"a_side,omitempty"`
+	ASide *ASideParameters `json:"aSide,omitempty" tf:"a_side,omitempty"`
 
 	// (List of Map of String) Connection additional information
 	// Connection additional information
@@ -1095,17 +1095,17 @@ type ConnectionParameters struct {
 	// (Block Set, Min: 1, Max: 1) Order details (see below for nested schema)
 	// Order details
 	// +kubebuilder:validation:Optional
-	Order []ConnectionOrderParameters `json:"order,omitempty" tf:"order,omitempty"`
+	Order *ConnectionOrderParameters `json:"order,omitempty" tf:"order,omitempty"`
 
 	// (Block Set, Max: 1) Project information (see below for nested schema)
 	// Project information
 	// +kubebuilder:validation:Optional
-	Project []ConnectionProjectParameters `json:"project,omitempty" tf:"project,omitempty"`
+	Project *ConnectionProjectParameters `json:"project,omitempty" tf:"project,omitempty"`
 
 	// (Block Set, Max: 1) Connection Redundancy Configuration (see below for nested schema)
 	// Connection Redundancy Configuration
 	// +kubebuilder:validation:Optional
-	Redundancy []ConnectionRedundancyParameters `json:"redundancy,omitempty" tf:"redundancy,omitempty"`
+	Redundancy *ConnectionRedundancyParameters `json:"redundancy,omitempty" tf:"redundancy,omitempty"`
 
 	// (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
 	// Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, IA_VC, EC_VC
@@ -1115,7 +1115,7 @@ type ConnectionParameters struct {
 	// segment connection (see below for nested schema)
 	// Destination or Provider side connection configuration object of the multi-segment connection
 	// +kubebuilder:validation:Optional
-	ZSide []ZSideParameters `json:"zSide,omitempty" tf:"z_side,omitempty"`
+	ZSide *ZSideParameters `json:"zSide,omitempty" tf:"z_side,omitempty"`
 }
 
 type ConnectionProjectInitParameters struct {
@@ -1710,23 +1710,23 @@ type ZSideAccessPointInitParameters struct {
 
 	// (Block Set, Max: 1, Deprecated) Deprecated gateway Use router attribute instead (see below for nested schema)
 	// **Deprecated** `gateway` Use `router` attribute instead
-	Gateway []AccessPointGatewayInitParameters `json:"gateway,omitempty" tf:"gateway,omitempty"`
+	Gateway *AccessPointGatewayInitParameters `json:"gateway,omitempty" tf:"gateway,omitempty"`
 
 	// (Block Set, Max: 1) Virtual device interface (see below for nested schema)
 	// Virtual device interface
-	Interface []AccessPointInterfaceInitParameters `json:"interface,omitempty" tf:"interface,omitempty"`
+	Interface *AccessPointInterfaceInitParameters `json:"interface,omitempty" tf:"interface,omitempty"`
 
 	// (Block Set, Max: 1) Connection link protocol (see below for nested schema)
 	// Connection link protocol
-	LinkProtocol []AccessPointLinkProtocolInitParameters `json:"linkProtocol,omitempty" tf:"link_protocol,omitempty"`
+	LinkProtocol *AccessPointLinkProtocolInitParameters `json:"linkProtocol,omitempty" tf:"link_protocol,omitempty"`
 
 	// (Block Set, Max: 1) Access point location (see below for nested schema)
 	// Access point location
-	Location []ZSideAccessPointLocationInitParameters `json:"location,omitempty" tf:"location,omitempty"`
+	Location *ZSideAccessPointLocationInitParameters `json:"location,omitempty" tf:"location,omitempty"`
 
 	// (Block Set, Max: 1) network access point information (see below for nested schema)
 	// network access point information
-	Network []AccessPointNetworkInitParameters `json:"network,omitempty" tf:"network,omitempty"`
+	Network *AccessPointNetworkInitParameters `json:"network,omitempty" tf:"network,omitempty"`
 
 	// PRIVATE,MICROSOFT,PUBLIC, MANUAL
 	// Peering Type- PRIVATE,MICROSOFT,PUBLIC, MANUAL
@@ -1734,15 +1734,15 @@ type ZSideAccessPointInitParameters struct {
 
 	// (Block Set, Max: 1) Port access point information (see below for nested schema)
 	// Port access point information
-	Port []AccessPointPortInitParameters `json:"port,omitempty" tf:"port,omitempty"`
+	Port *AccessPointPortInitParameters `json:"port,omitempty" tf:"port,omitempty"`
 
 	// (Block Set, Max: 1) Service Profile (see below for nested schema)
 	// Service Profile
-	Profile []AccessPointProfileInitParameters `json:"profile,omitempty" tf:"profile,omitempty"`
+	Profile *AccessPointProfileInitParameters `json:"profile,omitempty" tf:"profile,omitempty"`
 
 	// (Block Set, Max: 1) Cloud Router access point information that replaces gateway (see below for nested schema)
 	// Cloud Router access point information that replaces `gateway`
-	Router []AccessPointRouterInitParameters `json:"router,omitempty" tf:"router,omitempty"`
+	Router *AccessPointRouterInitParameters `json:"router,omitempty" tf:"router,omitempty"`
 
 	// (String) Access point seller region
 	// Access point seller region
@@ -1754,7 +1754,7 @@ type ZSideAccessPointInitParameters struct {
 
 	// (Block Set, Max: 1) Virtual device (see below for nested schema)
 	// Virtual device
-	VirtualDevice []AccessPointVirtualDeviceInitParameters `json:"virtualDevice,omitempty" tf:"virtual_device,omitempty"`
+	VirtualDevice *AccessPointVirtualDeviceInitParameters `json:"virtualDevice,omitempty" tf:"virtual_device,omitempty"`
 }
 
 type ZSideAccessPointLocationInitParameters struct {
@@ -1830,23 +1830,23 @@ type ZSideAccessPointObservation struct {
 
 	// (Block Set, Max: 1, Deprecated) Deprecated gateway Use router attribute instead (see below for nested schema)
 	// **Deprecated** `gateway` Use `router` attribute instead
-	Gateway []AccessPointGatewayObservation `json:"gateway,omitempty" tf:"gateway,omitempty"`
+	Gateway *AccessPointGatewayObservation `json:"gateway,omitempty" tf:"gateway,omitempty"`
 
 	// (Block Set, Max: 1) Virtual device interface (see below for nested schema)
 	// Virtual device interface
-	Interface []AccessPointInterfaceObservation `json:"interface,omitempty" tf:"interface,omitempty"`
+	Interface *AccessPointInterfaceObservation `json:"interface,omitempty" tf:"interface,omitempty"`
 
 	// (Block Set, Max: 1) Connection link protocol (see below for nested schema)
 	// Connection link protocol
-	LinkProtocol []AccessPointLinkProtocolObservation `json:"linkProtocol,omitempty" tf:"link_protocol,omitempty"`
+	LinkProtocol *AccessPointLinkProtocolObservation `json:"linkProtocol,omitempty" tf:"link_protocol,omitempty"`
 
 	// (Block Set, Max: 1) Access point location (see below for nested schema)
 	// Access point location
-	Location []ZSideAccessPointLocationObservation `json:"location,omitempty" tf:"location,omitempty"`
+	Location *ZSideAccessPointLocationObservation `json:"location,omitempty" tf:"location,omitempty"`
 
 	// (Block Set, Max: 1) network access point information (see below for nested schema)
 	// network access point information
-	Network []AccessPointNetworkObservation `json:"network,omitempty" tf:"network,omitempty"`
+	Network *AccessPointNetworkObservation `json:"network,omitempty" tf:"network,omitempty"`
 
 	// PRIVATE,MICROSOFT,PUBLIC, MANUAL
 	// Peering Type- PRIVATE,MICROSOFT,PUBLIC, MANUAL
@@ -1854,11 +1854,11 @@ type ZSideAccessPointObservation struct {
 
 	// (Block Set, Max: 1) Port access point information (see below for nested schema)
 	// Port access point information
-	Port []AccessPointPortObservation `json:"port,omitempty" tf:"port,omitempty"`
+	Port *AccessPointPortObservation `json:"port,omitempty" tf:"port,omitempty"`
 
 	// (Block Set, Max: 1) Service Profile (see below for nested schema)
 	// Service Profile
-	Profile []AccessPointProfileObservation `json:"profile,omitempty" tf:"profile,omitempty"`
+	Profile *AccessPointProfileObservation `json:"profile,omitempty" tf:"profile,omitempty"`
 
 	// (String) Provider assigned Connection Id
 	// Provider assigned Connection Id
@@ -1866,7 +1866,7 @@ type ZSideAccessPointObservation struct {
 
 	// (Block Set, Max: 1) Cloud Router access point information that replaces gateway (see below for nested schema)
 	// Cloud Router access point information that replaces `gateway`
-	Router []AccessPointRouterObservation `json:"router,omitempty" tf:"router,omitempty"`
+	Router *AccessPointRouterObservation `json:"router,omitempty" tf:"router,omitempty"`
 
 	// (String) Access point seller region
 	// Access point seller region
@@ -1878,7 +1878,7 @@ type ZSideAccessPointObservation struct {
 
 	// (Block Set, Max: 1) Virtual device (see below for nested schema)
 	// Virtual device
-	VirtualDevice []AccessPointVirtualDeviceObservation `json:"virtualDevice,omitempty" tf:"virtual_device,omitempty"`
+	VirtualDevice *AccessPointVirtualDeviceObservation `json:"virtualDevice,omitempty" tf:"virtual_device,omitempty"`
 }
 
 type ZSideAccessPointParameters struct {
@@ -1896,27 +1896,27 @@ type ZSideAccessPointParameters struct {
 	// (Block Set, Max: 1, Deprecated) Deprecated gateway Use router attribute instead (see below for nested schema)
 	// **Deprecated** `gateway` Use `router` attribute instead
 	// +kubebuilder:validation:Optional
-	Gateway []AccessPointGatewayParameters `json:"gateway,omitempty" tf:"gateway,omitempty"`
+	Gateway *AccessPointGatewayParameters `json:"gateway,omitempty" tf:"gateway,omitempty"`
 
 	// (Block Set, Max: 1) Virtual device interface (see below for nested schema)
 	// Virtual device interface
 	// +kubebuilder:validation:Optional
-	Interface []AccessPointInterfaceParameters `json:"interface,omitempty" tf:"interface,omitempty"`
+	Interface *AccessPointInterfaceParameters `json:"interface,omitempty" tf:"interface,omitempty"`
 
 	// (Block Set, Max: 1) Connection link protocol (see below for nested schema)
 	// Connection link protocol
 	// +kubebuilder:validation:Optional
-	LinkProtocol []AccessPointLinkProtocolParameters `json:"linkProtocol,omitempty" tf:"link_protocol,omitempty"`
+	LinkProtocol *AccessPointLinkProtocolParameters `json:"linkProtocol,omitempty" tf:"link_protocol,omitempty"`
 
 	// (Block Set, Max: 1) Access point location (see below for nested schema)
 	// Access point location
 	// +kubebuilder:validation:Optional
-	Location []ZSideAccessPointLocationParameters `json:"location,omitempty" tf:"location,omitempty"`
+	Location *ZSideAccessPointLocationParameters `json:"location,omitempty" tf:"location,omitempty"`
 
 	// (Block Set, Max: 1) network access point information (see below for nested schema)
 	// network access point information
 	// +kubebuilder:validation:Optional
-	Network []AccessPointNetworkParameters `json:"network,omitempty" tf:"network,omitempty"`
+	Network *AccessPointNetworkParameters `json:"network,omitempty" tf:"network,omitempty"`
 
 	// PRIVATE,MICROSOFT,PUBLIC, MANUAL
 	// Peering Type- PRIVATE,MICROSOFT,PUBLIC, MANUAL
@@ -1926,17 +1926,17 @@ type ZSideAccessPointParameters struct {
 	// (Block Set, Max: 1) Port access point information (see below for nested schema)
 	// Port access point information
 	// +kubebuilder:validation:Optional
-	Port []AccessPointPortParameters `json:"port,omitempty" tf:"port,omitempty"`
+	Port *AccessPointPortParameters `json:"port,omitempty" tf:"port,omitempty"`
 
 	// (Block Set, Max: 1) Service Profile (see below for nested schema)
 	// Service Profile
 	// +kubebuilder:validation:Optional
-	Profile []AccessPointProfileParameters `json:"profile,omitempty" tf:"profile,omitempty"`
+	Profile *AccessPointProfileParameters `json:"profile,omitempty" tf:"profile,omitempty"`
 
 	// (Block Set, Max: 1) Cloud Router access point information that replaces gateway (see below for nested schema)
 	// Cloud Router access point information that replaces `gateway`
 	// +kubebuilder:validation:Optional
-	Router []AccessPointRouterParameters `json:"router,omitempty" tf:"router,omitempty"`
+	Router *AccessPointRouterParameters `json:"router,omitempty" tf:"router,omitempty"`
 
 	// (String) Access point seller region
 	// Access point seller region
@@ -1951,7 +1951,7 @@ type ZSideAccessPointParameters struct {
 	// (Block Set, Max: 1) Virtual device (see below for nested schema)
 	// Virtual device
 	// +kubebuilder:validation:Optional
-	VirtualDevice []AccessPointVirtualDeviceParameters `json:"virtualDevice,omitempty" tf:"virtual_device,omitempty"`
+	VirtualDevice *AccessPointVirtualDeviceParameters `json:"virtualDevice,omitempty" tf:"virtual_device,omitempty"`
 }
 
 type ZSideAdditionalInfoInitParameters struct {
@@ -1993,7 +1993,7 @@ type ZSideInitParameters struct {
 
 	// (Block Set, Max: 1) Point of access details (see below for nested schema)
 	// Point of access details
-	AccessPoint []ZSideAccessPointInitParameters `json:"accessPoint,omitempty" tf:"access_point,omitempty"`
+	AccessPoint *ZSideAccessPointInitParameters `json:"accessPoint,omitempty" tf:"access_point,omitempty"`
 
 	// (List of Map of String) Connection additional information
 	// Connection side additional information
@@ -2001,14 +2001,14 @@ type ZSideInitParameters struct {
 
 	// (Block Set, Max: 1) For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets (see below for nested schema)
 	// For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets
-	ServiceToken []ZSideServiceTokenInitParameters `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+	ServiceToken *ZSideServiceTokenInitParameters `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
 }
 
 type ZSideObservation struct {
 
 	// (Block Set, Max: 1) Point of access details (see below for nested schema)
 	// Point of access details
-	AccessPoint []ZSideAccessPointObservation `json:"accessPoint,omitempty" tf:"access_point,omitempty"`
+	AccessPoint *ZSideAccessPointObservation `json:"accessPoint,omitempty" tf:"access_point,omitempty"`
 
 	// (List of Map of String) Connection additional information
 	// Connection side additional information
@@ -2016,7 +2016,7 @@ type ZSideObservation struct {
 
 	// (Block Set, Max: 1) For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets (see below for nested schema)
 	// For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets
-	ServiceToken []ZSideServiceTokenObservation `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+	ServiceToken *ZSideServiceTokenObservation `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
 }
 
 type ZSideParameters struct {
@@ -2024,7 +2024,7 @@ type ZSideParameters struct {
 	// (Block Set, Max: 1) Point of access details (see below for nested schema)
 	// Point of access details
 	// +kubebuilder:validation:Optional
-	AccessPoint []ZSideAccessPointParameters `json:"accessPoint,omitempty" tf:"access_point,omitempty"`
+	AccessPoint *ZSideAccessPointParameters `json:"accessPoint,omitempty" tf:"access_point,omitempty"`
 
 	// (List of Map of String) Connection additional information
 	// Connection side additional information
@@ -2034,7 +2034,7 @@ type ZSideParameters struct {
 	// (Block Set, Max: 1) For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets (see below for nested schema)
 	// For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets
 	// +kubebuilder:validation:Optional
-	ServiceToken []ZSideServiceTokenParameters `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+	ServiceToken *ZSideServiceTokenParameters `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
 }
 
 type ZSideServiceTokenInitParameters struct {

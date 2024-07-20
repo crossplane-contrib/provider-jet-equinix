@@ -92,7 +92,7 @@ type NetworkInitParameters_2 struct {
 
 	// (Block Set, Max: 1) Fabric Network location (see below for nested schema)
 	// Fabric Network location
-	Location []NetworkLocationInitParameters `json:"location,omitempty" tf:"location,omitempty"`
+	Location *NetworkLocationInitParameters `json:"location,omitempty" tf:"location,omitempty"`
 
 	// numeric 24 characters string which can include only hyphens and underscores
 	// Fabric Network name. An alpha-numeric 24 characters string which can include only hyphens and underscores
@@ -247,7 +247,7 @@ type NetworkObservation_2 struct {
 
 	// (Block Set, Max: 1) Fabric Network location (see below for nested schema)
 	// Fabric Network location
-	Location []NetworkLocationObservation `json:"location,omitempty" tf:"location,omitempty"`
+	Location *NetworkLocationObservation `json:"location,omitempty" tf:"location,omitempty"`
 
 	// numeric 24 characters string which can include only hyphens and underscores
 	// Fabric Network name. An alpha-numeric 24 characters string which can include only hyphens and underscores
@@ -299,7 +299,7 @@ type NetworkParameters_2 struct {
 	// (Block Set, Max: 1) Fabric Network location (see below for nested schema)
 	// Fabric Network location
 	// +kubebuilder:validation:Optional
-	Location []NetworkLocationParameters `json:"location,omitempty" tf:"location,omitempty"`
+	Location *NetworkLocationParameters `json:"location,omitempty" tf:"location,omitempty"`
 
 	// numeric 24 characters string which can include only hyphens and underscores
 	// Fabric Network name. An alpha-numeric 24 characters string which can include only hyphens and underscores

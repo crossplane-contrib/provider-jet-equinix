@@ -54,7 +54,7 @@ type DeviceInitParameters struct {
 	AlwaysPxe *bool `json:"alwaysPxe,omitempty" tf:"always_pxe,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
-	Behavior []BehaviorInitParameters `json:"behavior,omitempty" tf:"behavior,omitempty"`
+	Behavior *BehaviorInitParameters `json:"behavior,omitempty" tf:"behavior,omitempty"`
 
 	// (String) monthly or hourly
 	// monthly or hourly
@@ -126,7 +126,7 @@ type DeviceInitParameters struct {
 	ProjectSSHKeyIds []*string `json:"projectSshKeyIds,omitempty" tf:"project_ssh_key_ids,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
-	Reinstall []ReinstallInitParameters `json:"reinstall,omitempty" tf:"reinstall,omitempty"`
+	Reinstall *ReinstallInitParameters `json:"reinstall,omitempty" tf:"reinstall,omitempty"`
 
 	// (String) JSON for custom partitioning. Only usable on reserved hardware. More information in in the Custom Partitioning and RAID doc
 	// JSON for custom partitioning. Only usable on reserved hardware. More information in in the [Custom Partitioning and RAID](https://metal.equinix.com/developers/docs/servers/custom-partitioning-raid/) doc
@@ -172,7 +172,7 @@ type DeviceObservation struct {
 	AlwaysPxe *bool `json:"alwaysPxe,omitempty" tf:"always_pxe,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
-	Behavior []BehaviorObservation `json:"behavior,omitempty" tf:"behavior,omitempty"`
+	Behavior *BehaviorObservation `json:"behavior,omitempty" tf:"behavior,omitempty"`
 
 	// (String) monthly or hourly
 	// monthly or hourly
@@ -258,7 +258,7 @@ type DeviceObservation struct {
 	ProjectSSHKeyIds []*string `json:"projectSshKeyIds,omitempty" tf:"project_ssh_key_ids,omitempty"`
 
 	// (Block List, Max: 1) (see below for nested schema)
-	Reinstall []ReinstallObservation `json:"reinstall,omitempty" tf:"reinstall,omitempty"`
+	Reinstall *ReinstallObservation `json:"reinstall,omitempty" tf:"reinstall,omitempty"`
 
 	// (List of String) List of IDs of SSH keys deployed in the device, can be both user and project SSH keys
 	// List of IDs of SSH keys deployed in the device, can be both user and project SSH keys
@@ -306,7 +306,7 @@ type DeviceParameters struct {
 
 	// (Block List, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	Behavior []BehaviorParameters `json:"behavior,omitempty" tf:"behavior,omitempty"`
+	Behavior *BehaviorParameters `json:"behavior,omitempty" tf:"behavior,omitempty"`
 
 	// (String) monthly or hourly
 	// monthly or hourly
@@ -394,7 +394,7 @@ type DeviceParameters struct {
 
 	// (Block List, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
-	Reinstall []ReinstallParameters `json:"reinstall,omitempty" tf:"reinstall,omitempty"`
+	Reinstall *ReinstallParameters `json:"reinstall,omitempty" tf:"reinstall,omitempty"`
 
 	// (String) JSON for custom partitioning. Only usable on reserved hardware. More information in in the Custom Partitioning and RAID doc
 	// JSON for custom partitioning. Only usable on reserved hardware. More information in in the [Custom Partitioning and RAID](https://metal.equinix.com/developers/docs/servers/custom-partitioning-raid/) doc

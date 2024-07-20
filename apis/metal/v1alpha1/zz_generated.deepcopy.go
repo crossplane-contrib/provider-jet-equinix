@@ -1061,10 +1061,8 @@ func (in *DeviceInitParameters) DeepCopyInto(out *DeviceInitParameters) {
 	}
 	if in.Behavior != nil {
 		in, out := &in.Behavior, &out.Behavior
-		*out = make([]BehaviorInitParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(BehaviorInitParameters)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.BillingCycle != nil {
 		in, out := &in.BillingCycle, &out.BillingCycle
@@ -1167,10 +1165,8 @@ func (in *DeviceInitParameters) DeepCopyInto(out *DeviceInitParameters) {
 	}
 	if in.Reinstall != nil {
 		in, out := &in.Reinstall, &out.Reinstall
-		*out = make([]ReinstallInitParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(ReinstallInitParameters)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Storage != nil {
 		in, out := &in.Storage, &out.Storage
@@ -1477,10 +1473,8 @@ func (in *DeviceObservation) DeepCopyInto(out *DeviceObservation) {
 	}
 	if in.Behavior != nil {
 		in, out := &in.Behavior, &out.Behavior
-		*out = make([]BehaviorObservation, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(BehaviorObservation)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.BillingCycle != nil {
 		in, out := &in.BillingCycle, &out.BillingCycle
@@ -1607,10 +1601,8 @@ func (in *DeviceObservation) DeepCopyInto(out *DeviceObservation) {
 	}
 	if in.Reinstall != nil {
 		in, out := &in.Reinstall, &out.Reinstall
-		*out = make([]ReinstallObservation, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(ReinstallObservation)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.SSHKeyIds != nil {
 		in, out := &in.SSHKeyIds, &out.SSHKeyIds
@@ -1697,10 +1689,8 @@ func (in *DeviceParameters) DeepCopyInto(out *DeviceParameters) {
 	}
 	if in.Behavior != nil {
 		in, out := &in.Behavior, &out.Behavior
-		*out = make([]BehaviorParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(BehaviorParameters)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.BillingCycle != nil {
 		in, out := &in.BillingCycle, &out.BillingCycle
@@ -1803,10 +1793,8 @@ func (in *DeviceParameters) DeepCopyInto(out *DeviceParameters) {
 	}
 	if in.Reinstall != nil {
 		in, out := &in.Reinstall, &out.Reinstall
-		*out = make([]ReinstallParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(ReinstallParameters)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Storage != nil {
 		in, out := &in.Storage, &out.Storage
@@ -5762,10 +5750,8 @@ func (in *SpotMarketRequestInitParameters) DeepCopyInto(out *SpotMarketRequestIn
 	}
 	if in.InstanceParameters != nil {
 		in, out := &in.InstanceParameters, &out.InstanceParameters
-		*out = make([]InstanceParametersInitParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(InstanceParametersInitParameters)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.MaxBidPrice != nil {
 		in, out := &in.MaxBidPrice, &out.MaxBidPrice
@@ -5872,10 +5858,8 @@ func (in *SpotMarketRequestObservation) DeepCopyInto(out *SpotMarketRequestObser
 	}
 	if in.InstanceParameters != nil {
 		in, out := &in.InstanceParameters, &out.InstanceParameters
-		*out = make([]InstanceParametersObservation, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(InstanceParametersObservation)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.MaxBidPrice != nil {
 		in, out := &in.MaxBidPrice, &out.MaxBidPrice
@@ -5935,10 +5919,8 @@ func (in *SpotMarketRequestParameters) DeepCopyInto(out *SpotMarketRequestParame
 	}
 	if in.InstanceParameters != nil {
 		in, out := &in.InstanceParameters, &out.InstanceParameters
-		*out = make([]InstanceParametersParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(InstanceParametersParameters)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.MaxBidPrice != nil {
 		in, out := &in.MaxBidPrice, &out.MaxBidPrice

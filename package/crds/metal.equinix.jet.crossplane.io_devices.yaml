@@ -79,17 +79,15 @@ spec:
                     type: boolean
                   behavior:
                     description: '(Block List, Max: 1) (see below for nested schema)'
-                    items:
-                      properties:
-                        allowChanges:
-                          description: |-
-                            (List of String) List of attributes that are allowed to change without recreating the instance. Supported attributes: custom_data, user_data
-                            List of attributes that are allowed to change without recreating the instance. Supported attributes: `custom_data`, `user_data`
-                          items:
-                            type: string
-                          type: array
-                      type: object
-                    type: array
+                    properties:
+                      allowChanges:
+                        description: |-
+                          (List of String) List of attributes that are allowed to change without recreating the instance. Supported attributes: custom_data, user_data
+                          List of attributes that are allowed to change without recreating the instance. Supported attributes: `custom_data`, `user_data`
+                        items:
+                          type: string
+                        type: array
+                    type: object
                   billingCycle:
                     description: |-
                       (String) monthly or hourly
@@ -279,25 +277,23 @@ spec:
                     type: array
                   reinstall:
                     description: '(Block List, Max: 1) (see below for nested schema)'
-                    items:
-                      properties:
-                        deprovisionFast:
-                          description: |-
-                            (Boolean) Whether the OS disk should be filled with 00h bytes before reinstall
-                            Whether the OS disk should be filled with `00h` bytes before reinstall
-                          type: boolean
-                        enabled:
-                          description: |-
-                            (Boolean) Whether the device should be reinstalled instead of destroyed
-                            Whether the device should be reinstalled instead of destroyed
-                          type: boolean
-                        preserveData:
-                          description: |-
-                            OS disks should be kept or wiped during reinstall
-                            Whether the non-OS disks should be kept or wiped during reinstall
-                          type: boolean
-                      type: object
-                    type: array
+                    properties:
+                      deprovisionFast:
+                        description: |-
+                          (Boolean) Whether the OS disk should be filled with 00h bytes before reinstall
+                          Whether the OS disk should be filled with `00h` bytes before reinstall
+                        type: boolean
+                      enabled:
+                        description: |-
+                          (Boolean) Whether the device should be reinstalled instead of destroyed
+                          Whether the device should be reinstalled instead of destroyed
+                        type: boolean
+                      preserveData:
+                        description: |-
+                          OS disks should be kept or wiped during reinstall
+                          Whether the non-OS disks should be kept or wiped during reinstall
+                        type: boolean
+                    type: object
                   storage:
                     description: |-
                       (String) JSON for custom partitioning. Only usable on reserved hardware. More information in in the Custom Partitioning and RAID doc
@@ -367,17 +363,15 @@ spec:
                     type: boolean
                   behavior:
                     description: '(Block List, Max: 1) (see below for nested schema)'
-                    items:
-                      properties:
-                        allowChanges:
-                          description: |-
-                            (List of String) List of attributes that are allowed to change without recreating the instance. Supported attributes: custom_data, user_data
-                            List of attributes that are allowed to change without recreating the instance. Supported attributes: `custom_data`, `user_data`
-                          items:
-                            type: string
-                          type: array
-                      type: object
-                    type: array
+                    properties:
+                      allowChanges:
+                        description: |-
+                          (List of String) List of attributes that are allowed to change without recreating the instance. Supported attributes: custom_data, user_data
+                          List of attributes that are allowed to change without recreating the instance. Supported attributes: `custom_data`, `user_data`
+                        items:
+                          type: string
+                        type: array
+                    type: object
                   billingCycle:
                     description: |-
                       (String) monthly or hourly
@@ -567,25 +561,23 @@ spec:
                     type: array
                   reinstall:
                     description: '(Block List, Max: 1) (see below for nested schema)'
-                    items:
-                      properties:
-                        deprovisionFast:
-                          description: |-
-                            (Boolean) Whether the OS disk should be filled with 00h bytes before reinstall
-                            Whether the OS disk should be filled with `00h` bytes before reinstall
-                          type: boolean
-                        enabled:
-                          description: |-
-                            (Boolean) Whether the device should be reinstalled instead of destroyed
-                            Whether the device should be reinstalled instead of destroyed
-                          type: boolean
-                        preserveData:
-                          description: |-
-                            OS disks should be kept or wiped during reinstall
-                            Whether the non-OS disks should be kept or wiped during reinstall
-                          type: boolean
-                      type: object
-                    type: array
+                    properties:
+                      deprovisionFast:
+                        description: |-
+                          (Boolean) Whether the OS disk should be filled with 00h bytes before reinstall
+                          Whether the OS disk should be filled with `00h` bytes before reinstall
+                        type: boolean
+                      enabled:
+                        description: |-
+                          (Boolean) Whether the device should be reinstalled instead of destroyed
+                          Whether the device should be reinstalled instead of destroyed
+                        type: boolean
+                      preserveData:
+                        description: |-
+                          OS disks should be kept or wiped during reinstall
+                          Whether the non-OS disks should be kept or wiped during reinstall
+                        type: boolean
+                    type: object
                   storage:
                     description: |-
                       (String) JSON for custom partitioning. Only usable on reserved hardware. More information in in the Custom Partitioning and RAID doc
@@ -838,17 +830,15 @@ spec:
                     type: boolean
                   behavior:
                     description: '(Block List, Max: 1) (see below for nested schema)'
-                    items:
-                      properties:
-                        allowChanges:
-                          description: |-
-                            (List of String) List of attributes that are allowed to change without recreating the instance. Supported attributes: custom_data, user_data
-                            List of attributes that are allowed to change without recreating the instance. Supported attributes: `custom_data`, `user_data`
-                          items:
-                            type: string
-                          type: array
-                      type: object
-                    type: array
+                    properties:
+                      allowChanges:
+                        description: |-
+                          (List of String) List of attributes that are allowed to change without recreating the instance. Supported attributes: custom_data, user_data
+                          List of attributes that are allowed to change without recreating the instance. Supported attributes: `custom_data`, `user_data`
+                        items:
+                          type: string
+                        type: array
+                    type: object
                   billingCycle:
                     description: |-
                       (String) monthly or hourly
@@ -1015,25 +1005,23 @@ spec:
                     type: array
                   reinstall:
                     description: '(Block List, Max: 1) (see below for nested schema)'
-                    items:
-                      properties:
-                        deprovisionFast:
-                          description: |-
-                            (Boolean) Whether the OS disk should be filled with 00h bytes before reinstall
-                            Whether the OS disk should be filled with `00h` bytes before reinstall
-                          type: boolean
-                        enabled:
-                          description: |-
-                            (Boolean) Whether the device should be reinstalled instead of destroyed
-                            Whether the device should be reinstalled instead of destroyed
-                          type: boolean
-                        preserveData:
-                          description: |-
-                            OS disks should be kept or wiped during reinstall
-                            Whether the non-OS disks should be kept or wiped during reinstall
-                          type: boolean
-                      type: object
-                    type: array
+                    properties:
+                      deprovisionFast:
+                        description: |-
+                          (Boolean) Whether the OS disk should be filled with 00h bytes before reinstall
+                          Whether the OS disk should be filled with `00h` bytes before reinstall
+                        type: boolean
+                      enabled:
+                        description: |-
+                          (Boolean) Whether the device should be reinstalled instead of destroyed
+                          Whether the device should be reinstalled instead of destroyed
+                        type: boolean
+                      preserveData:
+                        description: |-
+                          OS disks should be kept or wiped during reinstall
+                          Whether the non-OS disks should be kept or wiped during reinstall
+                        type: boolean
+                    type: object
                   sosHostname:
                     description: |-
                       (String) The hostname to use for Serial over SSH access to the device

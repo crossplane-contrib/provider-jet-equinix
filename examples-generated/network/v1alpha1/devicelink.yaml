@@ -18,9 +18,13 @@ spec:
       id: ${equinix_network_device.test.secondary_device[0].uuid}
       interfaceId: 7
     link:
-    - accountNumber: ${equinix_network_device.test.account_number}
+    - accountNumberSelector:
+        matchLabels:
+          testing.upbound.io/example-name: test
       dstMetroCode: ${equinix_network_device.test.secondary_device[0].metro_code}
-      srcMetroCode: ${equinix_network_device.test.metro_code}
+      srcMetroCodeSelector:
+        matchLabels:
+          testing.upbound.io/example-name: test
       throughput: "50"
       throughputUnit: Mbps
     name: test-link

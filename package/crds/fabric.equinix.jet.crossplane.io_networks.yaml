@@ -77,30 +77,28 @@ spec:
                     description: |-
                       (Block Set, Max: 1) Fabric Network location (see below for nested schema)
                       Fabric Network location
-                    items:
-                      properties:
-                        ibx:
-                          description: |-
-                            (String) IBX Code
-                            IBX Code
-                          type: string
-                        metroCode:
-                          description: |-
-                            (String) Access point metro code
-                            Access point metro code
-                          type: string
-                        metroName:
-                          description: |-
-                            (String) Access point metro name
-                            Access point metro name
-                          type: string
-                        region:
-                          description: |-
-                            (String) Access point region
-                            Access point region
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      ibx:
+                        description: |-
+                          (String) IBX Code
+                          IBX Code
+                        type: string
+                      metroCode:
+                        description: |-
+                          (String) Access point metro code
+                          Access point metro code
+                        type: string
+                      metroName:
+                        description: |-
+                          (String) Access point metro name
+                          Access point metro name
+                        type: string
+                      region:
+                        description: |-
+                          (String) Access point region
+                          Access point region
+                        type: string
+                    type: object
                   name:
                     description: |-
                       numeric 24 characters string which can include only hyphens and underscores
@@ -172,30 +170,28 @@ spec:
                     description: |-
                       (Block Set, Max: 1) Fabric Network location (see below for nested schema)
                       Fabric Network location
-                    items:
-                      properties:
-                        ibx:
-                          description: |-
-                            (String) IBX Code
-                            IBX Code
-                          type: string
-                        metroCode:
-                          description: |-
-                            (String) Access point metro code
-                            Access point metro code
-                          type: string
-                        metroName:
-                          description: |-
-                            (String) Access point metro name
-                            Access point metro name
-                          type: string
-                        region:
-                          description: |-
-                            (String) Access point region
-                            Access point region
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      ibx:
+                        description: |-
+                          (String) IBX Code
+                          IBX Code
+                        type: string
+                      metroCode:
+                        description: |-
+                          (String) Access point metro code
+                          Access point metro code
+                        type: string
+                      metroName:
+                        description: |-
+                          (String) Access point metro name
+                          Access point metro name
+                        type: string
+                      region:
+                        description: |-
+                          (String) Access point region
+                          Access point region
+                        type: string
+                    type: object
                   name:
                     description: |-
                       numeric 24 characters string which can include only hyphens and underscores
@@ -521,30 +517,28 @@ spec:
                     description: |-
                       (Block Set, Max: 1) Fabric Network location (see below for nested schema)
                       Fabric Network location
-                    items:
-                      properties:
-                        ibx:
-                          description: |-
-                            (String) IBX Code
-                            IBX Code
-                          type: string
-                        metroCode:
-                          description: |-
-                            (String) Access point metro code
-                            Access point metro code
-                          type: string
-                        metroName:
-                          description: |-
-                            (String) Access point metro name
-                            Access point metro name
-                          type: string
-                        region:
-                          description: |-
-                            (String) Access point region
-                            Access point region
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      ibx:
+                        description: |-
+                          (String) IBX Code
+                          IBX Code
+                        type: string
+                      metroCode:
+                        description: |-
+                          (String) Access point metro code
+                          Access point metro code
+                        type: string
+                      metroName:
+                        description: |-
+                          (String) Access point metro name
+                          Access point metro name
+                        type: string
+                      region:
+                        description: |-
+                          (String) Access point region
+                          Access point region
+                        type: string
+                    type: object
                   name:
                     description: |-
                       numeric 24 characters string which can include only hyphens and underscores

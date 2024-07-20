@@ -33,11 +33,11 @@ type ClusterDetailsInitParameters struct {
 
 	// An object that has node0 configuration. See Cluster Details - Nodes below for more details.
 	// An object that has node0 details
-	Node0 []Node0InitParameters `json:"node0,omitempty" tf:"node0,omitempty"`
+	Node0 *Node0InitParameters `json:"node0,omitempty" tf:"node0,omitempty"`
 
 	// An object that has node1 configuration. See Cluster Details - Nodes below for more details.
 	// An object that has node1 details
-	Node1 []Node1InitParameters `json:"node1,omitempty" tf:"node1,omitempty"`
+	Node1 *Node1InitParameters `json:"node1,omitempty" tf:"node1,omitempty"`
 }
 
 type ClusterDetailsObservation struct {
@@ -52,11 +52,11 @@ type ClusterDetailsObservation struct {
 
 	// An object that has node0 configuration. See Cluster Details - Nodes below for more details.
 	// An object that has node0 details
-	Node0 []Node0Observation `json:"node0,omitempty" tf:"node0,omitempty"`
+	Node0 *Node0Observation `json:"node0,omitempty" tf:"node0,omitempty"`
 
 	// An object that has node1 configuration. See Cluster Details - Nodes below for more details.
 	// An object that has node1 details
-	Node1 []Node1Observation `json:"node1,omitempty" tf:"node1,omitempty"`
+	Node1 *Node1Observation `json:"node1,omitempty" tf:"node1,omitempty"`
 
 	// The number of nodes in the cluster.
 	// The number of nodes in the cluster
@@ -73,12 +73,12 @@ type ClusterDetailsParameters struct {
 	// An object that has node0 configuration. See Cluster Details - Nodes below for more details.
 	// An object that has node0 details
 	// +kubebuilder:validation:Optional
-	Node0 []Node0Parameters `json:"node0" tf:"node0,omitempty"`
+	Node0 *Node0Parameters `json:"node0" tf:"node0,omitempty"`
 
 	// An object that has node1 configuration. See Cluster Details - Nodes below for more details.
 	// An object that has node1 details
 	// +kubebuilder:validation:Optional
-	Node1 []Node1Parameters `json:"node1" tf:"node1,omitempty"`
+	Node1 *Node1Parameters `json:"node1" tf:"node1,omitempty"`
 }
 
 type DeviceInitParameters struct {
@@ -101,11 +101,21 @@ type DeviceInitParameters struct {
 
 	// Identifier of a cloud init file that will be applied on the device.
 	// Unique identifier of applied cloud init file
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/network/v1alpha1.File
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("uuid",true)
 	CloudInitFileID *string `json:"cloudInitFileId,omitempty" tf:"cloud_init_file_id,omitempty"`
+
+	// Reference to a File in network to populate cloudInitFileId.
+	// +kubebuilder:validation:Optional
+	CloudInitFileIDRef *v1.Reference `json:"cloudInitFileIdRef,omitempty" tf:"-"`
+
+	// Selector for a File in network to populate cloudInitFileId.
+	// +kubebuilder:validation:Optional
+	CloudInitFileIDSelector *v1.Selector `json:"cloudInitFileIdSelector,omitempty" tf:"-"`
 
 	// An object that has the cluster details. See Cluster Details below for more details.
 	// An object that has the cluster details
-	ClusterDetails []ClusterDetailsInitParameters `json:"clusterDetails,omitempty" tf:"cluster_details,omitempty"`
+	ClusterDetails *ClusterDetailsInitParameters `json:"clusterDetails,omitempty" tf:"cluster_details,omitempty"`
 
 	// Device accessibility (INTERNET-ACCESS or PRIVATE or INTERNET-ACCESS-WITH-PRVT-MGMT). If not specified, default will be INTERNET-ACCESS
 	// Parameter to identify internet access for device. Supported Values: INTERNET-ACCESS(default) or PRIVATE or INTERNET-ACCESS-WITH-PRVT-MGMT
@@ -173,11 +183,11 @@ type DeviceInitParameters struct {
 	PurchaseOrderNumber *string `json:"purchaseOrderNumber,omitempty" tf:"purchase_order_number,omitempty"`
 
 	// Definition of SSH key that will be provisioned on a device
-	SSHKey []DeviceSSHKeyInitParameters `json:"sshKey,omitempty" tf:"ssh_key,omitempty"`
+	SSHKey *DeviceSSHKeyInitParameters `json:"sshKey,omitempty" tf:"ssh_key,omitempty"`
 
 	// Definition of secondary device for redundant device configurations. See Secondary Device below for more details.
 	// Definition of secondary device applicable for HA setup
-	SecondaryDevice []SecondaryDeviceInitParameters `json:"secondaryDevice,omitempty" tf:"secondary_device,omitempty"`
+	SecondaryDevice *SecondaryDeviceInitParameters `json:"secondaryDevice,omitempty" tf:"secondary_device,omitempty"`
 
 	// Boolean value that determines device management mode, i.e., self-managed or Equinix-managed (default).
 	// Boolean value that determines device management mode: self-managed or subscription (default)
@@ -241,7 +251,7 @@ type DeviceObservation struct {
 
 	// An object that has the cluster details. See Cluster Details below for more details.
 	// An object that has the cluster details
-	ClusterDetails []ClusterDetailsObservation `json:"clusterDetails,omitempty" tf:"cluster_details,omitempty"`
+	ClusterDetails *ClusterDetailsObservation `json:"clusterDetails,omitempty" tf:"cluster_details,omitempty"`
 
 	// Device accessibility (INTERNET-ACCESS or PRIVATE or INTERNET-ACCESS-WITH-PRVT-MGMT). If not specified, default will be INTERNET-ACCESS
 	// Parameter to identify internet access for device. Supported Values: INTERNET-ACCESS(default) or PRIVATE or INTERNET-ACCESS-WITH-PRVT-MGMT
@@ -348,11 +358,11 @@ type DeviceObservation struct {
 	SSHIPFqdn *string `json:"sshIpFqdn,omitempty" tf:"ssh_ip_fqdn,omitempty"`
 
 	// Definition of SSH key that will be provisioned on a device
-	SSHKey []DeviceSSHKeyObservation `json:"sshKey,omitempty" tf:"ssh_key,omitempty"`
+	SSHKey *DeviceSSHKeyObservation `json:"sshKey,omitempty" tf:"ssh_key,omitempty"`
 
 	// Definition of secondary device for redundant device configurations. See Secondary Device below for more details.
 	// Definition of secondary device applicable for HA setup
-	SecondaryDevice []SecondaryDeviceObservation `json:"secondaryDevice,omitempty" tf:"secondary_device,omitempty"`
+	SecondaryDevice *SecondaryDeviceObservation `json:"secondaryDevice,omitempty" tf:"secondary_device,omitempty"`
 
 	// Boolean value that determines device management mode, i.e., self-managed or Equinix-managed (default).
 	// Boolean value that determines device management mode: self-managed or subscription (default)
@@ -424,13 +434,23 @@ type DeviceParameters struct {
 
 	// Identifier of a cloud init file that will be applied on the device.
 	// Unique identifier of applied cloud init file
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/network/v1alpha1.File
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("uuid",true)
 	// +kubebuilder:validation:Optional
 	CloudInitFileID *string `json:"cloudInitFileId,omitempty" tf:"cloud_init_file_id,omitempty"`
+
+	// Reference to a File in network to populate cloudInitFileId.
+	// +kubebuilder:validation:Optional
+	CloudInitFileIDRef *v1.Reference `json:"cloudInitFileIdRef,omitempty" tf:"-"`
+
+	// Selector for a File in network to populate cloudInitFileId.
+	// +kubebuilder:validation:Optional
+	CloudInitFileIDSelector *v1.Selector `json:"cloudInitFileIdSelector,omitempty" tf:"-"`
 
 	// An object that has the cluster details. See Cluster Details below for more details.
 	// An object that has the cluster details
 	// +kubebuilder:validation:Optional
-	ClusterDetails []ClusterDetailsParameters `json:"clusterDetails,omitempty" tf:"cluster_details,omitempty"`
+	ClusterDetails *ClusterDetailsParameters `json:"clusterDetails,omitempty" tf:"cluster_details,omitempty"`
 
 	// Device accessibility (INTERNET-ACCESS or PRIVATE or INTERNET-ACCESS-WITH-PRVT-MGMT). If not specified, default will be INTERNET-ACCESS
 	// Parameter to identify internet access for device. Supported Values: INTERNET-ACCESS(default) or PRIVATE or INTERNET-ACCESS-WITH-PRVT-MGMT
@@ -515,12 +535,12 @@ type DeviceParameters struct {
 
 	// Definition of SSH key that will be provisioned on a device
 	// +kubebuilder:validation:Optional
-	SSHKey []DeviceSSHKeyParameters `json:"sshKey,omitempty" tf:"ssh_key,omitempty"`
+	SSHKey *DeviceSSHKeyParameters `json:"sshKey,omitempty" tf:"ssh_key,omitempty"`
 
 	// Definition of secondary device for redundant device configurations. See Secondary Device below for more details.
 	// Definition of secondary device applicable for HA setup
 	// +kubebuilder:validation:Optional
-	SecondaryDevice []SecondaryDeviceParameters `json:"secondaryDevice,omitempty" tf:"secondary_device,omitempty"`
+	SecondaryDevice *SecondaryDeviceParameters `json:"secondaryDevice,omitempty" tf:"secondary_device,omitempty"`
 
 	// Boolean value that determines device management mode, i.e., self-managed or Equinix-managed (default).
 	// Boolean value that determines device management mode: self-managed or subscription (default)
@@ -568,7 +588,17 @@ type DeviceSSHKeyInitParameters struct {
 
 	// Device name.
 	// Reference by name to previously provisioned public SSH key
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/network/v1alpha1.SSHKey
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
 	KeyName *string `json:"keyName,omitempty" tf:"key_name,omitempty"`
+
+	// Reference to a SSHKey in network to populate keyName.
+	// +kubebuilder:validation:Optional
+	KeyNameRef *v1.Reference `json:"keyNameRef,omitempty" tf:"-"`
+
+	// Selector for a SSHKey in network to populate keyName.
+	// +kubebuilder:validation:Optional
+	KeyNameSelector *v1.Selector `json:"keyNameSelector,omitempty" tf:"-"`
 
 	// username associated with given key.
 	// Username associated with given key
@@ -590,8 +620,18 @@ type DeviceSSHKeyParameters struct {
 
 	// Device name.
 	// Reference by name to previously provisioned public SSH key
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/network/v1alpha1.SSHKey
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
 	// +kubebuilder:validation:Optional
-	KeyName *string `json:"keyName" tf:"key_name,omitempty"`
+	KeyName *string `json:"keyName,omitempty" tf:"key_name,omitempty"`
+
+	// Reference to a SSHKey in network to populate keyName.
+	// +kubebuilder:validation:Optional
+	KeyNameRef *v1.Reference `json:"keyNameRef,omitempty" tf:"-"`
+
+	// Selector for a SSHKey in network to populate keyName.
+	// +kubebuilder:validation:Optional
+	KeyNameSelector *v1.Selector `json:"keyNameSelector,omitempty" tf:"-"`
 
 	// username associated with given key.
 	// Username associated with given key
@@ -644,7 +684,7 @@ type Node0InitParameters struct {
 
 	// An object that has fields relevant to the vendor of the cluster device. See Cluster Details - Nodes - Vendor Configuration below for more details.
 	// An object that has fields relevant to the vendor of the cluster device
-	VendorConfiguration []VendorConfigurationInitParameters `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
+	VendorConfiguration *VendorConfigurationInitParameters `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
 }
 
 type Node0Observation struct {
@@ -663,7 +703,7 @@ type Node0Observation struct {
 
 	// An object that has fields relevant to the vendor of the cluster device. See Cluster Details - Nodes - Vendor Configuration below for more details.
 	// An object that has fields relevant to the vendor of the cluster device
-	VendorConfiguration []VendorConfigurationObservation `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
+	VendorConfiguration *VendorConfigurationObservation `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
 }
 
 type Node0Parameters struct {
@@ -681,7 +721,7 @@ type Node0Parameters struct {
 	// An object that has fields relevant to the vendor of the cluster device. See Cluster Details - Nodes - Vendor Configuration below for more details.
 	// An object that has fields relevant to the vendor of the cluster device
 	// +kubebuilder:validation:Optional
-	VendorConfiguration []VendorConfigurationParameters `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
+	VendorConfiguration *VendorConfigurationParameters `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
 }
 
 type Node1InitParameters struct {
@@ -696,7 +736,7 @@ type Node1InitParameters struct {
 
 	// Map of vendor specific configuration parameters for a device (controller1, activationKey, managementType, siteId, systemIpAddress, privateAddress, privateCidrMask, privateGateway, licenseKey, licenseId, panoramaAuthKey, panoramaIpAddress)
 	// An object that has fields relevant to the vendor of the cluster device
-	VendorConfiguration []Node1VendorConfigurationInitParameters `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
+	VendorConfiguration *Node1VendorConfigurationInitParameters `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
 }
 
 type Node1Observation struct {
@@ -715,7 +755,7 @@ type Node1Observation struct {
 
 	// Map of vendor specific configuration parameters for a device (controller1, activationKey, managementType, siteId, systemIpAddress, privateAddress, privateCidrMask, privateGateway, licenseKey, licenseId, panoramaAuthKey, panoramaIpAddress)
 	// An object that has fields relevant to the vendor of the cluster device
-	VendorConfiguration []Node1VendorConfigurationObservation `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
+	VendorConfiguration *Node1VendorConfigurationObservation `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
 }
 
 type Node1Parameters struct {
@@ -733,7 +773,7 @@ type Node1Parameters struct {
 	// Map of vendor specific configuration parameters for a device (controller1, activationKey, managementType, siteId, systemIpAddress, privateAddress, privateCidrMask, privateGateway, licenseKey, licenseId, panoramaAuthKey, panoramaIpAddress)
 	// An object that has fields relevant to the vendor of the cluster device
 	// +kubebuilder:validation:Optional
-	VendorConfiguration []Node1VendorConfigurationParameters `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
+	VendorConfiguration *Node1VendorConfigurationParameters `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
 }
 
 type Node1VendorConfigurationInitParameters struct {
@@ -930,7 +970,17 @@ type SecondaryDeviceInitParameters struct {
 
 	// Identifier of a cloud init file that will be applied on a secondary device.
 	// Unique identifier of applied cloud init file
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/network/v1alpha1.File
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("uuid",true)
 	CloudInitFileID *string `json:"cloudInitFileId,omitempty" tf:"cloud_init_file_id,omitempty"`
+
+	// Reference to a File in network to populate cloudInitFileId.
+	// +kubebuilder:validation:Optional
+	CloudInitFileIDRef *v1.Reference `json:"cloudInitFileIdRef,omitempty" tf:"-"`
+
+	// Selector for a File in network to populate cloudInitFileId.
+	// +kubebuilder:validation:Optional
+	CloudInitFileIDSelector *v1.Selector `json:"cloudInitFileIdSelector,omitempty" tf:"-"`
 
 	// Secondary device hostname.
 	// Device hostname prefix
@@ -966,7 +1016,7 @@ type SecondaryDeviceInitParameters struct {
 	Notifications []*string `json:"notifications,omitempty" tf:"notifications,omitempty"`
 
 	// Definition of SSH key that will be provisioned on a device
-	SSHKey []SSHKeyInitParameters `json:"sshKey,omitempty" tf:"ssh_key,omitempty"`
+	SSHKey *SSHKeyInitParameters `json:"sshKey,omitempty" tf:"ssh_key,omitempty"`
 
 	// Key/Value pairs of vendor specific configuration parameters for a secondary device. Key values are controller1, activationKey, managementType, siteId, systemIpAddress, privateAddress, privateCidrMask, privateGateway, licenseKey, licenseId, panoramaAuthKey, panoramaIpAddress.
 	// Map of vendor specific configuration parameters for a device (controller1, activationKey, managementType, siteId, systemIpAddress)
@@ -1103,7 +1153,7 @@ type SecondaryDeviceObservation struct {
 	SSHIPFqdn *string `json:"sshIpFqdn,omitempty" tf:"ssh_ip_fqdn,omitempty"`
 
 	// Definition of SSH key that will be provisioned on a device
-	SSHKey []SSHKeyObservation `json:"sshKey,omitempty" tf:"ssh_key,omitempty"`
+	SSHKey *SSHKeyObservation `json:"sshKey,omitempty" tf:"ssh_key,omitempty"`
 
 	// Device provisioning status. Possible values are INITIALIZING, PROVISIONING, WAITING_FOR_PRIMARY, WAITING_FOR_SECONDARY, WAITING_FOR_REPLICA_CLUSTER_NODES, CLUSTER_SETUP_IN_PROGRESS, FAILED, PROVISIONED, DEPROVISIONING, DEPROVISIONED, RESOURCE_UPGRADE_IN_PROGRESS, RESOURCE_UPGRADE_FAILED.
 	// Device provisioning status
@@ -1146,8 +1196,18 @@ type SecondaryDeviceParameters struct {
 
 	// Identifier of a cloud init file that will be applied on a secondary device.
 	// Unique identifier of applied cloud init file
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/network/v1alpha1.File
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("uuid",true)
 	// +kubebuilder:validation:Optional
 	CloudInitFileID *string `json:"cloudInitFileId,omitempty" tf:"cloud_init_file_id,omitempty"`
+
+	// Reference to a File in network to populate cloudInitFileId.
+	// +kubebuilder:validation:Optional
+	CloudInitFileIDRef *v1.Reference `json:"cloudInitFileIdRef,omitempty" tf:"-"`
+
+	// Selector for a File in network to populate cloudInitFileId.
+	// +kubebuilder:validation:Optional
+	CloudInitFileIDSelector *v1.Selector `json:"cloudInitFileIdSelector,omitempty" tf:"-"`
 
 	// Secondary device hostname.
 	// Device hostname prefix
@@ -1192,7 +1252,7 @@ type SecondaryDeviceParameters struct {
 
 	// Definition of SSH key that will be provisioned on a device
 	// +kubebuilder:validation:Optional
-	SSHKey []SSHKeyParameters `json:"sshKey,omitempty" tf:"ssh_key,omitempty"`
+	SSHKey *SSHKeyParameters `json:"sshKey,omitempty" tf:"ssh_key,omitempty"`
 
 	// Key/Value pairs of vendor specific configuration parameters for a secondary device. Key values are controller1, activationKey, managementType, siteId, systemIpAddress, privateAddress, privateCidrMask, privateGateway, licenseKey, licenseId, panoramaAuthKey, panoramaIpAddress.
 	// Map of vendor specific configuration parameters for a device (controller1, activationKey, managementType, siteId, systemIpAddress)

@@ -531,17 +531,13 @@ func (in *ClusterDetailsInitParameters) DeepCopyInto(out *ClusterDetailsInitPara
 	}
 	if in.Node0 != nil {
 		in, out := &in.Node0, &out.Node0
-		*out = make([]Node0InitParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(Node0InitParameters)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Node1 != nil {
 		in, out := &in.Node1, &out.Node1
-		*out = make([]Node1InitParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(Node1InitParameters)
+		(*in).DeepCopyInto(*out)
 	}
 }
 
@@ -570,17 +566,13 @@ func (in *ClusterDetailsObservation) DeepCopyInto(out *ClusterDetailsObservation
 	}
 	if in.Node0 != nil {
 		in, out := &in.Node0, &out.Node0
-		*out = make([]Node0Observation, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(Node0Observation)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Node1 != nil {
 		in, out := &in.Node1, &out.Node1
-		*out = make([]Node1Observation, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(Node1Observation)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.NumOfNodes != nil {
 		in, out := &in.NumOfNodes, &out.NumOfNodes
@@ -609,17 +601,13 @@ func (in *ClusterDetailsParameters) DeepCopyInto(out *ClusterDetailsParameters) 
 	}
 	if in.Node0 != nil {
 		in, out := &in.Node0, &out.Node0
-		*out = make([]Node0Parameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(Node0Parameters)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Node1 != nil {
 		in, out := &in.Node1, &out.Node1
-		*out = make([]Node1Parameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(Node1Parameters)
+		(*in).DeepCopyInto(*out)
 	}
 }
 
@@ -748,12 +736,20 @@ func (in *DeviceInitParameters) DeepCopyInto(out *DeviceInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.CloudInitFileIDRef != nil {
+		in, out := &in.CloudInitFileIDRef, &out.CloudInitFileIDRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.CloudInitFileIDSelector != nil {
+		in, out := &in.CloudInitFileIDSelector, &out.CloudInitFileIDSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.ClusterDetails != nil {
 		in, out := &in.ClusterDetails, &out.ClusterDetails
-		*out = make([]ClusterDetailsInitParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(ClusterDetailsInitParameters)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Connectivity != nil {
 		in, out := &in.Connectivity, &out.Connectivity
@@ -843,17 +839,13 @@ func (in *DeviceInitParameters) DeepCopyInto(out *DeviceInitParameters) {
 	}
 	if in.SSHKey != nil {
 		in, out := &in.SSHKey, &out.SSHKey
-		*out = make([]DeviceSSHKeyInitParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(DeviceSSHKeyInitParameters)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.SecondaryDevice != nil {
 		in, out := &in.SecondaryDevice, &out.SecondaryDevice
-		*out = make([]SecondaryDeviceInitParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(SecondaryDeviceInitParameters)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.SelfManaged != nil {
 		in, out := &in.SelfManaged, &out.SelfManaged
@@ -1362,10 +1354,8 @@ func (in *DeviceObservation) DeepCopyInto(out *DeviceObservation) {
 	}
 	if in.ClusterDetails != nil {
 		in, out := &in.ClusterDetails, &out.ClusterDetails
-		*out = make([]ClusterDetailsObservation, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(ClusterDetailsObservation)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Connectivity != nil {
 		in, out := &in.Connectivity, &out.Connectivity
@@ -1507,17 +1497,13 @@ func (in *DeviceObservation) DeepCopyInto(out *DeviceObservation) {
 	}
 	if in.SSHKey != nil {
 		in, out := &in.SSHKey, &out.SSHKey
-		*out = make([]DeviceSSHKeyObservation, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(DeviceSSHKeyObservation)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.SecondaryDevice != nil {
 		in, out := &in.SecondaryDevice, &out.SecondaryDevice
-		*out = make([]SecondaryDeviceObservation, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(SecondaryDeviceObservation)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.SelfManaged != nil {
 		in, out := &in.SelfManaged, &out.SelfManaged
@@ -1625,12 +1611,20 @@ func (in *DeviceParameters) DeepCopyInto(out *DeviceParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.CloudInitFileIDRef != nil {
+		in, out := &in.CloudInitFileIDRef, &out.CloudInitFileIDRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.CloudInitFileIDSelector != nil {
+		in, out := &in.CloudInitFileIDSelector, &out.CloudInitFileIDSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.ClusterDetails != nil {
 		in, out := &in.ClusterDetails, &out.ClusterDetails
-		*out = make([]ClusterDetailsParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(ClusterDetailsParameters)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Connectivity != nil {
 		in, out := &in.Connectivity, &out.Connectivity
@@ -1720,17 +1714,13 @@ func (in *DeviceParameters) DeepCopyInto(out *DeviceParameters) {
 	}
 	if in.SSHKey != nil {
 		in, out := &in.SSHKey, &out.SSHKey
-		*out = make([]DeviceSSHKeyParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(DeviceSSHKeyParameters)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.SecondaryDevice != nil {
 		in, out := &in.SecondaryDevice, &out.SecondaryDevice
-		*out = make([]SecondaryDeviceParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(SecondaryDeviceParameters)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.SelfManaged != nil {
 		in, out := &in.SelfManaged, &out.SelfManaged
@@ -1803,6 +1793,16 @@ func (in *DeviceSSHKeyInitParameters) DeepCopyInto(out *DeviceSSHKeyInitParamete
 		*out = new(string)
 		**out = **in
 	}
+	if in.KeyNameRef != nil {
+		in, out := &in.KeyNameRef, &out.KeyNameRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.KeyNameSelector != nil {
+		in, out := &in.KeyNameSelector, &out.KeyNameSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
 		*out = new(string)
@@ -1852,6 +1852,16 @@ func (in *DeviceSSHKeyParameters) DeepCopyInto(out *DeviceSSHKeyParameters) {
 		in, out := &in.KeyName, &out.KeyName
 		*out = new(string)
 		**out = **in
+	}
+	if in.KeyNameRef != nil {
+		in, out := &in.KeyNameRef, &out.KeyNameRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.KeyNameSelector != nil {
+		in, out := &in.KeyNameSelector, &out.KeyNameSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
@@ -2407,6 +2417,16 @@ func (in *LinkInitParameters) DeepCopyInto(out *LinkInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.AccountNumberRef != nil {
+		in, out := &in.AccountNumberRef, &out.AccountNumberRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.AccountNumberSelector != nil {
+		in, out := &in.AccountNumberSelector, &out.AccountNumberSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.DstMetroCode != nil {
 		in, out := &in.DstMetroCode, &out.DstMetroCode
 		*out = new(string)
@@ -2421,6 +2441,16 @@ func (in *LinkInitParameters) DeepCopyInto(out *LinkInitParameters) {
 		in, out := &in.SrcMetroCode, &out.SrcMetroCode
 		*out = new(string)
 		**out = **in
+	}
+	if in.SrcMetroCodeRef != nil {
+		in, out := &in.SrcMetroCodeRef, &out.SrcMetroCodeRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.SrcMetroCodeSelector != nil {
+		in, out := &in.SrcMetroCodeSelector, &out.SrcMetroCodeSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.SrcZoneCode != nil {
 		in, out := &in.SrcZoneCode, &out.SrcZoneCode
@@ -2507,6 +2537,16 @@ func (in *LinkParameters) DeepCopyInto(out *LinkParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.AccountNumberRef != nil {
+		in, out := &in.AccountNumberRef, &out.AccountNumberRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.AccountNumberSelector != nil {
+		in, out := &in.AccountNumberSelector, &out.AccountNumberSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.DstMetroCode != nil {
 		in, out := &in.DstMetroCode, &out.DstMetroCode
 		*out = new(string)
@@ -2521,6 +2561,16 @@ func (in *LinkParameters) DeepCopyInto(out *LinkParameters) {
 		in, out := &in.SrcMetroCode, &out.SrcMetroCode
 		*out = new(string)
 		**out = **in
+	}
+	if in.SrcMetroCodeRef != nil {
+		in, out := &in.SrcMetroCodeRef, &out.SrcMetroCodeRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.SrcMetroCodeSelector != nil {
+		in, out := &in.SrcMetroCodeSelector, &out.SrcMetroCodeSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.SrcZoneCode != nil {
 		in, out := &in.SrcZoneCode, &out.SrcZoneCode
@@ -2669,10 +2719,8 @@ func (in *Node0InitParameters) DeepCopyInto(out *Node0InitParameters) {
 	}
 	if in.VendorConfiguration != nil {
 		in, out := &in.VendorConfiguration, &out.VendorConfiguration
-		*out = make([]VendorConfigurationInitParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(VendorConfigurationInitParameters)
+		(*in).DeepCopyInto(*out)
 	}
 }
 
@@ -2706,10 +2754,8 @@ func (in *Node0Observation) DeepCopyInto(out *Node0Observation) {
 	}
 	if in.VendorConfiguration != nil {
 		in, out := &in.VendorConfiguration, &out.VendorConfiguration
-		*out = make([]VendorConfigurationObservation, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(VendorConfigurationObservation)
+		(*in).DeepCopyInto(*out)
 	}
 }
 
@@ -2738,10 +2784,8 @@ func (in *Node0Parameters) DeepCopyInto(out *Node0Parameters) {
 	}
 	if in.VendorConfiguration != nil {
 		in, out := &in.VendorConfiguration, &out.VendorConfiguration
-		*out = make([]VendorConfigurationParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(VendorConfigurationParameters)
+		(*in).DeepCopyInto(*out)
 	}
 }
 
@@ -2770,10 +2814,8 @@ func (in *Node1InitParameters) DeepCopyInto(out *Node1InitParameters) {
 	}
 	if in.VendorConfiguration != nil {
 		in, out := &in.VendorConfiguration, &out.VendorConfiguration
-		*out = make([]Node1VendorConfigurationInitParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(Node1VendorConfigurationInitParameters)
+		(*in).DeepCopyInto(*out)
 	}
 }
 
@@ -2807,10 +2849,8 @@ func (in *Node1Observation) DeepCopyInto(out *Node1Observation) {
 	}
 	if in.VendorConfiguration != nil {
 		in, out := &in.VendorConfiguration, &out.VendorConfiguration
-		*out = make([]Node1VendorConfigurationObservation, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(Node1VendorConfigurationObservation)
+		(*in).DeepCopyInto(*out)
 	}
 }
 
@@ -2839,10 +2879,8 @@ func (in *Node1Parameters) DeepCopyInto(out *Node1Parameters) {
 	}
 	if in.VendorConfiguration != nil {
 		in, out := &in.VendorConfiguration, &out.VendorConfiguration
-		*out = make([]Node1VendorConfigurationParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(Node1VendorConfigurationParameters)
+		(*in).DeepCopyInto(*out)
 	}
 }
 
@@ -3572,6 +3610,16 @@ func (in *SecondaryDeviceInitParameters) DeepCopyInto(out *SecondaryDeviceInitPa
 		*out = new(string)
 		**out = **in
 	}
+	if in.CloudInitFileIDRef != nil {
+		in, out := &in.CloudInitFileIDRef, &out.CloudInitFileIDRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.CloudInitFileIDSelector != nil {
+		in, out := &in.CloudInitFileIDSelector, &out.CloudInitFileIDSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Hostname != nil {
 		in, out := &in.Hostname, &out.Hostname
 		*out = new(string)
@@ -3620,10 +3668,8 @@ func (in *SecondaryDeviceInitParameters) DeepCopyInto(out *SecondaryDeviceInitPa
 	}
 	if in.SSHKey != nil {
 		in, out := &in.SSHKey, &out.SSHKey
-		*out = make([]SSHKeyInitParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(SSHKeyInitParameters)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.VendorConfiguration != nil {
 		in, out := &in.VendorConfiguration, &out.VendorConfiguration
@@ -3866,10 +3912,8 @@ func (in *SecondaryDeviceObservation) DeepCopyInto(out *SecondaryDeviceObservati
 	}
 	if in.SSHKey != nil {
 		in, out := &in.SSHKey, &out.SSHKey
-		*out = make([]SSHKeyObservation, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(SSHKeyObservation)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Status != nil {
 		in, out := &in.Status, &out.Status
@@ -3942,6 +3986,16 @@ func (in *SecondaryDeviceParameters) DeepCopyInto(out *SecondaryDeviceParameters
 		*out = new(string)
 		**out = **in
 	}
+	if in.CloudInitFileIDRef != nil {
+		in, out := &in.CloudInitFileIDRef, &out.CloudInitFileIDRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.CloudInitFileIDSelector != nil {
+		in, out := &in.CloudInitFileIDSelector, &out.CloudInitFileIDSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Hostname != nil {
 		in, out := &in.Hostname, &out.Hostname
 		*out = new(string)
@@ -3990,10 +4044,8 @@ func (in *SecondaryDeviceParameters) DeepCopyInto(out *SecondaryDeviceParameters
 	}
 	if in.SSHKey != nil {
 		in, out := &in.SSHKey, &out.SSHKey
-		*out = make([]SSHKeyParameters, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = new(SSHKeyParameters)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.VendorConfiguration != nil {
 		in, out := &in.VendorConfiguration, &out.VendorConfiguration

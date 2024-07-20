@@ -78,15 +78,13 @@ spec:
                     description: |-
                       (Block Set, Min: 1, Max: 1) Customer account information that is associated with this Fabric Cloud Router (see below for nested schema)
                       Customer account information that is associated with this Fabric Cloud Router
-                    items:
-                      properties:
-                        accountNumber:
-                          description: |-
-                            (Number) Account Number
-                            Account Number
-                          type: number
-                      type: object
-                    type: array
+                    properties:
+                      accountNumber:
+                        description: |-
+                          (Number) Account Number
+                          Account Number
+                        type: number
+                    type: object
                   description:
                     description: |-
                       provided Fabric Cloud Router description
@@ -101,30 +99,28 @@ spec:
                     description: |-
                       (Block Set, Min: 1, Max: 1) Fabric Cloud Router location (see below for nested schema)
                       Fabric Cloud Router location
-                    items:
-                      properties:
-                        ibx:
-                          description: |-
-                            (String) IBX Code
-                            IBX Code
-                          type: string
-                        metroCode:
-                          description: |-
-                            (String) Access point metro code
-                            Access point metro code
-                          type: string
-                        metroName:
-                          description: |-
-                            (String) Access point metro name
-                            Access point metro name
-                          type: string
-                        region:
-                          description: |-
-                            (String) Access point region
-                            Access point region
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      ibx:
+                        description: |-
+                          (String) IBX Code
+                          IBX Code
+                        type: string
+                      metroCode:
+                        description: |-
+                          (String) Access point metro code
+                          Access point metro code
+                        type: string
+                      metroName:
+                        description: |-
+                          (String) Access point metro name
+                          Access point metro name
+                        type: string
+                      region:
+                        description: |-
+                          (String) Access point region
+                          Access point region
+                        type: string
+                    type: object
                   name:
                     description: |-
                       numeric 24 characters string which can include only hyphens and underscores
@@ -159,61 +155,55 @@ spec:
                     description: |-
                       (Block Set, Min: 1, Max: 1) Order information related to this Fabric Cloud Router (see below for nested schema)
                       Order information related to this Fabric Cloud Router
-                    items:
-                      properties:
-                        billingTier:
-                          description: |-
-                            (String) Billing tier for connection bandwidth
-                            Billing tier for connection bandwidth
-                          type: string
-                        orderId:
-                          description: |-
-                            (String) Order Identification
-                            Order Identification
-                          type: string
-                        orderNumber:
-                          description: |-
-                            (String) Order Reference Number
-                            Order Reference Number
-                          type: string
-                        purchaseOrderNumber:
-                          description: |-
-                            (String) Purchase order number
-                            Purchase order number
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      billingTier:
+                        description: |-
+                          (String) Billing tier for connection bandwidth
+                          Billing tier for connection bandwidth
+                        type: string
+                      orderId:
+                        description: |-
+                          (String) Order Identification
+                          Order Identification
+                        type: string
+                      orderNumber:
+                        description: |-
+                          (String) Order Reference Number
+                          Order Reference Number
+                        type: string
+                      purchaseOrderNumber:
+                        description: |-
+                          (String) Purchase order number
+                          Purchase order number
+                        type: string
+                    type: object
                   package:
                     description: |-
                       (Block Set, Min: 1, Max: 1) Fabric Cloud Router Package Type (see below for nested schema)
                       Fabric Cloud Router Package Type
-                    items:
-                      properties:
-                        code:
-                          description: |-
-                            (String) Fabric Cloud Router package code
-                            Fabric Cloud Router package code
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      code:
+                        description: |-
+                          (String) Fabric Cloud Router package code
+                          Fabric Cloud Router package code
+                        type: string
+                    type: object
                   project:
                     description: |-
                       (Block Set, Min: 1, Max: 1) Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects (see below for nested schema)
                       Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects
-                    items:
-                      properties:
-                        href:
-                          description: |-
-                            (String) Fabric Cloud Router URI information
-                            Unique Resource URL
-                          type: string
-                        projectId:
-                          description: |-
-                            (String) Project Id
-                            Project Id
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      href:
+                        description: |-
+                          (String) Fabric Cloud Router URI information
+                          Unique Resource URL
+                        type: string
+                      projectId:
+                        description: |-
+                          (String) Project Id
+                          Project Id
+                        type: string
+                    type: object
                   type:
                     description: |-
                       (String) Defines the FCR type like; XF_ROUTER
@@ -242,15 +232,13 @@ spec:
                     description: |-
                       (Block Set, Min: 1, Max: 1) Customer account information that is associated with this Fabric Cloud Router (see below for nested schema)
                       Customer account information that is associated with this Fabric Cloud Router
-                    items:
-                      properties:
-                        accountNumber:
-                          description: |-
-                            (Number) Account Number
-                            Account Number
-                          type: number
-                      type: object
-                    type: array
+                    properties:
+                      accountNumber:
+                        description: |-
+                          (Number) Account Number
+                          Account Number
+                        type: number
+                    type: object
                   description:
                     description: |-
                       provided Fabric Cloud Router description
@@ -265,30 +253,28 @@ spec:
                     description: |-
                       (Block Set, Min: 1, Max: 1) Fabric Cloud Router location (see below for nested schema)
                       Fabric Cloud Router location
-                    items:
-                      properties:
-                        ibx:
-                          description: |-
-                            (String) IBX Code
-                            IBX Code
-                          type: string
-                        metroCode:
-                          description: |-
-                            (String) Access point metro code
-                            Access point metro code
-                          type: string
-                        metroName:
-                          description: |-
-                            (String) Access point metro name
-                            Access point metro name
-                          type: string
-                        region:
-                          description: |-
-                            (String) Access point region
-                            Access point region
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      ibx:
+                        description: |-
+                          (String) IBX Code
+                          IBX Code
+                        type: string
+                      metroCode:
+                        description: |-
+                          (String) Access point metro code
+                          Access point metro code
+                        type: string
+                      metroName:
+                        description: |-
+                          (String) Access point metro name
+                          Access point metro name
+                        type: string
+                      region:
+                        description: |-
+                          (String) Access point region
+                          Access point region
+                        type: string
+                    type: object
                   name:
                     description: |-
                       numeric 24 characters string which can include only hyphens and underscores
@@ -323,61 +309,55 @@ spec:
                     description: |-
                       (Block Set, Min: 1, Max: 1) Order information related to this Fabric Cloud Router (see below for nested schema)
                       Order information related to this Fabric Cloud Router
-                    items:
-                      properties:
-                        billingTier:
-                          description: |-
-                            (String) Billing tier for connection bandwidth
-                            Billing tier for connection bandwidth
-                          type: string
-                        orderId:
-                          description: |-
-                            (String) Order Identification
-                            Order Identification
-                          type: string
-                        orderNumber:
-                          description: |-
-                            (String) Order Reference Number
-                            Order Reference Number
-                          type: string
-                        purchaseOrderNumber:
-                          description: |-
-                            (String) Purchase order number
-                            Purchase order number
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      billingTier:
+                        description: |-
+                          (String) Billing tier for connection bandwidth
+                          Billing tier for connection bandwidth
+                        type: string
+                      orderId:
+                        description: |-
+                          (String) Order Identification
+                          Order Identification
+                        type: string
+                      orderNumber:
+                        description: |-
+                          (String) Order Reference Number
+                          Order Reference Number
+                        type: string
+                      purchaseOrderNumber:
+                        description: |-
+                          (String) Purchase order number
+                          Purchase order number
+                        type: string
+                    type: object
                   package:
                     description: |-
                       (Block Set, Min: 1, Max: 1) Fabric Cloud Router Package Type (see below for nested schema)
                       Fabric Cloud Router Package Type
-                    items:
-                      properties:
-                        code:
-                          description: |-
-                            (String) Fabric Cloud Router package code
-                            Fabric Cloud Router package code
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      code:
+                        description: |-
+                          (String) Fabric Cloud Router package code
+                          Fabric Cloud Router package code
+                        type: string
+                    type: object
                   project:
                     description: |-
                       (Block Set, Min: 1, Max: 1) Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects (see below for nested schema)
                       Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects
-                    items:
-                      properties:
-                        href:
-                          description: |-
-                            (String) Fabric Cloud Router URI information
-                            Unique Resource URL
-                          type: string
-                        projectId:
-                          description: |-
-                            (String) Project Id
-                            Project Id
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      href:
+                        description: |-
+                          (String) Fabric Cloud Router URI information
+                          Unique Resource URL
+                        type: string
+                      projectId:
+                        description: |-
+                          (String) Project Id
+                          Project Id
+                        type: string
+                    type: object
                   type:
                     description: |-
                       (String) Defines the FCR type like; XF_ROUTER
@@ -594,15 +574,13 @@ spec:
                     description: |-
                       (Block Set, Min: 1, Max: 1) Customer account information that is associated with this Fabric Cloud Router (see below for nested schema)
                       Customer account information that is associated with this Fabric Cloud Router
-                    items:
-                      properties:
-                        accountNumber:
-                          description: |-
-                            (Number) Account Number
-                            Account Number
-                          type: number
-                      type: object
-                    type: array
+                    properties:
+                      accountNumber:
+                        description: |-
+                          (Number) Account Number
+                          Account Number
+                        type: number
+                    type: object
                   bgpIpv4RoutesCount:
                     description: |-
                       distinct prefixes)
@@ -694,30 +672,28 @@ spec:
                     description: |-
                       (Block Set, Min: 1, Max: 1) Fabric Cloud Router location (see below for nested schema)
                       Fabric Cloud Router location
-                    items:
-                      properties:
-                        ibx:
-                          description: |-
-                            (String) IBX Code
-                            IBX Code
-                          type: string
-                        metroCode:
-                          description: |-
-                            (String) Access point metro code
-                            Access point metro code
-                          type: string
-                        metroName:
-                          description: |-
-                            (String) Access point metro name
-                            Access point metro name
-                          type: string
-                        region:
-                          description: |-
-                            (String) Access point region
-                            Access point region
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      ibx:
+                        description: |-
+                          (String) IBX Code
+                          IBX Code
+                        type: string
+                      metroCode:
+                        description: |-
+                          (String) Access point metro code
+                          Access point metro code
+                        type: string
+                      metroName:
+                        description: |-
+                          (String) Access point metro name
+                          Access point metro name
+                        type: string
+                      region:
+                        description: |-
+                          (String) Access point region
+                          Access point region
+                        type: string
+                    type: object
                   name:
                     description: |-
                       numeric 24 characters string which can include only hyphens and underscores
@@ -752,61 +728,55 @@ spec:
                     description: |-
                       (Block Set, Min: 1, Max: 1) Order information related to this Fabric Cloud Router (see below for nested schema)
                       Order information related to this Fabric Cloud Router
-                    items:
-                      properties:
-                        billingTier:
-                          description: |-
-                            (String) Billing tier for connection bandwidth
-                            Billing tier for connection bandwidth
-                          type: string
-                        orderId:
-                          description: |-
-                            (String) Order Identification
-                            Order Identification
-                          type: string
-                        orderNumber:
-                          description: |-
-                            (String) Order Reference Number
-                            Order Reference Number
-                          type: string
-                        purchaseOrderNumber:
-                          description: |-
-                            (String) Purchase order number
-                            Purchase order number
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      billingTier:
+                        description: |-
+                          (String) Billing tier for connection bandwidth
+                          Billing tier for connection bandwidth
+                        type: string
+                      orderId:
+                        description: |-
+                          (String) Order Identification
+                          Order Identification
+                        type: string
+                      orderNumber:
+                        description: |-
+                          (String) Order Reference Number
+                          Order Reference Number
+                        type: string
+                      purchaseOrderNumber:
+                        description: |-
+                          (String) Purchase order number
+                          Purchase order number
+                        type: string
+                    type: object
                   package:
                     description: |-
                       (Block Set, Min: 1, Max: 1) Fabric Cloud Router Package Type (see below for nested schema)
                       Fabric Cloud Router Package Type
-                    items:
-                      properties:
-                        code:
-                          description: |-
-                            (String) Fabric Cloud Router package code
-                            Fabric Cloud Router package code
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      code:
+                        description: |-
+                          (String) Fabric Cloud Router package code
+                          Fabric Cloud Router package code
+                        type: string
+                    type: object
                   project:
                     description: |-
                       (Block Set, Min: 1, Max: 1) Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects (see below for nested schema)
                       Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects
-                    items:
-                      properties:
-                        href:
-                          description: |-
-                            (String) Fabric Cloud Router URI information
-                            Unique Resource URL
-                          type: string
-                        projectId:
-                          description: |-
-                            (String) Project Id
-                            Project Id
-                          type: string
-                      type: object
-                    type: array
+                    properties:
+                      href:
+                        description: |-
+                          (String) Fabric Cloud Router URI information
+                          Unique Resource URL
+                        type: string
+                      projectId:
+                        description: |-
+                          (String) Project Id
+                          Project Id
+                        type: string
+                    type: object
                   state:
                     description: |-
                       (String) Fabric Cloud Router overall state
