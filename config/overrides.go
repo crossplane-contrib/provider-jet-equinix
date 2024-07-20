@@ -33,9 +33,23 @@ func IdentifierAssignedByEquinix() upconfig.ResourceOption {
 	}
 }
 
+var knownReferencerFields = map[string]map[string]string{
+	"metal": {
+		"project_id":         "Project",
+		"organization_id":    "Organization",
+		"connection_id":      "Connection",
+		"device_id":          "Device",
+		"vlan_id":            "Vlan",
+		"vrf_id":             "Vrf",
+		"ip_reservation_id":  "ReservedIPBlock",
+		"virtual_circuit_id": "VirtualCircuit",
+		"gateway_id":         "Gateway",
+	},
+}
+
 // KnownReferencers adds referencers for fields that are known and common among
 // more than a few resources.
-func KnownReferencers() upconfig.ResourceOption { //nolint:gocyclo
+func KnownReferencers() upconfig.ResourceOption {
 	return func(r *upconfig.Resource) {
 		for k, s := range r.TerraformResource.Schema {
 			// We shouldn't add referencers for status fields and sensitive fields
@@ -44,38 +58,13 @@ func KnownReferencers() upconfig.ResourceOption { //nolint:gocyclo
 				continue
 			}
 
-			if r.ShortGroup == "metal" {
-				switch {
-				case strings.HasSuffix(k, "project_id"):
-					r.References[k] = upconfig.Reference{
-						// github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Project
-						Type: "Project",
-					}
-				case strings.HasSuffix(k, "organization_id"):
-					r.References[k] = upconfig.Reference{
-						Type: "Organization",
-					}
-				case strings.HasSuffix(k, "connection_id"):
-					r.References[k] = upconfig.Reference{
-						Type: "Connection",
-					}
-				case strings.HasSuffix(k, "device_id"):
-					r.References[k] = upconfig.Reference{
-						Type: "Device",
-					}
-				case strings.HasSuffix(k, "vlan_id"):
-					// vlan_vnid is ignored because it is an int type
-					r.References[k] = upconfig.Reference{
-						Type: "Vlan",
-					}
-				case strings.HasSuffix(k, "vrf_id"):
-					r.References[k] = upconfig.Reference{
-						Type: "Vrf",
-					}
-				case strings.HasSuffix(k, "ip_reservation_id"):
-					r.References[k] = upconfig.Reference{
-						Type: "ReservedIPBlock",
-					}
+			// Loop over knownReferencerFields and add references
+			for suffix, resource := range knownReferencerFields[r.ShortGroup] {
+				if !strings.HasSuffix(k, suffix) {
+					continue
+				}
+				r.References[k] = upconfig.Reference{
+					Type: resource,
 				}
 			}
 		}
