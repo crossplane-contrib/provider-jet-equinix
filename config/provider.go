@@ -29,8 +29,6 @@ import (
 	tfjson "github.com/hashicorp/terraform-json"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/pkg/errors"
-
-	"github.com/crossplane-contrib/provider-jet-equinix/config/metal/device"
 )
 
 const (
@@ -112,7 +110,6 @@ func GetProvider(_ context.Context, generationProvider bool) (*upconfig.Provider
 
 	for _, configure := range []func(provider *upconfig.Provider){
 		// add custom config functions
-		device.Configure,
 	} {
 		configure(pc)
 	}
