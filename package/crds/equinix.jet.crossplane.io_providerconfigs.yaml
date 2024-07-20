@@ -10,7 +10,7 @@ spec:
   names:
     categories:
     - crossplane
-    - provider
+    - providerconfig
     - equinixjet
     kind: ProviderConfig
     listKind: ProviderConfigList
@@ -51,6 +51,35 @@ spec:
           spec:
             description: A ProviderConfigSpec defines the desired state of a ProviderConfig.
             properties:
+              config:
+                description: |-
+                  ProviderConfiguration for configuring the terraform provider
+                  see https://registry.terraform.io/providers/equinix/equinix/latest/docs#configuration-reference
+                properties:
+                  endpoint:
+                    description: The Equinix API base URL to point out desired environment.
+                      This argument can also be specified with the EQUINIX_API_ENDPOINT
+                      shell environment variable. (Defaults to https://api.equinix.com)
+                    type: string
+                  max_retries:
+                    description: Maximum number of retries in case of network failure.
+                    type: boolean
+                  max_retry_wait_seconds:
+                    description: Maximum number of seconds to wait before retrying
+                      a request.
+                    type: boolean
+                  request_timeout:
+                    description: The duration of time, in seconds, that the Equinix
+                      Platform API Client should wait before canceling an API request.
+                      Canceled requests may still result in provisioned resources.
+                      (Defaults to 30)
+                    type: boolean
+                  response_max_page_size:
+                    description: The maximum number of records in a single response
+                      for REST queries that produce paginated responses. (Default
+                      is client specific)
+                    type: boolean
+                type: object
               credentials:
                 description: Credentials required to authenticate to this provider.
                 properties:
