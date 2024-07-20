@@ -43,6 +43,7 @@ func KnownReferencers() upconfig.ResourceOption { //nolint:gocyclo
 			if (s.Computed && !s.Optional) || s.Sensitive {
 				continue
 			}
+
 			if r.ShortGroup == "metal" {
 				switch {
 				case strings.HasSuffix(k, "project_id"):
@@ -74,6 +75,22 @@ func KnownReferencers() upconfig.ResourceOption { //nolint:gocyclo
 				case strings.HasSuffix(k, "ip_reservation_id"):
 					r.References[k] = upconfig.Reference{
 						Type: "ReservedIPBlock",
+					}
+				}
+			}
+		}
+	}
+}
+
+// SkipOptCompLateIntialization generalize the LateInitializer rule above to apply to allow fields that are Optional + Computed + ConflictsWith another Computed + Optional field
+func SkipOptCompLateInitialization() upconfig.ResourceOption {
+	return func(r *upconfig.Resource) {
+		for k, s := range r.TerraformResource.Schema {
+			if s.Computed && s.Optional {
+				for _, conflict := range s.ConflictsWith {
+					if cs := r.TerraformResource.Schema[conflict]; cs.Computed && cs.Optional {
+						r.LateInitializer.AddIgnoredCanonicalFields(conflict)
+						r.LateInitializer.AddIgnoredCanonicalFields(k)
 					}
 				}
 			}

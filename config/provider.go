@@ -85,6 +85,7 @@ func GetProvider(_ context.Context, generationProvider bool) (*upconfig.Provider
 		upconfig.WithDefaultResourceOptions(
 			// KnownReferencers(),
 			IdentifierAssignedByEquinix(),
+			SkipOptCompLateInitialization(),
 		),
 		upconfig.WithFeaturesPackage("internal/features"),
 		upconfig.WithTerraformProvider(p),
