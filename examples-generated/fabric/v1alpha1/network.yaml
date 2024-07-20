@@ -1,0 +1,20 @@
+apiVersion: fabric.equinix.jet.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: fabric/v1alpha1/network
+  labels:
+    testing.upbound.io/example-name: new_network
+  name: new-network
+spec:
+  forProvider:
+    name: Network-SV
+    notifications:
+    - emails:
+      - example@equinix.com
+      - test1@equinix.com
+      type: ALL
+    project:
+    - projectId: "776847000642406"
+    scope: GLOBAL
+    type: EVPLAN

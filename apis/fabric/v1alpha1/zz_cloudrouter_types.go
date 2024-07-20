@@ -25,202 +25,482 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type AccountInitParameters struct {
+
+	// (Number) Account Number
+	// Account Number
+	AccountNumber *float64 `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
+}
+
 type AccountObservation struct {
+
+	// (Number) Account Number
+	// Account Number
+	AccountNumber *float64 `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
 }
 
 type AccountParameters struct {
 
+	// (Number) Account Number
 	// Account Number
 	// +kubebuilder:validation:Optional
 	AccountNumber *float64 `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
 }
 
+type ChangeLogInitParameters struct {
+}
+
 type ChangeLogObservation struct {
+
+	// (String)
 	CreatedBy *string `json:"createdBy,omitempty" tf:"created_by,omitempty"`
 
+	// (String)
 	CreatedByEmail *string `json:"createdByEmail,omitempty" tf:"created_by_email,omitempty"`
 
+	// (String)
 	CreatedByFullName *string `json:"createdByFullName,omitempty" tf:"created_by_full_name,omitempty"`
 
+	// (String)
 	CreatedDateTime *string `json:"createdDateTime,omitempty" tf:"created_date_time,omitempty"`
 
+	// (String)
 	DeletedBy *string `json:"deletedBy,omitempty" tf:"deleted_by,omitempty"`
 
+	// (String)
 	DeletedByEmail *string `json:"deletedByEmail,omitempty" tf:"deleted_by_email,omitempty"`
 
+	// (String)
 	DeletedByFullName *string `json:"deletedByFullName,omitempty" tf:"deleted_by_full_name,omitempty"`
 
+	// (String)
 	DeletedDateTime *string `json:"deletedDateTime,omitempty" tf:"deleted_date_time,omitempty"`
 
+	// (String)
 	UpdatedBy *string `json:"updatedBy,omitempty" tf:"updated_by,omitempty"`
 
+	// (String)
 	UpdatedByEmail *string `json:"updatedByEmail,omitempty" tf:"updated_by_email,omitempty"`
 
+	// (String)
 	UpdatedByFullName *string `json:"updatedByFullName,omitempty" tf:"updated_by_full_name,omitempty"`
 
+	// (String)
 	UpdatedDateTime *string `json:"updatedDateTime,omitempty" tf:"updated_date_time,omitempty"`
 }
 
 type ChangeLogParameters struct {
 }
 
+type CloudRouterInitParameters struct {
+
+	// (Block Set, Min: 1, Max: 1) Customer account information that is associated with this Fabric Cloud Router (see below for nested schema)
+	// Customer account information that is associated with this Fabric Cloud Router
+	Account []AccountInitParameters `json:"account,omitempty" tf:"account,omitempty"`
+
+	// provided Fabric Cloud Router description
+	// Customer-provided Fabric Cloud Router description
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (String) Fabric Cloud Router URI information
+	// Fabric Cloud Router URI information
+	Href *string `json:"href,omitempty" tf:"href,omitempty"`
+
+	// (Block Set, Min: 1, Max: 1) Fabric Cloud Router location (see below for nested schema)
+	// Fabric Cloud Router location
+	Location []LocationInitParameters `json:"location,omitempty" tf:"location,omitempty"`
+
+	// numeric 24 characters string which can include only hyphens and underscores
+	// Fabric Cloud Router name. An alpha-numeric 24 characters string which can include only hyphens and underscores
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block List, Min: 1) Preferences for notifications on Fabric Cloud Router configuration or status changes (see below for nested schema)
+	// Preferences for notifications on Fabric Cloud Router configuration or status changes
+	Notifications []NotificationsInitParameters `json:"notifications,omitempty" tf:"notifications,omitempty"`
+
+	// (Block Set, Min: 1, Max: 1) Order information related to this Fabric Cloud Router (see below for nested schema)
+	// Order information related to this Fabric Cloud Router
+	Order []OrderInitParameters `json:"order,omitempty" tf:"order,omitempty"`
+
+	// (Block Set, Min: 1, Max: 1) Fabric Cloud Router Package Type (see below for nested schema)
+	// Fabric Cloud Router Package Type
+	Package []PackageInitParameters `json:"package,omitempty" tf:"package,omitempty"`
+
+	// (Block Set, Min: 1, Max: 1) Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects (see below for nested schema)
+	// Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects
+	Project []ProjectInitParameters `json:"project,omitempty" tf:"project,omitempty"`
+
+	// (String) Defines the FCR type like; XF_ROUTER
+	// Defines the FCR type like; XF_ROUTER
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// assigned Fabric Cloud Router identifier
+	// Equinix-assigned Fabric Cloud Router identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
 type CloudRouterObservation struct {
 
+	// (Block Set, Min: 1, Max: 1) Customer account information that is associated with this Fabric Cloud Router (see below for nested schema)
+	// Customer account information that is associated with this Fabric Cloud Router
+	Account []AccountObservation `json:"account,omitempty" tf:"account,omitempty"`
+
+	// distinct prefixes)
 	// Number of IPv4 BGP routes in use (including non-distinct prefixes)
 	BGPIPv4RoutesCount *float64 `json:"bgpIpv4RoutesCount,omitempty" tf:"bgp_ipv4_routes_count,omitempty"`
 
+	// distinct prefixes)
 	// Number of IPv6 BGP routes in use (including non-distinct prefixes)
 	BGPIPv6RoutesCount *float64 `json:"bgpIpv6RoutesCount,omitempty" tf:"bgp_ipv6_routes_count,omitempty"`
 
+	// (Set of Object) Captures Fabric Cloud Router lifecycle change information (see below for nested schema)
 	// Captures Fabric Cloud Router lifecycle change information
 	ChangeLog []ChangeLogObservation `json:"changeLog,omitempty" tf:"change_log,omitempty"`
 
+	// (Number) Number of connections associated with this Fabric Cloud Router instance
 	// Number of connections associated with this Fabric Cloud Router instance
 	ConnectionsCount *float64 `json:"connectionsCount,omitempty" tf:"connections_count,omitempty"`
 
+	// provided Fabric Cloud Router description
+	// Customer-provided Fabric Cloud Router description
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (Number) Number of distinct IPv4 routes
 	// Number of distinct IPv4 routes
 	DistinctIPv4PrefixesCount *float64 `json:"distinctIpv4PrefixesCount,omitempty" tf:"distinct_ipv4_prefixes_count,omitempty"`
 
+	// (Number) Number of distinct IPv6 routes
 	// Number of distinct IPv6 routes
 	DistinctIPv6PrefixesCount *float64 `json:"distinctIpv6PrefixesCount,omitempty" tf:"distinct_ipv6_prefixes_count,omitempty"`
 
+	// (Number) Equinix ASN
 	// Equinix ASN
 	EquinixAsn *float64 `json:"equinixAsn,omitempty" tf:"equinix_asn,omitempty"`
 
+	// (String) Fabric Cloud Router URI information
+	// Fabric Cloud Router URI information
+	Href *string `json:"href,omitempty" tf:"href,omitempty"`
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// (Block Set, Min: 1, Max: 1) Fabric Cloud Router location (see below for nested schema)
+	// Fabric Cloud Router location
+	Location []LocationObservation `json:"location,omitempty" tf:"location,omitempty"`
+
+	// numeric 24 characters string which can include only hyphens and underscores
+	// Fabric Cloud Router name. An alpha-numeric 24 characters string which can include only hyphens and underscores
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block List, Min: 1) Preferences for notifications on Fabric Cloud Router configuration or status changes (see below for nested schema)
+	// Preferences for notifications on Fabric Cloud Router configuration or status changes
+	Notifications []NotificationsObservation `json:"notifications,omitempty" tf:"notifications,omitempty"`
+
+	// (Block Set, Min: 1, Max: 1) Order information related to this Fabric Cloud Router (see below for nested schema)
+	// Order information related to this Fabric Cloud Router
+	Order []OrderObservation `json:"order,omitempty" tf:"order,omitempty"`
+
+	// (Block Set, Min: 1, Max: 1) Fabric Cloud Router Package Type (see below for nested schema)
+	// Fabric Cloud Router Package Type
+	Package []PackageObservation `json:"package,omitempty" tf:"package,omitempty"`
+
+	// (Block Set, Min: 1, Max: 1) Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects (see below for nested schema)
+	// Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects
+	Project []ProjectObservation `json:"project,omitempty" tf:"project,omitempty"`
+
+	// (String) Fabric Cloud Router overall state
 	// Fabric Cloud Router overall state
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
+
+	// (String) Defines the FCR type like; XF_ROUTER
+	// Defines the FCR type like; XF_ROUTER
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// assigned Fabric Cloud Router identifier
+	// Equinix-assigned Fabric Cloud Router identifier
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type CloudRouterParameters struct {
 
+	// (Block Set, Min: 1, Max: 1) Customer account information that is associated with this Fabric Cloud Router (see below for nested schema)
 	// Customer account information that is associated with this Fabric Cloud Router
-	// +kubebuilder:validation:Required
-	Account []AccountParameters `json:"account" tf:"account,omitempty"`
+	// +kubebuilder:validation:Optional
+	Account []AccountParameters `json:"account,omitempty" tf:"account,omitempty"`
 
+	// provided Fabric Cloud Router description
 	// Customer-provided Fabric Cloud Router description
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// (String) Fabric Cloud Router URI information
 	// Fabric Cloud Router URI information
 	// +kubebuilder:validation:Optional
 	Href *string `json:"href,omitempty" tf:"href,omitempty"`
 
+	// (Block Set, Min: 1, Max: 1) Fabric Cloud Router location (see below for nested schema)
 	// Fabric Cloud Router location
-	// +kubebuilder:validation:Required
-	Location []LocationParameters `json:"location" tf:"location,omitempty"`
+	// +kubebuilder:validation:Optional
+	Location []LocationParameters `json:"location,omitempty" tf:"location,omitempty"`
 
+	// numeric 24 characters string which can include only hyphens and underscores
 	// Fabric Cloud Router name. An alpha-numeric 24 characters string which can include only hyphens and underscores
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Block List, Min: 1) Preferences for notifications on Fabric Cloud Router configuration or status changes (see below for nested schema)
 	// Preferences for notifications on Fabric Cloud Router configuration or status changes
-	// +kubebuilder:validation:Required
-	Notifications []NotificationsParameters `json:"notifications" tf:"notifications,omitempty"`
+	// +kubebuilder:validation:Optional
+	Notifications []NotificationsParameters `json:"notifications,omitempty" tf:"notifications,omitempty"`
 
+	// (Block Set, Min: 1, Max: 1) Order information related to this Fabric Cloud Router (see below for nested schema)
 	// Order information related to this Fabric Cloud Router
 	// +kubebuilder:validation:Optional
 	Order []OrderParameters `json:"order,omitempty" tf:"order,omitempty"`
 
+	// (Block Set, Min: 1, Max: 1) Fabric Cloud Router Package Type (see below for nested schema)
 	// Fabric Cloud Router Package Type
-	// +kubebuilder:validation:Required
-	Package []PackageParameters `json:"package" tf:"package,omitempty"`
+	// +kubebuilder:validation:Optional
+	Package []PackageParameters `json:"package,omitempty" tf:"package,omitempty"`
 
+	// (Block Set, Min: 1, Max: 1) Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects (see below for nested schema)
 	// Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects
-	// +kubebuilder:validation:Required
-	Project []ProjectParameters `json:"project" tf:"project,omitempty"`
+	// +kubebuilder:validation:Optional
+	Project []ProjectParameters `json:"project,omitempty" tf:"project,omitempty"`
 
+	// (String) Defines the FCR type like; XF_ROUTER
 	// Defines the FCR type like; XF_ROUTER
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
+	// assigned Fabric Cloud Router identifier
 	// Equinix-assigned Fabric Cloud Router identifier
 	// +kubebuilder:validation:Optional
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
+type LocationInitParameters struct {
+
+	// (String) IBX Code
+	// IBX Code
+	Ibx *string `json:"ibx,omitempty" tf:"ibx,omitempty"`
+
+	// (String) Access point metro code
+	// Access point metro code
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// (String) Access point metro name
+	// Access point metro name
+	MetroName *string `json:"metroName,omitempty" tf:"metro_name,omitempty"`
+
+	// (String) Access point region
+	// Access point region
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+}
+
 type LocationObservation struct {
+
+	// (String) IBX Code
+	// IBX Code
+	Ibx *string `json:"ibx,omitempty" tf:"ibx,omitempty"`
+
+	// (String) Access point metro code
+	// Access point metro code
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// (String) Access point metro name
+	// Access point metro name
+	MetroName *string `json:"metroName,omitempty" tf:"metro_name,omitempty"`
+
+	// (String) Access point region
+	// Access point region
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }
 
 type LocationParameters struct {
 
+	// (String) IBX Code
 	// IBX Code
 	// +kubebuilder:validation:Optional
 	Ibx *string `json:"ibx,omitempty" tf:"ibx,omitempty"`
 
+	// (String) Access point metro code
 	// Access point metro code
 	// +kubebuilder:validation:Optional
 	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
 
+	// (String) Access point metro name
 	// Access point metro name
 	// +kubebuilder:validation:Optional
 	MetroName *string `json:"metroName,omitempty" tf:"metro_name,omitempty"`
 
+	// (String) Access point region
 	// Access point region
 	// +kubebuilder:validation:Optional
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }
 
+type NotificationsInitParameters struct {
+
+	// (List of String) Array of contact emails
+	// Array of contact emails
+	Emails []*string `json:"emails,omitempty" tf:"emails,omitempty"`
+
+	// (String) Send interval
+	// Send interval
+	SendInterval *string `json:"sendInterval,omitempty" tf:"send_interval,omitempty"`
+
+	// (String) Defines the FCR type like; XF_ROUTER
+	// Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type NotificationsObservation struct {
+
+	// (List of String) Array of contact emails
+	// Array of contact emails
+	Emails []*string `json:"emails,omitempty" tf:"emails,omitempty"`
+
+	// (String) Send interval
+	// Send interval
+	SendInterval *string `json:"sendInterval,omitempty" tf:"send_interval,omitempty"`
+
+	// (String) Defines the FCR type like; XF_ROUTER
+	// Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type NotificationsParameters struct {
 
+	// (List of String) Array of contact emails
 	// Array of contact emails
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Emails []*string `json:"emails" tf:"emails,omitempty"`
 
+	// (String) Send interval
 	// Send interval
 	// +kubebuilder:validation:Optional
 	SendInterval *string `json:"sendInterval,omitempty" tf:"send_interval,omitempty"`
 
+	// (String) Defines the FCR type like; XF_ROUTER
 	// Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
 }
 
+type OrderInitParameters struct {
+
+	// (String) Billing tier for connection bandwidth
+	// Billing tier for connection bandwidth
+	BillingTier *string `json:"billingTier,omitempty" tf:"billing_tier,omitempty"`
+
+	// (String) Order Identification
+	// Order Identification
+	OrderID *string `json:"orderId,omitempty" tf:"order_id,omitempty"`
+
+	// (String) Order Reference Number
+	// Order Reference Number
+	OrderNumber *string `json:"orderNumber,omitempty" tf:"order_number,omitempty"`
+
+	// (String) Purchase order number
+	// Purchase order number
+	PurchaseOrderNumber *string `json:"purchaseOrderNumber,omitempty" tf:"purchase_order_number,omitempty"`
+}
+
 type OrderObservation struct {
+
+	// (String) Billing tier for connection bandwidth
+	// Billing tier for connection bandwidth
+	BillingTier *string `json:"billingTier,omitempty" tf:"billing_tier,omitempty"`
+
+	// (String) Order Identification
+	// Order Identification
+	OrderID *string `json:"orderId,omitempty" tf:"order_id,omitempty"`
+
+	// (String) Order Reference Number
+	// Order Reference Number
+	OrderNumber *string `json:"orderNumber,omitempty" tf:"order_number,omitempty"`
+
+	// (String) Purchase order number
+	// Purchase order number
+	PurchaseOrderNumber *string `json:"purchaseOrderNumber,omitempty" tf:"purchase_order_number,omitempty"`
 }
 
 type OrderParameters struct {
 
+	// (String) Billing tier for connection bandwidth
 	// Billing tier for connection bandwidth
 	// +kubebuilder:validation:Optional
 	BillingTier *string `json:"billingTier,omitempty" tf:"billing_tier,omitempty"`
 
+	// (String) Order Identification
 	// Order Identification
 	// +kubebuilder:validation:Optional
 	OrderID *string `json:"orderId,omitempty" tf:"order_id,omitempty"`
 
+	// (String) Order Reference Number
 	// Order Reference Number
 	// +kubebuilder:validation:Optional
 	OrderNumber *string `json:"orderNumber,omitempty" tf:"order_number,omitempty"`
 
+	// (String) Purchase order number
 	// Purchase order number
 	// +kubebuilder:validation:Optional
 	PurchaseOrderNumber *string `json:"purchaseOrderNumber,omitempty" tf:"purchase_order_number,omitempty"`
 }
 
+type PackageInitParameters struct {
+
+	// (String) Fabric Cloud Router package code
+	// Fabric Cloud Router package code
+	Code *string `json:"code,omitempty" tf:"code,omitempty"`
+}
+
 type PackageObservation struct {
+
+	// (String) Fabric Cloud Router package code
+	// Fabric Cloud Router package code
+	Code *string `json:"code,omitempty" tf:"code,omitempty"`
 }
 
 type PackageParameters struct {
 
+	// (String) Fabric Cloud Router package code
 	// Fabric Cloud Router package code
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Code *string `json:"code" tf:"code,omitempty"`
 }
 
+type ProjectInitParameters struct {
+
+	// (String) Fabric Cloud Router URI information
+	// Unique Resource URL
+	Href *string `json:"href,omitempty" tf:"href,omitempty"`
+
+	// (String) Project Id
+	// Project Id
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+}
+
 type ProjectObservation struct {
+
+	// (String) Fabric Cloud Router URI information
+	// Unique Resource URL
+	Href *string `json:"href,omitempty" tf:"href,omitempty"`
+
+	// (String) Project Id
+	// Project Id
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 }
 
 type ProjectParameters struct {
 
+	// (String) Fabric Cloud Router URI information
 	// Unique Resource URL
 	// +kubebuilder:validation:Optional
 	Href *string `json:"href,omitempty" tf:"href,omitempty"`
 
+	// (String) Project Id
 	// Project Id
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
@@ -230,6 +510,17 @@ type ProjectParameters struct {
 type CloudRouterSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     CloudRouterParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider CloudRouterInitParameters `json:"initProvider,omitempty"`
 }
 
 // CloudRouterStatus defines the observed state of CloudRouter.
@@ -239,19 +530,27 @@ type CloudRouterStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// CloudRouter is the Schema for the CloudRouters API. <no value>
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
+// CloudRouter is the Schema for the CloudRouters API. Fabric V4 API compatible resource allows creation and management of Equinix Fabric Cloud Router
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinix}
 type CloudRouter struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              CloudRouterSpec   `json:"spec"`
-	Status            CloudRouterStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.account) || (has(self.initProvider) && has(self.initProvider.account))",message="spec.forProvider.account is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.location) || (has(self.initProvider) && has(self.initProvider.location))",message="spec.forProvider.location is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.notifications) || (has(self.initProvider) && has(self.initProvider.notifications))",message="spec.forProvider.notifications is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.__package__) || (has(self.initProvider) && has(self.initProvider.__package__))",message="spec.forProvider.package is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.project) || (has(self.initProvider) && has(self.initProvider.project))",message="spec.forProvider.project is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || (has(self.initProvider) && has(self.initProvider.type))",message="spec.forProvider.type is a required parameter"
+	Spec   CloudRouterSpec   `json:"spec"`
+	Status CloudRouterStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

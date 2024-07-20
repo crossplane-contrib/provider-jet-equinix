@@ -1,0 +1,16 @@
+apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
+kind: Device
+metadata:
+  annotations:
+    meta.upbound.io/example-id: metal/v1alpha1/device
+  labels:
+    testing.upbound.io/example-name: web1
+  name: web1
+spec:
+  forProvider:
+    billingCycle: hourly
+    hostname: tf.coreos2
+    metro: sv
+    operatingSystem: ubuntu_20_04
+    plan: c3.small.x86
+    projectId: ${local.project_id}

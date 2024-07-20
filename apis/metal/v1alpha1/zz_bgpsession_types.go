@@ -25,7 +25,35 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type BGPSessionInitParameters struct {
+
+	// ipv4 or ipv6.
+	// ipv4 or ipv6
+	AddressFamily *string `json:"addressFamily,omitempty" tf:"address_family,omitempty"`
+
+	// Boolean flag to set the default route policy. False by default.
+	// Boolean flag to set the default route policy. False by default
+	DefaultRoute *bool `json:"defaultRoute,omitempty" tf:"default_route,omitempty"`
+
+	// ID of device.
+	// ID of device
+	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
+}
+
 type BGPSessionObservation struct {
+
+	// ipv4 or ipv6.
+	// ipv4 or ipv6
+	AddressFamily *string `json:"addressFamily,omitempty" tf:"address_family,omitempty"`
+
+	// Boolean flag to set the default route policy. False by default.
+	// Boolean flag to set the default route policy. False by default
+	DefaultRoute *bool `json:"defaultRoute,omitempty" tf:"default_route,omitempty"`
+
+	// ID of device.
+	// ID of device
+	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// up or down
@@ -37,8 +65,8 @@ type BGPSessionParameters struct {
 
 	// ipv4 or ipv6.
 	// ipv4 or ipv6
-	// +kubebuilder:validation:Required
-	AddressFamily *string `json:"addressFamily" tf:"address_family,omitempty"`
+	// +kubebuilder:validation:Optional
+	AddressFamily *string `json:"addressFamily,omitempty" tf:"address_family,omitempty"`
 
 	// Boolean flag to set the default route policy. False by default.
 	// Boolean flag to set the default route policy. False by default
@@ -47,23 +75,25 @@ type BGPSessionParameters struct {
 
 	// ID of device.
 	// ID of device
-	// +crossplane:generate:reference:type=Device
 	// +kubebuilder:validation:Optional
 	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
-
-	// Reference to a Device to populate deviceId.
-	// +kubebuilder:validation:Optional
-	DeviceIDRef *v1.Reference `json:"deviceIdRef,omitempty" tf:"-"`
-
-	// Selector for a Device to populate deviceId.
-	// +kubebuilder:validation:Optional
-	DeviceIDSelector *v1.Selector `json:"deviceIdSelector,omitempty" tf:"-"`
 }
 
 // BGPSessionSpec defines the desired state of BGPSession
 type BGPSessionSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     BGPSessionParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider BGPSessionInitParameters `json:"initProvider,omitempty"`
 }
 
 // BGPSessionStatus defines the observed state of BGPSession.
@@ -73,19 +103,22 @@ type BGPSessionStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // BGPSession is the Schema for the BGPSessions API.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinix}
 type BGPSession struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              BGPSessionSpec   `json:"spec"`
-	Status            BGPSessionStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.addressFamily) || (has(self.initProvider) && has(self.initProvider.addressFamily))",message="spec.forProvider.addressFamily is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.deviceId) || (has(self.initProvider) && has(self.initProvider.deviceId))",message="spec.forProvider.deviceId is a required parameter"
+	Spec   BGPSessionSpec   `json:"spec"`
+	Status BGPSessionStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

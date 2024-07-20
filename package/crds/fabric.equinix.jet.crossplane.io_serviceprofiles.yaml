@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.1
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.14.0
   name: serviceprofiles.fabric.equinix.jet.crossplane.io
 spec:
   group: fabric.equinix.jet.crossplane.io
@@ -20,11 +19,11 @@ spec:
   scope: Cluster
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .status.conditions[?(@.type=='Ready')].status
-      name: READY
-      type: string
     - jsonPath: .status.conditions[?(@.type=='Synced')].status
       name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
       type: string
     - jsonPath: .metadata.annotations.crossplane\.io/external-name
       name: EXTERNAL-NAME
@@ -35,18 +34,24 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: ServiceProfile is the Schema for the ServiceProfiles API. <no
-          value>
+        description: ServiceProfile is the Schema for the ServiceProfiles API. Fabric
+          V4 API compatible resource allows creation and management of Equinix Fabric
+          Service Profile
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
             type: string
           metadata:
             type: object
@@ -55,9 +60,14 @@ spec:
             properties:
               deletionPolicy:
                 default: Delete
-                description: DeletionPolicy specifies what will happen to the underlying
-                  external when this managed resource is deleted - either "Delete"
-                  or "Orphan" the external resource.
+                description: |-
+                  DeletionPolicy specifies what will happen to the underlying external
+                  when this managed resource is deleted - either "Delete" or "Orphan" the
+                  external resource.
+                  This field is planned to be deprecated in favor of the ManagementPolicies
+                  field in a future release. Currently, both could be set independently and
+                  non-default values would be honored if the feature flag is enabled.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
                 enum:
                 - Orphan
                 - Delete
@@ -65,374 +75,996 @@ spec:
               forProvider:
                 properties:
                   accessPointTypeConfigs:
-                    description: Access point config information
+                    description: |-
+                      (Block List) Access point config information (see below for nested schema)
+                      Access point config information
                     items:
                       properties:
                         allowBandwidthAutoApproval:
-                          description: Setting to enable or disable the ability of
-                            the buyer to change connection bandwidth without approval
-                            of the seller
+                          description: |-
+                            (Boolean) Setting to enable or disable the ability of the buyer to change connection bandwidth without approval of the seller
+                            Setting to enable or disable the ability of the buyer to change connection bandwidth without approval of the seller
                           type: boolean
                         allowBandwidthUpgrade:
-                          description: Availability of a bandwidth upgrade. The default
-                            is false
+                          description: |-
+                            (Boolean) Availability of a bandwidth upgrade. The default is false
+                            Availability of a bandwidth upgrade. The default is false
                           type: boolean
                         allowCustomBandwidth:
-                          description: Setting to enable or disable the ability of
-                            the buyer to customize the bandwidth
+                          description: |-
+                            (Boolean) Setting to enable or disable the ability of the buyer to customize the bandwidth
+                            Setting to enable or disable the ability of the buyer to customize the bandwidth
                           type: boolean
                         allowRemoteConnections:
-                          description: Setting to allow or prohibit remote connections
-                            to the service profile
+                          description: |-
+                            (Boolean) Setting to allow or prohibit remote connections to the service profile
+                            Setting to allow or prohibit remote connections to the service profile
                           type: boolean
                         apiConfig:
-                          description: Api configuration details
+                          description: |-
+                            (Block Set, Max: 1) Api configuration details (see below for nested schema)
+                            Api configuration details
                           items:
                             properties:
                               allowOverSubscription:
-                                description: Setting showing that oversubscription
-                                  support is available (true) or not (false). The
-                                  default is false
+                                description: |-
+                                  (Boolean) Setting showing that oversubscription support is available (true) or not (false). The default is false
+                                  Setting showing that oversubscription support is available (true) or not (false). The default is false
                                 type: boolean
                               apiAvailable:
-                                description: Indicates if it's possible to establish
-                                  connections based on the given service profile using
-                                  the Equinix Fabric API.
+                                description: |-
+                                  (Boolean) Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
+                                  Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
                                 type: boolean
                               bandwidthFromApi:
-                                description: Indicates if the connection bandwidth
-                                  can be obtained directly from the cloud service
-                                  provider.
+                                description: |-
+                                  (Boolean) Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
+                                  Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
                                 type: boolean
                               equinixManagedPort:
-                                description: Setting indicating that the port is managed
-                                  by Equinix (true) or not (false)
+                                description: |-
+                                  (Boolean) Setting indicating that the port is managed by Equinix (true) or not (false)
+                                  Setting indicating that the port is managed by Equinix (true) or not (false)
                                 type: boolean
                               equinixManagedVlan:
-                                description: Setting indicating that the VLAN is managed
-                                  by Equinix (true) or not (false)
+                                description: |-
+                                  (Boolean) Setting indicating that the VLAN is managed by Equinix (true) or not (false)
+                                  Setting indicating that the VLAN is managed by Equinix (true) or not (false)
                                 type: boolean
                               integrationId:
-                                description: A unique identifier issued during onboarding
-                                  and used to integrate the customer's service profile
-                                  with the Equinix Fabric API.
+                                description: |-
+                                  (String) A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
+                                  A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
                                 type: string
                               overSubscriptionLimit:
-                                description: Port bandwidth multiplier that determines
-                                  the total bandwidth that can be allocated to users
-                                  creating connections to your services. For example,
-                                  a 10 Gbps port combined with an overSubscriptionLimit
-                                  parameter value of 10 allows your subscribers to
-                                  create connections with a total bandwidth of 100
-                                  Gbps.
+                                description: |-
+                                  (Number) Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
+                                  Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
                                 type: number
                             type: object
                           type: array
                         authenticationKey:
-                          description: Authentication key details
+                          description: |-
+                            (Block Set, Max: 1) Authentication key details (see below for nested schema)
+                            Authentication key details
                           items:
                             properties:
                               description:
-                                description: Description of authorization key
+                                description: |-
+                                  provided service description
+                                  Description of authorization key
                                 type: string
                               label:
-                                description: Name of the parameter that must be provided
-                                  to authorize the connection.
+                                description: |-
+                                  (String) Name of the parameter that must be provided to authorize the connection.
+                                  Name of the parameter that must be provided to authorize the connection.
                                 type: string
                               required:
-                                description: Requirement to configure an authentication
-                                  key.
+                                description: |-
+                                  (Boolean) Requirement to configure an authentication key.
+                                  Requirement to configure an authentication key.
                                 type: boolean
                             type: object
                           type: array
                         bandwidthAlertThreshold:
-                          description: Percentage of port bandwidth at which an allocation
-                            alert is generated
+                          description: |-
+                            (Number) Percentage of port bandwidth at which an allocation alert is generated
+                            Percentage of port bandwidth at which an allocation alert is generated
                           type: number
                         connectionLabel:
-                          description: Custom name for Connection
+                          description: |-
+                            (String) Custom name for Connection
+                            Custom name for Connection
                           type: string
                         connectionRedundancyRequired:
-                          description: Mandate redundant connections
+                          description: |-
+                            (Boolean) Mandate redundant connections
+                            Mandate redundant connections
                           type: boolean
                         enableAutoGenerateServiceKey:
-                          description: Enable auto generate service key
+                          description: |-
+                            (Boolean) Enable auto generate service key
+                            Enable auto generate service key
                           type: boolean
                         linkProtocolConfig:
-                          description: Link protocol configuration details
+                          description: |-
+                            (Block Set, Max: 1) Link protocol configuration details (see below for nested schema)
+                            Link protocol configuration details
                           items:
                             properties:
                               encapsulation:
-                                description: Data frames encapsulation standard.UNTAGGED
-                                  - Untagged encapsulation for EPL connections. DOT1Q
-                                  - DOT1Q encapsulation standard. QINQ - QINQ encapsulation
-                                  standard.
+                                description: |-
+                                  Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
+                                  Data frames encapsulation standard.UNTAGGED - Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
                                 type: string
                               encapsulationStrategy:
-                                description: Additional tagging information required
-                                  by the seller profile.
+                                description: |-
+                                  (String) Additional tagging information required by the seller profile.
+                                  Additional tagging information required by the seller profile.
                                 type: string
                               reuseVlanSTag:
-                                description: Automatically accept subsequent DOT1Q
-                                  to QINQ connections that use the same authentication
-                                  key. These connections will have the same VLAN S-tag
-                                  assigned as the initial connection.
+                                description: |-
+                                  tag assigned as the initial connection.
+                                  Automatically accept subsequent DOT1Q to QINQ connections that use the same authentication key. These connections will have the same VLAN S-tag assigned as the initial connection.
                                 type: boolean
                             type: object
                           type: array
                         supportedBandwidths:
-                          description: Supported bandwidths
+                          description: |-
+                            (List of Number) Supported bandwidths
+                            Supported bandwidths
                           items:
                             type: number
                           type: array
                         type:
-                          description: Type of access point type config - VD, COLO
+                          description: |-
+                            L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                            Type of access point type config - VD, COLO
                           type: string
-                      required:
-                      - type
                       type: object
                     type: array
                   allowedEmails:
-                    description: Array of contact emails
+                    description: |-
+                      (List of String) Array of contact emails
+                      Array of contact emails
                     items:
                       type: string
                     type: array
                   customFields:
-                    description: Custom Fields
+                    description: |-
+                      (Block List) Custom Fields (see below for nested schema)
+                      Custom Fields
                     items:
                       properties:
                         captureInEmail:
-                          description: Required field
+                          description: |-
+                            (Boolean) Required field
+                            Required field
                           type: boolean
                         dataType:
-                          description: Data type
+                          description: |-
+                            (String) Data type
+                            Data type
                           type: string
                         description:
-                          description: Description
+                          description: |-
+                            provided service description
+                            Description
                           type: string
                         label:
-                          description: Label
+                          description: |-
+                            (String) Name of the parameter that must be provided to authorize the connection.
+                            Label
                           type: string
                         options:
-                          description: Options
+                          description: |-
+                            (List of String) Options
+                            Options
                           items:
                             type: string
                           type: array
                         required:
-                          description: Required field
+                          description: |-
+                            (Boolean) Requirement to configure an authentication key.
+                            Required field
                           type: boolean
-                      required:
-                      - dataType
-                      - label
-                      - required
                       type: object
                     type: array
                   description:
-                    description: User-provided service description
+                    description: |-
+                      provided service description
+                      User-provided service description
                     type: string
                   marketingInfo:
-                    description: Marketing Info
+                    description: |-
+                      (Block Set, Max: 1) Marketing Info (see below for nested schema)
+                      Marketing Info
                     items:
                       properties:
                         logo:
-                          description: Logo
+                          description: |-
+                            (String) Logo
+                            Logo
                           type: string
                         processStep:
-                          description: Process Step
+                          description: |-
+                            (Block List) Process Step (see below for nested schema)
+                            Process Step
                           items:
                             properties:
                               description:
-                                description: Description
+                                description: |-
+                                  provided service description
+                                  Description
                                 type: string
                               subTitle:
-                                description: Sub Title
+                                description: |-
+                                  (String) Sub Title
+                                  Sub Title
                                 type: string
                               title:
-                                description: Title
+                                description: |-
+                                  (String) Title
+                                  Title
                                 type: string
                             type: object
                           type: array
                         promotion:
-                          description: Promotion
+                          description: |-
+                            (Boolean) Promotion
+                            Promotion
                           type: boolean
                       type: object
                     type: array
                   metros:
-                    description: Access point config information
+                    description: |-
+                      (Block List) Access point config information (see below for nested schema)
+                      Access point config information
                     items:
                       properties:
                         code:
-                          description: Metro Code - Example SV
+                          description: |-
+                            Example SV
+                            Metro Code - Example SV
                           type: string
                         displayName:
-                          description: Display Name
+                          description: |-
+                            (String) Display Name
+                            Display Name
                           type: string
                         ibxs:
-                          description: IBX- Equinix International Business Exchange
-                            list
+                          description: |-
+                            Equinix International Business Exchange list
+                            IBX- Equinix International Business Exchange list
                           items:
                             type: string
                           type: array
                         inTrail:
-                          description: In Trail
+                          description: |-
+                            (Boolean) In Trail
+                            In Trail
                           type: boolean
                         name:
-                          description: Metro Name
+                          description: |-
+                            assigned service profile name
+                            Metro Name
                           type: string
                         sellerRegions:
                           additionalProperties:
                             type: string
-                          description: Seller Regions
+                          description: |-
+                            (Map of String) Seller Regions
+                            Seller Regions
                           type: object
+                          x-kubernetes-map-type: granular
                       type: object
                     type: array
                   name:
-                    description: Customer-assigned service profile name
+                    description: |-
+                      assigned service profile name
+                      Customer-assigned service profile name
                     type: string
                   notifications:
-                    description: Preferences for notifications on connection configuration
-                      or status changes
+                    description: |-
+                      (Block List) Preferences for notifications on connection configuration or status changes (see below for nested schema)
+                      Preferences for notifications on connection configuration or status changes
                     items:
                       properties:
                         emails:
-                          description: Array of contact emails
+                          description: |-
+                            (List of String) Array of contact emails
+                            Array of contact emails
                           items:
                             type: string
                           type: array
                         sendInterval:
-                          description: Send interval
+                          description: |-
+                            (String) Send interval
+                            Send interval
                           type: string
                         type:
-                          description: Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS,
-                            NOTIFICATIONS
+                          description: |-
+                            L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                            Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
                           type: string
-                      required:
-                      - emails
-                      - type
                       type: object
                     type: array
                   ports:
-                    description: Ports
+                    description: |-
+                      (Block List) Ports (see below for nested schema)
+                      Ports
                     items:
                       properties:
                         crossConnectId:
-                          description: Cross Connect Id
+                          description: |-
+                            (String) Cross Connect Id
+                            Cross Connect Id
                           type: string
                         location:
-                          description: Colo/Port Location
+                          description: |-
+                            (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
+                            Colo/Port Location
                           items:
                             properties:
                               ibx:
-                                description: IBX Code
+                                description: |-
+                                  (String) IBX Code
+                                  IBX Code
                                 type: string
                               metroCode:
-                                description: Access point metro code
+                                description: |-
+                                  (String) Access point metro code
+                                  Access point metro code
                                 type: string
                               metroName:
-                                description: Access point metro name
+                                description: |-
+                                  (String) Access point metro name
+                                  Access point metro name
                                 type: string
                               region:
-                                description: Access point region
+                                description: |-
+                                  (String) Access point region
+                                  Access point region
                                 type: string
                             type: object
                           type: array
                         sellerRegion:
-                          description: Seller Region
+                          description: |-
+                            (String) Seller Region
+                            Seller Region
                           type: string
                         sellerRegionDescription:
-                          description: Seller Region details
+                          description: |-
+                            (String) Seller Region details
+                            Seller Region details
                           type: string
                         type:
-                          description: Colo/Port Type
+                          description: |-
+                            L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                            Colo/Port Type
                           type: string
                         uuid:
-                          description: Colo/Port Uuid
+                          description: |-
+                            (String) Equinix assigned service profile identifier
+                            Colo/Port Uuid
                           type: string
-                      required:
-                      - type
-                      - uuid
                       type: object
                     type: array
                   project:
-                    description: Project information
+                    description: |-
+                      (Block Set, Max: 1) Project information (see below for nested schema)
+                      Project information
                     items:
                       properties:
                         projectId:
-                          description: Project Id
+                          description: |-
+                            (String) Project Id
+                            Project Id
                           type: string
                       type: object
                     type: array
                   selfProfile:
-                    description: Self Profile indicating if the profile is created
-                      for customer's  self use
+                    description: |-
+                      (Boolean) Self Profile indicating if the profile is created for customer's self use
+                      Self Profile indicating if the profile is created for customer's  self use
                     type: boolean
                   state:
-                    description: Service profile state - ACTIVE, PENDING_APPROVAL,
-                      DELETED, REJECTED
+                    description: |-
+                      ACTIVE, PENDING_APPROVAL, DELETED, REJECTED
+                      Service profile state - ACTIVE, PENDING_APPROVAL, DELETED, REJECTED
                     type: string
                   tags:
-                    description: Tags attached to the connection
+                    description: |-
+                      (List of String) Tags attached to the connection
+                      Tags attached to the connection
                     items:
                       type: string
                     type: array
                   type:
-                    description: Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE,
-                      ECMC_PROFILE, IA_PROFILE
+                    description: |-
+                      L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                      Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE, IA_PROFILE
                     type: string
                   viewPoint:
                     description: 'Flips view between buyer and seller representation.
                       Available values : aSide, zSide. Default value : aSide'
                     type: string
                   virtualDevices:
-                    description: Virtual Devices
+                    description: |-
+                      (Block List) Virtual Devices (see below for nested schema)
+                      Virtual Devices
                     items:
                       properties:
                         interfaceUuid:
-                          description: Device Interface Uuid
+                          description: |-
+                            (String) Device Interface Uuid
+                            Device Interface Uuid
                           type: string
                         location:
-                          description: Device Location
+                          description: |-
+                            (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
+                            Device Location
                           items:
                             properties:
                               ibx:
-                                description: IBX Code
+                                description: |-
+                                  (String) IBX Code
+                                  IBX Code
                                 type: string
                               metroCode:
-                                description: Access point metro code
+                                description: |-
+                                  (String) Access point metro code
+                                  Access point metro code
                                 type: string
                               metroName:
-                                description: Access point metro name
+                                description: |-
+                                  (String) Access point metro name
+                                  Access point metro name
                                 type: string
                               region:
-                                description: Access point region
+                                description: |-
+                                  (String) Access point region
+                                  Access point region
                                 type: string
                             type: object
                           type: array
                         type:
-                          description: Virtual Device Type
+                          description: |-
+                            L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                            Virtual Device Type
                           type: string
                         uuid:
-                          description: Virtual Device Uuid
+                          description: |-
+                            (String) Equinix assigned service profile identifier
+                            Virtual Device Uuid
                           type: string
-                      required:
-                      - type
-                      - uuid
                       type: object
                     type: array
                   visibility:
-                    description: Service profile visibility - PUBLIC, PRIVATE
+                    description: |-
+                      PUBLIC, PRIVATE
+                      Service profile visibility - PUBLIC, PRIVATE
                     type: string
-                required:
-                - description
-                - name
-                - type
                 type: object
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
+                properties:
+                  accessPointTypeConfigs:
+                    description: |-
+                      (Block List) Access point config information (see below for nested schema)
+                      Access point config information
+                    items:
+                      properties:
+                        allowBandwidthAutoApproval:
+                          description: |-
+                            (Boolean) Setting to enable or disable the ability of the buyer to change connection bandwidth without approval of the seller
+                            Setting to enable or disable the ability of the buyer to change connection bandwidth without approval of the seller
+                          type: boolean
+                        allowBandwidthUpgrade:
+                          description: |-
+                            (Boolean) Availability of a bandwidth upgrade. The default is false
+                            Availability of a bandwidth upgrade. The default is false
+                          type: boolean
+                        allowCustomBandwidth:
+                          description: |-
+                            (Boolean) Setting to enable or disable the ability of the buyer to customize the bandwidth
+                            Setting to enable or disable the ability of the buyer to customize the bandwidth
+                          type: boolean
+                        allowRemoteConnections:
+                          description: |-
+                            (Boolean) Setting to allow or prohibit remote connections to the service profile
+                            Setting to allow or prohibit remote connections to the service profile
+                          type: boolean
+                        apiConfig:
+                          description: |-
+                            (Block Set, Max: 1) Api configuration details (see below for nested schema)
+                            Api configuration details
+                          items:
+                            properties:
+                              allowOverSubscription:
+                                description: |-
+                                  (Boolean) Setting showing that oversubscription support is available (true) or not (false). The default is false
+                                  Setting showing that oversubscription support is available (true) or not (false). The default is false
+                                type: boolean
+                              apiAvailable:
+                                description: |-
+                                  (Boolean) Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
+                                  Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
+                                type: boolean
+                              bandwidthFromApi:
+                                description: |-
+                                  (Boolean) Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
+                                  Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
+                                type: boolean
+                              equinixManagedPort:
+                                description: |-
+                                  (Boolean) Setting indicating that the port is managed by Equinix (true) or not (false)
+                                  Setting indicating that the port is managed by Equinix (true) or not (false)
+                                type: boolean
+                              equinixManagedVlan:
+                                description: |-
+                                  (Boolean) Setting indicating that the VLAN is managed by Equinix (true) or not (false)
+                                  Setting indicating that the VLAN is managed by Equinix (true) or not (false)
+                                type: boolean
+                              integrationId:
+                                description: |-
+                                  (String) A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
+                                  A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
+                                type: string
+                              overSubscriptionLimit:
+                                description: |-
+                                  (Number) Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
+                                  Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
+                                type: number
+                            type: object
+                          type: array
+                        authenticationKey:
+                          description: |-
+                            (Block Set, Max: 1) Authentication key details (see below for nested schema)
+                            Authentication key details
+                          items:
+                            properties:
+                              description:
+                                description: |-
+                                  provided service description
+                                  Description of authorization key
+                                type: string
+                              label:
+                                description: |-
+                                  (String) Name of the parameter that must be provided to authorize the connection.
+                                  Name of the parameter that must be provided to authorize the connection.
+                                type: string
+                              required:
+                                description: |-
+                                  (Boolean) Requirement to configure an authentication key.
+                                  Requirement to configure an authentication key.
+                                type: boolean
+                            type: object
+                          type: array
+                        bandwidthAlertThreshold:
+                          description: |-
+                            (Number) Percentage of port bandwidth at which an allocation alert is generated
+                            Percentage of port bandwidth at which an allocation alert is generated
+                          type: number
+                        connectionLabel:
+                          description: |-
+                            (String) Custom name for Connection
+                            Custom name for Connection
+                          type: string
+                        connectionRedundancyRequired:
+                          description: |-
+                            (Boolean) Mandate redundant connections
+                            Mandate redundant connections
+                          type: boolean
+                        enableAutoGenerateServiceKey:
+                          description: |-
+                            (Boolean) Enable auto generate service key
+                            Enable auto generate service key
+                          type: boolean
+                        linkProtocolConfig:
+                          description: |-
+                            (Block Set, Max: 1) Link protocol configuration details (see below for nested schema)
+                            Link protocol configuration details
+                          items:
+                            properties:
+                              encapsulation:
+                                description: |-
+                                  Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
+                                  Data frames encapsulation standard.UNTAGGED - Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
+                                type: string
+                              encapsulationStrategy:
+                                description: |-
+                                  (String) Additional tagging information required by the seller profile.
+                                  Additional tagging information required by the seller profile.
+                                type: string
+                              reuseVlanSTag:
+                                description: |-
+                                  tag assigned as the initial connection.
+                                  Automatically accept subsequent DOT1Q to QINQ connections that use the same authentication key. These connections will have the same VLAN S-tag assigned as the initial connection.
+                                type: boolean
+                            type: object
+                          type: array
+                        supportedBandwidths:
+                          description: |-
+                            (List of Number) Supported bandwidths
+                            Supported bandwidths
+                          items:
+                            type: number
+                          type: array
+                        type:
+                          description: |-
+                            L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                            Type of access point type config - VD, COLO
+                          type: string
+                      type: object
+                    type: array
+                  allowedEmails:
+                    description: |-
+                      (List of String) Array of contact emails
+                      Array of contact emails
+                    items:
+                      type: string
+                    type: array
+                  customFields:
+                    description: |-
+                      (Block List) Custom Fields (see below for nested schema)
+                      Custom Fields
+                    items:
+                      properties:
+                        captureInEmail:
+                          description: |-
+                            (Boolean) Required field
+                            Required field
+                          type: boolean
+                        dataType:
+                          description: |-
+                            (String) Data type
+                            Data type
+                          type: string
+                        description:
+                          description: |-
+                            provided service description
+                            Description
+                          type: string
+                        label:
+                          description: |-
+                            (String) Name of the parameter that must be provided to authorize the connection.
+                            Label
+                          type: string
+                        options:
+                          description: |-
+                            (List of String) Options
+                            Options
+                          items:
+                            type: string
+                          type: array
+                        required:
+                          description: |-
+                            (Boolean) Requirement to configure an authentication key.
+                            Required field
+                          type: boolean
+                      type: object
+                    type: array
+                  description:
+                    description: |-
+                      provided service description
+                      User-provided service description
+                    type: string
+                  marketingInfo:
+                    description: |-
+                      (Block Set, Max: 1) Marketing Info (see below for nested schema)
+                      Marketing Info
+                    items:
+                      properties:
+                        logo:
+                          description: |-
+                            (String) Logo
+                            Logo
+                          type: string
+                        processStep:
+                          description: |-
+                            (Block List) Process Step (see below for nested schema)
+                            Process Step
+                          items:
+                            properties:
+                              description:
+                                description: |-
+                                  provided service description
+                                  Description
+                                type: string
+                              subTitle:
+                                description: |-
+                                  (String) Sub Title
+                                  Sub Title
+                                type: string
+                              title:
+                                description: |-
+                                  (String) Title
+                                  Title
+                                type: string
+                            type: object
+                          type: array
+                        promotion:
+                          description: |-
+                            (Boolean) Promotion
+                            Promotion
+                          type: boolean
+                      type: object
+                    type: array
+                  metros:
+                    description: |-
+                      (Block List) Access point config information (see below for nested schema)
+                      Access point config information
+                    items:
+                      properties:
+                        code:
+                          description: |-
+                            Example SV
+                            Metro Code - Example SV
+                          type: string
+                        displayName:
+                          description: |-
+                            (String) Display Name
+                            Display Name
+                          type: string
+                        ibxs:
+                          description: |-
+                            Equinix International Business Exchange list
+                            IBX- Equinix International Business Exchange list
+                          items:
+                            type: string
+                          type: array
+                        inTrail:
+                          description: |-
+                            (Boolean) In Trail
+                            In Trail
+                          type: boolean
+                        name:
+                          description: |-
+                            assigned service profile name
+                            Metro Name
+                          type: string
+                        sellerRegions:
+                          additionalProperties:
+                            type: string
+                          description: |-
+                            (Map of String) Seller Regions
+                            Seller Regions
+                          type: object
+                          x-kubernetes-map-type: granular
+                      type: object
+                    type: array
+                  name:
+                    description: |-
+                      assigned service profile name
+                      Customer-assigned service profile name
+                    type: string
+                  notifications:
+                    description: |-
+                      (Block List) Preferences for notifications on connection configuration or status changes (see below for nested schema)
+                      Preferences for notifications on connection configuration or status changes
+                    items:
+                      properties:
+                        emails:
+                          description: |-
+                            (List of String) Array of contact emails
+                            Array of contact emails
+                          items:
+                            type: string
+                          type: array
+                        sendInterval:
+                          description: |-
+                            (String) Send interval
+                            Send interval
+                          type: string
+                        type:
+                          description: |-
+                            L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                            Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
+                          type: string
+                      type: object
+                    type: array
+                  ports:
+                    description: |-
+                      (Block List) Ports (see below for nested schema)
+                      Ports
+                    items:
+                      properties:
+                        crossConnectId:
+                          description: |-
+                            (String) Cross Connect Id
+                            Cross Connect Id
+                          type: string
+                        location:
+                          description: |-
+                            (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
+                            Colo/Port Location
+                          items:
+                            properties:
+                              ibx:
+                                description: |-
+                                  (String) IBX Code
+                                  IBX Code
+                                type: string
+                              metroCode:
+                                description: |-
+                                  (String) Access point metro code
+                                  Access point metro code
+                                type: string
+                              metroName:
+                                description: |-
+                                  (String) Access point metro name
+                                  Access point metro name
+                                type: string
+                              region:
+                                description: |-
+                                  (String) Access point region
+                                  Access point region
+                                type: string
+                            type: object
+                          type: array
+                        sellerRegion:
+                          description: |-
+                            (String) Seller Region
+                            Seller Region
+                          type: string
+                        sellerRegionDescription:
+                          description: |-
+                            (String) Seller Region details
+                            Seller Region details
+                          type: string
+                        type:
+                          description: |-
+                            L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                            Colo/Port Type
+                          type: string
+                        uuid:
+                          description: |-
+                            (String) Equinix assigned service profile identifier
+                            Colo/Port Uuid
+                          type: string
+                      type: object
+                    type: array
+                  project:
+                    description: |-
+                      (Block Set, Max: 1) Project information (see below for nested schema)
+                      Project information
+                    items:
+                      properties:
+                        projectId:
+                          description: |-
+                            (String) Project Id
+                            Project Id
+                          type: string
+                      type: object
+                    type: array
+                  selfProfile:
+                    description: |-
+                      (Boolean) Self Profile indicating if the profile is created for customer's self use
+                      Self Profile indicating if the profile is created for customer's  self use
+                    type: boolean
+                  state:
+                    description: |-
+                      ACTIVE, PENDING_APPROVAL, DELETED, REJECTED
+                      Service profile state - ACTIVE, PENDING_APPROVAL, DELETED, REJECTED
+                    type: string
+                  tags:
+                    description: |-
+                      (List of String) Tags attached to the connection
+                      Tags attached to the connection
+                    items:
+                      type: string
+                    type: array
+                  type:
+                    description: |-
+                      L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                      Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE, IA_PROFILE
+                    type: string
+                  viewPoint:
+                    description: 'Flips view between buyer and seller representation.
+                      Available values : aSide, zSide. Default value : aSide'
+                    type: string
+                  virtualDevices:
+                    description: |-
+                      (Block List) Virtual Devices (see below for nested schema)
+                      Virtual Devices
+                    items:
+                      properties:
+                        interfaceUuid:
+                          description: |-
+                            (String) Device Interface Uuid
+                            Device Interface Uuid
+                          type: string
+                        location:
+                          description: |-
+                            (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
+                            Device Location
+                          items:
+                            properties:
+                              ibx:
+                                description: |-
+                                  (String) IBX Code
+                                  IBX Code
+                                type: string
+                              metroCode:
+                                description: |-
+                                  (String) Access point metro code
+                                  Access point metro code
+                                type: string
+                              metroName:
+                                description: |-
+                                  (String) Access point metro name
+                                  Access point metro name
+                                type: string
+                              region:
+                                description: |-
+                                  (String) Access point region
+                                  Access point region
+                                type: string
+                            type: object
+                          type: array
+                        type:
+                          description: |-
+                            L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                            Virtual Device Type
+                          type: string
+                        uuid:
+                          description: |-
+                            (String) Equinix assigned service profile identifier
+                            Virtual Device Uuid
+                          type: string
+                      type: object
+                    type: array
+                  visibility:
+                    description: |-
+                      PUBLIC, PRIVATE
+                      Service profile visibility - PUBLIC, PRIVATE
+                    type: string
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  This field is planned to replace the DeletionPolicy field in a future
+                  release. Currently, both could be set independently and non-default
+                  values would be honored if the feature flag is enabled. If both are
+                  custom, the DeletionPolicy field will be ignored.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
               providerConfigRef:
                 default:
                   name: default
-                description: ProviderConfigReference specifies how the provider that
-                  will be used to create, observe, update, and delete this managed
-                  resource should be configured.
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
                 properties:
                   name:
                     description: Name of the referenced object.
@@ -442,57 +1074,21 @@ spec:
                     properties:
                       resolution:
                         default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
+                        description: |-
+                          Resolution specifies whether resolution of this reference is required.
+                          The default is 'Required', which means the reconcile will fail if the
+                          reference cannot be resolved. 'Optional' means this reference will be
+                          a no-op if it cannot be resolved.
                         enum:
                         - Required
                         - Optional
                         type: string
                       resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
-                        enum:
-                        - Always
-                        - IfNotPresent
-                        type: string
-                    type: object
-                required:
-                - name
-                type: object
-              providerRef:
-                description: 'ProviderReference specifies the provider that will be
-                  used to create, observe, update, and delete this managed resource.
-                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
-                properties:
-                  name:
-                    description: Name of the referenced object.
-                    type: string
-                  policy:
-                    description: Policies for referencing.
-                    properties:
-                      resolution:
-                        default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
-                        enum:
-                        - Required
-                        - Optional
-                        type: string
-                      resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
+                        description: |-
+                          Resolve specifies when this reference should be resolved. The default
+                          is 'IfNotPresent', which will attempt to resolve the reference only when
+                          the corresponding field is not present. Use 'Always' to resolve the
+                          reference on every reconcile.
                         enum:
                         - Always
                         - IfNotPresent
@@ -502,17 +1098,19 @@ spec:
                 - name
                 type: object
               publishConnectionDetailsTo:
-                description: PublishConnectionDetailsTo specifies the connection secret
-                  config which contains a name, metadata and a reference to secret
-                  store config to which any connection details for this managed resource
-                  should be written. Connection details frequently include the endpoint,
-                  username, and password required to connect to the managed resource.
+                description: |-
+                  PublishConnectionDetailsTo specifies the connection secret config which
+                  contains a name, metadata and a reference to secret store config to
+                  which any connection details for this managed resource should be written.
+                  Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
                 properties:
                   configRef:
                     default:
                       name: default
-                    description: SecretStoreConfigRef specifies which secret store
-                      config should be used for this ConnectionSecret.
+                    description: |-
+                      SecretStoreConfigRef specifies which secret store config should be used
+                      for this ConnectionSecret.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -522,21 +1120,21 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -551,21 +1149,22 @@ spec:
                       annotations:
                         additionalProperties:
                           type: string
-                        description: Annotations are the annotations to be added to
-                          connection secret. - For Kubernetes secrets, this will be
-                          used as "metadata.annotations". - It is up to Secret Store
-                          implementation for others store types.
+                        description: |-
+                          Annotations are the annotations to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.annotations".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       labels:
                         additionalProperties:
                           type: string
-                        description: Labels are the labels/tags to be added to connection
-                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
-                          - It is up to Secret Store implementation for others store
-                          types.
+                        description: |-
+                          Labels are the labels/tags to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       type:
-                        description: Type is the SecretType for the connection secret.
+                        description: |-
+                          Type is the SecretType for the connection secret.
                           - Only valid for Kubernetes Secret Stores.
                         type: string
                     type: object
@@ -576,14 +1175,15 @@ spec:
                 - name
                 type: object
               writeConnectionSecretToRef:
-                description: WriteConnectionSecretToReference specifies the namespace
-                  and name of a Secret to which any connection details for this managed
-                  resource should be written. Connection details frequently include
-                  the endpoint, username, and password required to connect to the
-                  managed resource. This field is planned to be replaced in a future
-                  release in favor of PublishConnectionDetailsTo. Currently, both
-                  could be set independently and connection details would be published
-                  to both without affecting each other.
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                  This field is planned to be replaced in a future release in favor of
+                  PublishConnectionDetailsTo. Currently, both could be set independently
+                  and connection details would be published to both without affecting
+                  each other.
                 properties:
                   name:
                     description: Name of the secret.
@@ -598,88 +1198,593 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.description is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.description)
+                || (has(self.initProvider) && has(self.initProvider.description))'
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
+            - message: spec.forProvider.type is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
+                || (has(self.initProvider) && has(self.initProvider.type))'
           status:
             description: ServiceProfileStatus defines the observed state of ServiceProfile.
             properties:
               atProvider:
                 properties:
                   accessPointTypeConfigs:
-                    description: Access point config information
+                    description: |-
+                      (Block List) Access point config information (see below for nested schema)
+                      Access point config information
                     items:
                       properties:
+                        allowBandwidthAutoApproval:
+                          description: |-
+                            (Boolean) Setting to enable or disable the ability of the buyer to change connection bandwidth without approval of the seller
+                            Setting to enable or disable the ability of the buyer to change connection bandwidth without approval of the seller
+                          type: boolean
+                        allowBandwidthUpgrade:
+                          description: |-
+                            (Boolean) Availability of a bandwidth upgrade. The default is false
+                            Availability of a bandwidth upgrade. The default is false
+                          type: boolean
+                        allowCustomBandwidth:
+                          description: |-
+                            (Boolean) Setting to enable or disable the ability of the buyer to customize the bandwidth
+                            Setting to enable or disable the ability of the buyer to customize the bandwidth
+                          type: boolean
+                        allowRemoteConnections:
+                          description: |-
+                            (Boolean) Setting to allow or prohibit remote connections to the service profile
+                            Setting to allow or prohibit remote connections to the service profile
+                          type: boolean
+                        apiConfig:
+                          description: |-
+                            (Block Set, Max: 1) Api configuration details (see below for nested schema)
+                            Api configuration details
+                          items:
+                            properties:
+                              allowOverSubscription:
+                                description: |-
+                                  (Boolean) Setting showing that oversubscription support is available (true) or not (false). The default is false
+                                  Setting showing that oversubscription support is available (true) or not (false). The default is false
+                                type: boolean
+                              apiAvailable:
+                                description: |-
+                                  (Boolean) Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
+                                  Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
+                                type: boolean
+                              bandwidthFromApi:
+                                description: |-
+                                  (Boolean) Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
+                                  Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
+                                type: boolean
+                              equinixManagedPort:
+                                description: |-
+                                  (Boolean) Setting indicating that the port is managed by Equinix (true) or not (false)
+                                  Setting indicating that the port is managed by Equinix (true) or not (false)
+                                type: boolean
+                              equinixManagedVlan:
+                                description: |-
+                                  (Boolean) Setting indicating that the VLAN is managed by Equinix (true) or not (false)
+                                  Setting indicating that the VLAN is managed by Equinix (true) or not (false)
+                                type: boolean
+                              integrationId:
+                                description: |-
+                                  (String) A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
+                                  A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
+                                type: string
+                              overSubscriptionLimit:
+                                description: |-
+                                  (Number) Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
+                                  Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
+                                type: number
+                            type: object
+                          type: array
+                        authenticationKey:
+                          description: |-
+                            (Block Set, Max: 1) Authentication key details (see below for nested schema)
+                            Authentication key details
+                          items:
+                            properties:
+                              description:
+                                description: |-
+                                  provided service description
+                                  Description of authorization key
+                                type: string
+                              label:
+                                description: |-
+                                  (String) Name of the parameter that must be provided to authorize the connection.
+                                  Name of the parameter that must be provided to authorize the connection.
+                                type: string
+                              required:
+                                description: |-
+                                  (Boolean) Requirement to configure an authentication key.
+                                  Requirement to configure an authentication key.
+                                type: boolean
+                            type: object
+                          type: array
+                        bandwidthAlertThreshold:
+                          description: |-
+                            (Number) Percentage of port bandwidth at which an allocation alert is generated
+                            Percentage of port bandwidth at which an allocation alert is generated
+                          type: number
+                        connectionLabel:
+                          description: |-
+                            (String) Custom name for Connection
+                            Custom name for Connection
+                          type: string
+                        connectionRedundancyRequired:
+                          description: |-
+                            (Boolean) Mandate redundant connections
+                            Mandate redundant connections
+                          type: boolean
+                        enableAutoGenerateServiceKey:
+                          description: |-
+                            (Boolean) Enable auto generate service key
+                            Enable auto generate service key
+                          type: boolean
+                        linkProtocolConfig:
+                          description: |-
+                            (Block Set, Max: 1) Link protocol configuration details (see below for nested schema)
+                            Link protocol configuration details
+                          items:
+                            properties:
+                              encapsulation:
+                                description: |-
+                                  Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
+                                  Data frames encapsulation standard.UNTAGGED - Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
+                                type: string
+                              encapsulationStrategy:
+                                description: |-
+                                  (String) Additional tagging information required by the seller profile.
+                                  Additional tagging information required by the seller profile.
+                                type: string
+                              reuseVlanSTag:
+                                description: |-
+                                  tag assigned as the initial connection.
+                                  Automatically accept subsequent DOT1Q to QINQ connections that use the same authentication key. These connections will have the same VLAN S-tag assigned as the initial connection.
+                                type: boolean
+                            type: object
+                          type: array
+                        supportedBandwidths:
+                          description: |-
+                            (List of Number) Supported bandwidths
+                            Supported bandwidths
+                          items:
+                            type: number
+                          type: array
+                        type:
+                          description: |-
+                            L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                            Type of access point type config - VD, COLO
+                          type: string
                         uuid:
-                          description: Colo/Port Uuid
+                          description: |-
+                            (String) Equinix assigned service profile identifier
+                            Colo/Port Uuid
                           type: string
                       type: object
                     type: array
                   account:
-                    description: Service Profile Owner Account Information
+                    description: |-
+                      (Set of Object) Service Profile Owner Account Information (see below for nested schema)
+                      Service Profile Owner Account Information
                     items:
                       properties:
                         accountName:
+                          description: (String)
                           type: string
                         accountNumber:
+                          description: (Number)
                           type: number
                         globalCustId:
+                          description: (String)
                           type: string
                         globalOrgId:
+                          description: (String)
                           type: string
                         globalOrganizationName:
+                          description: (String)
                           type: string
                         orgId:
+                          description: (Number)
                           type: number
                         organizationName:
+                          description: (String)
                           type: string
                         ucmId:
+                          description: (String)
                           type: string
                       type: object
                     type: array
+                  allowedEmails:
+                    description: |-
+                      (List of String) Array of contact emails
+                      Array of contact emails
+                    items:
+                      type: string
+                    type: array
                   changeLog:
-                    description: Captures connection lifecycle change information
+                    description: |-
+                      (Set of Object) Captures connection lifecycle change information (see below for nested schema)
+                      Captures connection lifecycle change information
                     items:
                       properties:
                         createdBy:
+                          description: (String)
                           type: string
                         createdByEmail:
+                          description: (String)
                           type: string
                         createdByFullName:
+                          description: (String)
                           type: string
                         createdDateTime:
+                          description: (String)
                           type: string
                         deletedBy:
+                          description: (String)
                           type: string
                         deletedByEmail:
+                          description: (String)
                           type: string
                         deletedByFullName:
+                          description: (String)
                           type: string
                         deletedDateTime:
+                          description: (String)
                           type: string
                         updatedBy:
+                          description: (String)
                           type: string
                         updatedByEmail:
+                          description: (String)
                           type: string
                         updatedByFullName:
+                          description: (String)
                           type: string
                         updatedDateTime:
+                          description: (String)
                           type: string
                       type: object
                     type: array
+                  customFields:
+                    description: |-
+                      (Block List) Custom Fields (see below for nested schema)
+                      Custom Fields
+                    items:
+                      properties:
+                        captureInEmail:
+                          description: |-
+                            (Boolean) Required field
+                            Required field
+                          type: boolean
+                        dataType:
+                          description: |-
+                            (String) Data type
+                            Data type
+                          type: string
+                        description:
+                          description: |-
+                            provided service description
+                            Description
+                          type: string
+                        label:
+                          description: |-
+                            (String) Name of the parameter that must be provided to authorize the connection.
+                            Label
+                          type: string
+                        options:
+                          description: |-
+                            (List of String) Options
+                            Options
+                          items:
+                            type: string
+                          type: array
+                        required:
+                          description: |-
+                            (Boolean) Requirement to configure an authentication key.
+                            Required field
+                          type: boolean
+                      type: object
+                    type: array
+                  description:
+                    description: |-
+                      provided service description
+                      User-provided service description
+                    type: string
                   href:
-                    description: Service Profile URI response attribute
+                    description: |-
+                      (String) Service Profile URI response attribute
+                      Service Profile URI response attribute
                     type: string
                   id:
+                    description: (String) The ID of this resource.
                     type: string
+                  marketingInfo:
+                    description: |-
+                      (Block Set, Max: 1) Marketing Info (see below for nested schema)
+                      Marketing Info
+                    items:
+                      properties:
+                        logo:
+                          description: |-
+                            (String) Logo
+                            Logo
+                          type: string
+                        processStep:
+                          description: |-
+                            (Block List) Process Step (see below for nested schema)
+                            Process Step
+                          items:
+                            properties:
+                              description:
+                                description: |-
+                                  provided service description
+                                  Description
+                                type: string
+                              subTitle:
+                                description: |-
+                                  (String) Sub Title
+                                  Sub Title
+                                type: string
+                              title:
+                                description: |-
+                                  (String) Title
+                                  Title
+                                type: string
+                            type: object
+                          type: array
+                        promotion:
+                          description: |-
+                            (Boolean) Promotion
+                            Promotion
+                          type: boolean
+                      type: object
+                    type: array
+                  metros:
+                    description: |-
+                      (Block List) Access point config information (see below for nested schema)
+                      Access point config information
+                    items:
+                      properties:
+                        code:
+                          description: |-
+                            Example SV
+                            Metro Code - Example SV
+                          type: string
+                        displayName:
+                          description: |-
+                            (String) Display Name
+                            Display Name
+                          type: string
+                        ibxs:
+                          description: |-
+                            Equinix International Business Exchange list
+                            IBX- Equinix International Business Exchange list
+                          items:
+                            type: string
+                          type: array
+                        inTrail:
+                          description: |-
+                            (Boolean) In Trail
+                            In Trail
+                          type: boolean
+                        name:
+                          description: |-
+                            assigned service profile name
+                            Metro Name
+                          type: string
+                        sellerRegions:
+                          additionalProperties:
+                            type: string
+                          description: |-
+                            (Map of String) Seller Regions
+                            Seller Regions
+                          type: object
+                          x-kubernetes-map-type: granular
+                      type: object
+                    type: array
+                  name:
+                    description: |-
+                      assigned service profile name
+                      Customer-assigned service profile name
+                    type: string
+                  notifications:
+                    description: |-
+                      (Block List) Preferences for notifications on connection configuration or status changes (see below for nested schema)
+                      Preferences for notifications on connection configuration or status changes
+                    items:
+                      properties:
+                        emails:
+                          description: |-
+                            (List of String) Array of contact emails
+                            Array of contact emails
+                          items:
+                            type: string
+                          type: array
+                        sendInterval:
+                          description: |-
+                            (String) Send interval
+                            Send interval
+                          type: string
+                        type:
+                          description: |-
+                            L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                            Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
+                          type: string
+                      type: object
+                    type: array
+                  ports:
+                    description: |-
+                      (Block List) Ports (see below for nested schema)
+                      Ports
+                    items:
+                      properties:
+                        crossConnectId:
+                          description: |-
+                            (String) Cross Connect Id
+                            Cross Connect Id
+                          type: string
+                        location:
+                          description: |-
+                            (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
+                            Colo/Port Location
+                          items:
+                            properties:
+                              ibx:
+                                description: |-
+                                  (String) IBX Code
+                                  IBX Code
+                                type: string
+                              metroCode:
+                                description: |-
+                                  (String) Access point metro code
+                                  Access point metro code
+                                type: string
+                              metroName:
+                                description: |-
+                                  (String) Access point metro name
+                                  Access point metro name
+                                type: string
+                              region:
+                                description: |-
+                                  (String) Access point region
+                                  Access point region
+                                type: string
+                            type: object
+                          type: array
+                        sellerRegion:
+                          description: |-
+                            (String) Seller Region
+                            Seller Region
+                          type: string
+                        sellerRegionDescription:
+                          description: |-
+                            (String) Seller Region details
+                            Seller Region details
+                          type: string
+                        type:
+                          description: |-
+                            L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                            Colo/Port Type
+                          type: string
+                        uuid:
+                          description: |-
+                            (String) Equinix assigned service profile identifier
+                            Colo/Port Uuid
+                          type: string
+                      type: object
+                    type: array
                   project:
-                    description: Project information
+                    description: |-
+                      (Block Set, Max: 1) Project information (see below for nested schema)
+                      Project information
                     items:
                       properties:
                         href:
-                          description: Unique Resource URL
+                          description: |-
+                            (String) Service Profile URI response attribute
+                            Unique Resource URL
+                          type: string
+                        projectId:
+                          description: |-
+                            (String) Project Id
+                            Project Id
                           type: string
                       type: object
                     type: array
+                  selfProfile:
+                    description: |-
+                      (Boolean) Self Profile indicating if the profile is created for customer's self use
+                      Self Profile indicating if the profile is created for customer's  self use
+                    type: boolean
+                  state:
+                    description: |-
+                      ACTIVE, PENDING_APPROVAL, DELETED, REJECTED
+                      Service profile state - ACTIVE, PENDING_APPROVAL, DELETED, REJECTED
+                    type: string
+                  tags:
+                    description: |-
+                      (List of String) Tags attached to the connection
+                      Tags attached to the connection
+                    items:
+                      type: string
+                    type: array
+                  type:
+                    description: |-
+                      L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                      Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE, IA_PROFILE
+                    type: string
                   uuid:
-                    description: Equinix assigned service profile identifier
+                    description: |-
+                      (String) Equinix assigned service profile identifier
+                      Equinix assigned service profile identifier
+                    type: string
+                  viewPoint:
+                    description: 'Flips view between buyer and seller representation.
+                      Available values : aSide, zSide. Default value : aSide'
+                    type: string
+                  virtualDevices:
+                    description: |-
+                      (Block List) Virtual Devices (see below for nested schema)
+                      Virtual Devices
+                    items:
+                      properties:
+                        interfaceUuid:
+                          description: |-
+                            (String) Device Interface Uuid
+                            Device Interface Uuid
+                          type: string
+                        location:
+                          description: |-
+                            (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
+                            Device Location
+                          items:
+                            properties:
+                              ibx:
+                                description: |-
+                                  (String) IBX Code
+                                  IBX Code
+                                type: string
+                              metroCode:
+                                description: |-
+                                  (String) Access point metro code
+                                  Access point metro code
+                                type: string
+                              metroName:
+                                description: |-
+                                  (String) Access point metro name
+                                  Access point metro name
+                                type: string
+                              region:
+                                description: |-
+                                  (String) Access point region
+                                  Access point region
+                                type: string
+                            type: object
+                          type: array
+                        type:
+                          description: |-
+                            L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+                            Virtual Device Type
+                          type: string
+                        uuid:
+                          description: |-
+                            (String) Equinix assigned service profile identifier
+                            Virtual Device Uuid
+                          type: string
+                      type: object
+                    type: array
+                  visibility:
+                    description: |-
+                      PUBLIC, PRIVATE
+                      Service profile visibility - PUBLIC, PRIVATE
                     type: string
                 type: object
               conditions:
@@ -688,14 +1793,23 @@ spec:
                   description: A Condition that may apply to a resource.
                   properties:
                     lastTransitionTime:
-                      description: LastTransitionTime is the last time this condition
-                        transitioned from one status to another.
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
                       format: date-time
                       type: string
                     message:
-                      description: A Message containing details about this condition's
-                        last transition from one status to another, if any.
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
                       type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
                     reason:
                       description: A Reason for this condition's last transition from
                         one status to another.
@@ -705,8 +1819,9 @@ spec:
                         False, or Unknown?
                       type: string
                     type:
-                      description: Type of this condition. At most one of each condition
-                        type may apply to a resource at any point in time.
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
                       type: string
                   required:
                   - lastTransitionTime
@@ -715,6 +1830,16 @@ spec:
                   - type
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
             type: object
         required:
         - spec

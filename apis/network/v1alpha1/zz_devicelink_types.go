@@ -25,14 +25,40 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type DeviceLinkDeviceInitParameters struct {
+
+	// Device ASN number. Not required for self configured devices.
+	// Device ASN number
+	Asn *float64 `json:"asn,omitempty" tf:"asn,omitempty"`
+
+	// Device identifier.
+	// Device identifier
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Device network interface identifier to use for device link connection.
+	// Device network interface identifier to use for device link connection
+	InterfaceID *float64 `json:"interfaceId,omitempty" tf:"interface_id,omitempty"`
+}
+
 type DeviceLinkDeviceObservation struct {
+
+	// Device ASN number. Not required for self configured devices.
+	// Device ASN number
+	Asn *float64 `json:"asn,omitempty" tf:"asn,omitempty"`
+
+	// Device identifier.
+	// Device identifier
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// IP address from device link subnet that was assigned to the device
 	// Assigned IP address from device link subnet
 	IPAddress *string `json:"ipAddress,omitempty" tf:"ip_address,omitempty"`
 
-	// device link provisioning status on a given device. One of PROVISIONING,
-	// PROVISIONED, DEPROVISIONING, DEPROVISIONED, FAILED.
+	// Device network interface identifier to use for device link connection.
+	// Device network interface identifier to use for device link connection
+	InterfaceID *float64 `json:"interfaceId,omitempty" tf:"interface_id,omitempty"`
+
+	// device link provisioning status on a given device. One of PROVISIONING, PROVISIONED, DEPROVISIONING, DEPROVISIONED, FAILED.
 	// Device link connection provisioning status
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 }
@@ -46,30 +72,80 @@ type DeviceLinkDeviceParameters struct {
 
 	// Device identifier.
 	// Device identifier
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	ID *string `json:"id" tf:"id,omitempty"`
 
-	// Device network interface identifier to use for device link
-	// connection.
+	// Device network interface identifier to use for device link connection.
 	// Device network interface identifier to use for device link connection
 	// +kubebuilder:validation:Optional
 	InterfaceID *float64 `json:"interfaceId,omitempty" tf:"interface_id,omitempty"`
 }
 
+type DeviceLinkInitParameters struct {
+
+	// definition of one or more devices belonging to the device link. See Device section below for more details.
+	Device []DeviceLinkDeviceInitParameters `json:"device,omitempty" tf:"device,omitempty"`
+
+	// (Deprecated) definition of one or more, inter metro, connections belonging to the device link. See Link section below for more details.
+	// Definition of one or more, inter metro connections belonging to the device link
+	Link []LinkInitParameters `json:"link,omitempty" tf:"link,omitempty"`
+
+	// definition of one or more, inter metro, connections belonging to the device link. See Metro Link section below for more details.
+	// Definition of one or more, inter or intra metro connections belonging to the device link
+	MetroLink []MetroLinkInitParameters `json:"metroLink,omitempty" tf:"metro_link,omitempty"`
+
+	// device link name.
+	// Device link name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Unique Identifier for the project resource where the device link is scoped to.If you leave it out, the device link will be created under the default project id of your organization.
+	// project_id
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Whether the connection should be created through Fabric's primary or secondary port. Supported values: PRIMARY (Default), SECONDARY, HYBRID
+	// (Optional) Whether the connection should be created through Fabric's primary or secondary port. Supported values: `PRIMARY` (Default), `SECONDARY`, `HYBRID`
+	RedundancyType *string `json:"redundancyType,omitempty" tf:"redundancy_type,omitempty"`
+
+	// device link subnet in CIDR format. Not required for link between self configured devices.
+	// Device link subnet CIDR.
+	Subnet *string `json:"subnet,omitempty" tf:"subnet,omitempty"`
+}
+
 type DeviceLinkObservation struct {
 
-	// definition of one or more devices belonging to the
-	// device link. See Device section below for more details.
-	// +kubebuilder:validation:Required
+	// definition of one or more devices belonging to the device link. See Device section below for more details.
 	Device []DeviceLinkDeviceObservation `json:"device,omitempty" tf:"device,omitempty"`
 
 	// Device identifier.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// Device link provisioning status. One of PROVISIONING, PROVISIONED,
-	// DEPROVISIONING, DEPROVISIONED, FAILED.
+	// (Deprecated) definition of one or more, inter metro, connections belonging to the device link. See Link section below for more details.
+	// Definition of one or more, inter metro connections belonging to the device link
+	Link []LinkObservation `json:"link,omitempty" tf:"link,omitempty"`
+
+	// definition of one or more, inter metro, connections belonging to the device link. See Metro Link section below for more details.
+	// Definition of one or more, inter or intra metro connections belonging to the device link
+	MetroLink []MetroLinkObservation `json:"metroLink,omitempty" tf:"metro_link,omitempty"`
+
+	// device link name.
+	// Device link name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Unique Identifier for the project resource where the device link is scoped to.If you leave it out, the device link will be created under the default project id of your organization.
+	// project_id
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Whether the connection should be created through Fabric's primary or secondary port. Supported values: PRIMARY (Default), SECONDARY, HYBRID
+	// (Optional) Whether the connection should be created through Fabric's primary or secondary port. Supported values: `PRIMARY` (Default), `SECONDARY`, `HYBRID`
+	RedundancyType *string `json:"redundancyType,omitempty" tf:"redundancy_type,omitempty"`
+
+	// Device link provisioning status. One of PROVISIONING, PROVISIONED, DEPROVISIONING, DEPROVISIONED, FAILED.
 	// Device link provisioning status
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
+
+	// device link subnet in CIDR format. Not required for link between self configured devices.
+	// Device link subnet CIDR.
+	Subnet *string `json:"subnet,omitempty" tf:"subnet,omitempty"`
 
 	// Device link unique identifier.
 	// Device link unique identifier
@@ -78,61 +154,113 @@ type DeviceLinkObservation struct {
 
 type DeviceLinkParameters struct {
 
-	// definition of one or more devices belonging to the
-	// device link. See Device section below for more details.
-	// +kubebuilder:validation:Required
-	Device []DeviceLinkDeviceParameters `json:"device" tf:"device,omitempty"`
+	// definition of one or more devices belonging to the device link. See Device section below for more details.
+	// +kubebuilder:validation:Optional
+	Device []DeviceLinkDeviceParameters `json:"device,omitempty" tf:"device,omitempty"`
 
-	// (Deprecated) definition of one or more, inter metro, connections belonging
-	// to the device link. See Link section below for more details.
+	// (Deprecated) definition of one or more, inter metro, connections belonging to the device link. See Link section below for more details.
 	// Definition of one or more, inter metro connections belonging to the device link
 	// +kubebuilder:validation:Optional
 	Link []LinkParameters `json:"link,omitempty" tf:"link,omitempty"`
 
-	// definition of one or more, inter metro, connections belonging
-	// to the device link. See Metro Link section below for more details.
+	// definition of one or more, inter metro, connections belonging to the device link. See Metro Link section below for more details.
 	// Definition of one or more, inter or intra metro connections belonging to the device link
 	// +kubebuilder:validation:Optional
 	MetroLink []MetroLinkParameters `json:"metroLink,omitempty" tf:"metro_link,omitempty"`
 
 	// device link name.
 	// Device link name
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// Unique Identifier for the project resource where the device link is scoped to.If you
-	// leave it out, the device link will be created under the default project id of your organization.
+	// Unique Identifier for the project resource where the device link is scoped to.If you leave it out, the device link will be created under the default project id of your organization.
 	// project_id
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
-	// Whether the connection should be created through
-	// Fabric's primary or secondary port. Supported values: PRIMARY (Default), SECONDARY, HYBRID
+	// Whether the connection should be created through Fabric's primary or secondary port. Supported values: PRIMARY (Default), SECONDARY, HYBRID
 	// (Optional) Whether the connection should be created through Fabric's primary or secondary port. Supported values: `PRIMARY` (Default), `SECONDARY`, `HYBRID`
 	// +kubebuilder:validation:Optional
 	RedundancyType *string `json:"redundancyType,omitempty" tf:"redundancy_type,omitempty"`
 
-	// device link subnet in CIDR format. Not required for link
-	// between self configured devices.
+	// device link subnet in CIDR format. Not required for link between self configured devices.
 	// Device link subnet CIDR.
 	// +kubebuilder:validation:Optional
 	Subnet *string `json:"subnet,omitempty" tf:"subnet,omitempty"`
 }
 
+type LinkInitParameters struct {
+
+	// billing account number to be used for connection charges
+	// Billing account number to be used for connection charges
+	AccountNumber *string `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
+
+	// connection destination metro code.
+	// Connection destination metro code
+	DstMetroCode *string `json:"dstMetroCode,omitempty" tf:"dst_metro_code,omitempty"`
+
+	// (Deprecated) connection destination zone code is not required.
+	// Connection destination zone code
+	DstZoneCode *string `json:"dstZoneCode,omitempty" tf:"dst_zone_code,omitempty"`
+
+	// connection source metro code.
+	// Connection source metro code
+	SrcMetroCode *string `json:"srcMetroCode,omitempty" tf:"src_metro_code,omitempty"`
+
+	// (Deprecated) connection source zone code is not required.
+	// Connection source zone code
+	SrcZoneCode *string `json:"srcZoneCode,omitempty" tf:"src_zone_code,omitempty"`
+
+	// connection throughput.
+	// Connection throughput
+	Throughput *string `json:"throughput,omitempty" tf:"throughput,omitempty"`
+
+	// connection throughput unit (Mbps or Gbps).
+	// Connection throughput unit
+	ThroughputUnit *string `json:"throughputUnit,omitempty" tf:"throughput_unit,omitempty"`
+}
+
 type LinkObservation struct {
+
+	// billing account number to be used for connection charges
+	// Billing account number to be used for connection charges
+	AccountNumber *string `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
+
+	// connection destination metro code.
+	// Connection destination metro code
+	DstMetroCode *string `json:"dstMetroCode,omitempty" tf:"dst_metro_code,omitempty"`
+
+	// (Deprecated) connection destination zone code is not required.
+	// Connection destination zone code
+	DstZoneCode *string `json:"dstZoneCode,omitempty" tf:"dst_zone_code,omitempty"`
+
+	// connection source metro code.
+	// Connection source metro code
+	SrcMetroCode *string `json:"srcMetroCode,omitempty" tf:"src_metro_code,omitempty"`
+
+	// (Deprecated) connection source zone code is not required.
+	// Connection source zone code
+	SrcZoneCode *string `json:"srcZoneCode,omitempty" tf:"src_zone_code,omitempty"`
+
+	// connection throughput.
+	// Connection throughput
+	Throughput *string `json:"throughput,omitempty" tf:"throughput,omitempty"`
+
+	// connection throughput unit (Mbps or Gbps).
+	// Connection throughput unit
+	ThroughputUnit *string `json:"throughputUnit,omitempty" tf:"throughput_unit,omitempty"`
 }
 
 type LinkParameters struct {
 
-	// billing account number to be used for
-	// connection charges
+	// billing account number to be used for connection charges
 	// Billing account number to be used for connection charges
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	AccountNumber *string `json:"accountNumber" tf:"account_number,omitempty"`
 
 	// connection destination metro code.
 	// Connection destination metro code
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	DstMetroCode *string `json:"dstMetroCode" tf:"dst_metro_code,omitempty"`
 
 	// (Deprecated) connection destination zone code is not required.
@@ -142,7 +270,7 @@ type LinkParameters struct {
 
 	// connection source metro code.
 	// Connection source metro code
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	SrcMetroCode *string `json:"srcMetroCode" tf:"src_metro_code,omitempty"`
 
 	// (Deprecated) connection source zone code is not required.
@@ -152,38 +280,70 @@ type LinkParameters struct {
 
 	// connection throughput.
 	// Connection throughput
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Throughput *string `json:"throughput" tf:"throughput,omitempty"`
 
 	// connection throughput unit (Mbps or Gbps).
 	// Connection throughput unit
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	ThroughputUnit *string `json:"throughputUnit" tf:"throughput_unit,omitempty"`
 }
 
+type MetroLinkInitParameters struct {
+
+	// billing account number to be used for connection charges
+	// Billing account number to be used for connection charges
+	AccountNumber *string `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
+
+	// connection metro code.
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// connection throughput.
+	// Connection throughput
+	Throughput *string `json:"throughput,omitempty" tf:"throughput,omitempty"`
+
+	// connection throughput unit (Mbps or Gbps).
+	// Connection throughput unit
+	ThroughputUnit *string `json:"throughputUnit,omitempty" tf:"throughput_unit,omitempty"`
+}
+
 type MetroLinkObservation struct {
+
+	// billing account number to be used for connection charges
+	// Billing account number to be used for connection charges
+	AccountNumber *string `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
+
+	// connection metro code.
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// connection throughput.
+	// Connection throughput
+	Throughput *string `json:"throughput,omitempty" tf:"throughput,omitempty"`
+
+	// connection throughput unit (Mbps or Gbps).
+	// Connection throughput unit
+	ThroughputUnit *string `json:"throughputUnit,omitempty" tf:"throughput_unit,omitempty"`
 }
 
 type MetroLinkParameters struct {
 
-	// billing account number to be used for
-	// connection charges
+	// billing account number to be used for connection charges
 	// Billing account number to be used for connection charges
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	AccountNumber *string `json:"accountNumber" tf:"account_number,omitempty"`
 
 	// connection metro code.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	MetroCode *string `json:"metroCode" tf:"metro_code,omitempty"`
 
 	// connection throughput.
 	// Connection throughput
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Throughput *string `json:"throughput" tf:"throughput,omitempty"`
 
 	// connection throughput unit (Mbps or Gbps).
 	// Connection throughput unit
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	ThroughputUnit *string `json:"throughputUnit" tf:"throughput_unit,omitempty"`
 }
 
@@ -191,6 +351,17 @@ type MetroLinkParameters struct {
 type DeviceLinkSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     DeviceLinkParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider DeviceLinkInitParameters `json:"initProvider,omitempty"`
 }
 
 // DeviceLinkStatus defines the observed state of DeviceLink.
@@ -200,19 +371,22 @@ type DeviceLinkStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // DeviceLink is the Schema for the DeviceLinks API.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinix}
 type DeviceLink struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              DeviceLinkSpec   `json:"spec"`
-	Status            DeviceLinkStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.device) || (has(self.initProvider) && has(self.initProvider.device))",message="spec.forProvider.device is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	Spec   DeviceLinkSpec   `json:"spec"`
+	Status DeviceLinkStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

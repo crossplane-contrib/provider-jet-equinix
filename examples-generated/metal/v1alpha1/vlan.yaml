@@ -1,0 +1,14 @@
+apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
+kind: Vlan
+metadata:
+  annotations:
+    meta.upbound.io/example-id: metal/v1alpha1/vlan
+  labels:
+    testing.upbound.io/example-name: vlan1
+  name: vlan1
+spec:
+  forProvider:
+    description: VLAN in New Jersey
+    metro: sv
+    projectId: ${local.project_id}
+    vxlan: 1040

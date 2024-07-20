@@ -25,503 +25,1322 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type APIConfigInitParameters struct {
+
+	// (Boolean) Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
+	// Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
+	APIAvailable *bool `json:"apiAvailable,omitempty" tf:"api_available,omitempty"`
+
+	// (Boolean) Setting showing that oversubscription support is available (true) or not (false). The default is false
+	// Setting showing that oversubscription support is available (true) or not (false). The default is false
+	AllowOverSubscription *bool `json:"allowOverSubscription,omitempty" tf:"allow_over_subscription,omitempty"`
+
+	// (Boolean) Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
+	// Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
+	BandwidthFromAPI *bool `json:"bandwidthFromApi,omitempty" tf:"bandwidth_from_api,omitempty"`
+
+	// (Boolean) Setting indicating that the port is managed by Equinix (true) or not (false)
+	// Setting indicating that the port is managed by Equinix (true) or not (false)
+	EquinixManagedPort *bool `json:"equinixManagedPort,omitempty" tf:"equinix_managed_port,omitempty"`
+
+	// (Boolean) Setting indicating that the VLAN is managed by Equinix (true) or not (false)
+	// Setting indicating that the VLAN is managed by Equinix (true) or not (false)
+	EquinixManagedVlan *bool `json:"equinixManagedVlan,omitempty" tf:"equinix_managed_vlan,omitempty"`
+
+	// (String) A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
+	// A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
+	IntegrationID *string `json:"integrationId,omitempty" tf:"integration_id,omitempty"`
+
+	// (Number) Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
+	// Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
+	OverSubscriptionLimit *float64 `json:"overSubscriptionLimit,omitempty" tf:"over_subscription_limit,omitempty"`
+}
+
 type APIConfigObservation struct {
+
+	// (Boolean) Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
+	// Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
+	APIAvailable *bool `json:"apiAvailable,omitempty" tf:"api_available,omitempty"`
+
+	// (Boolean) Setting showing that oversubscription support is available (true) or not (false). The default is false
+	// Setting showing that oversubscription support is available (true) or not (false). The default is false
+	AllowOverSubscription *bool `json:"allowOverSubscription,omitempty" tf:"allow_over_subscription,omitempty"`
+
+	// (Boolean) Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
+	// Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
+	BandwidthFromAPI *bool `json:"bandwidthFromApi,omitempty" tf:"bandwidth_from_api,omitempty"`
+
+	// (Boolean) Setting indicating that the port is managed by Equinix (true) or not (false)
+	// Setting indicating that the port is managed by Equinix (true) or not (false)
+	EquinixManagedPort *bool `json:"equinixManagedPort,omitempty" tf:"equinix_managed_port,omitempty"`
+
+	// (Boolean) Setting indicating that the VLAN is managed by Equinix (true) or not (false)
+	// Setting indicating that the VLAN is managed by Equinix (true) or not (false)
+	EquinixManagedVlan *bool `json:"equinixManagedVlan,omitempty" tf:"equinix_managed_vlan,omitempty"`
+
+	// (String) A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
+	// A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
+	IntegrationID *string `json:"integrationId,omitempty" tf:"integration_id,omitempty"`
+
+	// (Number) Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
+	// Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
+	OverSubscriptionLimit *float64 `json:"overSubscriptionLimit,omitempty" tf:"over_subscription_limit,omitempty"`
 }
 
 type APIConfigParameters struct {
 
+	// (Boolean) Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
 	// Indicates if it's possible to establish connections based on the given service profile using the Equinix Fabric API.
 	// +kubebuilder:validation:Optional
 	APIAvailable *bool `json:"apiAvailable,omitempty" tf:"api_available,omitempty"`
 
+	// (Boolean) Setting showing that oversubscription support is available (true) or not (false). The default is false
 	// Setting showing that oversubscription support is available (true) or not (false). The default is false
 	// +kubebuilder:validation:Optional
 	AllowOverSubscription *bool `json:"allowOverSubscription,omitempty" tf:"allow_over_subscription,omitempty"`
 
+	// (Boolean) Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
 	// Indicates if the connection bandwidth can be obtained directly from the cloud service provider.
 	// +kubebuilder:validation:Optional
 	BandwidthFromAPI *bool `json:"bandwidthFromApi,omitempty" tf:"bandwidth_from_api,omitempty"`
 
+	// (Boolean) Setting indicating that the port is managed by Equinix (true) or not (false)
 	// Setting indicating that the port is managed by Equinix (true) or not (false)
 	// +kubebuilder:validation:Optional
 	EquinixManagedPort *bool `json:"equinixManagedPort,omitempty" tf:"equinix_managed_port,omitempty"`
 
+	// (Boolean) Setting indicating that the VLAN is managed by Equinix (true) or not (false)
 	// Setting indicating that the VLAN is managed by Equinix (true) or not (false)
 	// +kubebuilder:validation:Optional
 	EquinixManagedVlan *bool `json:"equinixManagedVlan,omitempty" tf:"equinix_managed_vlan,omitempty"`
 
+	// (String) A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
 	// A unique identifier issued during onboarding and used to integrate the customer's service profile with the Equinix Fabric API.
 	// +kubebuilder:validation:Optional
 	IntegrationID *string `json:"integrationId,omitempty" tf:"integration_id,omitempty"`
 
+	// (Number) Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
 	// Port bandwidth multiplier that determines the total bandwidth that can be allocated to users creating connections to your services. For example, a 10 Gbps port combined with an overSubscriptionLimit parameter value of 10 allows your subscribers to create connections with a total bandwidth of 100 Gbps.
 	// +kubebuilder:validation:Optional
 	OverSubscriptionLimit *float64 `json:"overSubscriptionLimit,omitempty" tf:"over_subscription_limit,omitempty"`
 }
 
+type AuthenticationKeyInitParameters struct {
+
+	// provided service description
+	// Description of authorization key
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (String) Name of the parameter that must be provided to authorize the connection.
+	// Name of the parameter that must be provided to authorize the connection.
+	Label *string `json:"label,omitempty" tf:"label,omitempty"`
+
+	// (Boolean) Requirement to configure an authentication key.
+	// Requirement to configure an authentication key.
+	Required *bool `json:"required,omitempty" tf:"required,omitempty"`
+}
+
 type AuthenticationKeyObservation struct {
+
+	// provided service description
+	// Description of authorization key
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (String) Name of the parameter that must be provided to authorize the connection.
+	// Name of the parameter that must be provided to authorize the connection.
+	Label *string `json:"label,omitempty" tf:"label,omitempty"`
+
+	// (Boolean) Requirement to configure an authentication key.
+	// Requirement to configure an authentication key.
+	Required *bool `json:"required,omitempty" tf:"required,omitempty"`
 }
 
 type AuthenticationKeyParameters struct {
 
+	// provided service description
 	// Description of authorization key
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// (String) Name of the parameter that must be provided to authorize the connection.
 	// Name of the parameter that must be provided to authorize the connection.
 	// +kubebuilder:validation:Optional
 	Label *string `json:"label,omitempty" tf:"label,omitempty"`
 
+	// (Boolean) Requirement to configure an authentication key.
 	// Requirement to configure an authentication key.
 	// +kubebuilder:validation:Optional
 	Required *bool `json:"required,omitempty" tf:"required,omitempty"`
 }
 
+type CustomFieldsInitParameters struct {
+
+	// (Boolean) Required field
+	// Required field
+	CaptureInEmail *bool `json:"captureInEmail,omitempty" tf:"capture_in_email,omitempty"`
+
+	// (String) Data type
+	// Data type
+	DataType *string `json:"dataType,omitempty" tf:"data_type,omitempty"`
+
+	// provided service description
+	// Description
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (String) Name of the parameter that must be provided to authorize the connection.
+	// Label
+	Label *string `json:"label,omitempty" tf:"label,omitempty"`
+
+	// (List of String) Options
+	// Options
+	Options []*string `json:"options,omitempty" tf:"options,omitempty"`
+
+	// (Boolean) Requirement to configure an authentication key.
+	// Required field
+	Required *bool `json:"required,omitempty" tf:"required,omitempty"`
+}
+
 type CustomFieldsObservation struct {
+
+	// (Boolean) Required field
+	// Required field
+	CaptureInEmail *bool `json:"captureInEmail,omitempty" tf:"capture_in_email,omitempty"`
+
+	// (String) Data type
+	// Data type
+	DataType *string `json:"dataType,omitempty" tf:"data_type,omitempty"`
+
+	// provided service description
+	// Description
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (String) Name of the parameter that must be provided to authorize the connection.
+	// Label
+	Label *string `json:"label,omitempty" tf:"label,omitempty"`
+
+	// (List of String) Options
+	// Options
+	Options []*string `json:"options,omitempty" tf:"options,omitempty"`
+
+	// (Boolean) Requirement to configure an authentication key.
+	// Required field
+	Required *bool `json:"required,omitempty" tf:"required,omitempty"`
 }
 
 type CustomFieldsParameters struct {
 
+	// (Boolean) Required field
 	// Required field
 	// +kubebuilder:validation:Optional
 	CaptureInEmail *bool `json:"captureInEmail,omitempty" tf:"capture_in_email,omitempty"`
 
+	// (String) Data type
 	// Data type
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	DataType *string `json:"dataType" tf:"data_type,omitempty"`
 
+	// provided service description
 	// Description
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// (String) Name of the parameter that must be provided to authorize the connection.
 	// Label
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Label *string `json:"label" tf:"label,omitempty"`
 
+	// (List of String) Options
 	// Options
 	// +kubebuilder:validation:Optional
 	Options []*string `json:"options,omitempty" tf:"options,omitempty"`
 
+	// (Boolean) Requirement to configure an authentication key.
 	// Required field
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Required *bool `json:"required" tf:"required,omitempty"`
 }
 
+type LinkProtocolConfigInitParameters struct {
+
+	// Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
+	// Data frames encapsulation standard.UNTAGGED - Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
+	Encapsulation *string `json:"encapsulation,omitempty" tf:"encapsulation,omitempty"`
+
+	// (String) Additional tagging information required by the seller profile.
+	// Additional tagging information required by the seller profile.
+	EncapsulationStrategy *string `json:"encapsulationStrategy,omitempty" tf:"encapsulation_strategy,omitempty"`
+
+	// tag assigned as the initial connection.
+	// Automatically accept subsequent DOT1Q to QINQ connections that use the same authentication key. These connections will have the same VLAN S-tag assigned as the initial connection.
+	ReuseVlanSTag *bool `json:"reuseVlanSTag,omitempty" tf:"reuse_vlan_s_tag,omitempty"`
+}
+
 type LinkProtocolConfigObservation struct {
+
+	// Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
+	// Data frames encapsulation standard.UNTAGGED - Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
+	Encapsulation *string `json:"encapsulation,omitempty" tf:"encapsulation,omitempty"`
+
+	// (String) Additional tagging information required by the seller profile.
+	// Additional tagging information required by the seller profile.
+	EncapsulationStrategy *string `json:"encapsulationStrategy,omitempty" tf:"encapsulation_strategy,omitempty"`
+
+	// tag assigned as the initial connection.
+	// Automatically accept subsequent DOT1Q to QINQ connections that use the same authentication key. These connections will have the same VLAN S-tag assigned as the initial connection.
+	ReuseVlanSTag *bool `json:"reuseVlanSTag,omitempty" tf:"reuse_vlan_s_tag,omitempty"`
 }
 
 type LinkProtocolConfigParameters struct {
 
+	// Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
 	// Data frames encapsulation standard.UNTAGGED - Untagged encapsulation for EPL connections. DOT1Q - DOT1Q encapsulation standard. QINQ - QINQ encapsulation standard.
 	// +kubebuilder:validation:Optional
 	Encapsulation *string `json:"encapsulation,omitempty" tf:"encapsulation,omitempty"`
 
+	// (String) Additional tagging information required by the seller profile.
 	// Additional tagging information required by the seller profile.
 	// +kubebuilder:validation:Optional
 	EncapsulationStrategy *string `json:"encapsulationStrategy,omitempty" tf:"encapsulation_strategy,omitempty"`
 
+	// tag assigned as the initial connection.
 	// Automatically accept subsequent DOT1Q to QINQ connections that use the same authentication key. These connections will have the same VLAN S-tag assigned as the initial connection.
 	// +kubebuilder:validation:Optional
 	ReuseVlanSTag *bool `json:"reuseVlanSTag,omitempty" tf:"reuse_vlan_s_tag,omitempty"`
 }
 
+type MarketingInfoInitParameters struct {
+
+	// (String) Logo
+	// Logo
+	Logo *string `json:"logo,omitempty" tf:"logo,omitempty"`
+
+	// (Block List) Process Step (see below for nested schema)
+	// Process Step
+	ProcessStep []ProcessStepInitParameters `json:"processStep,omitempty" tf:"process_step,omitempty"`
+
+	// (Boolean) Promotion
+	// Promotion
+	Promotion *bool `json:"promotion,omitempty" tf:"promotion,omitempty"`
+}
+
 type MarketingInfoObservation struct {
+
+	// (String) Logo
+	// Logo
+	Logo *string `json:"logo,omitempty" tf:"logo,omitempty"`
+
+	// (Block List) Process Step (see below for nested schema)
+	// Process Step
+	ProcessStep []ProcessStepObservation `json:"processStep,omitempty" tf:"process_step,omitempty"`
+
+	// (Boolean) Promotion
+	// Promotion
+	Promotion *bool `json:"promotion,omitempty" tf:"promotion,omitempty"`
 }
 
 type MarketingInfoParameters struct {
 
+	// (String) Logo
 	// Logo
 	// +kubebuilder:validation:Optional
 	Logo *string `json:"logo,omitempty" tf:"logo,omitempty"`
 
+	// (Block List) Process Step (see below for nested schema)
 	// Process Step
 	// +kubebuilder:validation:Optional
 	ProcessStep []ProcessStepParameters `json:"processStep,omitempty" tf:"process_step,omitempty"`
 
+	// (Boolean) Promotion
 	// Promotion
 	// +kubebuilder:validation:Optional
 	Promotion *bool `json:"promotion,omitempty" tf:"promotion,omitempty"`
 }
 
+type MetrosInitParameters struct {
+
+	// Example SV
+	// Metro Code - Example SV
+	Code *string `json:"code,omitempty" tf:"code,omitempty"`
+
+	// (String) Display Name
+	// Display Name
+	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
+
+	// Equinix International Business Exchange list
+	// IBX- Equinix International Business Exchange list
+	Ibxs []*string `json:"ibxs,omitempty" tf:"ibxs,omitempty"`
+
+	// (Boolean) In Trail
+	// In Trail
+	InTrail *bool `json:"inTrail,omitempty" tf:"in_trail,omitempty"`
+
+	// assigned service profile name
+	// Metro Name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Map of String) Seller Regions
+	// Seller Regions
+	// +mapType=granular
+	SellerRegions map[string]*string `json:"sellerRegions,omitempty" tf:"seller_regions,omitempty"`
+}
+
 type MetrosObservation struct {
+
+	// Example SV
+	// Metro Code - Example SV
+	Code *string `json:"code,omitempty" tf:"code,omitempty"`
+
+	// (String) Display Name
+	// Display Name
+	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
+
+	// Equinix International Business Exchange list
+	// IBX- Equinix International Business Exchange list
+	Ibxs []*string `json:"ibxs,omitempty" tf:"ibxs,omitempty"`
+
+	// (Boolean) In Trail
+	// In Trail
+	InTrail *bool `json:"inTrail,omitempty" tf:"in_trail,omitempty"`
+
+	// assigned service profile name
+	// Metro Name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Map of String) Seller Regions
+	// Seller Regions
+	// +mapType=granular
+	SellerRegions map[string]*string `json:"sellerRegions,omitempty" tf:"seller_regions,omitempty"`
 }
 
 type MetrosParameters struct {
 
+	// Example SV
 	// Metro Code - Example SV
 	// +kubebuilder:validation:Optional
 	Code *string `json:"code,omitempty" tf:"code,omitempty"`
 
+	// (String) Display Name
 	// Display Name
 	// +kubebuilder:validation:Optional
 	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
 
+	// Equinix International Business Exchange list
 	// IBX- Equinix International Business Exchange list
 	// +kubebuilder:validation:Optional
 	Ibxs []*string `json:"ibxs,omitempty" tf:"ibxs,omitempty"`
 
+	// (Boolean) In Trail
 	// In Trail
 	// +kubebuilder:validation:Optional
 	InTrail *bool `json:"inTrail,omitempty" tf:"in_trail,omitempty"`
 
+	// assigned service profile name
 	// Metro Name
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Map of String) Seller Regions
 	// Seller Regions
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	SellerRegions map[string]*string `json:"sellerRegions,omitempty" tf:"seller_regions,omitempty"`
 }
 
+type PortsInitParameters struct {
+
+	// (String) Cross Connect Id
+	// Cross Connect Id
+	CrossConnectID *string `json:"crossConnectId,omitempty" tf:"cross_connect_id,omitempty"`
+
+	// (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
+	// Colo/Port Location
+	Location []PortsLocationInitParameters `json:"location,omitempty" tf:"location,omitempty"`
+
+	// (String) Seller Region
+	// Seller Region
+	SellerRegion *string `json:"sellerRegion,omitempty" tf:"seller_region,omitempty"`
+
+	// (String) Seller Region details
+	// Seller Region details
+	SellerRegionDescription *string `json:"sellerRegionDescription,omitempty" tf:"seller_region_description,omitempty"`
+
+	// L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+	// Colo/Port Type
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String) Equinix assigned service profile identifier
+	// Colo/Port Uuid
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
+type PortsLocationInitParameters struct {
+
+	// (String) IBX Code
+	// IBX Code
+	Ibx *string `json:"ibx,omitempty" tf:"ibx,omitempty"`
+
+	// (String) Access point metro code
+	// Access point metro code
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// (String) Access point metro name
+	// Access point metro name
+	MetroName *string `json:"metroName,omitempty" tf:"metro_name,omitempty"`
+
+	// (String) Access point region
+	// Access point region
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+}
+
 type PortsLocationObservation struct {
+
+	// (String) IBX Code
+	// IBX Code
+	Ibx *string `json:"ibx,omitempty" tf:"ibx,omitempty"`
+
+	// (String) Access point metro code
+	// Access point metro code
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// (String) Access point metro name
+	// Access point metro name
+	MetroName *string `json:"metroName,omitempty" tf:"metro_name,omitempty"`
+
+	// (String) Access point region
+	// Access point region
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }
 
 type PortsLocationParameters struct {
 
+	// (String) IBX Code
 	// IBX Code
 	// +kubebuilder:validation:Optional
 	Ibx *string `json:"ibx,omitempty" tf:"ibx,omitempty"`
 
+	// (String) Access point metro code
 	// Access point metro code
 	// +kubebuilder:validation:Optional
 	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
 
+	// (String) Access point metro name
 	// Access point metro name
 	// +kubebuilder:validation:Optional
 	MetroName *string `json:"metroName,omitempty" tf:"metro_name,omitempty"`
 
+	// (String) Access point region
 	// Access point region
 	// +kubebuilder:validation:Optional
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }
 
 type PortsObservation struct {
+
+	// (String) Cross Connect Id
+	// Cross Connect Id
+	CrossConnectID *string `json:"crossConnectId,omitempty" tf:"cross_connect_id,omitempty"`
+
+	// (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
+	// Colo/Port Location
+	Location []PortsLocationObservation `json:"location,omitempty" tf:"location,omitempty"`
+
+	// (String) Seller Region
+	// Seller Region
+	SellerRegion *string `json:"sellerRegion,omitempty" tf:"seller_region,omitempty"`
+
+	// (String) Seller Region details
+	// Seller Region details
+	SellerRegionDescription *string `json:"sellerRegionDescription,omitempty" tf:"seller_region_description,omitempty"`
+
+	// L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+	// Colo/Port Type
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String) Equinix assigned service profile identifier
+	// Colo/Port Uuid
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type PortsParameters struct {
 
+	// (String) Cross Connect Id
 	// Cross Connect Id
 	// +kubebuilder:validation:Optional
 	CrossConnectID *string `json:"crossConnectId,omitempty" tf:"cross_connect_id,omitempty"`
 
+	// (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
 	// Colo/Port Location
 	// +kubebuilder:validation:Optional
 	Location []PortsLocationParameters `json:"location,omitempty" tf:"location,omitempty"`
 
+	// (String) Seller Region
 	// Seller Region
 	// +kubebuilder:validation:Optional
 	SellerRegion *string `json:"sellerRegion,omitempty" tf:"seller_region,omitempty"`
 
+	// (String) Seller Region details
 	// Seller Region details
 	// +kubebuilder:validation:Optional
 	SellerRegionDescription *string `json:"sellerRegionDescription,omitempty" tf:"seller_region_description,omitempty"`
 
+	// L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
 	// Colo/Port Type
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
 
+	// (String) Equinix assigned service profile identifier
 	// Colo/Port Uuid
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	UUID *string `json:"uuid" tf:"uuid,omitempty"`
 }
 
+type ProcessStepInitParameters struct {
+
+	// provided service description
+	// Description
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (String) Sub Title
+	// Sub Title
+	SubTitle *string `json:"subTitle,omitempty" tf:"sub_title,omitempty"`
+
+	// (String) Title
+	// Title
+	Title *string `json:"title,omitempty" tf:"title,omitempty"`
+}
+
 type ProcessStepObservation struct {
+
+	// provided service description
+	// Description
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (String) Sub Title
+	// Sub Title
+	SubTitle *string `json:"subTitle,omitempty" tf:"sub_title,omitempty"`
+
+	// (String) Title
+	// Title
+	Title *string `json:"title,omitempty" tf:"title,omitempty"`
 }
 
 type ProcessStepParameters struct {
 
+	// provided service description
 	// Description
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// (String) Sub Title
 	// Sub Title
 	// +kubebuilder:validation:Optional
 	SubTitle *string `json:"subTitle,omitempty" tf:"sub_title,omitempty"`
 
+	// (String) Title
 	// Title
 	// +kubebuilder:validation:Optional
 	Title *string `json:"title,omitempty" tf:"title,omitempty"`
 }
 
+type ServiceProfileAccessPointTypeConfigsInitParameters struct {
+
+	// (Block Set, Max: 1) Api configuration details (see below for nested schema)
+	// Api configuration details
+	APIConfig []APIConfigInitParameters `json:"apiConfig,omitempty" tf:"api_config,omitempty"`
+
+	// (Boolean) Setting to enable or disable the ability of the buyer to change connection bandwidth without approval of the seller
+	// Setting to enable or disable the ability of the buyer to change connection bandwidth without approval of the seller
+	AllowBandwidthAutoApproval *bool `json:"allowBandwidthAutoApproval,omitempty" tf:"allow_bandwidth_auto_approval,omitempty"`
+
+	// (Boolean) Availability of a bandwidth upgrade. The default is false
+	// Availability of a bandwidth upgrade. The default is false
+	AllowBandwidthUpgrade *bool `json:"allowBandwidthUpgrade,omitempty" tf:"allow_bandwidth_upgrade,omitempty"`
+
+	// (Boolean) Setting to enable or disable the ability of the buyer to customize the bandwidth
+	// Setting to enable or disable the ability of the buyer to customize the bandwidth
+	AllowCustomBandwidth *bool `json:"allowCustomBandwidth,omitempty" tf:"allow_custom_bandwidth,omitempty"`
+
+	// (Boolean) Setting to allow or prohibit remote connections to the service profile
+	// Setting to allow or prohibit remote connections to the service profile
+	AllowRemoteConnections *bool `json:"allowRemoteConnections,omitempty" tf:"allow_remote_connections,omitempty"`
+
+	// (Block Set, Max: 1) Authentication key details (see below for nested schema)
+	// Authentication key details
+	AuthenticationKey []AuthenticationKeyInitParameters `json:"authenticationKey,omitempty" tf:"authentication_key,omitempty"`
+
+	// (Number) Percentage of port bandwidth at which an allocation alert is generated
+	// Percentage of port bandwidth at which an allocation alert is generated
+	BandwidthAlertThreshold *float64 `json:"bandwidthAlertThreshold,omitempty" tf:"bandwidth_alert_threshold,omitempty"`
+
+	// (String) Custom name for Connection
+	// Custom name for Connection
+	ConnectionLabel *string `json:"connectionLabel,omitempty" tf:"connection_label,omitempty"`
+
+	// (Boolean) Mandate redundant connections
+	// Mandate redundant connections
+	ConnectionRedundancyRequired *bool `json:"connectionRedundancyRequired,omitempty" tf:"connection_redundancy_required,omitempty"`
+
+	// (Boolean) Enable auto generate service key
+	// Enable auto generate service key
+	EnableAutoGenerateServiceKey *bool `json:"enableAutoGenerateServiceKey,omitempty" tf:"enable_auto_generate_service_key,omitempty"`
+
+	// (Block Set, Max: 1) Link protocol configuration details (see below for nested schema)
+	// Link protocol configuration details
+	LinkProtocolConfig []LinkProtocolConfigInitParameters `json:"linkProtocolConfig,omitempty" tf:"link_protocol_config,omitempty"`
+
+	// (List of Number) Supported bandwidths
+	// Supported bandwidths
+	SupportedBandwidths []*float64 `json:"supportedBandwidths,omitempty" tf:"supported_bandwidths,omitempty"`
+
+	// L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+	// Type of access point type config - VD, COLO
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type ServiceProfileAccessPointTypeConfigsObservation struct {
 
+	// (Block Set, Max: 1) Api configuration details (see below for nested schema)
+	// Api configuration details
+	APIConfig []APIConfigObservation `json:"apiConfig,omitempty" tf:"api_config,omitempty"`
+
+	// (Boolean) Setting to enable or disable the ability of the buyer to change connection bandwidth without approval of the seller
+	// Setting to enable or disable the ability of the buyer to change connection bandwidth without approval of the seller
+	AllowBandwidthAutoApproval *bool `json:"allowBandwidthAutoApproval,omitempty" tf:"allow_bandwidth_auto_approval,omitempty"`
+
+	// (Boolean) Availability of a bandwidth upgrade. The default is false
+	// Availability of a bandwidth upgrade. The default is false
+	AllowBandwidthUpgrade *bool `json:"allowBandwidthUpgrade,omitempty" tf:"allow_bandwidth_upgrade,omitempty"`
+
+	// (Boolean) Setting to enable or disable the ability of the buyer to customize the bandwidth
+	// Setting to enable or disable the ability of the buyer to customize the bandwidth
+	AllowCustomBandwidth *bool `json:"allowCustomBandwidth,omitempty" tf:"allow_custom_bandwidth,omitempty"`
+
+	// (Boolean) Setting to allow or prohibit remote connections to the service profile
+	// Setting to allow or prohibit remote connections to the service profile
+	AllowRemoteConnections *bool `json:"allowRemoteConnections,omitempty" tf:"allow_remote_connections,omitempty"`
+
+	// (Block Set, Max: 1) Authentication key details (see below for nested schema)
+	// Authentication key details
+	AuthenticationKey []AuthenticationKeyObservation `json:"authenticationKey,omitempty" tf:"authentication_key,omitempty"`
+
+	// (Number) Percentage of port bandwidth at which an allocation alert is generated
+	// Percentage of port bandwidth at which an allocation alert is generated
+	BandwidthAlertThreshold *float64 `json:"bandwidthAlertThreshold,omitempty" tf:"bandwidth_alert_threshold,omitempty"`
+
+	// (String) Custom name for Connection
+	// Custom name for Connection
+	ConnectionLabel *string `json:"connectionLabel,omitempty" tf:"connection_label,omitempty"`
+
+	// (Boolean) Mandate redundant connections
+	// Mandate redundant connections
+	ConnectionRedundancyRequired *bool `json:"connectionRedundancyRequired,omitempty" tf:"connection_redundancy_required,omitempty"`
+
+	// (Boolean) Enable auto generate service key
+	// Enable auto generate service key
+	EnableAutoGenerateServiceKey *bool `json:"enableAutoGenerateServiceKey,omitempty" tf:"enable_auto_generate_service_key,omitempty"`
+
+	// (Block Set, Max: 1) Link protocol configuration details (see below for nested schema)
+	// Link protocol configuration details
+	LinkProtocolConfig []LinkProtocolConfigObservation `json:"linkProtocolConfig,omitempty" tf:"link_protocol_config,omitempty"`
+
+	// (List of Number) Supported bandwidths
+	// Supported bandwidths
+	SupportedBandwidths []*float64 `json:"supportedBandwidths,omitempty" tf:"supported_bandwidths,omitempty"`
+
+	// L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+	// Type of access point type config - VD, COLO
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String) Equinix assigned service profile identifier
 	// Colo/Port Uuid
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type ServiceProfileAccessPointTypeConfigsParameters struct {
 
+	// (Block Set, Max: 1) Api configuration details (see below for nested schema)
 	// Api configuration details
 	// +kubebuilder:validation:Optional
 	APIConfig []APIConfigParameters `json:"apiConfig,omitempty" tf:"api_config,omitempty"`
 
+	// (Boolean) Setting to enable or disable the ability of the buyer to change connection bandwidth without approval of the seller
 	// Setting to enable or disable the ability of the buyer to change connection bandwidth without approval of the seller
 	// +kubebuilder:validation:Optional
 	AllowBandwidthAutoApproval *bool `json:"allowBandwidthAutoApproval,omitempty" tf:"allow_bandwidth_auto_approval,omitempty"`
 
+	// (Boolean) Availability of a bandwidth upgrade. The default is false
 	// Availability of a bandwidth upgrade. The default is false
 	// +kubebuilder:validation:Optional
 	AllowBandwidthUpgrade *bool `json:"allowBandwidthUpgrade,omitempty" tf:"allow_bandwidth_upgrade,omitempty"`
 
+	// (Boolean) Setting to enable or disable the ability of the buyer to customize the bandwidth
 	// Setting to enable or disable the ability of the buyer to customize the bandwidth
 	// +kubebuilder:validation:Optional
 	AllowCustomBandwidth *bool `json:"allowCustomBandwidth,omitempty" tf:"allow_custom_bandwidth,omitempty"`
 
+	// (Boolean) Setting to allow or prohibit remote connections to the service profile
 	// Setting to allow or prohibit remote connections to the service profile
 	// +kubebuilder:validation:Optional
 	AllowRemoteConnections *bool `json:"allowRemoteConnections,omitempty" tf:"allow_remote_connections,omitempty"`
 
+	// (Block Set, Max: 1) Authentication key details (see below for nested schema)
 	// Authentication key details
 	// +kubebuilder:validation:Optional
 	AuthenticationKey []AuthenticationKeyParameters `json:"authenticationKey,omitempty" tf:"authentication_key,omitempty"`
 
+	// (Number) Percentage of port bandwidth at which an allocation alert is generated
 	// Percentage of port bandwidth at which an allocation alert is generated
 	// +kubebuilder:validation:Optional
 	BandwidthAlertThreshold *float64 `json:"bandwidthAlertThreshold,omitempty" tf:"bandwidth_alert_threshold,omitempty"`
 
+	// (String) Custom name for Connection
 	// Custom name for Connection
 	// +kubebuilder:validation:Optional
 	ConnectionLabel *string `json:"connectionLabel,omitempty" tf:"connection_label,omitempty"`
 
+	// (Boolean) Mandate redundant connections
 	// Mandate redundant connections
 	// +kubebuilder:validation:Optional
 	ConnectionRedundancyRequired *bool `json:"connectionRedundancyRequired,omitempty" tf:"connection_redundancy_required,omitempty"`
 
+	// (Boolean) Enable auto generate service key
 	// Enable auto generate service key
 	// +kubebuilder:validation:Optional
 	EnableAutoGenerateServiceKey *bool `json:"enableAutoGenerateServiceKey,omitempty" tf:"enable_auto_generate_service_key,omitempty"`
 
+	// (Block Set, Max: 1) Link protocol configuration details (see below for nested schema)
 	// Link protocol configuration details
 	// +kubebuilder:validation:Optional
 	LinkProtocolConfig []LinkProtocolConfigParameters `json:"linkProtocolConfig,omitempty" tf:"link_protocol_config,omitempty"`
 
+	// (List of Number) Supported bandwidths
 	// Supported bandwidths
 	// +kubebuilder:validation:Optional
 	SupportedBandwidths []*float64 `json:"supportedBandwidths,omitempty" tf:"supported_bandwidths,omitempty"`
 
+	// L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
 	// Type of access point type config - VD, COLO
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
 }
 
+type ServiceProfileAccountInitParameters struct {
+}
+
 type ServiceProfileAccountObservation struct {
+
+	// (String)
 	AccountName *string `json:"accountName,omitempty" tf:"account_name,omitempty"`
 
+	// (Number)
 	AccountNumber *float64 `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
 
+	// (String)
 	GlobalCustID *string `json:"globalCustId,omitempty" tf:"global_cust_id,omitempty"`
 
+	// (String)
 	GlobalOrgID *string `json:"globalOrgId,omitempty" tf:"global_org_id,omitempty"`
 
+	// (String)
 	GlobalOrganizationName *string `json:"globalOrganizationName,omitempty" tf:"global_organization_name,omitempty"`
 
+	// (Number)
 	OrgID *float64 `json:"orgId,omitempty" tf:"org_id,omitempty"`
 
+	// (String)
 	OrganizationName *string `json:"organizationName,omitempty" tf:"organization_name,omitempty"`
 
+	// (String)
 	UcmID *string `json:"ucmId,omitempty" tf:"ucm_id,omitempty"`
 }
 
 type ServiceProfileAccountParameters struct {
 }
 
+type ServiceProfileChangeLogInitParameters struct {
+}
+
 type ServiceProfileChangeLogObservation struct {
+
+	// (String)
 	CreatedBy *string `json:"createdBy,omitempty" tf:"created_by,omitempty"`
 
+	// (String)
 	CreatedByEmail *string `json:"createdByEmail,omitempty" tf:"created_by_email,omitempty"`
 
+	// (String)
 	CreatedByFullName *string `json:"createdByFullName,omitempty" tf:"created_by_full_name,omitempty"`
 
+	// (String)
 	CreatedDateTime *string `json:"createdDateTime,omitempty" tf:"created_date_time,omitempty"`
 
+	// (String)
 	DeletedBy *string `json:"deletedBy,omitempty" tf:"deleted_by,omitempty"`
 
+	// (String)
 	DeletedByEmail *string `json:"deletedByEmail,omitempty" tf:"deleted_by_email,omitempty"`
 
+	// (String)
 	DeletedByFullName *string `json:"deletedByFullName,omitempty" tf:"deleted_by_full_name,omitempty"`
 
+	// (String)
 	DeletedDateTime *string `json:"deletedDateTime,omitempty" tf:"deleted_date_time,omitempty"`
 
+	// (String)
 	UpdatedBy *string `json:"updatedBy,omitempty" tf:"updated_by,omitempty"`
 
+	// (String)
 	UpdatedByEmail *string `json:"updatedByEmail,omitempty" tf:"updated_by_email,omitempty"`
 
+	// (String)
 	UpdatedByFullName *string `json:"updatedByFullName,omitempty" tf:"updated_by_full_name,omitempty"`
 
+	// (String)
 	UpdatedDateTime *string `json:"updatedDateTime,omitempty" tf:"updated_date_time,omitempty"`
 }
 
 type ServiceProfileChangeLogParameters struct {
 }
 
+type ServiceProfileInitParameters struct {
+
+	// (Block List) Access point config information (see below for nested schema)
+	// Access point config information
+	AccessPointTypeConfigs []ServiceProfileAccessPointTypeConfigsInitParameters `json:"accessPointTypeConfigs,omitempty" tf:"access_point_type_configs,omitempty"`
+
+	// (List of String) Array of contact emails
+	// Array of contact emails
+	AllowedEmails []*string `json:"allowedEmails,omitempty" tf:"allowed_emails,omitempty"`
+
+	// (Block List) Custom Fields (see below for nested schema)
+	// Custom Fields
+	CustomFields []CustomFieldsInitParameters `json:"customFields,omitempty" tf:"custom_fields,omitempty"`
+
+	// provided service description
+	// User-provided service description
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (Block Set, Max: 1) Marketing Info (see below for nested schema)
+	// Marketing Info
+	MarketingInfo []MarketingInfoInitParameters `json:"marketingInfo,omitempty" tf:"marketing_info,omitempty"`
+
+	// (Block List) Access point config information (see below for nested schema)
+	// Access point config information
+	Metros []MetrosInitParameters `json:"metros,omitempty" tf:"metros,omitempty"`
+
+	// assigned service profile name
+	// Customer-assigned service profile name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block List) Preferences for notifications on connection configuration or status changes (see below for nested schema)
+	// Preferences for notifications on connection configuration or status changes
+	Notifications []ServiceProfileNotificationsInitParameters `json:"notifications,omitempty" tf:"notifications,omitempty"`
+
+	// (Block List) Ports (see below for nested schema)
+	// Ports
+	Ports []PortsInitParameters `json:"ports,omitempty" tf:"ports,omitempty"`
+
+	// (Block Set, Max: 1) Project information (see below for nested schema)
+	// Project information
+	Project []ServiceProfileProjectInitParameters `json:"project,omitempty" tf:"project,omitempty"`
+
+	// (Boolean) Self Profile indicating if the profile is created for customer's self use
+	// Self Profile indicating if the profile is created for customer's  self use
+	SelfProfile *bool `json:"selfProfile,omitempty" tf:"self_profile,omitempty"`
+
+	// ACTIVE, PENDING_APPROVAL, DELETED, REJECTED
+	// Service profile state - ACTIVE, PENDING_APPROVAL, DELETED, REJECTED
+	State *string `json:"state,omitempty" tf:"state,omitempty"`
+
+	// (List of String) Tags attached to the connection
+	// Tags attached to the connection
+	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
+
+	// L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+	// Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE, IA_PROFILE
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Flips view between buyer and seller representation. Available values : aSide, zSide. Default value : aSide
+	ViewPoint *string `json:"viewPoint,omitempty" tf:"view_point,omitempty"`
+
+	// (Block List) Virtual Devices (see below for nested schema)
+	// Virtual Devices
+	VirtualDevices []VirtualDevicesInitParameters `json:"virtualDevices,omitempty" tf:"virtual_devices,omitempty"`
+
+	// PUBLIC, PRIVATE
+	// Service profile visibility - PUBLIC, PRIVATE
+	Visibility *string `json:"visibility,omitempty" tf:"visibility,omitempty"`
+}
+
+type ServiceProfileNotificationsInitParameters struct {
+
+	// (List of String) Array of contact emails
+	// Array of contact emails
+	Emails []*string `json:"emails,omitempty" tf:"emails,omitempty"`
+
+	// (String) Send interval
+	// Send interval
+	SendInterval *string `json:"sendInterval,omitempty" tf:"send_interval,omitempty"`
+
+	// L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+	// Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type ServiceProfileNotificationsObservation struct {
+
+	// (List of String) Array of contact emails
+	// Array of contact emails
+	Emails []*string `json:"emails,omitempty" tf:"emails,omitempty"`
+
+	// (String) Send interval
+	// Send interval
+	SendInterval *string `json:"sendInterval,omitempty" tf:"send_interval,omitempty"`
+
+	// L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+	// Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type ServiceProfileNotificationsParameters struct {
 
+	// (List of String) Array of contact emails
 	// Array of contact emails
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Emails []*string `json:"emails" tf:"emails,omitempty"`
 
+	// (String) Send interval
 	// Send interval
 	// +kubebuilder:validation:Optional
 	SendInterval *string `json:"sendInterval,omitempty" tf:"send_interval,omitempty"`
 
+	// L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
 	// Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
 }
 
 type ServiceProfileObservation struct {
 
+	// (Block List) Access point config information (see below for nested schema)
 	// Access point config information
-	// +kubebuilder:validation:Optional
 	AccessPointTypeConfigs []ServiceProfileAccessPointTypeConfigsObservation `json:"accessPointTypeConfigs,omitempty" tf:"access_point_type_configs,omitempty"`
 
+	// (Set of Object) Service Profile Owner Account Information (see below for nested schema)
 	// Service Profile Owner Account Information
 	Account []ServiceProfileAccountObservation `json:"account,omitempty" tf:"account,omitempty"`
 
+	// (List of String) Array of contact emails
+	// Array of contact emails
+	AllowedEmails []*string `json:"allowedEmails,omitempty" tf:"allowed_emails,omitempty"`
+
+	// (Set of Object) Captures connection lifecycle change information (see below for nested schema)
 	// Captures connection lifecycle change information
 	ChangeLog []ServiceProfileChangeLogObservation `json:"changeLog,omitempty" tf:"change_log,omitempty"`
 
+	// (Block List) Custom Fields (see below for nested schema)
+	// Custom Fields
+	CustomFields []CustomFieldsObservation `json:"customFields,omitempty" tf:"custom_fields,omitempty"`
+
+	// provided service description
+	// User-provided service description
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (String) Service Profile URI response attribute
 	// Service Profile URI response attribute
 	Href *string `json:"href,omitempty" tf:"href,omitempty"`
 
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// (Block Set, Max: 1) Marketing Info (see below for nested schema)
+	// Marketing Info
+	MarketingInfo []MarketingInfoObservation `json:"marketingInfo,omitempty" tf:"marketing_info,omitempty"`
+
+	// (Block List) Access point config information (see below for nested schema)
+	// Access point config information
+	Metros []MetrosObservation `json:"metros,omitempty" tf:"metros,omitempty"`
+
+	// assigned service profile name
+	// Customer-assigned service profile name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block List) Preferences for notifications on connection configuration or status changes (see below for nested schema)
+	// Preferences for notifications on connection configuration or status changes
+	Notifications []ServiceProfileNotificationsObservation `json:"notifications,omitempty" tf:"notifications,omitempty"`
+
+	// (Block List) Ports (see below for nested schema)
+	// Ports
+	Ports []PortsObservation `json:"ports,omitempty" tf:"ports,omitempty"`
+
+	// (Block Set, Max: 1) Project information (see below for nested schema)
 	// Project information
-	// +kubebuilder:validation:Optional
 	Project []ServiceProfileProjectObservation `json:"project,omitempty" tf:"project,omitempty"`
 
+	// (Boolean) Self Profile indicating if the profile is created for customer's self use
+	// Self Profile indicating if the profile is created for customer's  self use
+	SelfProfile *bool `json:"selfProfile,omitempty" tf:"self_profile,omitempty"`
+
+	// ACTIVE, PENDING_APPROVAL, DELETED, REJECTED
+	// Service profile state - ACTIVE, PENDING_APPROVAL, DELETED, REJECTED
+	State *string `json:"state,omitempty" tf:"state,omitempty"`
+
+	// (List of String) Tags attached to the connection
+	// Tags attached to the connection
+	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
+
+	// L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+	// Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE, IA_PROFILE
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String) Equinix assigned service profile identifier
 	// Equinix assigned service profile identifier
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+
+	// Flips view between buyer and seller representation. Available values : aSide, zSide. Default value : aSide
+	ViewPoint *string `json:"viewPoint,omitempty" tf:"view_point,omitempty"`
+
+	// (Block List) Virtual Devices (see below for nested schema)
+	// Virtual Devices
+	VirtualDevices []VirtualDevicesObservation `json:"virtualDevices,omitempty" tf:"virtual_devices,omitempty"`
+
+	// PUBLIC, PRIVATE
+	// Service profile visibility - PUBLIC, PRIVATE
+	Visibility *string `json:"visibility,omitempty" tf:"visibility,omitempty"`
 }
 
 type ServiceProfileParameters struct {
 
+	// (Block List) Access point config information (see below for nested schema)
 	// Access point config information
 	// +kubebuilder:validation:Optional
 	AccessPointTypeConfigs []ServiceProfileAccessPointTypeConfigsParameters `json:"accessPointTypeConfigs,omitempty" tf:"access_point_type_configs,omitempty"`
 
+	// (List of String) Array of contact emails
 	// Array of contact emails
 	// +kubebuilder:validation:Optional
 	AllowedEmails []*string `json:"allowedEmails,omitempty" tf:"allowed_emails,omitempty"`
 
+	// (Block List) Custom Fields (see below for nested schema)
 	// Custom Fields
 	// +kubebuilder:validation:Optional
 	CustomFields []CustomFieldsParameters `json:"customFields,omitempty" tf:"custom_fields,omitempty"`
 
+	// provided service description
 	// User-provided service description
-	// +kubebuilder:validation:Required
-	Description *string `json:"description" tf:"description,omitempty"`
+	// +kubebuilder:validation:Optional
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// (Block Set, Max: 1) Marketing Info (see below for nested schema)
 	// Marketing Info
 	// +kubebuilder:validation:Optional
 	MarketingInfo []MarketingInfoParameters `json:"marketingInfo,omitempty" tf:"marketing_info,omitempty"`
 
+	// (Block List) Access point config information (see below for nested schema)
 	// Access point config information
 	// +kubebuilder:validation:Optional
 	Metros []MetrosParameters `json:"metros,omitempty" tf:"metros,omitempty"`
 
+	// assigned service profile name
 	// Customer-assigned service profile name
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Block List) Preferences for notifications on connection configuration or status changes (see below for nested schema)
 	// Preferences for notifications on connection configuration or status changes
 	// +kubebuilder:validation:Optional
 	Notifications []ServiceProfileNotificationsParameters `json:"notifications,omitempty" tf:"notifications,omitempty"`
 
+	// (Block List) Ports (see below for nested schema)
 	// Ports
 	// +kubebuilder:validation:Optional
 	Ports []PortsParameters `json:"ports,omitempty" tf:"ports,omitempty"`
 
+	// (Block Set, Max: 1) Project information (see below for nested schema)
 	// Project information
 	// +kubebuilder:validation:Optional
 	Project []ServiceProfileProjectParameters `json:"project,omitempty" tf:"project,omitempty"`
 
+	// (Boolean) Self Profile indicating if the profile is created for customer's self use
 	// Self Profile indicating if the profile is created for customer's  self use
 	// +kubebuilder:validation:Optional
 	SelfProfile *bool `json:"selfProfile,omitempty" tf:"self_profile,omitempty"`
 
+	// ACTIVE, PENDING_APPROVAL, DELETED, REJECTED
 	// Service profile state - ACTIVE, PENDING_APPROVAL, DELETED, REJECTED
 	// +kubebuilder:validation:Optional
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
 
+	// (List of String) Tags attached to the connection
 	// Tags attached to the connection
 	// +kubebuilder:validation:Optional
 	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
 
+	// L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
 	// Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE, IA_PROFILE
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// Flips view between buyer and seller representation. Available values : aSide, zSide. Default value : aSide
 	// +kubebuilder:validation:Optional
 	ViewPoint *string `json:"viewPoint,omitempty" tf:"view_point,omitempty"`
 
+	// (Block List) Virtual Devices (see below for nested schema)
 	// Virtual Devices
 	// +kubebuilder:validation:Optional
 	VirtualDevices []VirtualDevicesParameters `json:"virtualDevices,omitempty" tf:"virtual_devices,omitempty"`
 
+	// PUBLIC, PRIVATE
 	// Service profile visibility - PUBLIC, PRIVATE
 	// +kubebuilder:validation:Optional
 	Visibility *string `json:"visibility,omitempty" tf:"visibility,omitempty"`
 }
 
+type ServiceProfileProjectInitParameters struct {
+
+	// (String) Project Id
+	// Project Id
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+}
+
 type ServiceProfileProjectObservation struct {
 
+	// (String) Service Profile URI response attribute
 	// Unique Resource URL
 	Href *string `json:"href,omitempty" tf:"href,omitempty"`
+
+	// (String) Project Id
+	// Project Id
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 }
 
 type ServiceProfileProjectParameters struct {
 
+	// (String) Project Id
 	// Project Id
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 }
 
+type VirtualDevicesInitParameters struct {
+
+	// (String) Device Interface Uuid
+	// Device Interface Uuid
+	InterfaceUUID *string `json:"interfaceUuid,omitempty" tf:"interface_uuid,omitempty"`
+
+	// (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
+	// Device Location
+	Location []VirtualDevicesLocationInitParameters `json:"location,omitempty" tf:"location,omitempty"`
+
+	// L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+	// Virtual Device Type
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String) Equinix assigned service profile identifier
+	// Virtual Device Uuid
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
+type VirtualDevicesLocationInitParameters struct {
+
+	// (String) IBX Code
+	// IBX Code
+	Ibx *string `json:"ibx,omitempty" tf:"ibx,omitempty"`
+
+	// (String) Access point metro code
+	// Access point metro code
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// (String) Access point metro name
+	// Access point metro name
+	MetroName *string `json:"metroName,omitempty" tf:"metro_name,omitempty"`
+
+	// (String) Access point region
+	// Access point region
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+}
+
 type VirtualDevicesLocationObservation struct {
+
+	// (String) IBX Code
+	// IBX Code
+	Ibx *string `json:"ibx,omitempty" tf:"ibx,omitempty"`
+
+	// (String) Access point metro code
+	// Access point metro code
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// (String) Access point metro name
+	// Access point metro name
+	MetroName *string `json:"metroName,omitempty" tf:"metro_name,omitempty"`
+
+	// (String) Access point region
+	// Access point region
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }
 
 type VirtualDevicesLocationParameters struct {
 
+	// (String) IBX Code
 	// IBX Code
 	// +kubebuilder:validation:Optional
 	Ibx *string `json:"ibx,omitempty" tf:"ibx,omitempty"`
 
+	// (String) Access point metro code
 	// Access point metro code
 	// +kubebuilder:validation:Optional
 	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
 
+	// (String) Access point metro name
 	// Access point metro name
 	// +kubebuilder:validation:Optional
 	MetroName *string `json:"metroName,omitempty" tf:"metro_name,omitempty"`
 
+	// (String) Access point region
 	// Access point region
 	// +kubebuilder:validation:Optional
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }
 
 type VirtualDevicesObservation struct {
+
+	// (String) Device Interface Uuid
+	// Device Interface Uuid
+	InterfaceUUID *string `json:"interfaceUuid,omitempty" tf:"interface_uuid,omitempty"`
+
+	// (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
+	// Device Location
+	Location []VirtualDevicesLocationObservation `json:"location,omitempty" tf:"location,omitempty"`
+
+	// L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
+	// Virtual Device Type
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String) Equinix assigned service profile identifier
+	// Virtual Device Uuid
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type VirtualDevicesParameters struct {
 
+	// (String) Device Interface Uuid
 	// Device Interface Uuid
 	// +kubebuilder:validation:Optional
 	InterfaceUUID *string `json:"interfaceUuid,omitempty" tf:"interface_uuid,omitempty"`
 
+	// (Block Set, Max: 1) Colo/Port Location (see below for nested schema)
 	// Device Location
 	// +kubebuilder:validation:Optional
 	Location []VirtualDevicesLocationParameters `json:"location,omitempty" tf:"location,omitempty"`
 
+	// L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE
 	// Virtual Device Type
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
 
+	// (String) Equinix assigned service profile identifier
 	// Virtual Device Uuid
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	UUID *string `json:"uuid" tf:"uuid,omitempty"`
 }
 
@@ -529,6 +1348,17 @@ type VirtualDevicesParameters struct {
 type ServiceProfileSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ServiceProfileParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ServiceProfileInitParameters `json:"initProvider,omitempty"`
 }
 
 // ServiceProfileStatus defines the observed state of ServiceProfile.
@@ -538,19 +1368,23 @@ type ServiceProfileStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// ServiceProfile is the Schema for the ServiceProfiles API. <no value>
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
+// ServiceProfile is the Schema for the ServiceProfiles API. Fabric V4 API compatible resource allows creation and management of Equinix Fabric Service Profile
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinix}
 type ServiceProfile struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ServiceProfileSpec   `json:"spec"`
-	Status            ServiceProfileStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.description) || (has(self.initProvider) && has(self.initProvider.description))",message="spec.forProvider.description is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || (has(self.initProvider) && has(self.initProvider.type))",message="spec.forProvider.type is a required parameter"
+	Spec   ServiceProfileSpec   `json:"spec"`
+	Status ServiceProfileStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

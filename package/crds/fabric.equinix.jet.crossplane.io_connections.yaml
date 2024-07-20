@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.1
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.14.0
   name: connections.fabric.equinix.jet.crossplane.io
 spec:
   group: fabric.equinix.jet.crossplane.io
@@ -20,11 +19,11 @@ spec:
   scope: Cluster
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .status.conditions[?(@.type=='Ready')].status
-      name: READY
-      type: string
     - jsonPath: .status.conditions[?(@.type=='Synced')].status
       name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
       type: string
     - jsonPath: .metadata.annotations.crossplane\.io/external-name
       name: EXTERNAL-NAME
@@ -35,17 +34,23 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Connection is the Schema for the Connections API. <no value>
+        description: Connection is the Schema for the Connections API. Fabric V4 API
+          compatible resource allows creation and management of Equinix Fabric connection
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
             type: string
           metadata:
             type: object
@@ -54,9 +59,14 @@ spec:
             properties:
               deletionPolicy:
                 default: Delete
-                description: DeletionPolicy specifies what will happen to the underlying
-                  external when this managed resource is deleted - either "Delete"
-                  or "Orphan" the external resource.
+                description: |-
+                  DeletionPolicy specifies what will happen to the underlying external
+                  when this managed resource is deleted - either "Delete" or "Orphan" the
+                  external resource.
+                  This field is planned to be deprecated in favor of the ManagementPolicies
+                  field in a future release. Currently, both could be set independently and
+                  non-default values would be honored if the feature flag is enabled.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
                 enum:
                 - Orphan
                 - Delete
@@ -64,485 +74,1284 @@ spec:
               forProvider:
                 properties:
                   aSide:
-                    description: Requester or Customer side connection configuration
-                      object of the multi-segment connection
+                    description: |-
+                      segment connection (see below for nested schema)
+                      Requester or Customer side connection configuration object of the multi-segment connection
                     items:
                       properties:
                         accessPoint:
-                          description: Point of access details
+                          description: |-
+                            (Block Set, Max: 1) Point of access details (see below for nested schema)
+                            Point of access details
                           items:
                             properties:
                               account:
-                                description: Account
+                                description: |-
+                                  (Set of Object) Customer account information that is associated with this connection (see below for nested schema)
+                                  Account
                                 items:
                                   type: object
                                 type: array
                               authenticationKey:
-                                description: Authentication key for provider based
-                                  connections
+                                description: |-
+                                  (String) Authentication key for provider based connections
+                                  Authentication key for provider based connections
                                 type: string
                               gateway:
-                                description: '**Deprecated** `gateway` Use `router`
-                                  attribute instead'
+                                description: |-
+                                  (Block Set, Max: 1, Deprecated) Deprecated gateway Use router attribute instead (see below for nested schema)
+                                  **Deprecated** `gateway` Use `router` attribute instead
                                 items:
                                   properties:
                                     uuid:
-                                      description: Equinix-assigned virtual gateway
-                                        identifier
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned virtual gateway identifier
                                       type: string
                                   type: object
                                 type: array
                               interface:
-                                description: Virtual device interface
+                                description: |-
+                                  (Block Set, Max: 1) Virtual device interface (see below for nested schema)
+                                  Virtual device interface
                                 items:
                                   properties:
                                     id:
-                                      description: id
+                                      description: |-
+                                        (String) The ID of this resource.
+                                        id
                                       type: number
                                     type:
-                                      description: Interface type
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Interface type
                                       type: string
                                     uuid:
-                                      description: Equinix-assigned interface identifier
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned interface identifier
                                       type: string
                                   type: object
                                 type: array
                               linkProtocol:
-                                description: Connection link protocol
+                                description: |-
+                                  (Block Set, Max: 1) Connection link protocol (see below for nested schema)
+                                  Connection link protocol
                                 items:
                                   properties:
                                     type:
-                                      description: Type of the link protocol - UNTAGGED,
-                                        DOT1Q, QINQ, EVPN_VXLAN
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Type of the link protocol - UNTAGGED, DOT1Q, QINQ, EVPN_VXLAN
                                       type: string
                                     vlanCTag:
-                                      description: Vlan Customer Tag information,
-                                        vlanCTag value specified for QINQ connections
+                                      description: |-
+                                        (Number) Vlan Customer Tag information, vlanCTag value specified for QINQ connections
+                                        Vlan Customer Tag information, vlanCTag value specified for QINQ connections
                                       type: number
                                     vlanSTag:
-                                      description: Vlan Provider Tag information,
-                                        vlanSTag value specified for QINQ connections
+                                      description: |-
+                                        (Number) Vlan Provider Tag information, vlanSTag value specified for QINQ connections
+                                        Vlan Provider Tag information, vlanSTag value specified for QINQ connections
                                       type: number
                                     vlanTag:
-                                      description: Vlan Tag information, vlanTag value
-                                        specified for DOT1Q connections
+                                      description: |-
+                                        (Number) Vlan Tag information, vlanTag value specified for DOT1Q connections
+                                        Vlan Tag information, vlanTag value specified for DOT1Q connections
                                       type: number
                                   type: object
                                 type: array
                               location:
-                                description: Access point location
+                                description: |-
+                                  (Block Set, Max: 1) Access point location (see below for nested schema)
+                                  Access point location
                                 items:
                                   properties:
                                     ibx:
-                                      description: IBX Code
+                                      description: |-
+                                        (String) IBX Code
+                                        IBX Code
                                       type: string
                                     metroCode:
-                                      description: Access point metro code
+                                      description: |-
+                                        (String) Access point metro code
+                                        Access point metro code
                                       type: string
                                     metroName:
-                                      description: Access point metro name
+                                      description: |-
+                                        (String) Access point metro name
+                                        Access point metro name
                                       type: string
                                     region:
-                                      description: Access point region
+                                      description: |-
+                                        (String) Access point region
+                                        Access point region
                                       type: string
                                   type: object
                                 type: array
                               network:
-                                description: network access point information
+                                description: |-
+                                  (Block Set, Max: 1) network access point information (see below for nested schema)
+                                  network access point information
                                 items:
                                   properties:
                                     uuid:
-                                      description: Equinix-assigned Network identifier
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned Network identifier
                                       type: string
                                   type: object
                                 type: array
                               peeringType:
-                                description: Peering Type- PRIVATE,MICROSOFT,PUBLIC,
-                                  MANUAL
+                                description: |-
+                                  PRIVATE,MICROSOFT,PUBLIC, MANUAL
+                                  Peering Type- PRIVATE,MICROSOFT,PUBLIC, MANUAL
                                 type: string
                               port:
-                                description: Port access point information
+                                description: |-
+                                  (Block Set, Max: 1) Port access point information (see below for nested schema)
+                                  Port access point information
                                 items:
                                   properties:
                                     uuid:
-                                      description: Equinix-assigned Port identifier
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned Port identifier
                                       type: string
                                   type: object
                                 type: array
                               profile:
-                                description: Service Profile
+                                description: |-
+                                  (Block Set, Max: 1) Service Profile (see below for nested schema)
+                                  Service Profile
                                 items:
                                   properties:
                                     type:
-                                      description: Service profile type - L2_PROFILE,
-                                        L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE, IA_PROFILE
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE, IA_PROFILE
                                       type: string
                                     uuid:
-                                      description: Equinix assigned service profile
-                                        identifier
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix assigned service profile identifier
                                       type: string
-                                  required:
-                                  - type
-                                  - uuid
                                   type: object
                                 type: array
                               router:
-                                description: Cloud Router access point information
-                                  that replaces `gateway`
+                                description: |-
+                                  (Block Set, Max: 1) Cloud Router access point information that replaces gateway (see below for nested schema)
+                                  Cloud Router access point information that replaces `gateway`
                                 items:
                                   properties:
                                     uuid:
-                                      description: Equinix-assigned virtual gateway
-                                        identifier
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned virtual gateway identifier
                                       type: string
                                   type: object
                                 type: array
                               sellerRegion:
-                                description: Access point seller region
+                                description: |-
+                                  (String) Access point seller region
+                                  Access point seller region
                                 type: string
                               type:
-                                description: Access point type - COLO, VD, VG, SP,
-                                  IGW, SUBNET, CLOUD_ROUTER, NETWORK
+                                description: |-
+                                  (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                  Access point type - COLO, VD, VG, SP, IGW, SUBNET, CLOUD_ROUTER, NETWORK
                                 type: string
                               virtualDevice:
-                                description: Virtual device
+                                description: |-
+                                  (Block Set, Max: 1) Virtual device (see below for nested schema)
+                                  Virtual device
                                 items:
                                   properties:
                                     name:
-                                      description: Customer-assigned Virtual Device
-                                        Name
+                                      description: |-
+                                        numeric 24 characters string which can include only hyphens and underscores
+                                        Customer-assigned Virtual Device Name
                                       type: string
                                     type:
-                                      description: Virtual Device type
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Virtual Device type
                                       type: string
                                     uuid:
-                                      description: Equinix-assigned Virtual Device
-                                        identifier
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned Virtual Device identifier
                                       type: string
                                   type: object
                                 type: array
                             type: object
                           type: array
                         additionalInfo:
-                          description: Connection side additional information
+                          description: |-
+                            (List of Map of String) Connection additional information
+                            Connection side additional information
                           items:
                             properties:
                               key:
-                                description: Additional information key
+                                description: |-
+                                  (String) Additional information key
+                                  Additional information key
                                 type: string
                               value:
-                                description: Additional information value
+                                description: |-
+                                  (String) Additional information value
+                                  Additional information value
                                 type: string
                             type: object
                           type: array
                         serviceToken:
-                          description: For service token based connections, Service
-                            tokens authorize users to access protected resources and
-                            services. Resource owners can distribute the tokens to
-                            trusted partners and vendors, allowing selected third
-                            parties to work directly with Equinix network assets
+                          description: |-
+                            (Block Set, Max: 1) For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets (see below for nested schema)
+                            For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets
                           items:
                             properties:
                               type:
-                                description: Token type - VC_TOKEN
+                                description: |-
+                                  (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                  Token type - VC_TOKEN
                                 type: string
                               uuid:
-                                description: Equinix-assigned service token identifier
+                                description: |-
+                                  assigned connection identifier
+                                  Equinix-assigned service token identifier
                                 type: string
                             type: object
                           type: array
                       type: object
                     type: array
                   additionalInfo:
-                    description: Connection additional information
+                    description: |-
+                      (List of Map of String) Connection additional information
+                      Connection additional information
                     items:
                       additionalProperties:
                         type: string
                       type: object
                     type: array
                   bandwidth:
-                    description: Connection bandwidth in Mbps
+                    description: |-
+                      (Number) Connection bandwidth in Mbps
+                      Connection bandwidth in Mbps
                     type: number
                   description:
-                    description: Customer-provided connection description
+                    description: |-
+                      provided connection description
+                      Customer-provided connection description
                     type: string
                   name:
-                    description: Connection name. An alpha-numeric 24 characters string
-                      which can include only hyphens and underscores
+                    description: |-
+                      numeric 24 characters string which can include only hyphens and underscores
+                      Connection name. An alpha-numeric 24 characters string which can include only hyphens and underscores
                     type: string
                   notifications:
-                    description: Preferences for notifications on connection configuration
-                      or status changes
+                    description: |-
+                      (Block List, Min: 1) Preferences for notifications on connection configuration or status changes (see below for nested schema)
+                      Preferences for notifications on connection configuration or status changes
                     items:
                       properties:
                         emails:
-                          description: Array of contact emails
+                          description: |-
+                            (List of String) Array of contact emails
+                            Array of contact emails
                           items:
                             type: string
                           type: array
                         sendInterval:
-                          description: Send interval
+                          description: |-
+                            (String) Send interval
+                            Send interval
                           type: string
                         type:
-                          description: Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS,
-                            NOTIFICATIONS
+                          description: |-
+                            (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                            Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
                           type: string
-                      required:
-                      - emails
-                      - type
                       type: object
                     type: array
                   order:
-                    description: Order details
+                    description: |-
+                      (Block Set, Min: 1, Max: 1) Order details (see below for nested schema)
+                      Order details
                     items:
                       properties:
                         billingTier:
-                          description: Billing tier for connection bandwidth
+                          description: |-
+                            (String) Billing tier for connection bandwidth
+                            Billing tier for connection bandwidth
                           type: string
                         orderId:
-                          description: Order Identification
+                          description: |-
+                            (String) Order Identification
+                            Order Identification
                           type: string
                         orderNumber:
-                          description: Order Reference Number
+                          description: |-
+                            (String) Order Reference Number
+                            Order Reference Number
                           type: string
                         purchaseOrderNumber:
-                          description: Purchase order number
+                          description: |-
+                            (String) Purchase order number
+                            Purchase order number
                           type: string
                       type: object
                     type: array
                   project:
-                    description: Project information
+                    description: |-
+                      (Block Set, Max: 1) Project information (see below for nested schema)
+                      Project information
                     items:
                       properties:
                         projectId:
-                          description: Project Id
+                          description: |-
+                            (String) Project Id
+                            Project Id
                           type: string
                       type: object
                     type: array
                   redundancy:
-                    description: Connection Redundancy Configuration
+                    description: |-
+                      (Block Set, Max: 1) Connection Redundancy Configuration (see below for nested schema)
+                      Connection Redundancy Configuration
                     items:
                       properties:
                         group:
-                          description: Redundancy group identifier (Use the redundancy.0.group
-                            UUID of primary connection; e.g. one(equinix_fabric_connection.primary_port_connection.redundancy).group
-                            or equinix_fabric_connection.primary_port_connection.redundancy.0.group)
+                          description: |-
+                            (String)
+                            Redundancy group identifier (Use the redundancy.0.group UUID of primary connection; e.g. one(equinix_fabric_connection.primary_port_connection.redundancy).group or equinix_fabric_connection.primary_port_connection.redundancy.0.group)
                           type: string
                         priority:
-                          description: Connection priority in redundancy group - PRIMARY,
-                            SECONDARY
+                          description: |-
+                            (String)
+                            Connection priority in redundancy group - PRIMARY, SECONDARY
                           type: string
                       type: object
                     type: array
                   type:
-                    description: Defines the connection type like EVPL_VC, EPL_VC,
-                      IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC,
-                      IA_VC, EC_VC
+                    description: |-
+                      (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                      Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, IA_VC, EC_VC
                     type: string
                   zSide:
-                    description: Destination or Provider side connection configuration
-                      object of the multi-segment connection
+                    description: |-
+                      segment connection (see below for nested schema)
+                      Destination or Provider side connection configuration object of the multi-segment connection
                     items:
                       properties:
                         accessPoint:
-                          description: Point of access details
+                          description: |-
+                            (Block Set, Max: 1) Point of access details (see below for nested schema)
+                            Point of access details
                           items:
                             properties:
                               account:
-                                description: Account
+                                description: |-
+                                  (Set of Object) Customer account information that is associated with this connection (see below for nested schema)
+                                  Account
                                 items:
                                   type: object
                                 type: array
                               authenticationKey:
-                                description: Authentication key for provider based
-                                  connections
+                                description: |-
+                                  (String) Authentication key for provider based connections
+                                  Authentication key for provider based connections
                                 type: string
                               gateway:
-                                description: '**Deprecated** `gateway` Use `router`
-                                  attribute instead'
+                                description: |-
+                                  (Block Set, Max: 1, Deprecated) Deprecated gateway Use router attribute instead (see below for nested schema)
+                                  **Deprecated** `gateway` Use `router` attribute instead
                                 items:
                                   properties:
                                     uuid:
-                                      description: Equinix-assigned virtual gateway
-                                        identifier
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned virtual gateway identifier
                                       type: string
                                   type: object
                                 type: array
                               interface:
-                                description: Virtual device interface
+                                description: |-
+                                  (Block Set, Max: 1) Virtual device interface (see below for nested schema)
+                                  Virtual device interface
                                 items:
                                   properties:
                                     id:
-                                      description: id
+                                      description: |-
+                                        (String) The ID of this resource.
+                                        id
                                       type: number
                                     type:
-                                      description: Interface type
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Interface type
                                       type: string
                                     uuid:
-                                      description: Equinix-assigned interface identifier
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned interface identifier
                                       type: string
                                   type: object
                                 type: array
                               linkProtocol:
-                                description: Connection link protocol
+                                description: |-
+                                  (Block Set, Max: 1) Connection link protocol (see below for nested schema)
+                                  Connection link protocol
                                 items:
                                   properties:
                                     type:
-                                      description: Type of the link protocol - UNTAGGED,
-                                        DOT1Q, QINQ, EVPN_VXLAN
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Type of the link protocol - UNTAGGED, DOT1Q, QINQ, EVPN_VXLAN
                                       type: string
                                     vlanCTag:
-                                      description: Vlan Customer Tag information,
-                                        vlanCTag value specified for QINQ connections
+                                      description: |-
+                                        (Number) Vlan Customer Tag information, vlanCTag value specified for QINQ connections
+                                        Vlan Customer Tag information, vlanCTag value specified for QINQ connections
                                       type: number
                                     vlanSTag:
-                                      description: Vlan Provider Tag information,
-                                        vlanSTag value specified for QINQ connections
+                                      description: |-
+                                        (Number) Vlan Provider Tag information, vlanSTag value specified for QINQ connections
+                                        Vlan Provider Tag information, vlanSTag value specified for QINQ connections
                                       type: number
                                     vlanTag:
-                                      description: Vlan Tag information, vlanTag value
-                                        specified for DOT1Q connections
+                                      description: |-
+                                        (Number) Vlan Tag information, vlanTag value specified for DOT1Q connections
+                                        Vlan Tag information, vlanTag value specified for DOT1Q connections
                                       type: number
                                   type: object
                                 type: array
                               location:
-                                description: Access point location
+                                description: |-
+                                  (Block Set, Max: 1) Access point location (see below for nested schema)
+                                  Access point location
                                 items:
                                   properties:
                                     ibx:
-                                      description: IBX Code
+                                      description: |-
+                                        (String) IBX Code
+                                        IBX Code
                                       type: string
                                     metroCode:
-                                      description: Access point metro code
+                                      description: |-
+                                        (String) Access point metro code
+                                        Access point metro code
                                       type: string
                                     metroName:
-                                      description: Access point metro name
+                                      description: |-
+                                        (String) Access point metro name
+                                        Access point metro name
                                       type: string
                                     region:
-                                      description: Access point region
+                                      description: |-
+                                        (String) Access point region
+                                        Access point region
                                       type: string
                                   type: object
                                 type: array
                               network:
-                                description: network access point information
+                                description: |-
+                                  (Block Set, Max: 1) network access point information (see below for nested schema)
+                                  network access point information
                                 items:
                                   properties:
                                     uuid:
-                                      description: Equinix-assigned Network identifier
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned Network identifier
                                       type: string
                                   type: object
                                 type: array
                               peeringType:
-                                description: Peering Type- PRIVATE,MICROSOFT,PUBLIC,
-                                  MANUAL
+                                description: |-
+                                  PRIVATE,MICROSOFT,PUBLIC, MANUAL
+                                  Peering Type- PRIVATE,MICROSOFT,PUBLIC, MANUAL
                                 type: string
                               port:
-                                description: Port access point information
+                                description: |-
+                                  (Block Set, Max: 1) Port access point information (see below for nested schema)
+                                  Port access point information
                                 items:
                                   properties:
                                     uuid:
-                                      description: Equinix-assigned Port identifier
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned Port identifier
                                       type: string
                                   type: object
                                 type: array
                               profile:
-                                description: Service Profile
+                                description: |-
+                                  (Block Set, Max: 1) Service Profile (see below for nested schema)
+                                  Service Profile
                                 items:
                                   properties:
                                     type:
-                                      description: Service profile type - L2_PROFILE,
-                                        L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE, IA_PROFILE
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE, IA_PROFILE
                                       type: string
                                     uuid:
-                                      description: Equinix assigned service profile
-                                        identifier
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix assigned service profile identifier
                                       type: string
-                                  required:
-                                  - type
-                                  - uuid
                                   type: object
                                 type: array
                               router:
-                                description: Cloud Router access point information
-                                  that replaces `gateway`
+                                description: |-
+                                  (Block Set, Max: 1) Cloud Router access point information that replaces gateway (see below for nested schema)
+                                  Cloud Router access point information that replaces `gateway`
                                 items:
                                   properties:
                                     uuid:
-                                      description: Equinix-assigned virtual gateway
-                                        identifier
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned virtual gateway identifier
                                       type: string
                                   type: object
                                 type: array
                               sellerRegion:
-                                description: Access point seller region
+                                description: |-
+                                  (String) Access point seller region
+                                  Access point seller region
                                 type: string
                               type:
-                                description: Access point type - COLO, VD, VG, SP,
-                                  IGW, SUBNET, CLOUD_ROUTER, NETWORK
+                                description: |-
+                                  (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                  Access point type - COLO, VD, VG, SP, IGW, SUBNET, CLOUD_ROUTER, NETWORK
                                 type: string
                               virtualDevice:
-                                description: Virtual device
+                                description: |-
+                                  (Block Set, Max: 1) Virtual device (see below for nested schema)
+                                  Virtual device
                                 items:
                                   properties:
                                     name:
-                                      description: Customer-assigned Virtual Device
-                                        Name
+                                      description: |-
+                                        numeric 24 characters string which can include only hyphens and underscores
+                                        Customer-assigned Virtual Device Name
                                       type: string
                                     type:
-                                      description: Virtual Device type
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Virtual Device type
                                       type: string
                                     uuid:
-                                      description: Equinix-assigned Virtual Device
-                                        identifier
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned Virtual Device identifier
                                       type: string
                                   type: object
                                 type: array
                             type: object
                           type: array
                         additionalInfo:
-                          description: Connection side additional information
+                          description: |-
+                            (List of Map of String) Connection additional information
+                            Connection side additional information
                           items:
                             properties:
                               key:
-                                description: Additional information key
+                                description: |-
+                                  (String) Additional information key
+                                  Additional information key
                                 type: string
                               value:
-                                description: Additional information value
+                                description: |-
+                                  (String) Additional information value
+                                  Additional information value
                                 type: string
                             type: object
                           type: array
                         serviceToken:
-                          description: For service token based connections, Service
-                            tokens authorize users to access protected resources and
-                            services. Resource owners can distribute the tokens to
-                            trusted partners and vendors, allowing selected third
-                            parties to work directly with Equinix network assets
+                          description: |-
+                            (Block Set, Max: 1) For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets (see below for nested schema)
+                            For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets
                           items:
                             properties:
                               type:
-                                description: Token type - VC_TOKEN
+                                description: |-
+                                  (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                  Token type - VC_TOKEN
                                 type: string
                               uuid:
-                                description: Equinix-assigned service token identifier
+                                description: |-
+                                  assigned connection identifier
+                                  Equinix-assigned service token identifier
                                 type: string
                             type: object
                           type: array
                       type: object
                     type: array
-                required:
-                - aSide
-                - bandwidth
-                - name
-                - notifications
-                - type
-                - zSide
                 type: object
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
+                properties:
+                  aSide:
+                    description: |-
+                      segment connection (see below for nested schema)
+                      Requester or Customer side connection configuration object of the multi-segment connection
+                    items:
+                      properties:
+                        accessPoint:
+                          description: |-
+                            (Block Set, Max: 1) Point of access details (see below for nested schema)
+                            Point of access details
+                          items:
+                            properties:
+                              account:
+                                description: |-
+                                  (Set of Object) Customer account information that is associated with this connection (see below for nested schema)
+                                  Account
+                                items:
+                                  type: object
+                                type: array
+                              authenticationKey:
+                                description: |-
+                                  (String) Authentication key for provider based connections
+                                  Authentication key for provider based connections
+                                type: string
+                              gateway:
+                                description: |-
+                                  (Block Set, Max: 1, Deprecated) Deprecated gateway Use router attribute instead (see below for nested schema)
+                                  **Deprecated** `gateway` Use `router` attribute instead
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned virtual gateway identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              interface:
+                                description: |-
+                                  (Block Set, Max: 1) Virtual device interface (see below for nested schema)
+                                  Virtual device interface
+                                items:
+                                  properties:
+                                    id:
+                                      description: |-
+                                        (String) The ID of this resource.
+                                        id
+                                      type: number
+                                    type:
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Interface type
+                                      type: string
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned interface identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              linkProtocol:
+                                description: |-
+                                  (Block Set, Max: 1) Connection link protocol (see below for nested schema)
+                                  Connection link protocol
+                                items:
+                                  properties:
+                                    type:
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Type of the link protocol - UNTAGGED, DOT1Q, QINQ, EVPN_VXLAN
+                                      type: string
+                                    vlanCTag:
+                                      description: |-
+                                        (Number) Vlan Customer Tag information, vlanCTag value specified for QINQ connections
+                                        Vlan Customer Tag information, vlanCTag value specified for QINQ connections
+                                      type: number
+                                    vlanSTag:
+                                      description: |-
+                                        (Number) Vlan Provider Tag information, vlanSTag value specified for QINQ connections
+                                        Vlan Provider Tag information, vlanSTag value specified for QINQ connections
+                                      type: number
+                                    vlanTag:
+                                      description: |-
+                                        (Number) Vlan Tag information, vlanTag value specified for DOT1Q connections
+                                        Vlan Tag information, vlanTag value specified for DOT1Q connections
+                                      type: number
+                                  type: object
+                                type: array
+                              location:
+                                description: |-
+                                  (Block Set, Max: 1) Access point location (see below for nested schema)
+                                  Access point location
+                                items:
+                                  properties:
+                                    ibx:
+                                      description: |-
+                                        (String) IBX Code
+                                        IBX Code
+                                      type: string
+                                    metroCode:
+                                      description: |-
+                                        (String) Access point metro code
+                                        Access point metro code
+                                      type: string
+                                    metroName:
+                                      description: |-
+                                        (String) Access point metro name
+                                        Access point metro name
+                                      type: string
+                                    region:
+                                      description: |-
+                                        (String) Access point region
+                                        Access point region
+                                      type: string
+                                  type: object
+                                type: array
+                              network:
+                                description: |-
+                                  (Block Set, Max: 1) network access point information (see below for nested schema)
+                                  network access point information
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned Network identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              peeringType:
+                                description: |-
+                                  PRIVATE,MICROSOFT,PUBLIC, MANUAL
+                                  Peering Type- PRIVATE,MICROSOFT,PUBLIC, MANUAL
+                                type: string
+                              port:
+                                description: |-
+                                  (Block Set, Max: 1) Port access point information (see below for nested schema)
+                                  Port access point information
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned Port identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              profile:
+                                description: |-
+                                  (Block Set, Max: 1) Service Profile (see below for nested schema)
+                                  Service Profile
+                                items:
+                                  properties:
+                                    type:
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE, IA_PROFILE
+                                      type: string
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix assigned service profile identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              router:
+                                description: |-
+                                  (Block Set, Max: 1) Cloud Router access point information that replaces gateway (see below for nested schema)
+                                  Cloud Router access point information that replaces `gateway`
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned virtual gateway identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              sellerRegion:
+                                description: |-
+                                  (String) Access point seller region
+                                  Access point seller region
+                                type: string
+                              type:
+                                description: |-
+                                  (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                  Access point type - COLO, VD, VG, SP, IGW, SUBNET, CLOUD_ROUTER, NETWORK
+                                type: string
+                              virtualDevice:
+                                description: |-
+                                  (Block Set, Max: 1) Virtual device (see below for nested schema)
+                                  Virtual device
+                                items:
+                                  properties:
+                                    name:
+                                      description: |-
+                                        numeric 24 characters string which can include only hyphens and underscores
+                                        Customer-assigned Virtual Device Name
+                                      type: string
+                                    type:
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Virtual Device type
+                                      type: string
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned Virtual Device identifier
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                        additionalInfo:
+                          description: |-
+                            (List of Map of String) Connection additional information
+                            Connection side additional information
+                          items:
+                            properties:
+                              key:
+                                description: |-
+                                  (String) Additional information key
+                                  Additional information key
+                                type: string
+                              value:
+                                description: |-
+                                  (String) Additional information value
+                                  Additional information value
+                                type: string
+                            type: object
+                          type: array
+                        serviceToken:
+                          description: |-
+                            (Block Set, Max: 1) For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets (see below for nested schema)
+                            For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets
+                          items:
+                            properties:
+                              type:
+                                description: |-
+                                  (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                  Token type - VC_TOKEN
+                                type: string
+                              uuid:
+                                description: |-
+                                  assigned connection identifier
+                                  Equinix-assigned service token identifier
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  additionalInfo:
+                    description: |-
+                      (List of Map of String) Connection additional information
+                      Connection additional information
+                    items:
+                      additionalProperties:
+                        type: string
+                      type: object
+                    type: array
+                  bandwidth:
+                    description: |-
+                      (Number) Connection bandwidth in Mbps
+                      Connection bandwidth in Mbps
+                    type: number
+                  description:
+                    description: |-
+                      provided connection description
+                      Customer-provided connection description
+                    type: string
+                  name:
+                    description: |-
+                      numeric 24 characters string which can include only hyphens and underscores
+                      Connection name. An alpha-numeric 24 characters string which can include only hyphens and underscores
+                    type: string
+                  notifications:
+                    description: |-
+                      (Block List, Min: 1) Preferences for notifications on connection configuration or status changes (see below for nested schema)
+                      Preferences for notifications on connection configuration or status changes
+                    items:
+                      properties:
+                        emails:
+                          description: |-
+                            (List of String) Array of contact emails
+                            Array of contact emails
+                          items:
+                            type: string
+                          type: array
+                        sendInterval:
+                          description: |-
+                            (String) Send interval
+                            Send interval
+                          type: string
+                        type:
+                          description: |-
+                            (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                            Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
+                          type: string
+                      type: object
+                    type: array
+                  order:
+                    description: |-
+                      (Block Set, Min: 1, Max: 1) Order details (see below for nested schema)
+                      Order details
+                    items:
+                      properties:
+                        billingTier:
+                          description: |-
+                            (String) Billing tier for connection bandwidth
+                            Billing tier for connection bandwidth
+                          type: string
+                        orderId:
+                          description: |-
+                            (String) Order Identification
+                            Order Identification
+                          type: string
+                        orderNumber:
+                          description: |-
+                            (String) Order Reference Number
+                            Order Reference Number
+                          type: string
+                        purchaseOrderNumber:
+                          description: |-
+                            (String) Purchase order number
+                            Purchase order number
+                          type: string
+                      type: object
+                    type: array
+                  project:
+                    description: |-
+                      (Block Set, Max: 1) Project information (see below for nested schema)
+                      Project information
+                    items:
+                      properties:
+                        projectId:
+                          description: |-
+                            (String) Project Id
+                            Project Id
+                          type: string
+                      type: object
+                    type: array
+                  redundancy:
+                    description: |-
+                      (Block Set, Max: 1) Connection Redundancy Configuration (see below for nested schema)
+                      Connection Redundancy Configuration
+                    items:
+                      properties:
+                        group:
+                          description: |-
+                            (String)
+                            Redundancy group identifier (Use the redundancy.0.group UUID of primary connection; e.g. one(equinix_fabric_connection.primary_port_connection.redundancy).group or equinix_fabric_connection.primary_port_connection.redundancy.0.group)
+                          type: string
+                        priority:
+                          description: |-
+                            (String)
+                            Connection priority in redundancy group - PRIMARY, SECONDARY
+                          type: string
+                      type: object
+                    type: array
+                  type:
+                    description: |-
+                      (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                      Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, IA_VC, EC_VC
+                    type: string
+                  zSide:
+                    description: |-
+                      segment connection (see below for nested schema)
+                      Destination or Provider side connection configuration object of the multi-segment connection
+                    items:
+                      properties:
+                        accessPoint:
+                          description: |-
+                            (Block Set, Max: 1) Point of access details (see below for nested schema)
+                            Point of access details
+                          items:
+                            properties:
+                              account:
+                                description: |-
+                                  (Set of Object) Customer account information that is associated with this connection (see below for nested schema)
+                                  Account
+                                items:
+                                  type: object
+                                type: array
+                              authenticationKey:
+                                description: |-
+                                  (String) Authentication key for provider based connections
+                                  Authentication key for provider based connections
+                                type: string
+                              gateway:
+                                description: |-
+                                  (Block Set, Max: 1, Deprecated) Deprecated gateway Use router attribute instead (see below for nested schema)
+                                  **Deprecated** `gateway` Use `router` attribute instead
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned virtual gateway identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              interface:
+                                description: |-
+                                  (Block Set, Max: 1) Virtual device interface (see below for nested schema)
+                                  Virtual device interface
+                                items:
+                                  properties:
+                                    id:
+                                      description: |-
+                                        (String) The ID of this resource.
+                                        id
+                                      type: number
+                                    type:
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Interface type
+                                      type: string
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned interface identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              linkProtocol:
+                                description: |-
+                                  (Block Set, Max: 1) Connection link protocol (see below for nested schema)
+                                  Connection link protocol
+                                items:
+                                  properties:
+                                    type:
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Type of the link protocol - UNTAGGED, DOT1Q, QINQ, EVPN_VXLAN
+                                      type: string
+                                    vlanCTag:
+                                      description: |-
+                                        (Number) Vlan Customer Tag information, vlanCTag value specified for QINQ connections
+                                        Vlan Customer Tag information, vlanCTag value specified for QINQ connections
+                                      type: number
+                                    vlanSTag:
+                                      description: |-
+                                        (Number) Vlan Provider Tag information, vlanSTag value specified for QINQ connections
+                                        Vlan Provider Tag information, vlanSTag value specified for QINQ connections
+                                      type: number
+                                    vlanTag:
+                                      description: |-
+                                        (Number) Vlan Tag information, vlanTag value specified for DOT1Q connections
+                                        Vlan Tag information, vlanTag value specified for DOT1Q connections
+                                      type: number
+                                  type: object
+                                type: array
+                              location:
+                                description: |-
+                                  (Block Set, Max: 1) Access point location (see below for nested schema)
+                                  Access point location
+                                items:
+                                  properties:
+                                    ibx:
+                                      description: |-
+                                        (String) IBX Code
+                                        IBX Code
+                                      type: string
+                                    metroCode:
+                                      description: |-
+                                        (String) Access point metro code
+                                        Access point metro code
+                                      type: string
+                                    metroName:
+                                      description: |-
+                                        (String) Access point metro name
+                                        Access point metro name
+                                      type: string
+                                    region:
+                                      description: |-
+                                        (String) Access point region
+                                        Access point region
+                                      type: string
+                                  type: object
+                                type: array
+                              network:
+                                description: |-
+                                  (Block Set, Max: 1) network access point information (see below for nested schema)
+                                  network access point information
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned Network identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              peeringType:
+                                description: |-
+                                  PRIVATE,MICROSOFT,PUBLIC, MANUAL
+                                  Peering Type- PRIVATE,MICROSOFT,PUBLIC, MANUAL
+                                type: string
+                              port:
+                                description: |-
+                                  (Block Set, Max: 1) Port access point information (see below for nested schema)
+                                  Port access point information
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned Port identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              profile:
+                                description: |-
+                                  (Block Set, Max: 1) Service Profile (see below for nested schema)
+                                  Service Profile
+                                items:
+                                  properties:
+                                    type:
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE, IA_PROFILE
+                                      type: string
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix assigned service profile identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              router:
+                                description: |-
+                                  (Block Set, Max: 1) Cloud Router access point information that replaces gateway (see below for nested schema)
+                                  Cloud Router access point information that replaces `gateway`
+                                items:
+                                  properties:
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned virtual gateway identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              sellerRegion:
+                                description: |-
+                                  (String) Access point seller region
+                                  Access point seller region
+                                type: string
+                              type:
+                                description: |-
+                                  (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                  Access point type - COLO, VD, VG, SP, IGW, SUBNET, CLOUD_ROUTER, NETWORK
+                                type: string
+                              virtualDevice:
+                                description: |-
+                                  (Block Set, Max: 1) Virtual device (see below for nested schema)
+                                  Virtual device
+                                items:
+                                  properties:
+                                    name:
+                                      description: |-
+                                        numeric 24 characters string which can include only hyphens and underscores
+                                        Customer-assigned Virtual Device Name
+                                      type: string
+                                    type:
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Virtual Device type
+                                      type: string
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned Virtual Device identifier
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                        additionalInfo:
+                          description: |-
+                            (List of Map of String) Connection additional information
+                            Connection side additional information
+                          items:
+                            properties:
+                              key:
+                                description: |-
+                                  (String) Additional information key
+                                  Additional information key
+                                type: string
+                              value:
+                                description: |-
+                                  (String) Additional information value
+                                  Additional information value
+                                type: string
+                            type: object
+                          type: array
+                        serviceToken:
+                          description: |-
+                            (Block Set, Max: 1) For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets (see below for nested schema)
+                            For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets
+                          items:
+                            properties:
+                              type:
+                                description: |-
+                                  (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                  Token type - VC_TOKEN
+                                type: string
+                              uuid:
+                                description: |-
+                                  assigned connection identifier
+                                  Equinix-assigned service token identifier
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  This field is planned to replace the DeletionPolicy field in a future
+                  release. Currently, both could be set independently and non-default
+                  values would be honored if the feature flag is enabled. If both are
+                  custom, the DeletionPolicy field will be ignored.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
               providerConfigRef:
                 default:
                   name: default
-                description: ProviderConfigReference specifies how the provider that
-                  will be used to create, observe, update, and delete this managed
-                  resource should be configured.
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
                 properties:
                   name:
                     description: Name of the referenced object.
@@ -552,57 +1361,21 @@ spec:
                     properties:
                       resolution:
                         default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
+                        description: |-
+                          Resolution specifies whether resolution of this reference is required.
+                          The default is 'Required', which means the reconcile will fail if the
+                          reference cannot be resolved. 'Optional' means this reference will be
+                          a no-op if it cannot be resolved.
                         enum:
                         - Required
                         - Optional
                         type: string
                       resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
-                        enum:
-                        - Always
-                        - IfNotPresent
-                        type: string
-                    type: object
-                required:
-                - name
-                type: object
-              providerRef:
-                description: 'ProviderReference specifies the provider that will be
-                  used to create, observe, update, and delete this managed resource.
-                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
-                properties:
-                  name:
-                    description: Name of the referenced object.
-                    type: string
-                  policy:
-                    description: Policies for referencing.
-                    properties:
-                      resolution:
-                        default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
-                        enum:
-                        - Required
-                        - Optional
-                        type: string
-                      resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
+                        description: |-
+                          Resolve specifies when this reference should be resolved. The default
+                          is 'IfNotPresent', which will attempt to resolve the reference only when
+                          the corresponding field is not present. Use 'Always' to resolve the
+                          reference on every reconcile.
                         enum:
                         - Always
                         - IfNotPresent
@@ -612,17 +1385,19 @@ spec:
                 - name
                 type: object
               publishConnectionDetailsTo:
-                description: PublishConnectionDetailsTo specifies the connection secret
-                  config which contains a name, metadata and a reference to secret
-                  store config to which any connection details for this managed resource
-                  should be written. Connection details frequently include the endpoint,
-                  username, and password required to connect to the managed resource.
+                description: |-
+                  PublishConnectionDetailsTo specifies the connection secret config which
+                  contains a name, metadata and a reference to secret store config to
+                  which any connection details for this managed resource should be written.
+                  Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
                 properties:
                   configRef:
                     default:
                       name: default
-                    description: SecretStoreConfigRef specifies which secret store
-                      config should be used for this ConnectionSecret.
+                    description: |-
+                      SecretStoreConfigRef specifies which secret store config should be used
+                      for this ConnectionSecret.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -632,21 +1407,21 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -661,21 +1436,22 @@ spec:
                       annotations:
                         additionalProperties:
                           type: string
-                        description: Annotations are the annotations to be added to
-                          connection secret. - For Kubernetes secrets, this will be
-                          used as "metadata.annotations". - It is up to Secret Store
-                          implementation for others store types.
+                        description: |-
+                          Annotations are the annotations to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.annotations".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       labels:
                         additionalProperties:
                           type: string
-                        description: Labels are the labels/tags to be added to connection
-                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
-                          - It is up to Secret Store implementation for others store
-                          types.
+                        description: |-
+                          Labels are the labels/tags to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       type:
-                        description: Type is the SecretType for the connection secret.
+                        description: |-
+                          Type is the SecretType for the connection secret.
                           - Only valid for Kubernetes Secret Stores.
                         type: string
                     type: object
@@ -686,14 +1462,15 @@ spec:
                 - name
                 type: object
               writeConnectionSecretToRef:
-                description: WriteConnectionSecretToReference specifies the namespace
-                  and name of a Secret to which any connection details for this managed
-                  resource should be written. Connection details frequently include
-                  the endpoint, username, and password required to connect to the
-                  managed resource. This field is planned to be replaced in a future
-                  release in favor of PublishConnectionDetailsTo. Currently, both
-                  could be set independently and connection details would be published
-                  to both without affecting each other.
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                  This field is planned to be replaced in a future release in favor of
+                  PublishConnectionDetailsTo. Currently, both could be set independently
+                  and connection details would be published to both without affecting
+                  each other.
                 properties:
                   name:
                     description: Name of the secret.
@@ -708,432 +1485,1073 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.aSide is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.aSide)
+                || (has(self.initProvider) && has(self.initProvider.aSide))'
+            - message: spec.forProvider.bandwidth is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.bandwidth)
+                || (has(self.initProvider) && has(self.initProvider.bandwidth))'
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
+            - message: spec.forProvider.notifications is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.notifications)
+                || (has(self.initProvider) && has(self.initProvider.notifications))'
+            - message: spec.forProvider.type is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
+                || (has(self.initProvider) && has(self.initProvider.type))'
+            - message: spec.forProvider.zSide is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.zSide)
+                || (has(self.initProvider) && has(self.initProvider.zSide))'
           status:
             description: ConnectionStatus defines the observed state of Connection.
             properties:
               atProvider:
                 properties:
                   aSide:
-                    description: Requester or Customer side connection configuration
-                      object of the multi-segment connection
+                    description: |-
+                      segment connection (see below for nested schema)
+                      Requester or Customer side connection configuration object of the multi-segment connection
                     items:
                       properties:
                         accessPoint:
-                          description: Point of access details
+                          description: |-
+                            (Block Set, Max: 1) Point of access details (see below for nested schema)
+                            Point of access details
                           items:
                             properties:
                               account:
-                                description: Account
+                                description: |-
+                                  (Set of Object) Customer account information that is associated with this connection (see below for nested schema)
+                                  Account
                                 items:
                                   properties:
                                     accountName:
-                                      description: Legal name of the accountholder.
+                                      description: |-
+                                        (String) Legal name of the accountholder.
+                                        Legal name of the accountholder.
                                       type: string
                                     accountNumber:
-                                      description: Equinix-assigned account number.
+                                      description: |-
+                                        assigned account number.
+                                        Equinix-assigned account number.
                                       type: number
                                     globalCustId:
-                                      description: Equinix-assigned ID of the subscriber's
-                                        parent organization.
+                                      description: |-
+                                        assigned ID of the subscriber's parent organization.
+                                        Equinix-assigned ID of the subscriber's parent organization.
                                       type: string
                                     globalOrgId:
-                                      description: Equinix-assigned ID of the subscriber's
-                                        parent organization.
+                                      description: |-
+                                        assigned ID of the subscriber's parent organization.
+                                        Equinix-assigned ID of the subscriber's parent organization.
                                       type: string
                                     globalOrganizationName:
-                                      description: Equinix-assigned name of the subscriber's
-                                        parent organization.
+                                      description: |-
+                                        assigned name of the subscriber's parent organization.
+                                        Equinix-assigned name of the subscriber's parent organization.
                                       type: string
                                     orgId:
-                                      description: Equinix-assigned ID of the subscriber's
-                                        organization.
+                                      description: |-
+                                        assigned ID of the subscriber's organization.
+                                        Equinix-assigned ID of the subscriber's organization.
                                       type: number
                                     organizationName:
-                                      description: Equinix-assigned name of the subscriber's
-                                        organization.
+                                      description: |-
+                                        assigned name of the subscriber's organization.
+                                        Equinix-assigned name of the subscriber's organization.
                                       type: string
                                     ucmId:
-                                      description: Enterprise datastore id
+                                      description: |-
+                                        (String) Enterprise datastore id
+                                        Enterprise datastore id
                                       type: string
                                   type: object
                                 type: array
+                              authenticationKey:
+                                description: |-
+                                  (String) Authentication key for provider based connections
+                                  Authentication key for provider based connections
+                                type: string
                               gateway:
-                                description: '**Deprecated** `gateway` Use `router`
-                                  attribute instead'
+                                description: |-
+                                  (Block Set, Max: 1, Deprecated) Deprecated gateway Use router attribute instead (see below for nested schema)
+                                  **Deprecated** `gateway` Use `router` attribute instead
                                 items:
                                   properties:
                                     href:
-                                      description: Unique Resource Identifier
+                                      description: |-
+                                        (String) Connection URI information
+                                        Unique Resource Identifier
+                                      type: string
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned virtual gateway identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              interface:
+                                description: |-
+                                  (Block Set, Max: 1) Virtual device interface (see below for nested schema)
+                                  Virtual device interface
+                                items:
+                                  properties:
+                                    id:
+                                      description: |-
+                                        (String) The ID of this resource.
+                                        id
+                                      type: number
+                                    type:
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Interface type
+                                      type: string
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned interface identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              linkProtocol:
+                                description: |-
+                                  (Block Set, Max: 1) Connection link protocol (see below for nested schema)
+                                  Connection link protocol
+                                items:
+                                  properties:
+                                    type:
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Type of the link protocol - UNTAGGED, DOT1Q, QINQ, EVPN_VXLAN
+                                      type: string
+                                    vlanCTag:
+                                      description: |-
+                                        (Number) Vlan Customer Tag information, vlanCTag value specified for QINQ connections
+                                        Vlan Customer Tag information, vlanCTag value specified for QINQ connections
+                                      type: number
+                                    vlanSTag:
+                                      description: |-
+                                        (Number) Vlan Provider Tag information, vlanSTag value specified for QINQ connections
+                                        Vlan Provider Tag information, vlanSTag value specified for QINQ connections
+                                      type: number
+                                    vlanTag:
+                                      description: |-
+                                        (Number) Vlan Tag information, vlanTag value specified for DOT1Q connections
+                                        Vlan Tag information, vlanTag value specified for DOT1Q connections
+                                      type: number
+                                  type: object
+                                type: array
+                              location:
+                                description: |-
+                                  (Block Set, Max: 1) Access point location (see below for nested schema)
+                                  Access point location
+                                items:
+                                  properties:
+                                    ibx:
+                                      description: |-
+                                        (String) IBX Code
+                                        IBX Code
+                                      type: string
+                                    metroCode:
+                                      description: |-
+                                        (String) Access point metro code
+                                        Access point metro code
+                                      type: string
+                                    metroName:
+                                      description: |-
+                                        (String) Access point metro name
+                                        Access point metro name
+                                      type: string
+                                    region:
+                                      description: |-
+                                        (String) Access point region
+                                        Access point region
                                       type: string
                                   type: object
                                 type: array
                               network:
-                                description: network access point information
+                                description: |-
+                                  (Block Set, Max: 1) network access point information (see below for nested schema)
+                                  network access point information
                                 items:
                                   properties:
                                     href:
-                                      description: Unique Resource Identifier
+                                      description: |-
+                                        (String) Connection URI information
+                                        Unique Resource Identifier
+                                      type: string
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned Network identifier
                                       type: string
                                   type: object
                                 type: array
+                              peeringType:
+                                description: |-
+                                  PRIVATE,MICROSOFT,PUBLIC, MANUAL
+                                  Peering Type- PRIVATE,MICROSOFT,PUBLIC, MANUAL
+                                type: string
                               port:
-                                description: Port access point information
+                                description: |-
+                                  (Block Set, Max: 1) Port access point information (see below for nested schema)
+                                  Port access point information
                                 items:
                                   properties:
                                     href:
-                                      description: Unique Resource Identifier
+                                      description: |-
+                                        (String) Connection URI information
+                                        Unique Resource Identifier
                                       type: string
                                     name:
-                                      description: Port name
+                                      description: |-
+                                        numeric 24 characters string which can include only hyphens and underscores
+                                        Port name
                                       type: string
                                     redundancy:
-                                      description: Redundancy Information
+                                      description: |-
+                                        (Block Set, Max: 1) Connection Redundancy Configuration (see below for nested schema)
+                                        Redundancy Information
                                       items:
                                         properties:
                                           enabled:
+                                            description: (Boolean)
                                             type: boolean
                                           group:
+                                            description: (String)
                                             type: string
                                           priority:
+                                            description: (String)
                                             type: string
                                         type: object
                                       type: array
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned Port identifier
+                                      type: string
                                   type: object
                                 type: array
                               profile:
-                                description: Service Profile
+                                description: |-
+                                  (Block Set, Max: 1) Service Profile (see below for nested schema)
+                                  Service Profile
                                 items:
                                   properties:
                                     accessPointTypeConfigs:
-                                      description: Access point config information
+                                      description: |-
+                                        (List of Object) Access point config information (see below for nested schema)
+                                        Access point config information
                                       items:
                                         properties:
                                           type:
+                                            description: (String) Defines the connection
+                                              type like EVPL_VC, EPL_VC, IPWAN_VC,
+                                              IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC,
+                                              EIA_VC, EC_VC
                                             type: string
                                           uuid:
+                                            description: assigned connection identifier
                                             type: string
                                         type: object
                                       type: array
                                     description:
-                                      description: User-provided service description
+                                      description: |-
+                                        provided connection description
+                                        User-provided service description
                                       type: string
                                     href:
-                                      description: Service Profile URI response attribute
+                                      description: |-
+                                        (String) Connection URI information
+                                        Service Profile URI response attribute
                                       type: string
                                     name:
-                                      description: Customer-assigned service profile
-                                        name
+                                      description: |-
+                                        numeric 24 characters string which can include only hyphens and underscores
+                                        Customer-assigned service profile name
+                                      type: string
+                                    type:
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE, IA_PROFILE
+                                      type: string
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix assigned service profile identifier
                                       type: string
                                   type: object
                                 type: array
                               providerConnectionId:
-                                description: Provider assigned Connection Id
+                                description: |-
+                                  (String) Provider assigned Connection Id
+                                  Provider assigned Connection Id
                                 type: string
                               router:
-                                description: Cloud Router access point information
-                                  that replaces `gateway`
+                                description: |-
+                                  (Block Set, Max: 1) Cloud Router access point information that replaces gateway (see below for nested schema)
+                                  Cloud Router access point information that replaces `gateway`
                                 items:
                                   properties:
                                     href:
-                                      description: Unique Resource Identifier
+                                      description: |-
+                                        (String) Connection URI information
+                                        Unique Resource Identifier
+                                      type: string
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned virtual gateway identifier
                                       type: string
                                   type: object
                                 type: array
+                              sellerRegion:
+                                description: |-
+                                  (String) Access point seller region
+                                  Access point seller region
+                                type: string
+                              type:
+                                description: |-
+                                  (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                  Access point type - COLO, VD, VG, SP, IGW, SUBNET, CLOUD_ROUTER, NETWORK
+                                type: string
                               virtualDevice:
-                                description: Virtual device
+                                description: |-
+                                  (Block Set, Max: 1) Virtual device (see below for nested schema)
+                                  Virtual device
                                 items:
                                   properties:
                                     href:
-                                      description: Unique Resource Identifier
+                                      description: |-
+                                        (String) Connection URI information
+                                        Unique Resource Identifier
+                                      type: string
+                                    name:
+                                      description: |-
+                                        numeric 24 characters string which can include only hyphens and underscores
+                                        Customer-assigned Virtual Device Name
+                                      type: string
+                                    type:
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Virtual Device type
+                                      type: string
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned Virtual Device identifier
                                       type: string
                                   type: object
                                 type: array
                             type: object
                           type: array
+                        additionalInfo:
+                          description: |-
+                            (List of Map of String) Connection additional information
+                            Connection side additional information
+                          items:
+                            properties:
+                              key:
+                                description: |-
+                                  (String) Additional information key
+                                  Additional information key
+                                type: string
+                              value:
+                                description: |-
+                                  (String) Additional information value
+                                  Additional information value
+                                type: string
+                            type: object
+                          type: array
                         serviceToken:
-                          description: For service token based connections, Service
-                            tokens authorize users to access protected resources and
-                            services. Resource owners can distribute the tokens to
-                            trusted partners and vendors, allowing selected third
-                            parties to work directly with Equinix network assets
+                          description: |-
+                            (Block Set, Max: 1) For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets (see below for nested schema)
+                            For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets
                           items:
                             properties:
                               description:
-                                description: Service token description
+                                description: |-
+                                  provided connection description
+                                  Service token description
                                 type: string
                               href:
-                                description: An absolute URL that is the subject of
-                                  the link's context
+                                description: |-
+                                  (String) Connection URI information
+                                  An absolute URL that is the subject of the link's context
+                                type: string
+                              type:
+                                description: |-
+                                  (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                  Token type - VC_TOKEN
+                                type: string
+                              uuid:
+                                description: |-
+                                  assigned connection identifier
+                                  Equinix-assigned service token identifier
                                 type: string
                             type: object
                           type: array
                       type: object
                     type: array
                   account:
-                    description: Customer account information that is associated with
-                      this connection
+                    description: |-
+                      (Set of Object) Customer account information that is associated with this connection (see below for nested schema)
+                      Customer account information that is associated with this connection
                     items:
                       properties:
                         accountName:
+                          description: (String) Legal name of the accountholder.
                           type: string
                         accountNumber:
+                          description: assigned account number.
                           type: number
                         globalCustId:
+                          description: assigned ID of the subscriber's parent organization.
                           type: string
                         globalOrgId:
+                          description: assigned ID of the subscriber's parent organization.
                           type: string
                         globalOrganizationName:
+                          description: assigned name of the subscriber's parent organization.
                           type: string
                         orgId:
+                          description: assigned ID of the subscriber's organization.
                           type: number
                         organizationName:
+                          description: assigned name of the subscriber's organization.
                           type: string
                         ucmId:
+                          description: (String) Enterprise datastore id
                           type: string
                       type: object
                     type: array
+                  additionalInfo:
+                    description: |-
+                      (List of Map of String) Connection additional information
+                      Connection additional information
+                    items:
+                      additionalProperties:
+                        type: string
+                      type: object
+                    type: array
+                  bandwidth:
+                    description: |-
+                      (Number) Connection bandwidth in Mbps
+                      Connection bandwidth in Mbps
+                    type: number
                   changeLog:
-                    description: Captures connection lifecycle change information
+                    description: |-
+                      (Set of Object) Captures connection lifecycle change information (see below for nested schema)
+                      Captures connection lifecycle change information
                     items:
                       properties:
                         createdBy:
+                          description: (String)
                           type: string
                         createdByEmail:
+                          description: (String)
                           type: string
                         createdByFullName:
+                          description: (String)
                           type: string
                         createdDateTime:
+                          description: (String)
                           type: string
                         deletedBy:
+                          description: (String)
                           type: string
                         deletedByEmail:
+                          description: (String)
                           type: string
                         deletedByFullName:
+                          description: (String)
                           type: string
                         deletedDateTime:
+                          description: (String)
                           type: string
                         updatedBy:
+                          description: (String)
                           type: string
                         updatedByEmail:
+                          description: (String)
                           type: string
                         updatedByFullName:
+                          description: (String)
                           type: string
                         updatedDateTime:
+                          description: (String)
                           type: string
                       type: object
                     type: array
+                  description:
+                    description: |-
+                      provided connection description
+                      Customer-provided connection description
+                    type: string
                   direction:
-                    description: Connection directionality from the requester point
-                      of view
+                    description: |-
+                      (String) Connection directionality from the requester point of view
+                      Connection directionality from the requester point of view
                     type: string
                   href:
-                    description: Connection URI information
+                    description: |-
+                      (String) Connection URI information
+                      Connection URI information
                     type: string
                   id:
+                    description: (String) The ID of this resource.
                     type: string
                   isRemote:
-                    description: Connection property derived from access point locations
+                    description: |-
+                      (Boolean) Connection property derived from access point locations
+                      Connection property derived from access point locations
                     type: boolean
+                  name:
+                    description: |-
+                      numeric 24 characters string which can include only hyphens and underscores
+                      Connection name. An alpha-numeric 24 characters string which can include only hyphens and underscores
+                    type: string
+                  notifications:
+                    description: |-
+                      (Block List, Min: 1) Preferences for notifications on connection configuration or status changes (see below for nested schema)
+                      Preferences for notifications on connection configuration or status changes
+                    items:
+                      properties:
+                        emails:
+                          description: |-
+                            (List of String) Array of contact emails
+                            Array of contact emails
+                          items:
+                            type: string
+                          type: array
+                        sendInterval:
+                          description: |-
+                            (String) Send interval
+                            Send interval
+                          type: string
+                        type:
+                          description: |-
+                            (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                            Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
+                          type: string
+                      type: object
+                    type: array
                   operation:
-                    description: Connection type-specific operational data
+                    description: |-
+                      specific operational data (see below for nested schema)
+                      Connection type-specific operational data
                     items:
                       properties:
                         equinixStatus:
+                          description: (String)
                           type: string
                         errors:
+                          description: (List of Object) (see below for nested schema)
                           items:
                             properties:
                               additionalInfo:
+                                description: (List of Map of String) Connection additional
+                                  information
                                 items:
                                   properties:
                                     property:
+                                      description: (String)
                                       type: string
                                     reason:
+                                      description: (String)
                                       type: string
                                   type: object
                                 type: array
                               correlationId:
+                                description: (String)
                                 type: string
                               details:
+                                description: (String)
                                 type: string
                               errorCode:
+                                description: (String)
                                 type: string
                               errorMessage:
+                                description: (String)
                                 type: string
                               help:
+                                description: (String)
                                 type: string
                             type: object
                           type: array
                         providerStatus:
+                          description: (String)
+                          type: string
+                      type: object
+                    type: array
+                  order:
+                    description: |-
+                      (Block Set, Min: 1, Max: 1) Order details (see below for nested schema)
+                      Order details
+                    items:
+                      properties:
+                        billingTier:
+                          description: |-
+                            (String) Billing tier for connection bandwidth
+                            Billing tier for connection bandwidth
+                          type: string
+                        orderId:
+                          description: |-
+                            (String) Order Identification
+                            Order Identification
+                          type: string
+                        orderNumber:
+                          description: |-
+                            (String) Order Reference Number
+                            Order Reference Number
+                          type: string
+                        purchaseOrderNumber:
+                          description: |-
+                            (String) Purchase order number
+                            Purchase order number
                           type: string
                       type: object
                     type: array
                   project:
-                    description: Project information
+                    description: |-
+                      (Block Set, Max: 1) Project information (see below for nested schema)
+                      Project information
                     items:
                       properties:
                         href:
-                          description: Unique Resource URL
+                          description: |-
+                            (String) Connection URI information
+                            Unique Resource URL
+                          type: string
+                        projectId:
+                          description: |-
+                            (String) Project Id
+                            Project Id
+                          type: string
+                      type: object
+                    type: array
+                  redundancy:
+                    description: |-
+                      (Block Set, Max: 1) Connection Redundancy Configuration (see below for nested schema)
+                      Connection Redundancy Configuration
+                    items:
+                      properties:
+                        group:
+                          description: |-
+                            (String)
+                            Redundancy group identifier (Use the redundancy.0.group UUID of primary connection; e.g. one(equinix_fabric_connection.primary_port_connection.redundancy).group or equinix_fabric_connection.primary_port_connection.redundancy.0.group)
+                          type: string
+                        priority:
+                          description: |-
+                            (String)
+                            Connection priority in redundancy group - PRIMARY, SECONDARY
                           type: string
                       type: object
                     type: array
                   state:
-                    description: Connection overall state
+                    description: |-
+                      (String) Connection overall state
+                      Connection overall state
+                    type: string
+                  type:
+                    description: |-
+                      (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                      Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, IA_VC, EC_VC
                     type: string
                   uuid:
-                    description: Equinix-assigned connection identifier
+                    description: |-
+                      assigned connection identifier
+                      Equinix-assigned connection identifier
                     type: string
                   zSide:
-                    description: Destination or Provider side connection configuration
-                      object of the multi-segment connection
+                    description: |-
+                      segment connection (see below for nested schema)
+                      Destination or Provider side connection configuration object of the multi-segment connection
                     items:
                       properties:
                         accessPoint:
-                          description: Point of access details
+                          description: |-
+                            (Block Set, Max: 1) Point of access details (see below for nested schema)
+                            Point of access details
                           items:
                             properties:
                               account:
-                                description: Account
+                                description: |-
+                                  (Set of Object) Customer account information that is associated with this connection (see below for nested schema)
+                                  Account
                                 items:
                                   properties:
                                     accountName:
-                                      description: Legal name of the accountholder.
+                                      description: |-
+                                        (String) Legal name of the accountholder.
+                                        Legal name of the accountholder.
                                       type: string
                                     accountNumber:
-                                      description: Equinix-assigned account number.
+                                      description: |-
+                                        assigned account number.
+                                        Equinix-assigned account number.
                                       type: number
                                     globalCustId:
-                                      description: Equinix-assigned ID of the subscriber's
-                                        parent organization.
+                                      description: |-
+                                        assigned ID of the subscriber's parent organization.
+                                        Equinix-assigned ID of the subscriber's parent organization.
                                       type: string
                                     globalOrgId:
-                                      description: Equinix-assigned ID of the subscriber's
-                                        parent organization.
+                                      description: |-
+                                        assigned ID of the subscriber's parent organization.
+                                        Equinix-assigned ID of the subscriber's parent organization.
                                       type: string
                                     globalOrganizationName:
-                                      description: Equinix-assigned name of the subscriber's
-                                        parent organization.
+                                      description: |-
+                                        assigned name of the subscriber's parent organization.
+                                        Equinix-assigned name of the subscriber's parent organization.
                                       type: string
                                     orgId:
-                                      description: Equinix-assigned ID of the subscriber's
-                                        organization.
+                                      description: |-
+                                        assigned ID of the subscriber's organization.
+                                        Equinix-assigned ID of the subscriber's organization.
                                       type: number
                                     organizationName:
-                                      description: Equinix-assigned name of the subscriber's
-                                        organization.
+                                      description: |-
+                                        assigned name of the subscriber's organization.
+                                        Equinix-assigned name of the subscriber's organization.
                                       type: string
                                     ucmId:
-                                      description: Enterprise datastore id
+                                      description: |-
+                                        (String) Enterprise datastore id
+                                        Enterprise datastore id
                                       type: string
                                   type: object
                                 type: array
+                              authenticationKey:
+                                description: |-
+                                  (String) Authentication key for provider based connections
+                                  Authentication key for provider based connections
+                                type: string
                               gateway:
-                                description: '**Deprecated** `gateway` Use `router`
-                                  attribute instead'
+                                description: |-
+                                  (Block Set, Max: 1, Deprecated) Deprecated gateway Use router attribute instead (see below for nested schema)
+                                  **Deprecated** `gateway` Use `router` attribute instead
                                 items:
                                   properties:
                                     href:
-                                      description: Unique Resource Identifier
+                                      description: |-
+                                        (String) Connection URI information
+                                        Unique Resource Identifier
+                                      type: string
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned virtual gateway identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              interface:
+                                description: |-
+                                  (Block Set, Max: 1) Virtual device interface (see below for nested schema)
+                                  Virtual device interface
+                                items:
+                                  properties:
+                                    id:
+                                      description: |-
+                                        (String) The ID of this resource.
+                                        id
+                                      type: number
+                                    type:
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Interface type
+                                      type: string
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned interface identifier
+                                      type: string
+                                  type: object
+                                type: array
+                              linkProtocol:
+                                description: |-
+                                  (Block Set, Max: 1) Connection link protocol (see below for nested schema)
+                                  Connection link protocol
+                                items:
+                                  properties:
+                                    type:
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Type of the link protocol - UNTAGGED, DOT1Q, QINQ, EVPN_VXLAN
+                                      type: string
+                                    vlanCTag:
+                                      description: |-
+                                        (Number) Vlan Customer Tag information, vlanCTag value specified for QINQ connections
+                                        Vlan Customer Tag information, vlanCTag value specified for QINQ connections
+                                      type: number
+                                    vlanSTag:
+                                      description: |-
+                                        (Number) Vlan Provider Tag information, vlanSTag value specified for QINQ connections
+                                        Vlan Provider Tag information, vlanSTag value specified for QINQ connections
+                                      type: number
+                                    vlanTag:
+                                      description: |-
+                                        (Number) Vlan Tag information, vlanTag value specified for DOT1Q connections
+                                        Vlan Tag information, vlanTag value specified for DOT1Q connections
+                                      type: number
+                                  type: object
+                                type: array
+                              location:
+                                description: |-
+                                  (Block Set, Max: 1) Access point location (see below for nested schema)
+                                  Access point location
+                                items:
+                                  properties:
+                                    ibx:
+                                      description: |-
+                                        (String) IBX Code
+                                        IBX Code
+                                      type: string
+                                    metroCode:
+                                      description: |-
+                                        (String) Access point metro code
+                                        Access point metro code
+                                      type: string
+                                    metroName:
+                                      description: |-
+                                        (String) Access point metro name
+                                        Access point metro name
+                                      type: string
+                                    region:
+                                      description: |-
+                                        (String) Access point region
+                                        Access point region
                                       type: string
                                   type: object
                                 type: array
                               network:
-                                description: network access point information
+                                description: |-
+                                  (Block Set, Max: 1) network access point information (see below for nested schema)
+                                  network access point information
                                 items:
                                   properties:
                                     href:
-                                      description: Unique Resource Identifier
+                                      description: |-
+                                        (String) Connection URI information
+                                        Unique Resource Identifier
+                                      type: string
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned Network identifier
                                       type: string
                                   type: object
                                 type: array
+                              peeringType:
+                                description: |-
+                                  PRIVATE,MICROSOFT,PUBLIC, MANUAL
+                                  Peering Type- PRIVATE,MICROSOFT,PUBLIC, MANUAL
+                                type: string
                               port:
-                                description: Port access point information
+                                description: |-
+                                  (Block Set, Max: 1) Port access point information (see below for nested schema)
+                                  Port access point information
                                 items:
                                   properties:
                                     href:
-                                      description: Unique Resource Identifier
+                                      description: |-
+                                        (String) Connection URI information
+                                        Unique Resource Identifier
                                       type: string
                                     name:
-                                      description: Port name
+                                      description: |-
+                                        numeric 24 characters string which can include only hyphens and underscores
+                                        Port name
                                       type: string
                                     redundancy:
-                                      description: Redundancy Information
+                                      description: |-
+                                        (Block Set, Max: 1) Connection Redundancy Configuration (see below for nested schema)
+                                        Redundancy Information
                                       items:
                                         properties:
                                           enabled:
+                                            description: (Boolean)
                                             type: boolean
                                           group:
+                                            description: (String)
                                             type: string
                                           priority:
+                                            description: (String)
                                             type: string
                                         type: object
                                       type: array
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned Port identifier
+                                      type: string
                                   type: object
                                 type: array
                               profile:
-                                description: Service Profile
+                                description: |-
+                                  (Block Set, Max: 1) Service Profile (see below for nested schema)
+                                  Service Profile
                                 items:
                                   properties:
                                     accessPointTypeConfigs:
-                                      description: Access point config information
+                                      description: |-
+                                        (List of Object) Access point config information (see below for nested schema)
+                                        Access point config information
                                       items:
                                         properties:
                                           type:
+                                            description: (String) Defines the connection
+                                              type like EVPL_VC, EPL_VC, IPWAN_VC,
+                                              IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC,
+                                              EIA_VC, EC_VC
                                             type: string
                                           uuid:
+                                            description: assigned connection identifier
                                             type: string
                                         type: object
                                       type: array
                                     description:
-                                      description: User-provided service description
+                                      description: |-
+                                        provided connection description
+                                        User-provided service description
                                       type: string
                                     href:
-                                      description: Service Profile URI response attribute
+                                      description: |-
+                                        (String) Connection URI information
+                                        Service Profile URI response attribute
                                       type: string
                                     name:
-                                      description: Customer-assigned service profile
-                                        name
+                                      description: |-
+                                        numeric 24 characters string which can include only hyphens and underscores
+                                        Customer-assigned service profile name
+                                      type: string
+                                    type:
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Service profile type - L2_PROFILE, L3_PROFILE, ECIA_PROFILE, ECMC_PROFILE, IA_PROFILE
+                                      type: string
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix assigned service profile identifier
                                       type: string
                                   type: object
                                 type: array
                               providerConnectionId:
-                                description: Provider assigned Connection Id
+                                description: |-
+                                  (String) Provider assigned Connection Id
+                                  Provider assigned Connection Id
                                 type: string
                               router:
-                                description: Cloud Router access point information
-                                  that replaces `gateway`
+                                description: |-
+                                  (Block Set, Max: 1) Cloud Router access point information that replaces gateway (see below for nested schema)
+                                  Cloud Router access point information that replaces `gateway`
                                 items:
                                   properties:
                                     href:
-                                      description: Unique Resource Identifier
+                                      description: |-
+                                        (String) Connection URI information
+                                        Unique Resource Identifier
+                                      type: string
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned virtual gateway identifier
                                       type: string
                                   type: object
                                 type: array
+                              sellerRegion:
+                                description: |-
+                                  (String) Access point seller region
+                                  Access point seller region
+                                type: string
+                              type:
+                                description: |-
+                                  (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                  Access point type - COLO, VD, VG, SP, IGW, SUBNET, CLOUD_ROUTER, NETWORK
+                                type: string
                               virtualDevice:
-                                description: Virtual device
+                                description: |-
+                                  (Block Set, Max: 1) Virtual device (see below for nested schema)
+                                  Virtual device
                                 items:
                                   properties:
                                     href:
-                                      description: Unique Resource Identifier
+                                      description: |-
+                                        (String) Connection URI information
+                                        Unique Resource Identifier
+                                      type: string
+                                    name:
+                                      description: |-
+                                        numeric 24 characters string which can include only hyphens and underscores
+                                        Customer-assigned Virtual Device Name
+                                      type: string
+                                    type:
+                                      description: |-
+                                        (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                        Virtual Device type
+                                      type: string
+                                    uuid:
+                                      description: |-
+                                        assigned connection identifier
+                                        Equinix-assigned Virtual Device identifier
                                       type: string
                                   type: object
                                 type: array
                             type: object
                           type: array
+                        additionalInfo:
+                          description: |-
+                            (List of Map of String) Connection additional information
+                            Connection side additional information
+                          items:
+                            properties:
+                              key:
+                                description: |-
+                                  (String) Additional information key
+                                  Additional information key
+                                type: string
+                              value:
+                                description: |-
+                                  (String) Additional information value
+                                  Additional information value
+                                type: string
+                            type: object
+                          type: array
                         serviceToken:
-                          description: For service token based connections, Service
-                            tokens authorize users to access protected resources and
-                            services. Resource owners can distribute the tokens to
-                            trusted partners and vendors, allowing selected third
-                            parties to work directly with Equinix network assets
+                          description: |-
+                            (Block Set, Max: 1) For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets (see below for nested schema)
+                            For service token based connections, Service tokens authorize users to access protected resources and services. Resource owners can distribute the tokens to trusted partners and vendors, allowing selected third parties to work directly with Equinix network assets
                           items:
                             properties:
                               description:
-                                description: Service token description
+                                description: |-
+                                  provided connection description
+                                  Service token description
                                 type: string
                               href:
-                                description: An absolute URL that is the subject of
-                                  the link's context
+                                description: |-
+                                  (String) Connection URI information
+                                  An absolute URL that is the subject of the link's context
+                                type: string
+                              type:
+                                description: |-
+                                  (String) Defines the connection type like EVPL_VC, EPL_VC, IPWAN_VC, IP_VC, ACCESS_EPL_VC, EVPLAN_VC, EPLAN_VC, EIA_VC, EC_VC
+                                  Token type - VC_TOKEN
+                                type: string
+                              uuid:
+                                description: |-
+                                  assigned connection identifier
+                                  Equinix-assigned service token identifier
                                 type: string
                             type: object
                           type: array
@@ -1146,14 +2564,23 @@ spec:
                   description: A Condition that may apply to a resource.
                   properties:
                     lastTransitionTime:
-                      description: LastTransitionTime is the last time this condition
-                        transitioned from one status to another.
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
                       format: date-time
                       type: string
                     message:
-                      description: A Message containing details about this condition's
-                        last transition from one status to another, if any.
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
                       type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
                     reason:
                       description: A Reason for this condition's last transition from
                         one status to another.
@@ -1163,8 +2590,9 @@ spec:
                         False, or Unknown?
                       type: string
                     type:
-                      description: Type of this condition. At most one of each condition
-                        type may apply to a resource at any point in time.
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
                       type: string
                   required:
                   - lastTransitionTime
@@ -1173,6 +2601,16 @@ spec:
                   - type
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
             type: object
         required:
         - spec

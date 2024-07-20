@@ -25,10 +25,70 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type InstanceParametersInitParameters struct {
+	AlwaysPxe *bool `json:"alwaysPxe,omitempty" tf:"always_pxe,omitempty"`
+
+	BillingCycle *string `json:"billingCycle,omitempty" tf:"billing_cycle,omitempty"`
+
+	Customdata *string `json:"customdata,omitempty" tf:"customdata,omitempty"`
+
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	Features []*string `json:"features,omitempty" tf:"features,omitempty"`
+
+	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
+
+	IpxeScriptURL *string `json:"ipxeScriptUrl,omitempty" tf:"ipxe_script_url,omitempty"`
+
+	// Blocks deletion of the SpotMarketRequest device until the lock is disabled.
+	Locked *bool `json:"locked,omitempty" tf:"locked,omitempty"`
+
+	OperatingSystem *string `json:"operatingSystem,omitempty" tf:"operating_system,omitempty"`
+
+	Plan *string `json:"plan,omitempty" tf:"plan,omitempty"`
+
+	ProjectSSHKeys []*string `json:"projectSshKeys,omitempty" tf:"project_ssh_keys,omitempty"`
+
+	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
+
+	UserSSHKeys []*string `json:"userSshKeys,omitempty" tf:"user_ssh_keys,omitempty"`
+
+	Userdata *string `json:"userdata,omitempty" tf:"userdata,omitempty"`
+}
+
 type InstanceParametersObservation struct {
+	AlwaysPxe *bool `json:"alwaysPxe,omitempty" tf:"always_pxe,omitempty"`
+
+	BillingCycle *string `json:"billingCycle,omitempty" tf:"billing_cycle,omitempty"`
+
+	Customdata *string `json:"customdata,omitempty" tf:"customdata,omitempty"`
+
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	Features []*string `json:"features,omitempty" tf:"features,omitempty"`
+
+	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
+
+	IpxeScriptURL *string `json:"ipxeScriptUrl,omitempty" tf:"ipxe_script_url,omitempty"`
+
+	// Blocks deletion of the SpotMarketRequest device until the lock is disabled.
+	Locked *bool `json:"locked,omitempty" tf:"locked,omitempty"`
+
+	OperatingSystem *string `json:"operatingSystem,omitempty" tf:"operating_system,omitempty"`
+
+	Plan *string `json:"plan,omitempty" tf:"plan,omitempty"`
+
+	ProjectSSHKeys []*string `json:"projectSshKeys,omitempty" tf:"project_ssh_keys,omitempty"`
+
+	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
+
 	TerminationTime *string `json:"terminationTime,omitempty" tf:"termination_time,omitempty"`
 
 	TermintationTime *string `json:"termintationTime,omitempty" tf:"termintation_time,omitempty"`
+
+	UserSSHKeys []*string `json:"userSshKeys,omitempty" tf:"user_ssh_keys,omitempty"`
+
+	Userdata *string `json:"userdata,omitempty" tf:"userdata,omitempty"`
 }
 
 type InstanceParametersParameters struct {
@@ -36,7 +96,7 @@ type InstanceParametersParameters struct {
 	// +kubebuilder:validation:Optional
 	AlwaysPxe *bool `json:"alwaysPxe,omitempty" tf:"always_pxe,omitempty"`
 
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	BillingCycle *string `json:"billingCycle" tf:"billing_cycle,omitempty"`
 
 	// +kubebuilder:validation:Optional
@@ -48,7 +108,7 @@ type InstanceParametersParameters struct {
 	// +kubebuilder:validation:Optional
 	Features []*string `json:"features,omitempty" tf:"features,omitempty"`
 
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Hostname *string `json:"hostname" tf:"hostname,omitempty"`
 
 	// +kubebuilder:validation:Optional
@@ -58,10 +118,10 @@ type InstanceParametersParameters struct {
 	// +kubebuilder:validation:Optional
 	Locked *bool `json:"locked,omitempty" tf:"locked,omitempty"`
 
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	OperatingSystem *string `json:"operatingSystem" tf:"operating_system,omitempty"`
 
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Plan *string `json:"plan" tf:"plan,omitempty"`
 
 	// +kubebuilder:validation:Optional
@@ -77,51 +137,105 @@ type InstanceParametersParameters struct {
 	Userdata *string `json:"userdata,omitempty" tf:"userdata,omitempty"`
 }
 
+type SpotMarketRequestInitParameters struct {
+
+	// Maximum number devices to be created.
+	// Maximum number devices to be created
+	DevicesMax *float64 `json:"devicesMax,omitempty" tf:"devices_max,omitempty"`
+
+	// Miniumum number devices to be created.
+	// Miniumum number devices to be created
+	DevicesMin *float64 `json:"devicesMin,omitempty" tf:"devices_min,omitempty"`
+
+	// (Deprecated) Facility IDs where devices should be created. Use metro instead; read the facility to metro migration guide
+	// Facility IDs where devices should be created
+	Facilities []*string `json:"facilities,omitempty" tf:"facilities,omitempty"`
+
+	// Key/Value pairs of parameters for devices provisioned from this request. Valid keys are: billing_cycle, plan, operating_system, hostname, termination_time, always_pxe, description, features, locked, project_ssh_keys, user_ssh_keys, userdata, customdata, ipxe_script_url, tags. You can find each parameter description in equinix_metal_device docs.
+	// Parameters for devices provisioned from this request. You can find the parameter description from the [equinix_metal_device doc](device.md)
+	InstanceParameters []InstanceParametersInitParameters `json:"instanceParameters,omitempty" tf:"instance_parameters,omitempty"`
+
+	// Maximum price user is willing to pay per hour per device.
+	// Maximum price user is willing to pay per hour per device
+	MaxBidPrice *float64 `json:"maxBidPrice,omitempty" tf:"max_bid_price,omitempty"`
+
+	// Metro where devices should be created.
+	// Metro where devices should be created
+	Metro *string `json:"metro,omitempty" tf:"metro,omitempty"`
+
+	// Project ID.
+	// Project ID
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// On resource creation wait until all desired devices are active. On resource destruction wait until devices are removed.
+	// On resource creation - wait until all desired devices are active, on resource destruction - wait until devices are removed
+	WaitForDevices *bool `json:"waitForDevices,omitempty" tf:"wait_for_devices,omitempty"`
+}
+
 type SpotMarketRequestObservation struct {
+
+	// Maximum number devices to be created.
+	// Maximum number devices to be created
+	DevicesMax *float64 `json:"devicesMax,omitempty" tf:"devices_max,omitempty"`
+
+	// Miniumum number devices to be created.
+	// Miniumum number devices to be created
+	DevicesMin *float64 `json:"devicesMin,omitempty" tf:"devices_min,omitempty"`
+
+	// (Deprecated) Facility IDs where devices should be created. Use metro instead; read the facility to metro migration guide
+	// Facility IDs where devices should be created
+	Facilities []*string `json:"facilities,omitempty" tf:"facilities,omitempty"`
 
 	// The ID of the Spot Market Request.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// Key/Value pairs of parameters for devices provisioned from
-	// this request. Valid keys are: billing_cycle, plan, operating_system, hostname,
-	// termination_time, always_pxe, description, features, locked, project_ssh_keys,
-	// user_ssh_keys, userdata, customdata, ipxe_script_url, tags. You can find each parameter
-	// description in equinix_metal_device docs.
+	// Key/Value pairs of parameters for devices provisioned from this request. Valid keys are: billing_cycle, plan, operating_system, hostname, termination_time, always_pxe, description, features, locked, project_ssh_keys, user_ssh_keys, userdata, customdata, ipxe_script_url, tags. You can find each parameter description in equinix_metal_device docs.
 	// Parameters for devices provisioned from this request. You can find the parameter description from the [equinix_metal_device doc](device.md)
-	// +kubebuilder:validation:Required
 	InstanceParameters []InstanceParametersObservation `json:"instanceParameters,omitempty" tf:"instance_parameters,omitempty"`
+
+	// Maximum price user is willing to pay per hour per device.
+	// Maximum price user is willing to pay per hour per device
+	MaxBidPrice *float64 `json:"maxBidPrice,omitempty" tf:"max_bid_price,omitempty"`
+
+	// Metro where devices should be created.
+	// Metro where devices should be created
+	Metro *string `json:"metro,omitempty" tf:"metro,omitempty"`
+
+	// Project ID.
+	// Project ID
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// On resource creation wait until all desired devices are active. On resource destruction wait until devices are removed.
+	// On resource creation - wait until all desired devices are active, on resource destruction - wait until devices are removed
+	WaitForDevices *bool `json:"waitForDevices,omitempty" tf:"wait_for_devices,omitempty"`
 }
 
 type SpotMarketRequestParameters struct {
 
 	// Maximum number devices to be created.
 	// Maximum number devices to be created
-	// +kubebuilder:validation:Required
-	DevicesMax *float64 `json:"devicesMax" tf:"devices_max,omitempty"`
+	// +kubebuilder:validation:Optional
+	DevicesMax *float64 `json:"devicesMax,omitempty" tf:"devices_max,omitempty"`
 
 	// Miniumum number devices to be created.
 	// Miniumum number devices to be created
-	// +kubebuilder:validation:Required
-	DevicesMin *float64 `json:"devicesMin" tf:"devices_min,omitempty"`
+	// +kubebuilder:validation:Optional
+	DevicesMin *float64 `json:"devicesMin,omitempty" tf:"devices_min,omitempty"`
 
 	// (Deprecated) Facility IDs where devices should be created. Use metro instead; read the facility to metro migration guide
 	// Facility IDs where devices should be created
 	// +kubebuilder:validation:Optional
 	Facilities []*string `json:"facilities,omitempty" tf:"facilities,omitempty"`
 
-	// Key/Value pairs of parameters for devices provisioned from
-	// this request. Valid keys are: billing_cycle, plan, operating_system, hostname,
-	// termination_time, always_pxe, description, features, locked, project_ssh_keys,
-	// user_ssh_keys, userdata, customdata, ipxe_script_url, tags. You can find each parameter
-	// description in equinix_metal_device docs.
+	// Key/Value pairs of parameters for devices provisioned from this request. Valid keys are: billing_cycle, plan, operating_system, hostname, termination_time, always_pxe, description, features, locked, project_ssh_keys, user_ssh_keys, userdata, customdata, ipxe_script_url, tags. You can find each parameter description in equinix_metal_device docs.
 	// Parameters for devices provisioned from this request. You can find the parameter description from the [equinix_metal_device doc](device.md)
-	// +kubebuilder:validation:Required
-	InstanceParameters []InstanceParametersParameters `json:"instanceParameters" tf:"instance_parameters,omitempty"`
+	// +kubebuilder:validation:Optional
+	InstanceParameters []InstanceParametersParameters `json:"instanceParameters,omitempty" tf:"instance_parameters,omitempty"`
 
 	// Maximum price user is willing to pay per hour per device.
 	// Maximum price user is willing to pay per hour per device
-	// +kubebuilder:validation:Required
-	MaxBidPrice *float64 `json:"maxBidPrice" tf:"max_bid_price,omitempty"`
+	// +kubebuilder:validation:Optional
+	MaxBidPrice *float64 `json:"maxBidPrice,omitempty" tf:"max_bid_price,omitempty"`
 
 	// Metro where devices should be created.
 	// Metro where devices should be created
@@ -130,20 +244,10 @@ type SpotMarketRequestParameters struct {
 
 	// Project ID.
 	// Project ID
-	// +crossplane:generate:reference:type=Project
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
-	// Reference to a Project to populate projectId.
-	// +kubebuilder:validation:Optional
-	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
-
-	// Selector for a Project to populate projectId.
-	// +kubebuilder:validation:Optional
-	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
-
-	// On resource creation wait until all desired devices are active.
-	// On resource destruction wait until devices are removed.
+	// On resource creation wait until all desired devices are active. On resource destruction wait until devices are removed.
 	// On resource creation - wait until all desired devices are active, on resource destruction - wait until devices are removed
 	// +kubebuilder:validation:Optional
 	WaitForDevices *bool `json:"waitForDevices,omitempty" tf:"wait_for_devices,omitempty"`
@@ -153,6 +257,17 @@ type SpotMarketRequestParameters struct {
 type SpotMarketRequestSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SpotMarketRequestParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider SpotMarketRequestInitParameters `json:"initProvider,omitempty"`
 }
 
 // SpotMarketRequestStatus defines the observed state of SpotMarketRequest.
@@ -162,19 +277,25 @@ type SpotMarketRequestStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SpotMarketRequest is the Schema for the SpotMarketRequests API.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinix}
 type SpotMarketRequest struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              SpotMarketRequestSpec   `json:"spec"`
-	Status            SpotMarketRequestStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.devicesMax) || (has(self.initProvider) && has(self.initProvider.devicesMax))",message="spec.forProvider.devicesMax is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.devicesMin) || (has(self.initProvider) && has(self.initProvider.devicesMin))",message="spec.forProvider.devicesMin is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.instanceParameters) || (has(self.initProvider) && has(self.initProvider.instanceParameters))",message="spec.forProvider.instanceParameters is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.maxBidPrice) || (has(self.initProvider) && has(self.initProvider.maxBidPrice))",message="spec.forProvider.maxBidPrice is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.projectId) || (has(self.initProvider) && has(self.initProvider.projectId))",message="spec.forProvider.projectId is a required parameter"
+	Spec   SpotMarketRequestSpec   `json:"spec"`
+	Status SpotMarketRequestStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

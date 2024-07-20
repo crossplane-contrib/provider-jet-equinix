@@ -25,8 +25,62 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type VrfInitParameters struct {
+
+	// Description of the VRF.
+	// Description of the VRF
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// All IPv4 and IPv6 Ranges that will be available to BGP Peers. IPv4 addresses must be /8 or smaller with a minimum size of /29. IPv6 must be /56 or smaller with a minimum size of /64. Ranges must not overlap other ranges within the VRF.
+	// All IPv4 and IPv6 Ranges that will be available to BGP Peers. IPv4 addresses must be /8 or smaller with a minimum size of /29. IPv6 must be /56 or smaller with a minimum size of /64. Ranges must not overlap other ranges within the VRF.
+	// +listType=set
+	IPRanges []*string `json:"ipRanges,omitempty" tf:"ip_ranges,omitempty"`
+
+	// The 4-byte ASN set on the VRF.
+	// The 4-byte ASN set on the VRF.
+	LocalAsn *float64 `json:"localAsn,omitempty" tf:"local_asn,omitempty"`
+
+	// Metro ID or Code where the VRF will be deployed.
+	// Metro Code
+	Metro *string `json:"metro,omitempty" tf:"metro,omitempty"`
+
+	// User-supplied name of the VRF, unique to the project
+	// User-supplied name of the VRF, unique to the project
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Project ID where the VRF will be deployed.
+	// Project ID
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+}
+
 type VrfObservation struct {
+
+	// Description of the VRF.
+	// Description of the VRF
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// All IPv4 and IPv6 Ranges that will be available to BGP Peers. IPv4 addresses must be /8 or smaller with a minimum size of /29. IPv6 must be /56 or smaller with a minimum size of /64. Ranges must not overlap other ranges within the VRF.
+	// All IPv4 and IPv6 Ranges that will be available to BGP Peers. IPv4 addresses must be /8 or smaller with a minimum size of /29. IPv6 must be /56 or smaller with a minimum size of /64. Ranges must not overlap other ranges within the VRF.
+	// +listType=set
+	IPRanges []*string `json:"ipRanges,omitempty" tf:"ip_ranges,omitempty"`
+
+	// The 4-byte ASN set on the VRF.
+	// The 4-byte ASN set on the VRF.
+	LocalAsn *float64 `json:"localAsn,omitempty" tf:"local_asn,omitempty"`
+
+	// Metro ID or Code where the VRF will be deployed.
+	// Metro Code
+	Metro *string `json:"metro,omitempty" tf:"metro,omitempty"`
+
+	// User-supplied name of the VRF, unique to the project
+	// User-supplied name of the VRF, unique to the project
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Project ID where the VRF will be deployed.
+	// Project ID
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 }
 
 type VrfParameters struct {
@@ -39,6 +93,7 @@ type VrfParameters struct {
 	// All IPv4 and IPv6 Ranges that will be available to BGP Peers. IPv4 addresses must be /8 or smaller with a minimum size of /29. IPv6 must be /56 or smaller with a minimum size of /64. Ranges must not overlap other ranges within the VRF.
 	// All IPv4 and IPv6 Ranges that will be available to BGP Peers. IPv4 addresses must be /8 or smaller with a minimum size of /29. IPv6 must be /56 or smaller with a minimum size of /64. Ranges must not overlap other ranges within the VRF.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	IPRanges []*string `json:"ipRanges,omitempty" tf:"ip_ranges,omitempty"`
 
 	// The 4-byte ASN set on the VRF.
@@ -48,33 +103,35 @@ type VrfParameters struct {
 
 	// Metro ID or Code where the VRF will be deployed.
 	// Metro Code
-	// +kubebuilder:validation:Required
-	Metro *string `json:"metro" tf:"metro,omitempty"`
+	// +kubebuilder:validation:Optional
+	Metro *string `json:"metro,omitempty" tf:"metro,omitempty"`
 
 	// User-supplied name of the VRF, unique to the project
 	// User-supplied name of the VRF, unique to the project
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// Project ID where the VRF will be deployed.
 	// Project ID
-	// +crossplane:generate:reference:type=Project
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
-
-	// Reference to a Project to populate projectId.
-	// +kubebuilder:validation:Optional
-	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
-
-	// Selector for a Project to populate projectId.
-	// +kubebuilder:validation:Optional
-	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 }
 
 // VrfSpec defines the desired state of Vrf
 type VrfSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     VrfParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider VrfInitParameters `json:"initProvider,omitempty"`
 }
 
 // VrfStatus defines the observed state of Vrf.
@@ -84,19 +141,23 @@ type VrfStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Vrf is the Schema for the Vrfs API.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinix}
 type Vrf struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              VrfSpec   `json:"spec"`
-	Status            VrfStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.metro) || (has(self.initProvider) && has(self.initProvider.metro))",message="spec.forProvider.metro is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.projectId) || (has(self.initProvider) && has(self.initProvider.projectId))",message="spec.forProvider.projectId is a required parameter"
+	Spec   VrfSpec   `json:"spec"`
+	Status VrfStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

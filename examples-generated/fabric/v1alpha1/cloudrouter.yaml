@@ -1,0 +1,27 @@
+apiVersion: fabric.equinix.jet.crossplane.io/v1alpha1
+kind: CloudRouter
+metadata:
+  annotations:
+    meta.upbound.io/example-id: fabric/v1alpha1/cloudrouter
+  labels:
+    testing.upbound.io/example-name: new_cloud_router
+  name: new-cloud-router
+spec:
+  forProvider:
+    account:
+    - accountNumber: "203612"
+    location:
+    - metroCode: SV
+    name: Router-SV
+    notifications:
+    - emails:
+      - example@equinix.com
+      - test1@equinix.com
+      type: ALL
+    order:
+    - purchaseOrderNumber: 1-323292
+    package:
+    - code: STANDARD
+    project:
+    - projectId: "776847000642406"
+    type: XF_ROUTER

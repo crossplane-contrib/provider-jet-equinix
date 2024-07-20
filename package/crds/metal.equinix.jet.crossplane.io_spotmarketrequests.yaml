@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.1
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.14.0
   name: spotmarketrequests.metal.equinix.jet.crossplane.io
 spec:
   group: metal.equinix.jet.crossplane.io
@@ -20,11 +19,11 @@ spec:
   scope: Cluster
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .status.conditions[?(@.type=='Ready')].status
-      name: READY
-      type: string
     - jsonPath: .status.conditions[?(@.type=='Synced')].status
       name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
       type: string
     - jsonPath: .metadata.annotations.crossplane\.io/external-name
       name: EXTERNAL-NAME
@@ -38,14 +37,19 @@ spec:
         description: SpotMarketRequest is the Schema for the SpotMarketRequests API.
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
             type: string
           metadata:
             type: object
@@ -54,9 +58,14 @@ spec:
             properties:
               deletionPolicy:
                 default: Delete
-                description: DeletionPolicy specifies what will happen to the underlying
-                  external when this managed resource is deleted - either "Delete"
-                  or "Orphan" the external resource.
+                description: |-
+                  DeletionPolicy specifies what will happen to the underlying external
+                  when this managed resource is deleted - either "Delete" or "Orphan" the
+                  external resource.
+                  This field is planned to be deprecated in favor of the ManagementPolicies
+                  field in a future release. Currently, both could be set independently and
+                  non-default values would be honored if the feature flag is enabled.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
                 enum:
                 - Orphan
                 - Delete
@@ -64,29 +73,26 @@ spec:
               forProvider:
                 properties:
                   devicesMax:
-                    description: Maximum number devices to be created. Maximum number
-                      devices to be created
+                    description: |-
+                      Maximum number devices to be created.
+                      Maximum number devices to be created
                     type: number
                   devicesMin:
-                    description: Miniumum number devices to be created. Miniumum number
-                      devices to be created
+                    description: |-
+                      Miniumum number devices to be created.
+                      Miniumum number devices to be created
                     type: number
                   facilities:
-                    description: (Deprecated) Facility IDs where devices should be
-                      created. Use metro instead; read the facility to metro migration
-                      guide Facility IDs where devices should be created
+                    description: |-
+                      (Deprecated) Facility IDs where devices should be created. Use metro instead; read the facility to metro migration guide
+                      Facility IDs where devices should be created
                     items:
                       type: string
                     type: array
                   instanceParameters:
-                    description: 'Key/Value pairs of parameters for devices provisioned
-                      from this request. Valid keys are: billing_cycle, plan, operating_system,
-                      hostname, termination_time, always_pxe, description, features,
-                      locked, project_ssh_keys, user_ssh_keys, userdata, customdata,
-                      ipxe_script_url, tags. You can find each parameter description
-                      in equinix_metal_device docs. Parameters for devices provisioned
-                      from this request. You can find the parameter description from
-                      the [equinix_metal_device doc](device.md)'
+                    description: |-
+                      Key/Value pairs of parameters for devices provisioned from this request. Valid keys are: billing_cycle, plan, operating_system, hostname, termination_time, always_pxe, description, features, locked, project_ssh_keys, user_ssh_keys, userdata, customdata, ipxe_script_url, tags. You can find each parameter description in equinix_metal_device docs.
+                      Parameters for devices provisioned from this request. You can find the parameter description from the [equinix_metal_device doc](device.md)
                     items:
                       properties:
                         alwaysPxe:
@@ -127,115 +133,160 @@ spec:
                           type: array
                         userdata:
                           type: string
-                      required:
-                      - billingCycle
-                      - hostname
-                      - operatingSystem
-                      - plan
                       type: object
                     type: array
                   maxBidPrice:
-                    description: Maximum price user is willing to pay per hour per
-                      device. Maximum price user is willing to pay per hour per device
+                    description: |-
+                      Maximum price user is willing to pay per hour per device.
+                      Maximum price user is willing to pay per hour per device
                     type: number
                   metro:
-                    description: Metro where devices should be created. Metro where
-                      devices should be created
+                    description: |-
+                      Metro where devices should be created.
+                      Metro where devices should be created
                     type: string
                   projectId:
-                    description: Project ID. Project ID
+                    description: |-
+                      Project ID.
+                      Project ID
                     type: string
-                  projectIdRef:
-                    description: Reference to a Project to populate projectId.
-                    properties:
-                      name:
-                        description: Name of the referenced object.
-                        type: string
-                      policy:
-                        description: Policies for referencing.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    required:
-                    - name
-                    type: object
-                  projectIdSelector:
-                    description: Selector for a Project to populate projectId.
-                    properties:
-                      matchControllerRef:
-                        description: MatchControllerRef ensures an object with the
-                          same controller reference as the selecting object is selected.
-                        type: boolean
-                      matchLabels:
-                        additionalProperties:
-                          type: string
-                        description: MatchLabels ensures an object with matching labels
-                          is selected.
-                        type: object
-                      policy:
-                        description: Policies for selection.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    type: object
                   waitForDevices:
-                    description: On resource creation wait until all desired devices
-                      are active. On resource destruction wait until devices are removed.
-                      On resource creation - wait until all desired devices are active,
-                      on resource destruction - wait until devices are removed
+                    description: |-
+                      On resource creation wait until all desired devices are active. On resource destruction wait until devices are removed.
+                      On resource creation - wait until all desired devices are active, on resource destruction - wait until devices are removed
                     type: boolean
-                required:
-                - devicesMax
-                - devicesMin
-                - instanceParameters
-                - maxBidPrice
                 type: object
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
+                properties:
+                  devicesMax:
+                    description: |-
+                      Maximum number devices to be created.
+                      Maximum number devices to be created
+                    type: number
+                  devicesMin:
+                    description: |-
+                      Miniumum number devices to be created.
+                      Miniumum number devices to be created
+                    type: number
+                  facilities:
+                    description: |-
+                      (Deprecated) Facility IDs where devices should be created. Use metro instead; read the facility to metro migration guide
+                      Facility IDs where devices should be created
+                    items:
+                      type: string
+                    type: array
+                  instanceParameters:
+                    description: |-
+                      Key/Value pairs of parameters for devices provisioned from this request. Valid keys are: billing_cycle, plan, operating_system, hostname, termination_time, always_pxe, description, features, locked, project_ssh_keys, user_ssh_keys, userdata, customdata, ipxe_script_url, tags. You can find each parameter description in equinix_metal_device docs.
+                      Parameters for devices provisioned from this request. You can find the parameter description from the [equinix_metal_device doc](device.md)
+                    items:
+                      properties:
+                        alwaysPxe:
+                          type: boolean
+                        billingCycle:
+                          type: string
+                        customdata:
+                          type: string
+                        description:
+                          type: string
+                        features:
+                          items:
+                            type: string
+                          type: array
+                        hostname:
+                          type: string
+                        ipxeScriptUrl:
+                          type: string
+                        locked:
+                          description: Blocks deletion of the SpotMarketRequest device
+                            until the lock is disabled.
+                          type: boolean
+                        operatingSystem:
+                          type: string
+                        plan:
+                          type: string
+                        projectSshKeys:
+                          items:
+                            type: string
+                          type: array
+                        tags:
+                          items:
+                            type: string
+                          type: array
+                        userSshKeys:
+                          items:
+                            type: string
+                          type: array
+                        userdata:
+                          type: string
+                      type: object
+                    type: array
+                  maxBidPrice:
+                    description: |-
+                      Maximum price user is willing to pay per hour per device.
+                      Maximum price user is willing to pay per hour per device
+                    type: number
+                  metro:
+                    description: |-
+                      Metro where devices should be created.
+                      Metro where devices should be created
+                    type: string
+                  projectId:
+                    description: |-
+                      Project ID.
+                      Project ID
+                    type: string
+                  waitForDevices:
+                    description: |-
+                      On resource creation wait until all desired devices are active. On resource destruction wait until devices are removed.
+                      On resource creation - wait until all desired devices are active, on resource destruction - wait until devices are removed
+                    type: boolean
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  This field is planned to replace the DeletionPolicy field in a future
+                  release. Currently, both could be set independently and non-default
+                  values would be honored if the feature flag is enabled. If both are
+                  custom, the DeletionPolicy field will be ignored.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
               providerConfigRef:
                 default:
                   name: default
-                description: ProviderConfigReference specifies how the provider that
-                  will be used to create, observe, update, and delete this managed
-                  resource should be configured.
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
                 properties:
                   name:
                     description: Name of the referenced object.
@@ -245,57 +296,21 @@ spec:
                     properties:
                       resolution:
                         default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
+                        description: |-
+                          Resolution specifies whether resolution of this reference is required.
+                          The default is 'Required', which means the reconcile will fail if the
+                          reference cannot be resolved. 'Optional' means this reference will be
+                          a no-op if it cannot be resolved.
                         enum:
                         - Required
                         - Optional
                         type: string
                       resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
-                        enum:
-                        - Always
-                        - IfNotPresent
-                        type: string
-                    type: object
-                required:
-                - name
-                type: object
-              providerRef:
-                description: 'ProviderReference specifies the provider that will be
-                  used to create, observe, update, and delete this managed resource.
-                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
-                properties:
-                  name:
-                    description: Name of the referenced object.
-                    type: string
-                  policy:
-                    description: Policies for referencing.
-                    properties:
-                      resolution:
-                        default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
-                        enum:
-                        - Required
-                        - Optional
-                        type: string
-                      resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
+                        description: |-
+                          Resolve specifies when this reference should be resolved. The default
+                          is 'IfNotPresent', which will attempt to resolve the reference only when
+                          the corresponding field is not present. Use 'Always' to resolve the
+                          reference on every reconcile.
                         enum:
                         - Always
                         - IfNotPresent
@@ -305,17 +320,19 @@ spec:
                 - name
                 type: object
               publishConnectionDetailsTo:
-                description: PublishConnectionDetailsTo specifies the connection secret
-                  config which contains a name, metadata and a reference to secret
-                  store config to which any connection details for this managed resource
-                  should be written. Connection details frequently include the endpoint,
-                  username, and password required to connect to the managed resource.
+                description: |-
+                  PublishConnectionDetailsTo specifies the connection secret config which
+                  contains a name, metadata and a reference to secret store config to
+                  which any connection details for this managed resource should be written.
+                  Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
                 properties:
                   configRef:
                     default:
                       name: default
-                    description: SecretStoreConfigRef specifies which secret store
-                      config should be used for this ConnectionSecret.
+                    description: |-
+                      SecretStoreConfigRef specifies which secret store config should be used
+                      for this ConnectionSecret.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -325,21 +342,21 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -354,21 +371,22 @@ spec:
                       annotations:
                         additionalProperties:
                           type: string
-                        description: Annotations are the annotations to be added to
-                          connection secret. - For Kubernetes secrets, this will be
-                          used as "metadata.annotations". - It is up to Secret Store
-                          implementation for others store types.
+                        description: |-
+                          Annotations are the annotations to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.annotations".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       labels:
                         additionalProperties:
                           type: string
-                        description: Labels are the labels/tags to be added to connection
-                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
-                          - It is up to Secret Store implementation for others store
-                          types.
+                        description: |-
+                          Labels are the labels/tags to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       type:
-                        description: Type is the SecretType for the connection secret.
+                        description: |-
+                          Type is the SecretType for the connection secret.
                           - Only valid for Kubernetes Secret Stores.
                         type: string
                     type: object
@@ -379,14 +397,15 @@ spec:
                 - name
                 type: object
               writeConnectionSecretToRef:
-                description: WriteConnectionSecretToReference specifies the namespace
-                  and name of a Secret to which any connection details for this managed
-                  resource should be written. Connection details frequently include
-                  the endpoint, username, and password required to connect to the
-                  managed resource. This field is planned to be replaced in a future
-                  release in favor of PublishConnectionDetailsTo. Currently, both
-                  could be set independently and connection details would be published
-                  to both without affecting each other.
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                  This field is planned to be replaced in a future release in favor of
+                  PublishConnectionDetailsTo. Currently, both could be set independently
+                  and connection details would be published to both without affecting
+                  each other.
                 properties:
                   name:
                     description: Name of the secret.
@@ -401,31 +420,122 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.devicesMax is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.devicesMax)
+                || (has(self.initProvider) && has(self.initProvider.devicesMax))'
+            - message: spec.forProvider.devicesMin is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.devicesMin)
+                || (has(self.initProvider) && has(self.initProvider.devicesMin))'
+            - message: spec.forProvider.instanceParameters is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.instanceParameters)
+                || (has(self.initProvider) && has(self.initProvider.instanceParameters))'
+            - message: spec.forProvider.maxBidPrice is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.maxBidPrice)
+                || (has(self.initProvider) && has(self.initProvider.maxBidPrice))'
+            - message: spec.forProvider.projectId is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.projectId)
+                || (has(self.initProvider) && has(self.initProvider.projectId))'
           status:
             description: SpotMarketRequestStatus defines the observed state of SpotMarketRequest.
             properties:
               atProvider:
                 properties:
+                  devicesMax:
+                    description: |-
+                      Maximum number devices to be created.
+                      Maximum number devices to be created
+                    type: number
+                  devicesMin:
+                    description: |-
+                      Miniumum number devices to be created.
+                      Miniumum number devices to be created
+                    type: number
+                  facilities:
+                    description: |-
+                      (Deprecated) Facility IDs where devices should be created. Use metro instead; read the facility to metro migration guide
+                      Facility IDs where devices should be created
+                    items:
+                      type: string
+                    type: array
                   id:
                     description: The ID of the Spot Market Request.
                     type: string
                   instanceParameters:
-                    description: 'Key/Value pairs of parameters for devices provisioned
-                      from this request. Valid keys are: billing_cycle, plan, operating_system,
-                      hostname, termination_time, always_pxe, description, features,
-                      locked, project_ssh_keys, user_ssh_keys, userdata, customdata,
-                      ipxe_script_url, tags. You can find each parameter description
-                      in equinix_metal_device docs. Parameters for devices provisioned
-                      from this request. You can find the parameter description from
-                      the [equinix_metal_device doc](device.md)'
+                    description: |-
+                      Key/Value pairs of parameters for devices provisioned from this request. Valid keys are: billing_cycle, plan, operating_system, hostname, termination_time, always_pxe, description, features, locked, project_ssh_keys, user_ssh_keys, userdata, customdata, ipxe_script_url, tags. You can find each parameter description in equinix_metal_device docs.
+                      Parameters for devices provisioned from this request. You can find the parameter description from the [equinix_metal_device doc](device.md)
                     items:
                       properties:
+                        alwaysPxe:
+                          type: boolean
+                        billingCycle:
+                          type: string
+                        customdata:
+                          type: string
+                        description:
+                          type: string
+                        features:
+                          items:
+                            type: string
+                          type: array
+                        hostname:
+                          type: string
+                        ipxeScriptUrl:
+                          type: string
+                        locked:
+                          description: Blocks deletion of the SpotMarketRequest device
+                            until the lock is disabled.
+                          type: boolean
+                        operatingSystem:
+                          type: string
+                        plan:
+                          type: string
+                        projectSshKeys:
+                          items:
+                            type: string
+                          type: array
+                        tags:
+                          items:
+                            type: string
+                          type: array
                         terminationTime:
                           type: string
                         termintationTime:
                           type: string
+                        userSshKeys:
+                          items:
+                            type: string
+                          type: array
+                        userdata:
+                          type: string
                       type: object
                     type: array
+                  maxBidPrice:
+                    description: |-
+                      Maximum price user is willing to pay per hour per device.
+                      Maximum price user is willing to pay per hour per device
+                    type: number
+                  metro:
+                    description: |-
+                      Metro where devices should be created.
+                      Metro where devices should be created
+                    type: string
+                  projectId:
+                    description: |-
+                      Project ID.
+                      Project ID
+                    type: string
+                  waitForDevices:
+                    description: |-
+                      On resource creation wait until all desired devices are active. On resource destruction wait until devices are removed.
+                      On resource creation - wait until all desired devices are active, on resource destruction - wait until devices are removed
+                    type: boolean
                 type: object
               conditions:
                 description: Conditions of the resource.
@@ -433,14 +543,23 @@ spec:
                   description: A Condition that may apply to a resource.
                   properties:
                     lastTransitionTime:
-                      description: LastTransitionTime is the last time this condition
-                        transitioned from one status to another.
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
                       format: date-time
                       type: string
                     message:
-                      description: A Message containing details about this condition's
-                        last transition from one status to another, if any.
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
                       type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
                     reason:
                       description: A Reason for this condition's last transition from
                         one status to another.
@@ -450,8 +569,9 @@ spec:
                         False, or Unknown?
                       type: string
                     type:
-                      description: Type of this condition. At most one of each condition
-                        type may apply to a resource at any point in time.
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
                       type: string
                   required:
                   - lastTransitionTime
@@ -460,6 +580,16 @@ spec:
                   - type
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
             type: object
         required:
         - spec

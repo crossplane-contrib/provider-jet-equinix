@@ -1,0 +1,13 @@
+apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
+kind: ReservedIPBlock
+metadata:
+  annotations:
+    meta.upbound.io/example-id: metal/v1alpha1/reservedipblock
+  labels:
+    testing.upbound.io/example-name: two_elastic_addresses
+  name: two-elastic-addresses
+spec:
+  forProvider:
+    metro: sv
+    projectId: ${local.project_id}
+    quantity: 2

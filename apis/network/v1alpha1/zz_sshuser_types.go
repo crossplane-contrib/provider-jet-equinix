@@ -25,36 +25,74 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type SSHUserInitParameters struct {
+
+	// list of device identifiers to which user will have access.
+	// list of device identifiers to which user will have access
+	// +listType=set
+	DeviceIds []*string `json:"deviceIds,omitempty" tf:"device_ids,omitempty"`
+
+	// SSH user password.
+	// SSH user password
+	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
+
+	// SSH user login name.
+	// SSH user login name
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+}
+
 type SSHUserObservation struct {
+
+	// list of device identifiers to which user will have access.
+	// list of device identifiers to which user will have access
+	// +listType=set
+	DeviceIds []*string `json:"deviceIds,omitempty" tf:"device_ids,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// SSH user unique identifier.
 	// SSH user unique identifier
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+
+	// SSH user login name.
+	// SSH user login name
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 }
 
 type SSHUserParameters struct {
 
 	// list of device identifiers to which user will have access.
 	// list of device identifiers to which user will have access
-	// +kubebuilder:validation:Required
-	DeviceIds []*string `json:"deviceIds" tf:"device_ids,omitempty"`
+	// +kubebuilder:validation:Optional
+	// +listType=set
+	DeviceIds []*string `json:"deviceIds,omitempty" tf:"device_ids,omitempty"`
 
 	// SSH user password.
 	// SSH user password
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// SSH user login name.
 	// SSH user login name
-	// +kubebuilder:validation:Required
-	Username *string `json:"username" tf:"username,omitempty"`
+	// +kubebuilder:validation:Optional
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 }
 
 // SSHUserSpec defines the desired state of SSHUser
 type SSHUserSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SSHUserParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider SSHUserInitParameters `json:"initProvider,omitempty"`
 }
 
 // SSHUserStatus defines the observed state of SSHUser.
@@ -64,19 +102,23 @@ type SSHUserStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SSHUser is the Schema for the SSHUsers API.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinix}
 type SSHUser struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              SSHUserSpec   `json:"spec"`
-	Status            SSHUserStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.deviceIds) || (has(self.initProvider) && has(self.initProvider.deviceIds))",message="spec.forProvider.deviceIds is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.passwordSecretRef)",message="spec.forProvider.passwordSecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.username) || (has(self.initProvider) && has(self.initProvider.username))",message="spec.forProvider.username is a required parameter"
+	Spec   SSHUserSpec   `json:"spec"`
+	Status SSHUserStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

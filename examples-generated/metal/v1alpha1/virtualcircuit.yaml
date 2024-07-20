@@ -1,0 +1,30 @@
+apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
+kind: VirtualCircuit
+metadata:
+  annotations:
+    meta.upbound.io/example-id: metal/v1alpha1/virtualcircuit
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    connectionId: ${local.conn_id}
+    nniVlan: 1056
+    portId: ${data.equinix_metal_connection.test.ports[0].id}
+    projectId: ${local.project_id}
+    vlanId: ${equinix_metal_vlan.test.id}
+
+---
+
+apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
+kind: Vlan
+metadata:
+  annotations:
+    meta.upbound.io/example-id: metal/v1alpha1/virtualcircuit
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    metro: ${data.equinix_metal_connection.test.metro}
+    projectId: ${local.project_id}
