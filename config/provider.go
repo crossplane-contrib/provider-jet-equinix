@@ -113,7 +113,6 @@ func GetProvider(_ context.Context, generationProvider bool) (*upconfig.Provider
 	for _, configure := range []func(provider *upconfig.Provider){
 		// add custom config functions
 		device.Configure,
-		// l2connection.Configure,
 	} {
 		configure(pc)
 	}
