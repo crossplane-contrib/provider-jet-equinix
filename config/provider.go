@@ -21,7 +21,6 @@ import (
 	"context"
 	_ "embed"
 
-	"github.com/crossplane-contrib/provider-jet-equinix/config/metal/device"
 	upconfig "github.com/crossplane/upjet/pkg/config"
 	conversiontfjson "github.com/crossplane/upjet/pkg/types/conversion/tfjson"
 	"github.com/equinix/terraform-provider-equinix/equinix"
@@ -30,6 +29,8 @@ import (
 	tfjson "github.com/hashicorp/terraform-json"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/pkg/errors"
+
+	"github.com/crossplane-contrib/provider-jet-equinix/config/metal/device"
 )
 
 const (

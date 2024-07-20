@@ -26,6 +26,33 @@ import (
 type ProviderConfigSpec struct {
 	// Credentials required to authenticate to this provider.
 	Credentials ProviderCredentials `json:"credentials"`
+
+	// +kubebuilder:validation:Optional
+	Configuration ProviderConfiguration `json:"config"`
+}
+
+// ProviderConfiguration for configuring the terraform provider
+// see https://registry.terraform.io/providers/equinix/equinix/latest/docs#configuration-reference
+type ProviderConfiguration struct {
+	// The Equinix API base URL to point out desired environment. This argument can also be specified with the EQUINIX_API_ENDPOINT shell environment variable. (Defaults to https://api.equinix.com)
+	// +kubebuilder:validation:Optional
+	Endpoint string `json:"endpoint"`
+
+	// Maximum number of retries in case of network failure.
+	// +kubebuilder:validation:Optional
+	MaxRetries bool `json:"max_retries"`
+
+	// Maximum number of seconds to wait before retrying a request.
+	// +kubebuilder:validation:Optional
+	MaxRetryWaitSeconds bool `json:"max_retry_wait_seconds"`
+
+	// The duration of time, in seconds, that the Equinix Platform API Client should wait before canceling an API request. Canceled requests may still result in provisioned resources. (Defaults to 30)
+	// +kubebuilder:validation:Optional
+	RequestTimeout bool `json:"request_timeout"`
+
+	// The maximum number of records in a single response for REST queries that produce paginated responses. (Default is client specific)
+	// +kubebuilder:validation:Optional
+	ResponseMaxPageSize bool `json:"response_max_page_size"`
 }
 
 // ProviderCredentials required to authenticate.
@@ -49,7 +76,7 @@ type ProviderConfigStatus struct {
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:printcolumn:name="SECRET-NAME",type="string",JSONPath=".spec.credentials.secretRef.name",priority=1
 // +kubebuilder:resource:scope=Cluster
-// +kubebuilder:resource:scope=Cluster,categories={crossplane,provider,equinixjet}
+// +kubebuilder:resource:scope=Cluster,categories={crossplane,providerconfig,equinixjet}
 type ProviderConfig struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

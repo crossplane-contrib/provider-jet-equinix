@@ -45,6 +45,8 @@ const (
 	keyEndpoint            = "endpoint"
 	keyRequestTimeout      = "request_timeout"
 	keyResponseMaxPageSize = "response_max_page_size"
+	keyMaxRetries          = "max_retries"
+	keyMaxRetryWaitSeconds = "max_retry_wait_seconds"
 )
 
 type SetupConfig struct {
@@ -56,8 +58,15 @@ type SetupConfig struct {
 	TerraformProvider     *schema.Provider
 }
 
-func prepareTerraformProviderConfiguration(creds map[string]string, pc v1alpha1.ProviderConfig) map[string]any {
+func prepareTerraformProviderConfiguration(creds map[string]string, pc v1alpha1.ProviderConfiguration) map[string]any {
 	config := map[string]any{}
+	config[keyMaxRetries] = pc.MaxRetries
+	config[keyMaxRetryWaitSeconds] = pc.MaxRetryWaitSeconds
+	config[keyRequestTimeout] = pc.RequestTimeout
+	config[keyResponseMaxPageSize] = pc.ResponseMaxPageSize
+	config[keyEndpoint] = pc.Endpoint
+
+	// TODO: should we deprecate config field setting via credentials
 	for _, key := range []string{
 		keyEndpoint,
 		keyRequestTimeout,
@@ -70,6 +79,7 @@ func prepareTerraformProviderConfiguration(creds map[string]string, pc v1alpha1.
 			config[key] = creds[key]
 		}
 	}
+
 	return config
 }
 
@@ -102,7 +112,7 @@ func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 			return ps, errors.Wrap(err, errUnmarshalCredentials)
 		}
 
-		ps.Configuration = prepareTerraformProviderConfiguration(equinixCreds, *pc)
+		ps.Configuration = prepareTerraformProviderConfiguration(equinixCreds, pc.Spec.Configuration)
 		return ps, nil
 	}
 }
