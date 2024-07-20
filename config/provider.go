@@ -83,7 +83,7 @@ func GetProvider(_ context.Context, generationProvider bool) (*upconfig.Provider
 		upconfig.WithRootGroup("equinix.jet.crossplane.io"),
 		// upconfig.WithReferenceInjectors([]config.ReferenceInjector{reference.NewInjector("github.com/crossplane-contrib/provider-jet-equinix")}),
 		upconfig.WithDefaultResourceOptions(
-			// KnownReferencers(),
+			KnownReferencers(),
 			IdentifierAssignedByEquinix(),
 			SkipOptCompLateInitialization(),
 		),
