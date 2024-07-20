@@ -1,0 +1,35 @@
+apiVersion: fabric.equinix.jet.crossplane.io/v1alpha1
+kind: ServiceProfile
+metadata:
+  annotations:
+    meta.upbound.io/example-id: fabric/v1alpha1/serviceprofile
+  labels:
+    testing.upbound.io/example-name: new_service_profile
+  name: new-service-profile
+spec:
+  forProvider:
+    accessPointTypeConfigs:
+    - allowBandwidthAutoApproval: false
+      allowCustomBandwidth: true
+      allowRemoteConnections: true
+      bandwidthAlertThreshold: 10
+      connectionLabel: Service Profile Tag1
+      connectionRedundancyRequired: false
+      supportedBandwidths:
+      - 100
+      - 500
+      type: COLO
+    allowedEmails:
+    - test@equinix.com
+    - testagain@equinix.com
+    description: Service Profile for Receiving Connections
+    name: Name Of Business + Use Case Tag
+    notifications:
+    - emails:
+      - someone@sample.com
+      type: BANDWIDTH_ALERT
+    ports:
+    - type: XF_PORT
+      uuid: c791f8cb-5cc9-cc90-8ce0-306a5c00a4ee
+    type: L2_PROFILE
+    visibility: PUBLIC

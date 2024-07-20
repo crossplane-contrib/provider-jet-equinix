@@ -25,22 +25,37 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ClusterDetailsInitParameters struct {
+
+	// The name of the cluster device
+	// The name of the cluster device
+	ClusterName *string `json:"clusterName,omitempty" tf:"cluster_name,omitempty"`
+
+	// An object that has node0 configuration. See Cluster Details - Nodes below for more details.
+	// An object that has node0 details
+	Node0 []Node0InitParameters `json:"node0,omitempty" tf:"node0,omitempty"`
+
+	// An object that has node1 configuration. See Cluster Details - Nodes below for more details.
+	// An object that has node1 details
+	Node1 []Node1InitParameters `json:"node1,omitempty" tf:"node1,omitempty"`
+}
+
 type ClusterDetailsObservation struct {
 
 	// The ID of the cluster.
 	// The id of the cluster
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
 
-	// An object that has node0 configuration.
-	// See Cluster Details - Nodes below for more details.
+	// The name of the cluster device
+	// The name of the cluster device
+	ClusterName *string `json:"clusterName,omitempty" tf:"cluster_name,omitempty"`
+
+	// An object that has node0 configuration. See Cluster Details - Nodes below for more details.
 	// An object that has node0 details
-	// +kubebuilder:validation:Required
 	Node0 []Node0Observation `json:"node0,omitempty" tf:"node0,omitempty"`
 
-	// An object that has node1 configuration.
-	// See Cluster Details - Nodes below for more details.
+	// An object that has node1 configuration. See Cluster Details - Nodes below for more details.
 	// An object that has node1 details
-	// +kubebuilder:validation:Required
 	Node1 []Node1Observation `json:"node1,omitempty" tf:"node1,omitempty"`
 
 	// The number of nodes in the cluster.
@@ -52,38 +67,201 @@ type ClusterDetailsParameters struct {
 
 	// The name of the cluster device
 	// The name of the cluster device
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	ClusterName *string `json:"clusterName" tf:"cluster_name,omitempty"`
 
-	// An object that has node0 configuration.
-	// See Cluster Details - Nodes below for more details.
+	// An object that has node0 configuration. See Cluster Details - Nodes below for more details.
 	// An object that has node0 details
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Node0 []Node0Parameters `json:"node0" tf:"node0,omitempty"`
 
-	// An object that has node1 configuration.
-	// See Cluster Details - Nodes below for more details.
+	// An object that has node1 configuration. See Cluster Details - Nodes below for more details.
 	// An object that has node1 details
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Node1 []Node1Parameters `json:"node1" tf:"node1,omitempty"`
 }
 
+type DeviceInitParameters struct {
+
+	// Identifier of a WAN interface ACL template that will be applied on the device.
+	// Unique identifier of applied ACL template
+	ACLTemplateID *string `json:"aclTemplateId,omitempty" tf:"acl_template_id,omitempty"`
+
+	// Billing account number for a device.
+	// Device billing account number
+	AccountNumber *string `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
+
+	// Additional Internet bandwidth, in Mbps, that will be allocated to the device (in addition to default 15Mbps).
+	// Additional Internet bandwidth, in Mbps, that will be allocated to the device
+	AdditionalBandwidth *float64 `json:"additionalBandwidth,omitempty" tf:"additional_bandwidth,omitempty"`
+
+	// Boolean value that determines device licensing mode, i.e., bring your own license or subscription (default).
+	// Boolean value that determines device licensing mode: bring your own license or subscription (default)
+	Byol *bool `json:"byol,omitempty" tf:"byol,omitempty"`
+
+	// Identifier of a cloud init file that will be applied on the device.
+	// Unique identifier of applied cloud init file
+	CloudInitFileID *string `json:"cloudInitFileId,omitempty" tf:"cloud_init_file_id,omitempty"`
+
+	// An object that has the cluster details. See Cluster Details below for more details.
+	// An object that has the cluster details
+	ClusterDetails []ClusterDetailsInitParameters `json:"clusterDetails,omitempty" tf:"cluster_details,omitempty"`
+
+	// Device accessibility (INTERNET-ACCESS or PRIVATE or INTERNET-ACCESS-WITH-PRVT-MGMT). If not specified, default will be INTERNET-ACCESS
+	// Parameter to identify internet access for device. Supported Values: INTERNET-ACCESS(default) or PRIVATE or INTERNET-ACCESS-WITH-PRVT-MGMT
+	Connectivity *string `json:"connectivity,omitempty" tf:"connectivity,omitempty"`
+
+	// Number of CPU cores used by device. (NOTE: Use this field to resize your device. When resizing your HA devices, primary device will be upgraded first. If the upgrade failed, device will be automatically rolled back to the previous state with original core number.)
+	// Number of CPU cores used by device
+	CoreCount *float64 `json:"coreCount,omitempty" tf:"core_count,omitempty"`
+
+	// Unique ID of an existing device. Use this field to let Equinix know if you want your new device to be in a different location from any existing virtual device. This field is only meaningful for single devices.
+	// Unique ID of an existing device
+	DiverseDeviceID *string `json:"diverseDeviceId,omitempty" tf:"diverse_device_id,omitempty"`
+
+	// Device hostname prefix.
+	// Device hostname prefix
+	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
+
+	// Number of network interfaces on a device. If not specified, default number for a given device type will be used.
+	// Number of network interfaces on a device. If not specified, default number for a given device type will be used
+	InterfaceCount *float64 `json:"interfaceCount,omitempty" tf:"interface_count,omitempty"`
+
+	// Path to the license file that will be uploaded and applied on a device. Applicable for some device types in BYOL licensing mode.
+	// Path to the license file that will be uploaded and applied on a device, applicable for some device types in BYOL licensing mode
+	LicenseFile *string `json:"licenseFile,omitempty" tf:"license_file,omitempty"`
+
+	// Identifier of a license file that will be applied on the device.
+	// Unique identifier of applied license file
+	LicenseFileID *string `json:"licenseFileId,omitempty" tf:"license_file_id,omitempty"`
+
+	// License Token applicable for some device types in BYOL licensing mode.
+	// License Token applicable for some device types in BYOL licensing mode
+	LicenseToken *string `json:"licenseToken,omitempty" tf:"license_token,omitempty"`
+
+	// Device location metro code.
+	// Device location metro code
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// Identifier of an MGMT interface ACL template that will be applied on the device.
+	// Unique identifier of applied MGMT ACL template
+	MgmtACLTemplateUUID *string `json:"mgmtAclTemplateUuid,omitempty" tf:"mgmt_acl_template_uuid,omitempty"`
+
+	// Device name.
+	// Device name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// List of email addresses that will receive device status notifications.
+	// List of email addresses that will receive device status notifications
+	// +listType=set
+	Notifications []*string `json:"notifications,omitempty" tf:"notifications,omitempty"`
+
+	// Name/number used to identify device order on the invoice.
+	// Name/number used to identify device order on the invoice
+	OrderReference *string `json:"orderReference,omitempty" tf:"order_reference,omitempty"`
+
+	// Device software package code.
+	// Device software package code
+	PackageCode *string `json:"packageCode,omitempty" tf:"package_code,omitempty"`
+
+	// Unique Identifier for the project resource where the device is scoped to.If you leave it out, the device will be created under the default project id of your organization.
+	// The unique identifier of Project Resource to which device is scoped to
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Purchase order number associated with a device order.
+	// Purchase order number associated with a device order
+	PurchaseOrderNumber *string `json:"purchaseOrderNumber,omitempty" tf:"purchase_order_number,omitempty"`
+
+	// Definition of SSH key that will be provisioned on a device
+	SSHKey []DeviceSSHKeyInitParameters `json:"sshKey,omitempty" tf:"ssh_key,omitempty"`
+
+	// Definition of secondary device for redundant device configurations. See Secondary Device below for more details.
+	// Definition of secondary device applicable for HA setup
+	SecondaryDevice []SecondaryDeviceInitParameters `json:"secondaryDevice,omitempty" tf:"secondary_device,omitempty"`
+
+	// Boolean value that determines device management mode, i.e., self-managed or Equinix-managed (default).
+	// Boolean value that determines device management mode: self-managed or subscription (default)
+	SelfManaged *bool `json:"selfManaged,omitempty" tf:"self_managed,omitempty"`
+
+	// Device term length.
+	// Device term length
+	TermLength *float64 `json:"termLength,omitempty" tf:"term_length,omitempty"`
+
+	// Device license throughput.
+	// Device license throughput
+	Throughput *float64 `json:"throughput,omitempty" tf:"throughput,omitempty"`
+
+	// License throughput unit. One of Mbps or Gbps.
+	// Device license throughput unit (Mbps or Gbps)
+	ThroughputUnit *string `json:"throughputUnit,omitempty" tf:"throughput_unit,omitempty"`
+
+	// Device type code.
+	// Device type code
+	TypeCode *string `json:"typeCode,omitempty" tf:"type_code,omitempty"`
+
+	// Map of vendor specific configuration parameters for a device (controller1, activationKey, managementType, siteId, systemIpAddress, privateAddress, privateCidrMask, privateGateway, licenseKey, licenseId, panoramaAuthKey, panoramaIpAddress)
+	// Map of vendor specific configuration parameters for a device (controller1, activationKey, managementType, siteId, systemIpAddress)
+	// +mapType=granular
+	VendorConfiguration map[string]*string `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
+
+	// Device software software version.
+	// Device software software version
+	Version *string `json:"version,omitempty" tf:"version,omitempty"`
+
+	// interface identifier.
+	// device interface id picked for WAN
+	WanInterfaceID *string `json:"wanInterfaceId,omitempty" tf:"wan_interface_id,omitempty"`
+}
+
 type DeviceObservation struct {
+
+	// Identifier of a WAN interface ACL template that will be applied on the device.
+	// Unique identifier of applied ACL template
+	ACLTemplateID *string `json:"aclTemplateId,omitempty" tf:"acl_template_id,omitempty"`
+
+	// Billing account number for a device.
+	// Device billing account number
+	AccountNumber *string `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
+
+	// Additional Internet bandwidth, in Mbps, that will be allocated to the device (in addition to default 15Mbps).
+	// Additional Internet bandwidth, in Mbps, that will be allocated to the device
+	AdditionalBandwidth *float64 `json:"additionalBandwidth,omitempty" tf:"additional_bandwidth,omitempty"`
 
 	// (Autonomous System Number) Unique identifier for a network on the internet.
 	// Autonomous system number
 	Asn *float64 `json:"asn,omitempty" tf:"asn,omitempty"`
 
-	// An object that has the cluster details. See
-	// Cluster Details below for more details.
+	// Boolean value that determines device licensing mode, i.e., bring your own license or subscription (default).
+	// Boolean value that determines device licensing mode: bring your own license or subscription (default)
+	Byol *bool `json:"byol,omitempty" tf:"byol,omitempty"`
+
+	// Identifier of a cloud init file that will be applied on the device.
+	// Unique identifier of applied cloud init file
+	CloudInitFileID *string `json:"cloudInitFileId,omitempty" tf:"cloud_init_file_id,omitempty"`
+
+	// An object that has the cluster details. See Cluster Details below for more details.
 	// An object that has the cluster details
-	// +kubebuilder:validation:Optional
 	ClusterDetails []ClusterDetailsObservation `json:"clusterDetails,omitempty" tf:"cluster_details,omitempty"`
 
-	// Name of the device with diverse device UUID. This field is returned in device details if the
-	// device is created by passing diverse_device_id.
+	// Device accessibility (INTERNET-ACCESS or PRIVATE or INTERNET-ACCESS-WITH-PRVT-MGMT). If not specified, default will be INTERNET-ACCESS
+	// Parameter to identify internet access for device. Supported Values: INTERNET-ACCESS(default) or PRIVATE or INTERNET-ACCESS-WITH-PRVT-MGMT
+	Connectivity *string `json:"connectivity,omitempty" tf:"connectivity,omitempty"`
+
+	// Number of CPU cores used by device. (NOTE: Use this field to resize your device. When resizing your HA devices, primary device will be upgraded first. If the upgrade failed, device will be automatically rolled back to the previous state with original core number.)
+	// Number of CPU cores used by device
+	CoreCount *float64 `json:"coreCount,omitempty" tf:"core_count,omitempty"`
+
+	// Unique ID of an existing device. Use this field to let Equinix know if you want your new device to be in a different location from any existing virtual device. This field is only meaningful for single devices.
+	// Unique ID of an existing device
+	DiverseDeviceID *string `json:"diverseDeviceId,omitempty" tf:"diverse_device_id,omitempty"`
+
+	// Name of the device with diverse device UUID. This field is returned in device details if the device is created by passing diverse_device_id.
 	// Diverse Device Name of an existing device
 	DiverseDeviceName *string `json:"diverseDeviceName,omitempty" tf:"diverse_device_name,omitempty"`
+
+	// Device hostname prefix.
+	// Device hostname prefix
+	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
 
 	// interface identifier.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -92,18 +270,64 @@ type DeviceObservation struct {
 	// Device location Equinix Business Exchange name
 	Ibx *string `json:"ibx,omitempty" tf:"ibx,omitempty"`
 
-	// List of device interfaces. See Interface Attribute below
-	// for more details.
+	// List of device interfaces. See Interface Attribute below for more details.
 	// List of device interfaces
 	Interface []InterfaceObservation `json:"interface,omitempty" tf:"interface,omitempty"`
 
-	// Device license registration status. Possible values are APPLYING_LICENSE,
-	// REGISTERED, APPLIED, WAITING_FOR_CLUSTER_SETUP, REGISTRATION_FAILED.
+	// Number of network interfaces on a device. If not specified, default number for a given device type will be used.
+	// Number of network interfaces on a device. If not specified, default number for a given device type will be used
+	InterfaceCount *float64 `json:"interfaceCount,omitempty" tf:"interface_count,omitempty"`
+
+	// Path to the license file that will be uploaded and applied on a device. Applicable for some device types in BYOL licensing mode.
+	// Path to the license file that will be uploaded and applied on a device, applicable for some device types in BYOL licensing mode
+	LicenseFile *string `json:"licenseFile,omitempty" tf:"license_file,omitempty"`
+
+	// Identifier of a license file that will be applied on the device.
+	// Unique identifier of applied license file
+	LicenseFileID *string `json:"licenseFileId,omitempty" tf:"license_file_id,omitempty"`
+
+	// Device license registration status. Possible values are APPLYING_LICENSE, REGISTERED, APPLIED, WAITING_FOR_CLUSTER_SETUP, REGISTRATION_FAILED.
 	// Device license registration status
 	LicenseStatus *string `json:"licenseStatus,omitempty" tf:"license_status,omitempty"`
 
-	// Device redundancy type applicable for HA devices, either
-	// primary or secondary.
+	// License Token applicable for some device types in BYOL licensing mode.
+	// License Token applicable for some device types in BYOL licensing mode
+	LicenseToken *string `json:"licenseToken,omitempty" tf:"license_token,omitempty"`
+
+	// Device location metro code.
+	// Device location metro code
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// Identifier of an MGMT interface ACL template that will be applied on the device.
+	// Unique identifier of applied MGMT ACL template
+	MgmtACLTemplateUUID *string `json:"mgmtAclTemplateUuid,omitempty" tf:"mgmt_acl_template_uuid,omitempty"`
+
+	// Device name.
+	// Device name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// List of email addresses that will receive device status notifications.
+	// List of email addresses that will receive device status notifications
+	// +listType=set
+	Notifications []*string `json:"notifications,omitempty" tf:"notifications,omitempty"`
+
+	// Name/number used to identify device order on the invoice.
+	// Name/number used to identify device order on the invoice
+	OrderReference *string `json:"orderReference,omitempty" tf:"order_reference,omitempty"`
+
+	// Device software package code.
+	// Device software package code
+	PackageCode *string `json:"packageCode,omitempty" tf:"package_code,omitempty"`
+
+	// Unique Identifier for the project resource where the device is scoped to.If you leave it out, the device will be created under the default project id of your organization.
+	// The unique identifier of Project Resource to which device is scoped to
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Purchase order number associated with a device order.
+	// Purchase order number associated with a device order
+	PurchaseOrderNumber *string `json:"purchaseOrderNumber,omitempty" tf:"purchase_order_number,omitempty"`
+
+	// Device redundancy type applicable for HA devices, either primary or secondary.
 	// Device redundancy type applicable for HA devices, either primary or secondary
 	RedundancyType *string `json:"redundancyType,omitempty" tf:"redundancy_type,omitempty"`
 
@@ -123,22 +347,53 @@ type DeviceObservation struct {
 	// FQDN of SSH enabled interface on the device
 	SSHIPFqdn *string `json:"sshIpFqdn,omitempty" tf:"ssh_ip_fqdn,omitempty"`
 
-	// Definition of secondary device for redundant
-	// device configurations. See Secondary Device below for more details.
+	// Definition of SSH key that will be provisioned on a device
+	SSHKey []DeviceSSHKeyObservation `json:"sshKey,omitempty" tf:"ssh_key,omitempty"`
+
+	// Definition of secondary device for redundant device configurations. See Secondary Device below for more details.
 	// Definition of secondary device applicable for HA setup
-	// +kubebuilder:validation:Optional
 	SecondaryDevice []SecondaryDeviceObservation `json:"secondaryDevice,omitempty" tf:"secondary_device,omitempty"`
 
-	// Device provisioning status. Possible values are
-	// INITIALIZING, PROVISIONING, WAITING_FOR_PRIMARY, WAITING_FOR_SECONDARY,
-	// WAITING_FOR_REPLICA_CLUSTER_NODES, CLUSTER_SETUP_IN_PROGRESS, FAILED, PROVISIONED,
-	// DEPROVISIONING, DEPROVISIONED, RESOURCE_UPGRADE_IN_PROGRESS, RESOURCE_UPGRADE_FAILED.
+	// Boolean value that determines device management mode, i.e., self-managed or Equinix-managed (default).
+	// Boolean value that determines device management mode: self-managed or subscription (default)
+	SelfManaged *bool `json:"selfManaged,omitempty" tf:"self_managed,omitempty"`
+
+	// Device provisioning status. Possible values are INITIALIZING, PROVISIONING, WAITING_FOR_PRIMARY, WAITING_FOR_SECONDARY, WAITING_FOR_REPLICA_CLUSTER_NODES, CLUSTER_SETUP_IN_PROGRESS, FAILED, PROVISIONED, DEPROVISIONING, DEPROVISIONED, RESOURCE_UPGRADE_IN_PROGRESS, RESOURCE_UPGRADE_FAILED.
 	// Device provisioning status
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
+
+	// Device term length.
+	// Device term length
+	TermLength *float64 `json:"termLength,omitempty" tf:"term_length,omitempty"`
+
+	// Device license throughput.
+	// Device license throughput
+	Throughput *float64 `json:"throughput,omitempty" tf:"throughput,omitempty"`
+
+	// License throughput unit. One of Mbps or Gbps.
+	// Device license throughput unit (Mbps or Gbps)
+	ThroughputUnit *string `json:"throughputUnit,omitempty" tf:"throughput_unit,omitempty"`
+
+	// Device type code.
+	// Device type code
+	TypeCode *string `json:"typeCode,omitempty" tf:"type_code,omitempty"`
 
 	// Device unique identifier.
 	// Device unique identifier
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+
+	// Map of vendor specific configuration parameters for a device (controller1, activationKey, managementType, siteId, systemIpAddress, privateAddress, privateCidrMask, privateGateway, licenseKey, licenseId, panoramaAuthKey, panoramaIpAddress)
+	// Map of vendor specific configuration parameters for a device (controller1, activationKey, managementType, siteId, systemIpAddress)
+	// +mapType=granular
+	VendorConfiguration map[string]*string `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
+
+	// Device software software version.
+	// Device software software version
+	Version *string `json:"version,omitempty" tf:"version,omitempty"`
+
+	// interface identifier.
+	// device interface id picked for WAN
+	WanInterfaceID *string `json:"wanInterfaceId,omitempty" tf:"wan_interface_id,omitempty"`
 
 	// Device location zone code.
 	// Device location zone code
@@ -154,17 +409,15 @@ type DeviceParameters struct {
 
 	// Billing account number for a device.
 	// Device billing account number
-	// +kubebuilder:validation:Required
-	AccountNumber *string `json:"accountNumber" tf:"account_number,omitempty"`
+	// +kubebuilder:validation:Optional
+	AccountNumber *string `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
 
-	// Additional Internet bandwidth, in Mbps, that will be
-	// allocated to the device (in addition to default 15Mbps).
+	// Additional Internet bandwidth, in Mbps, that will be allocated to the device (in addition to default 15Mbps).
 	// Additional Internet bandwidth, in Mbps, that will be allocated to the device
 	// +kubebuilder:validation:Optional
 	AdditionalBandwidth *float64 `json:"additionalBandwidth,omitempty" tf:"additional_bandwidth,omitempty"`
 
-	// Boolean value that determines device licensing mode, i.e.,
-	// bring your own license or subscription (default).
+	// Boolean value that determines device licensing mode, i.e., bring your own license or subscription (default).
 	// Boolean value that determines device licensing mode: bring your own license or subscription (default)
 	// +kubebuilder:validation:Optional
 	Byol *bool `json:"byol,omitempty" tf:"byol,omitempty"`
@@ -174,26 +427,22 @@ type DeviceParameters struct {
 	// +kubebuilder:validation:Optional
 	CloudInitFileID *string `json:"cloudInitFileId,omitempty" tf:"cloud_init_file_id,omitempty"`
 
-	// An object that has the cluster details. See
-	// Cluster Details below for more details.
+	// An object that has the cluster details. See Cluster Details below for more details.
 	// An object that has the cluster details
 	// +kubebuilder:validation:Optional
 	ClusterDetails []ClusterDetailsParameters `json:"clusterDetails,omitempty" tf:"cluster_details,omitempty"`
 
-	// Device accessibility (INTERNET-ACCESS or PRIVATE or INTERNET-ACCESS-WITH-PRVT-MGMT).
-	// If not specified, default will be INTERNET-ACCESS
+	// Device accessibility (INTERNET-ACCESS or PRIVATE or INTERNET-ACCESS-WITH-PRVT-MGMT). If not specified, default will be INTERNET-ACCESS
 	// Parameter to identify internet access for device. Supported Values: INTERNET-ACCESS(default) or PRIVATE or INTERNET-ACCESS-WITH-PRVT-MGMT
 	// +kubebuilder:validation:Optional
 	Connectivity *string `json:"connectivity,omitempty" tf:"connectivity,omitempty"`
 
 	// Number of CPU cores used by device. (NOTE: Use this field to resize your device. When resizing your HA devices, primary device will be upgraded first. If the upgrade failed, device will be automatically rolled back to the previous state with original core number.)
 	// Number of CPU cores used by device
-	// +kubebuilder:validation:Required
-	CoreCount *float64 `json:"coreCount" tf:"core_count,omitempty"`
+	// +kubebuilder:validation:Optional
+	CoreCount *float64 `json:"coreCount,omitempty" tf:"core_count,omitempty"`
 
-	// Unique ID of an existing device.
-	// Use this field to let Equinix know if you want your new device to be in a different location from any existing virtual
-	// device. This field is only meaningful for single devices.
+	// Unique ID of an existing device. Use this field to let Equinix know if you want your new device to be in a different location from any existing virtual device. This field is only meaningful for single devices.
 	// Unique ID of an existing device
 	// +kubebuilder:validation:Optional
 	DiverseDeviceID *string `json:"diverseDeviceId,omitempty" tf:"diverse_device_id,omitempty"`
@@ -203,14 +452,12 @@ type DeviceParameters struct {
 	// +kubebuilder:validation:Optional
 	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
 
-	// Number of network interfaces on a device. If not specified,
-	// default number for a given device type will be used.
+	// Number of network interfaces on a device. If not specified, default number for a given device type will be used.
 	// Number of network interfaces on a device. If not specified, default number for a given device type will be used
 	// +kubebuilder:validation:Optional
 	InterfaceCount *float64 `json:"interfaceCount,omitempty" tf:"interface_count,omitempty"`
 
-	// Path to the license file that will be uploaded and applied on a
-	// device. Applicable for some device types in BYOL licensing mode.
+	// Path to the license file that will be uploaded and applied on a device. Applicable for some device types in BYOL licensing mode.
 	// Path to the license file that will be uploaded and applied on a device, applicable for some device types in BYOL licensing mode
 	// +kubebuilder:validation:Optional
 	LicenseFile *string `json:"licenseFile,omitempty" tf:"license_file,omitempty"`
@@ -220,33 +467,31 @@ type DeviceParameters struct {
 	// +kubebuilder:validation:Optional
 	LicenseFileID *string `json:"licenseFileId,omitempty" tf:"license_file_id,omitempty"`
 
-	// License Token applicable for some device types in BYOL licensing
-	// mode.
+	// License Token applicable for some device types in BYOL licensing mode.
 	// License Token applicable for some device types in BYOL licensing mode
 	// +kubebuilder:validation:Optional
 	LicenseToken *string `json:"licenseToken,omitempty" tf:"license_token,omitempty"`
 
 	// Device location metro code.
 	// Device location metro code
-	// +kubebuilder:validation:Required
-	MetroCode *string `json:"metroCode" tf:"metro_code,omitempty"`
+	// +kubebuilder:validation:Optional
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
 
-	// Identifier of an MGMT interface ACL template that will be
-	// applied on the device.
+	// Identifier of an MGMT interface ACL template that will be applied on the device.
 	// Unique identifier of applied MGMT ACL template
 	// +kubebuilder:validation:Optional
 	MgmtACLTemplateUUID *string `json:"mgmtAclTemplateUuid,omitempty" tf:"mgmt_acl_template_uuid,omitempty"`
 
 	// Device name.
 	// Device name
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// List of email addresses that will receive device status
-	// notifications.
+	// List of email addresses that will receive device status notifications.
 	// List of email addresses that will receive device status notifications
-	// +kubebuilder:validation:Required
-	Notifications []*string `json:"notifications" tf:"notifications,omitempty"`
+	// +kubebuilder:validation:Optional
+	// +listType=set
+	Notifications []*string `json:"notifications,omitempty" tf:"notifications,omitempty"`
 
 	// Name/number used to identify device order on the invoice.
 	// Name/number used to identify device order on the invoice
@@ -255,11 +500,10 @@ type DeviceParameters struct {
 
 	// Device software package code.
 	// Device software package code
-	// +kubebuilder:validation:Required
-	PackageCode *string `json:"packageCode" tf:"package_code,omitempty"`
+	// +kubebuilder:validation:Optional
+	PackageCode *string `json:"packageCode,omitempty" tf:"package_code,omitempty"`
 
-	// Unique Identifier for the project resource where the device is scoped to.If you
-	// leave it out, the device will be created under the default project id of your organization.
+	// Unique Identifier for the project resource where the device is scoped to.If you leave it out, the device will be created under the default project id of your organization.
 	// The unique identifier of Project Resource to which device is scoped to
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
@@ -273,22 +517,20 @@ type DeviceParameters struct {
 	// +kubebuilder:validation:Optional
 	SSHKey []DeviceSSHKeyParameters `json:"sshKey,omitempty" tf:"ssh_key,omitempty"`
 
-	// Definition of secondary device for redundant
-	// device configurations. See Secondary Device below for more details.
+	// Definition of secondary device for redundant device configurations. See Secondary Device below for more details.
 	// Definition of secondary device applicable for HA setup
 	// +kubebuilder:validation:Optional
 	SecondaryDevice []SecondaryDeviceParameters `json:"secondaryDevice,omitempty" tf:"secondary_device,omitempty"`
 
-	// Boolean value that determines device management mode, i.e.,
-	// self-managed or Equinix-managed (default).
+	// Boolean value that determines device management mode, i.e., self-managed or Equinix-managed (default).
 	// Boolean value that determines device management mode: self-managed or subscription (default)
 	// +kubebuilder:validation:Optional
 	SelfManaged *bool `json:"selfManaged,omitempty" tf:"self_managed,omitempty"`
 
 	// Device term length.
 	// Device term length
-	// +kubebuilder:validation:Required
-	TermLength *float64 `json:"termLength" tf:"term_length,omitempty"`
+	// +kubebuilder:validation:Optional
+	TermLength *float64 `json:"termLength,omitempty" tf:"term_length,omitempty"`
 
 	// Device license throughput.
 	// Device license throughput
@@ -302,19 +544,19 @@ type DeviceParameters struct {
 
 	// Device type code.
 	// Device type code
-	// +kubebuilder:validation:Required
-	TypeCode *string `json:"typeCode" tf:"type_code,omitempty"`
+	// +kubebuilder:validation:Optional
+	TypeCode *string `json:"typeCode,omitempty" tf:"type_code,omitempty"`
 
-	// Map of vendor specific configuration parameters for a device
-	// (controller1, activationKey, managementType, siteId, systemIpAddress)
+	// Map of vendor specific configuration parameters for a device (controller1, activationKey, managementType, siteId, systemIpAddress, privateAddress, privateCidrMask, privateGateway, licenseKey, licenseId, panoramaAuthKey, panoramaIpAddress)
 	// Map of vendor specific configuration parameters for a device (controller1, activationKey, managementType, siteId, systemIpAddress)
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	VendorConfiguration map[string]*string `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
 
 	// Device software software version.
 	// Device software software version
-	// +kubebuilder:validation:Required
-	Version *string `json:"version" tf:"version,omitempty"`
+	// +kubebuilder:validation:Optional
+	Version *string `json:"version,omitempty" tf:"version,omitempty"`
 
 	// interface identifier.
 	// device interface id picked for WAN
@@ -322,20 +564,42 @@ type DeviceParameters struct {
 	WanInterfaceID *string `json:"wanInterfaceId,omitempty" tf:"wan_interface_id,omitempty"`
 }
 
+type DeviceSSHKeyInitParameters struct {
+
+	// Device name.
+	// Reference by name to previously provisioned public SSH key
+	KeyName *string `json:"keyName,omitempty" tf:"key_name,omitempty"`
+
+	// username associated with given key.
+	// Username associated with given key
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+}
+
 type DeviceSSHKeyObservation struct {
+
+	// Device name.
+	// Reference by name to previously provisioned public SSH key
+	KeyName *string `json:"keyName,omitempty" tf:"key_name,omitempty"`
+
+	// username associated with given key.
+	// Username associated with given key
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 }
 
 type DeviceSSHKeyParameters struct {
 
 	// Device name.
 	// Reference by name to previously provisioned public SSH key
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	KeyName *string `json:"keyName" tf:"key_name,omitempty"`
 
 	// username associated with given key.
 	// Username associated with given key
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Username *string `json:"username" tf:"username,omitempty"`
+}
+
+type InterfaceInitParameters struct {
 }
 
 type InterfaceObservation struct {
@@ -358,10 +622,7 @@ type InterfaceObservation struct {
 	// interface operational status. One of up, down.
 	OperationalStatus *string `json:"operationalStatus,omitempty" tf:"operational_status,omitempty"`
 
-	// Device provisioning status. Possible values are
-	// INITIALIZING, PROVISIONING, WAITING_FOR_PRIMARY, WAITING_FOR_SECONDARY,
-	// WAITING_FOR_REPLICA_CLUSTER_NODES, CLUSTER_SETUP_IN_PROGRESS, FAILED, PROVISIONED,
-	// DEPROVISIONING, DEPROVISIONED, RESOURCE_UPGRADE_IN_PROGRESS, RESOURCE_UPGRADE_FAILED.
+	// Device provisioning status. Possible values are INITIALIZING, PROVISIONING, WAITING_FOR_PRIMARY, WAITING_FOR_SECONDARY, WAITING_FOR_REPLICA_CLUSTER_NODES, CLUSTER_SETUP_IN_PROGRESS, FAILED, PROVISIONED, DEPROVISIONING, DEPROVISIONED, RESOURCE_UPGRADE_IN_PROGRESS, RESOURCE_UPGRADE_FAILED.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
 	// interface type.
@@ -371,7 +632,26 @@ type InterfaceObservation struct {
 type InterfaceParameters struct {
 }
 
+type Node0InitParameters struct {
+
+	// License file id. This is necessary for Fortinet and Juniper clusters.
+	// License file id. This is necessary for Fortinet and Juniper clusters
+	LicenseFileID *string `json:"licenseFileId,omitempty" tf:"license_file_id,omitempty"`
+
+	// License token. This is necessary for Palo Alto clusters.
+	// License token. This is necessary for Palo Alto clusters
+	LicenseTokenSecretRef *v1.SecretKeySelector `json:"licenseTokenSecretRef,omitempty" tf:"-"`
+
+	// An object that has fields relevant to the vendor of the cluster device. See Cluster Details - Nodes - Vendor Configuration below for more details.
+	// An object that has fields relevant to the vendor of the cluster device
+	VendorConfiguration []VendorConfigurationInitParameters `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
+}
+
 type Node0Observation struct {
+
+	// License file id. This is necessary for Fortinet and Juniper clusters.
+	// License file id. This is necessary for Fortinet and Juniper clusters
+	LicenseFileID *string `json:"licenseFileId,omitempty" tf:"license_file_id,omitempty"`
 
 	// reference by name to previously provisioned public SSH key.
 	// The name of the node
@@ -380,6 +660,10 @@ type Node0Observation struct {
 	// Device unique identifier.
 	// The unique id of the node
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+
+	// An object that has fields relevant to the vendor of the cluster device. See Cluster Details - Nodes - Vendor Configuration below for more details.
+	// An object that has fields relevant to the vendor of the cluster device
+	VendorConfiguration []VendorConfigurationObservation `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
 }
 
 type Node0Parameters struct {
@@ -394,15 +678,32 @@ type Node0Parameters struct {
 	// +kubebuilder:validation:Optional
 	LicenseTokenSecretRef *v1.SecretKeySelector `json:"licenseTokenSecretRef,omitempty" tf:"-"`
 
-	// An object that has fields relevant to the vendor of the
-	// cluster device. See Cluster Details - Nodes - Vendor Configuration
-	// below for more details.
+	// An object that has fields relevant to the vendor of the cluster device. See Cluster Details - Nodes - Vendor Configuration below for more details.
 	// An object that has fields relevant to the vendor of the cluster device
 	// +kubebuilder:validation:Optional
 	VendorConfiguration []VendorConfigurationParameters `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
 }
 
+type Node1InitParameters struct {
+
+	// Identifier of a license file that will be applied on a secondary device.
+	// License file id. This is necessary for Fortinet and Juniper clusters
+	LicenseFileID *string `json:"licenseFileId,omitempty" tf:"license_file_id,omitempty"`
+
+	// License Token can be provided for some device types o the device.
+	// License token. This is necessary for Palo Alto clusters
+	LicenseTokenSecretRef *v1.SecretKeySelector `json:"licenseTokenSecretRef,omitempty" tf:"-"`
+
+	// Map of vendor specific configuration parameters for a device (controller1, activationKey, managementType, siteId, systemIpAddress, privateAddress, privateCidrMask, privateGateway, licenseKey, licenseId, panoramaAuthKey, panoramaIpAddress)
+	// An object that has fields relevant to the vendor of the cluster device
+	VendorConfiguration []Node1VendorConfigurationInitParameters `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
+}
+
 type Node1Observation struct {
+
+	// Identifier of a license file that will be applied on a secondary device.
+	// License file id. This is necessary for Fortinet and Juniper clusters
+	LicenseFileID *string `json:"licenseFileId,omitempty" tf:"license_file_id,omitempty"`
 
 	// reference by name to previously provisioned public SSH key.
 	// The name of the node
@@ -411,6 +712,10 @@ type Node1Observation struct {
 	// Device unique identifier.
 	// The unique id of the node
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+
+	// Map of vendor specific configuration parameters for a device (controller1, activationKey, managementType, siteId, systemIpAddress, privateAddress, privateCidrMask, privateGateway, licenseKey, licenseId, panoramaAuthKey, panoramaIpAddress)
+	// An object that has fields relevant to the vendor of the cluster device
+	VendorConfiguration []Node1VendorConfigurationObservation `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
 }
 
 type Node1Parameters struct {
@@ -425,14 +730,89 @@ type Node1Parameters struct {
 	// +kubebuilder:validation:Optional
 	LicenseTokenSecretRef *v1.SecretKeySelector `json:"licenseTokenSecretRef,omitempty" tf:"-"`
 
-	// Map of vendor specific configuration parameters for a device
-	// (controller1, activationKey, managementType, siteId, systemIpAddress)
+	// Map of vendor specific configuration parameters for a device (controller1, activationKey, managementType, siteId, systemIpAddress, privateAddress, privateCidrMask, privateGateway, licenseKey, licenseId, panoramaAuthKey, panoramaIpAddress)
 	// An object that has fields relevant to the vendor of the cluster device
 	// +kubebuilder:validation:Optional
 	VendorConfiguration []Node1VendorConfigurationParameters `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
 }
 
+type Node1VendorConfigurationInitParameters struct {
+
+	// Activation key. This is required for Velocloud clusters.
+	// Activation key. This is required for Velocloud clusters
+	ActivationKeySecretRef *v1.SecretKeySelector `json:"activationKeySecretRef,omitempty" tf:"-"`
+
+	// The administrative password of the device. You can use it to log in to the console. This field is not available for all device types.
+	// The administrative password of the device. You can use it to log in to the console. This field is not available for all device types
+	AdminPasswordSecretRef *v1.SecretKeySelector `json:"adminPasswordSecretRef,omitempty" tf:"-"`
+
+	// System IP Address. Mandatory for the Fortinet SDWAN cluster device.
+	// System IP Address. Mandatory for the Fortinet SDWAN cluster device
+	Controller1 *string `json:"controller1,omitempty" tf:"controller1,omitempty"`
+
+	// Controller fqdn. This is required for Velocloud clusters.
+	// Controller fqdn. This is required for Velocloud clusters
+	ControllerFqdn *string `json:"controllerFqdn,omitempty" tf:"controller_fqdn,omitempty"`
+
+	// Secondary device hostname.
+	// Hostname. This is necessary for Palo Alto, Juniper, and Fortinet clusters
+	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
+
+	// interface identifier.
+	// License id. This field is relevant only for the BlueCat DNS and DHCP Server
+	LicenseIDSecretRef *v1.SecretKeySelector `json:"licenseIdSecretRef,omitempty" tf:"-"`
+
+	// License key. This field is relevant only for the BlueCat DNS and DHCP Server
+	LicenseKeySecretRef *v1.SecretKeySelector `json:"licenseKeySecretRef,omitempty" tf:"-"`
+
+	// Panorama Server Auth Key. This field is relevant only for the PA-VM firewall devices to have integration with Panorama Server.
+	// Panorama Server Auth Key. This field is relevant only for Palo Alto Networks Firewall devices
+	PanoramaAuthKeySecretRef *v1.SecretKeySelector `json:"panoramaAuthKeySecretRef,omitempty" tf:"-"`
+
+	// Panorama Server IP Address. This field is relevant only for the PA-VM firewall devices to have integration with Panorama Server.
+	// Panorama Server IP Address. This field is relevant only for Palo Alto Networks Firewall devices
+	PanoramaIPAddress *string `json:"panoramaIpAddress,omitempty" tf:"panorama_ip_address,omitempty"`
+
+	// Private address. This field is relevant only for the BlueCat DNS and DHCP Server
+	PrivateAddress *string `json:"privateAddress,omitempty" tf:"private_address,omitempty"`
+
+	// Private CIDR Mask. This field is relevant only for the BlueCat DNS and DHCP Server
+	PrivateCidrMask *string `json:"privateCidrMask,omitempty" tf:"private_cidr_mask,omitempty"`
+
+	// Private gateway. This field is relevant only for the BlueCat DNS and DHCP Server
+	PrivateGateway *string `json:"privateGateway,omitempty" tf:"private_gateway,omitempty"`
+
+	// The CLI password of the device. This field is relevant only for the Velocloud SDWAN cluster.
+	// The CLI password of the device. This field is relevant only for the Velocloud SDWAN cluster
+	RootPasswordSecretRef *v1.SecretKeySelector `json:"rootPasswordSecretRef,omitempty" tf:"-"`
+}
+
 type Node1VendorConfigurationObservation struct {
+
+	// System IP Address. Mandatory for the Fortinet SDWAN cluster device.
+	// System IP Address. Mandatory for the Fortinet SDWAN cluster device
+	Controller1 *string `json:"controller1,omitempty" tf:"controller1,omitempty"`
+
+	// Controller fqdn. This is required for Velocloud clusters.
+	// Controller fqdn. This is required for Velocloud clusters
+	ControllerFqdn *string `json:"controllerFqdn,omitempty" tf:"controller_fqdn,omitempty"`
+
+	// Secondary device hostname.
+	// Hostname. This is necessary for Palo Alto, Juniper, and Fortinet clusters
+	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
+
+	// Panorama Server IP Address. This field is relevant only for the PA-VM firewall devices to have integration with Panorama Server.
+	// Panorama Server IP Address. This field is relevant only for Palo Alto Networks Firewall devices
+	PanoramaIPAddress *string `json:"panoramaIpAddress,omitempty" tf:"panorama_ip_address,omitempty"`
+
+	// Private address. This field is relevant only for the BlueCat DNS and DHCP Server
+	PrivateAddress *string `json:"privateAddress,omitempty" tf:"private_address,omitempty"`
+
+	// Private CIDR Mask. This field is relevant only for the BlueCat DNS and DHCP Server
+	PrivateCidrMask *string `json:"privateCidrMask,omitempty" tf:"private_cidr_mask,omitempty"`
+
+	// Private gateway. This field is relevant only for the BlueCat DNS and DHCP Server
+	PrivateGateway *string `json:"privateGateway,omitempty" tf:"private_gateway,omitempty"`
 }
 
 type Node1VendorConfigurationParameters struct {
@@ -442,8 +822,7 @@ type Node1VendorConfigurationParameters struct {
 	// +kubebuilder:validation:Optional
 	ActivationKeySecretRef *v1.SecretKeySelector `json:"activationKeySecretRef,omitempty" tf:"-"`
 
-	// The administrative password of the device. You can use it to log in
-	// to the console. This field is not available for all device types.
+	// The administrative password of the device. You can use it to log in to the console. This field is not available for all device types.
 	// The administrative password of the device. You can use it to log in to the console. This field is not available for all device types
 	// +kubebuilder:validation:Optional
 	AdminPasswordSecretRef *v1.SecretKeySelector `json:"adminPasswordSecretRef,omitempty" tf:"-"`
@@ -463,27 +842,143 @@ type Node1VendorConfigurationParameters struct {
 	// +kubebuilder:validation:Optional
 	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
 
-	// The CLI password of the device. This field is relevant only for the
-	// Velocloud SDWAN cluster.
+	// interface identifier.
+	// License id. This field is relevant only for the BlueCat DNS and DHCP Server
+	// +kubebuilder:validation:Optional
+	LicenseIDSecretRef *v1.SecretKeySelector `json:"licenseIdSecretRef,omitempty" tf:"-"`
+
+	// License key. This field is relevant only for the BlueCat DNS and DHCP Server
+	// +kubebuilder:validation:Optional
+	LicenseKeySecretRef *v1.SecretKeySelector `json:"licenseKeySecretRef,omitempty" tf:"-"`
+
+	// Panorama Server Auth Key. This field is relevant only for the PA-VM firewall devices to have integration with Panorama Server.
+	// Panorama Server Auth Key. This field is relevant only for Palo Alto Networks Firewall devices
+	// +kubebuilder:validation:Optional
+	PanoramaAuthKeySecretRef *v1.SecretKeySelector `json:"panoramaAuthKeySecretRef,omitempty" tf:"-"`
+
+	// Panorama Server IP Address. This field is relevant only for the PA-VM firewall devices to have integration with Panorama Server.
+	// Panorama Server IP Address. This field is relevant only for Palo Alto Networks Firewall devices
+	// +kubebuilder:validation:Optional
+	PanoramaIPAddress *string `json:"panoramaIpAddress,omitempty" tf:"panorama_ip_address,omitempty"`
+
+	// Private address. This field is relevant only for the BlueCat DNS and DHCP Server
+	// +kubebuilder:validation:Optional
+	PrivateAddress *string `json:"privateAddress,omitempty" tf:"private_address,omitempty"`
+
+	// Private CIDR Mask. This field is relevant only for the BlueCat DNS and DHCP Server
+	// +kubebuilder:validation:Optional
+	PrivateCidrMask *string `json:"privateCidrMask,omitempty" tf:"private_cidr_mask,omitempty"`
+
+	// Private gateway. This field is relevant only for the BlueCat DNS and DHCP Server
+	// +kubebuilder:validation:Optional
+	PrivateGateway *string `json:"privateGateway,omitempty" tf:"private_gateway,omitempty"`
+
+	// The CLI password of the device. This field is relevant only for the Velocloud SDWAN cluster.
 	// The CLI password of the device. This field is relevant only for the Velocloud SDWAN cluster
 	// +kubebuilder:validation:Optional
 	RootPasswordSecretRef *v1.SecretKeySelector `json:"rootPasswordSecretRef,omitempty" tf:"-"`
 }
 
+type SSHKeyInitParameters struct {
+
+	// Device name.
+	// Reference by name to previously provisioned public SSH key
+	KeyName *string `json:"keyName,omitempty" tf:"key_name,omitempty"`
+
+	// username associated with given key.
+	// Username associated with given key
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+}
+
 type SSHKeyObservation struct {
+
+	// Device name.
+	// Reference by name to previously provisioned public SSH key
+	KeyName *string `json:"keyName,omitempty" tf:"key_name,omitempty"`
+
+	// username associated with given key.
+	// Username associated with given key
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 }
 
 type SSHKeyParameters struct {
 
 	// Device name.
 	// Reference by name to previously provisioned public SSH key
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	KeyName *string `json:"keyName" tf:"key_name,omitempty"`
 
 	// username associated with given key.
 	// Username associated with given key
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Username *string `json:"username" tf:"username,omitempty"`
+}
+
+type SecondaryDeviceInitParameters struct {
+
+	// Identifier of a WAN interface ACL template that will be applied on a secondary device.
+	// Unique identifier of applied ACL template
+	ACLTemplateID *string `json:"aclTemplateId,omitempty" tf:"acl_template_id,omitempty"`
+
+	// Billing account number for secondary device.
+	// Device billing account number
+	AccountNumber *string `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
+
+	// Additional Internet bandwidth, in Mbps, for a secondary device.
+	// Additional Internet bandwidth, in Mbps, that will be allocated to the device
+	AdditionalBandwidth *float64 `json:"additionalBandwidth,omitempty" tf:"additional_bandwidth,omitempty"`
+
+	// Identifier of a cloud init file that will be applied on a secondary device.
+	// Unique identifier of applied cloud init file
+	CloudInitFileID *string `json:"cloudInitFileId,omitempty" tf:"cloud_init_file_id,omitempty"`
+
+	// Secondary device hostname.
+	// Device hostname prefix
+	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
+
+	// Path to the license file that will be uploaded and applied on a secondary device. Applicable for some device types in BYOL licensing mode.
+	// Path to the license file that will be uploaded and applied on a device, applicable for some device types in BYOL licensing mode
+	LicenseFile *string `json:"licenseFile,omitempty" tf:"license_file,omitempty"`
+
+	// Identifier of a license file that will be applied on a secondary device.
+	// Unique identifier of applied license file
+	LicenseFileID *string `json:"licenseFileId,omitempty" tf:"license_file_id,omitempty"`
+
+	// License Token can be provided for some device types o the device.
+	// License Token applicable for some device types in BYOL licensing mode
+	LicenseToken *string `json:"licenseToken,omitempty" tf:"license_token,omitempty"`
+
+	// Metro location of a secondary device.
+	// Device location metro code
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// Identifier of an MGMT interface ACL template that will be applied on a secondary device.
+	// Unique identifier of applied MGMT ACL template
+	MgmtACLTemplateUUID *string `json:"mgmtAclTemplateUuid,omitempty" tf:"mgmt_acl_template_uuid,omitempty"`
+
+	// Secondary device name.
+	// Device name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// List of email addresses that will receive notifications about secondary device.
+	// List of email addresses that will receive device status notifications
+	// +listType=set
+	Notifications []*string `json:"notifications,omitempty" tf:"notifications,omitempty"`
+
+	// Definition of SSH key that will be provisioned on a device
+	SSHKey []SSHKeyInitParameters `json:"sshKey,omitempty" tf:"ssh_key,omitempty"`
+
+	// Key/Value pairs of vendor specific configuration parameters for a secondary device. Key values are controller1, activationKey, managementType, siteId, systemIpAddress, privateAddress, privateCidrMask, privateGateway, licenseKey, licenseId, panoramaAuthKey, panoramaIpAddress.
+	// Map of vendor specific configuration parameters for a device (controller1, activationKey, managementType, siteId, systemIpAddress)
+	// +mapType=granular
+	VendorConfiguration map[string]*string `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
+
+	// interface identifier.
+	// device interface id picked for WAN
+	WanInterfaceID *string `json:"wanInterfaceId,omitempty" tf:"wan_interface_id,omitempty"`
+}
+
+type SecondaryDeviceInterfaceInitParameters struct {
 }
 
 type SecondaryDeviceInterfaceObservation struct {
@@ -506,10 +1001,7 @@ type SecondaryDeviceInterfaceObservation struct {
 	// interface operational status. One of up, down.
 	OperationalStatus *string `json:"operationalStatus,omitempty" tf:"operational_status,omitempty"`
 
-	// Device provisioning status. Possible values are
-	// INITIALIZING, PROVISIONING, WAITING_FOR_PRIMARY, WAITING_FOR_SECONDARY,
-	// WAITING_FOR_REPLICA_CLUSTER_NODES, CLUSTER_SETUP_IN_PROGRESS, FAILED, PROVISIONED,
-	// DEPROVISIONING, DEPROVISIONED, RESOURCE_UPGRADE_IN_PROGRESS, RESOURCE_UPGRADE_FAILED.
+	// Device provisioning status. Possible values are INITIALIZING, PROVISIONING, WAITING_FOR_PRIMARY, WAITING_FOR_SECONDARY, WAITING_FOR_REPLICA_CLUSTER_NODES, CLUSTER_SETUP_IN_PROGRESS, FAILED, PROVISIONED, DEPROVISIONING, DEPROVISIONED, RESOURCE_UPGRADE_IN_PROGRESS, RESOURCE_UPGRADE_FAILED.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
 	// interface type.
@@ -521,31 +1013,76 @@ type SecondaryDeviceInterfaceParameters struct {
 
 type SecondaryDeviceObservation struct {
 
+	// Identifier of a WAN interface ACL template that will be applied on a secondary device.
+	// Unique identifier of applied ACL template
+	ACLTemplateID *string `json:"aclTemplateId,omitempty" tf:"acl_template_id,omitempty"`
+
+	// Billing account number for secondary device.
+	// Device billing account number
+	AccountNumber *string `json:"accountNumber,omitempty" tf:"account_number,omitempty"`
+
+	// Additional Internet bandwidth, in Mbps, for a secondary device.
+	// Additional Internet bandwidth, in Mbps, that will be allocated to the device
+	AdditionalBandwidth *float64 `json:"additionalBandwidth,omitempty" tf:"additional_bandwidth,omitempty"`
+
 	// (Autonomous System Number) Unique identifier for a network on the internet.
 	// Autonomous system number
 	Asn *float64 `json:"asn,omitempty" tf:"asn,omitempty"`
+
+	// Identifier of a cloud init file that will be applied on a secondary device.
+	// Unique identifier of applied cloud init file
+	CloudInitFileID *string `json:"cloudInitFileId,omitempty" tf:"cloud_init_file_id,omitempty"`
+
+	// Secondary device hostname.
+	// Device hostname prefix
+	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
 
 	// Device location Equinix Business Exchange name.
 	// Device location Equinix Business Exchange name
 	Ibx *string `json:"ibx,omitempty" tf:"ibx,omitempty"`
 
-	// List of device interfaces. See Interface Attribute below
-	// for more details.
+	// List of device interfaces. See Interface Attribute below for more details.
 	// List of device interfaces
 	Interface []SecondaryDeviceInterfaceObservation `json:"interface,omitempty" tf:"interface,omitempty"`
 
-	// Device license registration status. Possible values are APPLYING_LICENSE,
-	// REGISTERED, APPLIED, WAITING_FOR_CLUSTER_SETUP, REGISTRATION_FAILED.
+	// Path to the license file that will be uploaded and applied on a secondary device. Applicable for some device types in BYOL licensing mode.
+	// Path to the license file that will be uploaded and applied on a device, applicable for some device types in BYOL licensing mode
+	LicenseFile *string `json:"licenseFile,omitempty" tf:"license_file,omitempty"`
+
+	// Identifier of a license file that will be applied on a secondary device.
+	// Unique identifier of applied license file
+	LicenseFileID *string `json:"licenseFileId,omitempty" tf:"license_file_id,omitempty"`
+
+	// Device license registration status. Possible values are APPLYING_LICENSE, REGISTERED, APPLIED, WAITING_FOR_CLUSTER_SETUP, REGISTRATION_FAILED.
 	// Device license registration status
 	LicenseStatus *string `json:"licenseStatus,omitempty" tf:"license_status,omitempty"`
 
-	// Unique Identifier for the project resource where the device is scoped to.If you
-	// leave it out, the device will be created under the default project id of your organization.
+	// License Token can be provided for some device types o the device.
+	// License Token applicable for some device types in BYOL licensing mode
+	LicenseToken *string `json:"licenseToken,omitempty" tf:"license_token,omitempty"`
+
+	// Metro location of a secondary device.
+	// Device location metro code
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// Identifier of an MGMT interface ACL template that will be applied on a secondary device.
+	// Unique identifier of applied MGMT ACL template
+	MgmtACLTemplateUUID *string `json:"mgmtAclTemplateUuid,omitempty" tf:"mgmt_acl_template_uuid,omitempty"`
+
+	// Secondary device name.
+	// Device name
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// List of email addresses that will receive notifications about secondary device.
+	// List of email addresses that will receive device status notifications
+	// +listType=set
+	Notifications []*string `json:"notifications,omitempty" tf:"notifications,omitempty"`
+
+	// Unique Identifier for the project resource where the device is scoped to.If you leave it out, the device will be created under the default project id of your organization.
 	// The unique identifier of Project Resource to which device is scoped to
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
-	// Device redundancy type applicable for HA devices, either
-	// primary or secondary.
+	// Device redundancy type applicable for HA devices, either primary or secondary.
 	// Device redundancy type applicable for HA devices, either primary or secondary
 	RedundancyType *string `json:"redundancyType,omitempty" tf:"redundancy_type,omitempty"`
 
@@ -565,16 +1102,25 @@ type SecondaryDeviceObservation struct {
 	// FQDN of SSH enabled interface on the device
 	SSHIPFqdn *string `json:"sshIpFqdn,omitempty" tf:"ssh_ip_fqdn,omitempty"`
 
-	// Device provisioning status. Possible values are
-	// INITIALIZING, PROVISIONING, WAITING_FOR_PRIMARY, WAITING_FOR_SECONDARY,
-	// WAITING_FOR_REPLICA_CLUSTER_NODES, CLUSTER_SETUP_IN_PROGRESS, FAILED, PROVISIONED,
-	// DEPROVISIONING, DEPROVISIONED, RESOURCE_UPGRADE_IN_PROGRESS, RESOURCE_UPGRADE_FAILED.
+	// Definition of SSH key that will be provisioned on a device
+	SSHKey []SSHKeyObservation `json:"sshKey,omitempty" tf:"ssh_key,omitempty"`
+
+	// Device provisioning status. Possible values are INITIALIZING, PROVISIONING, WAITING_FOR_PRIMARY, WAITING_FOR_SECONDARY, WAITING_FOR_REPLICA_CLUSTER_NODES, CLUSTER_SETUP_IN_PROGRESS, FAILED, PROVISIONED, DEPROVISIONING, DEPROVISIONED, RESOURCE_UPGRADE_IN_PROGRESS, RESOURCE_UPGRADE_FAILED.
 	// Device provisioning status
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
 	// Device unique identifier.
 	// Device unique identifier
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+
+	// Key/Value pairs of vendor specific configuration parameters for a secondary device. Key values are controller1, activationKey, managementType, siteId, systemIpAddress, privateAddress, privateCidrMask, privateGateway, licenseKey, licenseId, panoramaAuthKey, panoramaIpAddress.
+	// Map of vendor specific configuration parameters for a device (controller1, activationKey, managementType, siteId, systemIpAddress)
+	// +mapType=granular
+	VendorConfiguration map[string]*string `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
+
+	// interface identifier.
+	// device interface id picked for WAN
+	WanInterfaceID *string `json:"wanInterfaceId,omitempty" tf:"wan_interface_id,omitempty"`
 
 	// Device location zone code.
 	// Device location zone code
@@ -583,19 +1129,17 @@ type SecondaryDeviceObservation struct {
 
 type SecondaryDeviceParameters struct {
 
-	// Identifier of a WAN interface ACL template that will be applied
-	// on a secondary device.
+	// Identifier of a WAN interface ACL template that will be applied on a secondary device.
 	// Unique identifier of applied ACL template
 	// +kubebuilder:validation:Optional
 	ACLTemplateID *string `json:"aclTemplateId,omitempty" tf:"acl_template_id,omitempty"`
 
 	// Billing account number for secondary device.
 	// Device billing account number
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	AccountNumber *string `json:"accountNumber" tf:"account_number,omitempty"`
 
-	// Additional Internet bandwidth, in Mbps, for a secondary
-	// device.
+	// Additional Internet bandwidth, in Mbps, for a secondary device.
 	// Additional Internet bandwidth, in Mbps, that will be allocated to the device
 	// +kubebuilder:validation:Optional
 	AdditionalBandwidth *float64 `json:"additionalBandwidth,omitempty" tf:"additional_bandwidth,omitempty"`
@@ -610,8 +1154,7 @@ type SecondaryDeviceParameters struct {
 	// +kubebuilder:validation:Optional
 	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
 
-	// Path to the license file that will be uploaded and applied on a
-	// secondary device. Applicable for some device types in BYOL licensing mode.
+	// Path to the license file that will be uploaded and applied on a secondary device. Applicable for some device types in BYOL licensing mode.
 	// Path to the license file that will be uploaded and applied on a device, applicable for some device types in BYOL licensing mode
 	// +kubebuilder:validation:Optional
 	LicenseFile *string `json:"licenseFile,omitempty" tf:"license_file,omitempty"`
@@ -628,35 +1171,33 @@ type SecondaryDeviceParameters struct {
 
 	// Metro location of a secondary device.
 	// Device location metro code
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	MetroCode *string `json:"metroCode" tf:"metro_code,omitempty"`
 
-	// Identifier of an MGMT interface ACL template that will be
-	// applied on a secondary device.
+	// Identifier of an MGMT interface ACL template that will be applied on a secondary device.
 	// Unique identifier of applied MGMT ACL template
 	// +kubebuilder:validation:Optional
 	MgmtACLTemplateUUID *string `json:"mgmtAclTemplateUuid,omitempty" tf:"mgmt_acl_template_uuid,omitempty"`
 
 	// Secondary device name.
 	// Device name
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
-	// List of email addresses that will receive notifications about
-	// secondary device.
+	// List of email addresses that will receive notifications about secondary device.
 	// List of email addresses that will receive device status notifications
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
+	// +listType=set
 	Notifications []*string `json:"notifications" tf:"notifications,omitempty"`
 
 	// Definition of SSH key that will be provisioned on a device
 	// +kubebuilder:validation:Optional
 	SSHKey []SSHKeyParameters `json:"sshKey,omitempty" tf:"ssh_key,omitempty"`
 
-	// Key/Value pairs of vendor specific configuration parameters
-	// for a secondary device. Key values are controller1, activationKey, managementType, siteId,
-	// systemIpAddress.
+	// Key/Value pairs of vendor specific configuration parameters for a secondary device. Key values are controller1, activationKey, managementType, siteId, systemIpAddress, privateAddress, privateCidrMask, privateGateway, licenseKey, licenseId, panoramaAuthKey, panoramaIpAddress.
 	// Map of vendor specific configuration parameters for a device (controller1, activationKey, managementType, siteId, systemIpAddress)
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	VendorConfiguration map[string]*string `json:"vendorConfiguration,omitempty" tf:"vendor_configuration,omitempty"`
 
 	// interface identifier.
@@ -665,7 +1206,83 @@ type SecondaryDeviceParameters struct {
 	WanInterfaceID *string `json:"wanInterfaceId,omitempty" tf:"wan_interface_id,omitempty"`
 }
 
+type VendorConfigurationInitParameters struct {
+
+	// Activation key. This is required for Velocloud clusters.
+	// Activation key. This is required for Velocloud clusters
+	ActivationKeySecretRef *v1.SecretKeySelector `json:"activationKeySecretRef,omitempty" tf:"-"`
+
+	// The administrative password of the device. You can use it to log in to the console. This field is not available for all device types.
+	// The administrative password of the device. You can use it to log in to the console. This field is not available for all device types
+	AdminPasswordSecretRef *v1.SecretKeySelector `json:"adminPasswordSecretRef,omitempty" tf:"-"`
+
+	// System IP Address. Mandatory for the Fortinet SDWAN cluster device.
+	// System IP Address. Mandatory for the Fortinet SDWAN cluster device
+	Controller1 *string `json:"controller1,omitempty" tf:"controller1,omitempty"`
+
+	// Controller fqdn. This is required for Velocloud clusters.
+	// Controller fqdn. This is required for Velocloud clusters
+	ControllerFqdn *string `json:"controllerFqdn,omitempty" tf:"controller_fqdn,omitempty"`
+
+	// Hostname. This is necessary for Palo Alto, Juniper, and Fortinet clusters.
+	// Hostname. This is necessary for Palo Alto, Juniper, and Fortinet clusters
+	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
+
+	// interface identifier.
+	// License id. This field is relevant only for the BlueCat DNS and DHCP Server
+	LicenseIDSecretRef *v1.SecretKeySelector `json:"licenseIdSecretRef,omitempty" tf:"-"`
+
+	// License key. This field is relevant only for the BlueCat DNS and DHCP Server
+	LicenseKeySecretRef *v1.SecretKeySelector `json:"licenseKeySecretRef,omitempty" tf:"-"`
+
+	// Panorama Server Auth Key. This field is relevant only for the PA-VM firewall devices to have integration with Panorama Server.
+	// Panorama Server Auth Key. This field is relevant only for Palo Alto Networks Firewall devices
+	PanoramaAuthKeySecretRef *v1.SecretKeySelector `json:"panoramaAuthKeySecretRef,omitempty" tf:"-"`
+
+	// Panorama Server IP Address. This field is relevant only for the PA-VM firewall devices to have integration with Panorama Server.
+	// Panorama Server IP Address. This field is relevant only for Palo Alto Networks Firewall devices
+	PanoramaIPAddress *string `json:"panoramaIpAddress,omitempty" tf:"panorama_ip_address,omitempty"`
+
+	// Private address. This field is relevant only for the BlueCat DNS and DHCP Server
+	PrivateAddress *string `json:"privateAddress,omitempty" tf:"private_address,omitempty"`
+
+	// Private CIDR Mask. This field is relevant only for the BlueCat DNS and DHCP Server
+	PrivateCidrMask *string `json:"privateCidrMask,omitempty" tf:"private_cidr_mask,omitempty"`
+
+	// Private gateway. This field is relevant only for the BlueCat DNS and DHCP Server
+	PrivateGateway *string `json:"privateGateway,omitempty" tf:"private_gateway,omitempty"`
+
+	// The CLI password of the device. This field is relevant only for the Velocloud SDWAN cluster.
+	// The CLI password of the device. This field is relevant only for the Velocloud SDWAN cluster
+	RootPasswordSecretRef *v1.SecretKeySelector `json:"rootPasswordSecretRef,omitempty" tf:"-"`
+}
+
 type VendorConfigurationObservation struct {
+
+	// System IP Address. Mandatory for the Fortinet SDWAN cluster device.
+	// System IP Address. Mandatory for the Fortinet SDWAN cluster device
+	Controller1 *string `json:"controller1,omitempty" tf:"controller1,omitempty"`
+
+	// Controller fqdn. This is required for Velocloud clusters.
+	// Controller fqdn. This is required for Velocloud clusters
+	ControllerFqdn *string `json:"controllerFqdn,omitempty" tf:"controller_fqdn,omitempty"`
+
+	// Hostname. This is necessary for Palo Alto, Juniper, and Fortinet clusters.
+	// Hostname. This is necessary for Palo Alto, Juniper, and Fortinet clusters
+	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
+
+	// Panorama Server IP Address. This field is relevant only for the PA-VM firewall devices to have integration with Panorama Server.
+	// Panorama Server IP Address. This field is relevant only for Palo Alto Networks Firewall devices
+	PanoramaIPAddress *string `json:"panoramaIpAddress,omitempty" tf:"panorama_ip_address,omitempty"`
+
+	// Private address. This field is relevant only for the BlueCat DNS and DHCP Server
+	PrivateAddress *string `json:"privateAddress,omitempty" tf:"private_address,omitempty"`
+
+	// Private CIDR Mask. This field is relevant only for the BlueCat DNS and DHCP Server
+	PrivateCidrMask *string `json:"privateCidrMask,omitempty" tf:"private_cidr_mask,omitempty"`
+
+	// Private gateway. This field is relevant only for the BlueCat DNS and DHCP Server
+	PrivateGateway *string `json:"privateGateway,omitempty" tf:"private_gateway,omitempty"`
 }
 
 type VendorConfigurationParameters struct {
@@ -675,8 +1292,7 @@ type VendorConfigurationParameters struct {
 	// +kubebuilder:validation:Optional
 	ActivationKeySecretRef *v1.SecretKeySelector `json:"activationKeySecretRef,omitempty" tf:"-"`
 
-	// The administrative password of the device. You can use it to log in
-	// to the console. This field is not available for all device types.
+	// The administrative password of the device. You can use it to log in to the console. This field is not available for all device types.
 	// The administrative password of the device. You can use it to log in to the console. This field is not available for all device types
 	// +kubebuilder:validation:Optional
 	AdminPasswordSecretRef *v1.SecretKeySelector `json:"adminPasswordSecretRef,omitempty" tf:"-"`
@@ -696,8 +1312,38 @@ type VendorConfigurationParameters struct {
 	// +kubebuilder:validation:Optional
 	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
 
-	// The CLI password of the device. This field is relevant only for the
-	// Velocloud SDWAN cluster.
+	// interface identifier.
+	// License id. This field is relevant only for the BlueCat DNS and DHCP Server
+	// +kubebuilder:validation:Optional
+	LicenseIDSecretRef *v1.SecretKeySelector `json:"licenseIdSecretRef,omitempty" tf:"-"`
+
+	// License key. This field is relevant only for the BlueCat DNS and DHCP Server
+	// +kubebuilder:validation:Optional
+	LicenseKeySecretRef *v1.SecretKeySelector `json:"licenseKeySecretRef,omitempty" tf:"-"`
+
+	// Panorama Server Auth Key. This field is relevant only for the PA-VM firewall devices to have integration with Panorama Server.
+	// Panorama Server Auth Key. This field is relevant only for Palo Alto Networks Firewall devices
+	// +kubebuilder:validation:Optional
+	PanoramaAuthKeySecretRef *v1.SecretKeySelector `json:"panoramaAuthKeySecretRef,omitempty" tf:"-"`
+
+	// Panorama Server IP Address. This field is relevant only for the PA-VM firewall devices to have integration with Panorama Server.
+	// Panorama Server IP Address. This field is relevant only for Palo Alto Networks Firewall devices
+	// +kubebuilder:validation:Optional
+	PanoramaIPAddress *string `json:"panoramaIpAddress,omitempty" tf:"panorama_ip_address,omitempty"`
+
+	// Private address. This field is relevant only for the BlueCat DNS and DHCP Server
+	// +kubebuilder:validation:Optional
+	PrivateAddress *string `json:"privateAddress,omitempty" tf:"private_address,omitempty"`
+
+	// Private CIDR Mask. This field is relevant only for the BlueCat DNS and DHCP Server
+	// +kubebuilder:validation:Optional
+	PrivateCidrMask *string `json:"privateCidrMask,omitempty" tf:"private_cidr_mask,omitempty"`
+
+	// Private gateway. This field is relevant only for the BlueCat DNS and DHCP Server
+	// +kubebuilder:validation:Optional
+	PrivateGateway *string `json:"privateGateway,omitempty" tf:"private_gateway,omitempty"`
+
+	// The CLI password of the device. This field is relevant only for the Velocloud SDWAN cluster.
 	// The CLI password of the device. This field is relevant only for the Velocloud SDWAN cluster
 	// +kubebuilder:validation:Optional
 	RootPasswordSecretRef *v1.SecretKeySelector `json:"rootPasswordSecretRef,omitempty" tf:"-"`
@@ -707,6 +1353,17 @@ type VendorConfigurationParameters struct {
 type DeviceSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     DeviceParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider DeviceInitParameters `json:"initProvider,omitempty"`
 }
 
 // DeviceStatus defines the observed state of Device.
@@ -716,19 +1373,29 @@ type DeviceStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Device is the Schema for the Devices API.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinix}
 type Device struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              DeviceSpec   `json:"spec"`
-	Status            DeviceStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.accountNumber) || (has(self.initProvider) && has(self.initProvider.accountNumber))",message="spec.forProvider.accountNumber is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.coreCount) || (has(self.initProvider) && has(self.initProvider.coreCount))",message="spec.forProvider.coreCount is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.metroCode) || (has(self.initProvider) && has(self.initProvider.metroCode))",message="spec.forProvider.metroCode is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.notifications) || (has(self.initProvider) && has(self.initProvider.notifications))",message="spec.forProvider.notifications is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.packageCode) || (has(self.initProvider) && has(self.initProvider.packageCode))",message="spec.forProvider.packageCode is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.termLength) || (has(self.initProvider) && has(self.initProvider.termLength))",message="spec.forProvider.termLength is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.typeCode) || (has(self.initProvider) && has(self.initProvider.typeCode))",message="spec.forProvider.typeCode is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.version) || (has(self.initProvider) && has(self.initProvider.version))",message="spec.forProvider.version is a required parameter"
+	Spec   DeviceSpec   `json:"spec"`
+	Status DeviceStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

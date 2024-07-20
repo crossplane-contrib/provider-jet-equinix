@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.1
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.14.0
   name: connections.metal.equinix.jet.crossplane.io
 spec:
   group: metal.equinix.jet.crossplane.io
@@ -20,11 +19,11 @@ spec:
   scope: Cluster
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .status.conditions[?(@.type=='Ready')].status
-      name: READY
-      type: string
     - jsonPath: .status.conditions[?(@.type=='Synced')].status
       name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
       type: string
     - jsonPath: .metadata.annotations.crossplane\.io/external-name
       name: EXTERNAL-NAME
@@ -38,14 +37,19 @@ spec:
         description: Connection is the Schema for the Connections API.
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
             type: string
           metadata:
             type: object
@@ -54,9 +58,14 @@ spec:
             properties:
               deletionPolicy:
                 default: Delete
-                description: DeletionPolicy specifies what will happen to the underlying
-                  external when this managed resource is deleted - either "Delete"
-                  or "Orphan" the external resource.
+                description: |-
+                  DeletionPolicy specifies what will happen to the underlying external
+                  when this managed resource is deleted - either "Delete" or "Orphan" the
+                  external resource.
+                  This field is planned to be deprecated in favor of the ManagementPolicies
+                  field in a future release. Currently, both could be set independently and
+                  non-default values would be honored if the feature flag is enabled.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
                 enum:
                 - Orphan
                 - Delete
@@ -64,39 +73,39 @@ spec:
               forProvider:
                 properties:
                   contactEmail:
-                    description: The preferred email used for communication and notifications
-                      about the Equinix Fabric interconnection. Required when using
-                      a Project API key. Optional and defaults to the primary user
-                      email address when using a User API key. The preferred email
-                      used for communication and notifications about the Equinix Fabric
-                      interconnection
+                    description: |-
+                      The preferred email used for communication and notifications about the Equinix Fabric interconnection. Required when using a Project API key. Optional and defaults to the primary user email address when using a User API key.
+                      The preferred email used for communication and notifications about the Equinix Fabric interconnection
                     type: string
                   description:
-                    description: Description for the connection resource. Description
-                      of the connection resource
+                    description: |-
+                      Description for the connection resource.
+                      Description of the connection resource
                     type: string
                   facility:
-                    description: (Deprecated) Facility where the connection will be
-                      created.   Use metro instead; read the facility to metro migration
-                      guide Facility where the connection will be created
+                    description: |-
+                      (Deprecated) Facility where the connection will be created. Use metro instead; read the facility to metro migration guide
+                      Facility where the connection will be created
                     type: string
                   metro:
-                    description: Metro where the connection will be created. Metro
-                      where the connection will be created
+                    description: |-
+                      Metro where the connection will be created.
+                      Metro where the connection will be created
                     type: string
                   mode:
-                    description: Mode for connections in IBX facilities with the dedicated
-                      type - standard or tunnel. Default is standard. Mode for connections
-                      in IBX facilities with the dedicated type - standard or tunnel
+                    description: |-
+                      Mode for connections in IBX facilities with the dedicated type - standard or tunnel. Default is standard.
+                      Mode for connections in IBX facilities with the dedicated type - standard or tunnel
                     type: string
                   name:
-                    description: Name of the connection resource Name of the connection
-                      resource
+                    description: |-
+                      Name of the connection resource
+                      Name of the connection resource
                     type: string
                   organizationId:
-                    description: ID of the organization where the connection is scoped
-                      to. ID of the organization responsible for the connection. Applicable
-                      with type "dedicated"
+                    description: |-
+                      ID of the organization where the connection is scoped to.
+                      ID of the organization responsible for the connection. Applicable with type "dedicated"
                     type: string
                   organizationIdRef:
                     description: Reference to a Organization to populate organizationId.
@@ -109,21 +118,21 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -136,8 +145,9 @@ spec:
                     description: Selector for a Organization to populate organizationId.
                     properties:
                       matchControllerRef:
-                        description: MatchControllerRef ensures an object with the
-                          same controller reference as the selecting object is selected.
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
                         type: boolean
                       matchLabels:
                         additionalProperties:
@@ -150,21 +160,21 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -172,9 +182,9 @@ spec:
                         type: object
                     type: object
                   projectId:
-                    description: ID of the project where the connection is scoped
-                      to, must be set for. ID of the project where the connection
-                      is scoped to. Required with type "shared"
+                    description: |-
+                      ID of the project where the connection is scoped to, must be set for.
+                      ID of the project where the connection is scoped to. Required with type "shared"
                     type: string
                   projectIdRef:
                     description: Reference to a Project to populate projectId.
@@ -187,21 +197,21 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -214,8 +224,9 @@ spec:
                     description: Selector for a Project to populate projectId.
                     properties:
                       matchControllerRef:
-                        description: MatchControllerRef ensures an object with the
-                          same controller reference as the selecting object is selected.
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
                         type: boolean
                       matchLabels:
                         additionalProperties:
@@ -228,21 +239,21 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -250,8 +261,9 @@ spec:
                         type: object
                     type: object
                   redundancy:
-                    description: Connection redundancy - redundant or primary. Connection
-                      redundancy - redundant or primary
+                    description: |-
+                      Connection redundancy - redundant or primary.
+                      Connection redundancy - redundant or primary
                     type: string
                   serviceTokenType:
                     description: Only used with shared connection. Type of service
@@ -259,30 +271,26 @@ spec:
                       token to use for the connection, a_side or z_side
                     type: string
                   speed:
-                    description: Connection speed -  Values must be in the format
-                      'Mbps' or 'Gpbs', for example '100Mbps' or '50Gbps'.  Actual
-                      supported values will depend on the connection type and whether
-                      the connection uses VLANs or VRF. Connection speed -  Values
-                      must be in the format '<number>Mbps' or '<number>Gpbs', for
-                      example '100Mbps' or '50Gbps'.  Actual supported values will
-                      depend on the connection type and whether the connection uses
-                      VLANs or VRF.
+                    description: |-
+                      Connection speed - Values must be in the format 'Mbps' or 'Gpbs', for example '100Mbps' or '50Gbps'. Actual supported values will depend on the connection type and whether the connection uses VLANs or VRF.
+                      Connection speed -  Values must be in the format '<number>Mbps' or '<number>Gpbs', for example '100Mbps' or '50Gbps'.  Actual supported values will depend on the connection type and whether the connection uses VLANs or VRF.
                     type: string
                   tags:
-                    description: String list of tags. Tags attached to the connection
+                    description: |-
+                      String list of tags.
+                      Tags attached to the connection
                     items:
                       type: string
                     type: array
                   type:
-                    description: Connection type - dedicated or shared. Connection
-                      type - dedicated, shared or shared_port_vlan
+                    description: |-
+                      Connection type - dedicated or shared.
+                      Connection type - dedicated, shared or shared_port_vlan
                     type: string
                   vlans:
-                    description: Only used with shared connection. Vlans to attach.
-                      Pass one vlan for Primary/Single connection and two vlans for
-                      Redundant connection. Only used with shared connection. VLANs
-                      to attach. Pass one vlan for Primary/Single connection and two
-                      vlans for Redundant connection
+                    description: |-
+                      Only used with shared connection. Vlans to attach. Pass one vlan for Primary/Single connection and two vlans for Redundant connection.
+                      Only used with shared connection. VLANs to attach. Pass one vlan for Primary/Single connection and two vlans for Redundant connection
                     items:
                       type: number
                     type: array
@@ -293,97 +301,57 @@ spec:
                     items:
                       type: string
                     type: array
-                required:
-                - name
-                - redundancy
-                - type
                 type: object
-              providerConfigRef:
-                default:
-                  name: default
-                description: ProviderConfigReference specifies how the provider that
-                  will be used to create, observe, update, and delete this managed
-                  resource should be configured.
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
                 properties:
-                  name:
-                    description: Name of the referenced object.
+                  contactEmail:
+                    description: |-
+                      The preferred email used for communication and notifications about the Equinix Fabric interconnection. Required when using a Project API key. Optional and defaults to the primary user email address when using a User API key.
+                      The preferred email used for communication and notifications about the Equinix Fabric interconnection
                     type: string
-                  policy:
-                    description: Policies for referencing.
-                    properties:
-                      resolution:
-                        default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
-                        enum:
-                        - Required
-                        - Optional
-                        type: string
-                      resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
-                        enum:
-                        - Always
-                        - IfNotPresent
-                        type: string
-                    type: object
-                required:
-                - name
-                type: object
-              providerRef:
-                description: 'ProviderReference specifies the provider that will be
-                  used to create, observe, update, and delete this managed resource.
-                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
-                properties:
-                  name:
-                    description: Name of the referenced object.
+                  description:
+                    description: |-
+                      Description for the connection resource.
+                      Description of the connection resource
                     type: string
-                  policy:
-                    description: Policies for referencing.
-                    properties:
-                      resolution:
-                        default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
-                        enum:
-                        - Required
-                        - Optional
-                        type: string
-                      resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
-                        enum:
-                        - Always
-                        - IfNotPresent
-                        type: string
-                    type: object
-                required:
-                - name
-                type: object
-              publishConnectionDetailsTo:
-                description: PublishConnectionDetailsTo specifies the connection secret
-                  config which contains a name, metadata and a reference to secret
-                  store config to which any connection details for this managed resource
-                  should be written. Connection details frequently include the endpoint,
-                  username, and password required to connect to the managed resource.
-                properties:
-                  configRef:
-                    default:
-                      name: default
-                    description: SecretStoreConfigRef specifies which secret store
-                      config should be used for this ConnectionSecret.
+                  facility:
+                    description: |-
+                      (Deprecated) Facility where the connection will be created. Use metro instead; read the facility to metro migration guide
+                      Facility where the connection will be created
+                    type: string
+                  metro:
+                    description: |-
+                      Metro where the connection will be created.
+                      Metro where the connection will be created
+                    type: string
+                  mode:
+                    description: |-
+                      Mode for connections in IBX facilities with the dedicated type - standard or tunnel. Default is standard.
+                      Mode for connections in IBX facilities with the dedicated type - standard or tunnel
+                    type: string
+                  name:
+                    description: |-
+                      Name of the connection resource
+                      Name of the connection resource
+                    type: string
+                  organizationId:
+                    description: |-
+                      ID of the organization where the connection is scoped to.
+                      ID of the organization responsible for the connection. Applicable with type "dedicated"
+                    type: string
+                  organizationIdRef:
+                    description: Reference to a Organization to populate organizationId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -393,21 +361,294 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  organizationIdSelector:
+                    description: Selector for a Organization to populate organizationId.
+                    properties:
+                      matchControllerRef:
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  projectId:
+                    description: |-
+                      ID of the project where the connection is scoped to, must be set for.
+                      ID of the project where the connection is scoped to. Required with type "shared"
+                    type: string
+                  projectIdRef:
+                    description: Reference to a Project to populate projectId.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  projectIdSelector:
+                    description: Selector for a Project to populate projectId.
+                    properties:
+                      matchControllerRef:
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  redundancy:
+                    description: |-
+                      Connection redundancy - redundant or primary.
+                      Connection redundancy - redundant or primary
+                    type: string
+                  serviceTokenType:
+                    description: Only used with shared connection. Type of service
+                      token to use for the connection, a_side or z_side. Type of service
+                      token to use for the connection, a_side or z_side
+                    type: string
+                  speed:
+                    description: |-
+                      Connection speed - Values must be in the format 'Mbps' or 'Gpbs', for example '100Mbps' or '50Gbps'. Actual supported values will depend on the connection type and whether the connection uses VLANs or VRF.
+                      Connection speed -  Values must be in the format '<number>Mbps' or '<number>Gpbs', for example '100Mbps' or '50Gbps'.  Actual supported values will depend on the connection type and whether the connection uses VLANs or VRF.
+                    type: string
+                  tags:
+                    description: |-
+                      String list of tags.
+                      Tags attached to the connection
+                    items:
+                      type: string
+                    type: array
+                  type:
+                    description: |-
+                      Connection type - dedicated or shared.
+                      Connection type - dedicated, shared or shared_port_vlan
+                    type: string
+                  vlans:
+                    description: |-
+                      Only used with shared connection. Vlans to attach. Pass one vlan for Primary/Single connection and two vlans for Redundant connection.
+                      Only used with shared connection. VLANs to attach. Pass one vlan for Primary/Single connection and two vlans for Redundant connection
+                    items:
+                      type: number
+                    type: array
+                  vrfs:
+                    description: Only used with shared connection. VRFs to attach.
+                      Pass one VRF for Primary/Single connection and two VRFs for
+                      Redundant connection
+                    items:
+                      type: string
+                    type: array
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  This field is planned to replace the DeletionPolicy field in a future
+                  release. Currently, both could be set independently and non-default
+                  values would be honored if the feature flag is enabled. If both are
+                  custom, the DeletionPolicy field will be ignored.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
+              providerConfigRef:
+                default:
+                  name: default
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: |-
+                          Resolution specifies whether resolution of this reference is required.
+                          The default is 'Required', which means the reconcile will fail if the
+                          reference cannot be resolved. 'Optional' means this reference will be
+                          a no-op if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: |-
+                          Resolve specifies when this reference should be resolved. The default
+                          is 'IfNotPresent', which will attempt to resolve the reference only when
+                          the corresponding field is not present. Use 'Always' to resolve the
+                          reference on every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              publishConnectionDetailsTo:
+                description: |-
+                  PublishConnectionDetailsTo specifies the connection secret config which
+                  contains a name, metadata and a reference to secret store config to
+                  which any connection details for this managed resource should be written.
+                  Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                properties:
+                  configRef:
+                    default:
+                      name: default
+                    description: |-
+                      SecretStoreConfigRef specifies which secret store config should be used
+                      for this ConnectionSecret.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -422,21 +663,22 @@ spec:
                       annotations:
                         additionalProperties:
                           type: string
-                        description: Annotations are the annotations to be added to
-                          connection secret. - For Kubernetes secrets, this will be
-                          used as "metadata.annotations". - It is up to Secret Store
-                          implementation for others store types.
+                        description: |-
+                          Annotations are the annotations to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.annotations".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       labels:
                         additionalProperties:
                           type: string
-                        description: Labels are the labels/tags to be added to connection
-                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
-                          - It is up to Secret Store implementation for others store
-                          types.
+                        description: |-
+                          Labels are the labels/tags to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       type:
-                        description: Type is the SecretType for the connection secret.
+                        description: |-
+                          Type is the SecretType for the connection secret.
                           - Only valid for Kubernetes Secret Stores.
                         type: string
                     type: object
@@ -447,14 +689,15 @@ spec:
                 - name
                 type: object
               writeConnectionSecretToRef:
-                description: WriteConnectionSecretToReference specifies the namespace
-                  and name of a Secret to which any connection details for this managed
-                  resource should be written. Connection details frequently include
-                  the endpoint, username, and password required to connect to the
-                  managed resource. This field is planned to be replaced in a future
-                  release in favor of PublishConnectionDetailsTo. Currently, both
-                  could be set independently and connection details would be published
-                  to both without affecting each other.
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                  This field is planned to be replaced in a future release in favor of
+                  PublishConnectionDetailsTo. Currently, both could be set independently
+                  and connection details would be published to both without affecting
+                  each other.
                 properties:
                   name:
                     description: Name of the secret.
@@ -469,6 +712,19 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
+            - message: spec.forProvider.redundancy is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.redundancy)
+                || (has(self.initProvider) && has(self.initProvider.redundancy))'
+            - message: spec.forProvider.type is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
+                || (has(self.initProvider) && has(self.initProvider.type))'
           status:
             description: ConnectionStatus defines the observed state of Connection.
             properties:
@@ -480,13 +736,47 @@ spec:
                       the Metal end of the network, when viewing resources from within
                       Fabric.
                     type: string
+                  contactEmail:
+                    description: |-
+                      The preferred email used for communication and notifications about the Equinix Fabric interconnection. Required when using a Project API key. Optional and defaults to the primary user email address when using a User API key.
+                      The preferred email used for communication and notifications about the Equinix Fabric interconnection
+                    type: string
+                  description:
+                    description: |-
+                      Description for the connection resource.
+                      Description of the connection resource
+                    type: string
+                  facility:
+                    description: |-
+                      (Deprecated) Facility where the connection will be created. Use metro instead; read the facility to metro migration guide
+                      Facility where the connection will be created
+                    type: string
                   id:
                     type: string
+                  metro:
+                    description: |-
+                      Metro where the connection will be created.
+                      Metro where the connection will be created
+                    type: string
+                  mode:
+                    description: |-
+                      Mode for connections in IBX facilities with the dedicated type - standard or tunnel. Default is standard.
+                      Mode for connections in IBX facilities with the dedicated type - standard or tunnel
+                    type: string
+                  name:
+                    description: |-
+                      Name of the connection resource
+                      Name of the connection resource
+                    type: string
+                  organizationId:
+                    description: |-
+                      ID of the organization where the connection is scoped to.
+                      ID of the organization responsible for the connection. Applicable with type "dedicated"
+                    type: string
                   ports:
-                    description: List of connection ports - primary (ports[0]) and
-                      secondary (ports[1]). Schema of port is described in documentation
-                      of the equinix_metal_connection datasource. List of connection
-                      ports - primary (`ports[0]`) and secondary (`ports[1]`)
+                    description: |-
+                      List of connection ports - primary (ports[0]) and secondary (ports[1]). Schema of port is described in documentation of the equinix_metal_connection datasource.
+                      List of connection ports - primary (`ports[0]`) and secondary (`ports[1]`)
                     items:
                       properties:
                         id:
@@ -500,8 +790,8 @@ spec:
                         role:
                           type: string
                         speed:
-                          description: Connection speed -  Values must be in the format
-                            'Mbps' or 'Gpbs', for example '100Mbps' or '50Gbps'.  Actual
+                          description: Connection speed - Values must be in the format
+                            'Mbps' or 'Gpbs', for example '100Mbps' or '50Gbps'. Actual
                             supported values will depend on the connection type and
                             whether the connection uses VLANs or VRF.
                           type: number
@@ -514,15 +804,25 @@ spec:
                           type: array
                       type: object
                     type: array
+                  projectId:
+                    description: |-
+                      ID of the project where the connection is scoped to, must be set for.
+                      ID of the project where the connection is scoped to. Required with type "shared"
+                    type: string
+                  redundancy:
+                    description: |-
+                      Connection redundancy - redundant or primary.
+                      Connection redundancy - redundant or primary
+                    type: string
+                  serviceTokenType:
+                    description: Only used with shared connection. Type of service
+                      token to use for the connection, a_side or z_side. Type of service
+                      token to use for the connection, a_side or z_side
+                    type: string
                   serviceTokens:
-                    description: List of connection service tokens with attributes
-                      required to configure the connection in Equinix Fabric with
-                      the equinix_ecx_l2_connection resource or from the Equinix Fabric
-                      Portal. Scehma of service_token is described in documentation
-                      of the equinix_metal_connection datasource. Only used with shared
-                      connection. List of service tokens required to continue the
-                      setup process with [equinix_ecx_l2_connection](https://registry.io/providers/equinix/equinix/latest/docs/resources/equinix_ecx_l2_connection)
-                      or from the [Equinix Fabric Portal](https://ecxfabric.equinix.com/dashboard)
+                    description: |-
+                      List of connection service tokens with attributes required to configure the connection in Equinix Fabric with the equinix_fabric_connection resource or from the Equinix Fabric Portal. Scehma of service_token is described in documentation of the equinix_metal_connection datasource.
+                      Only used with shared connection. List of service tokens required to continue the setup process with [equinix_fabric_connection](https://registry.io/providers/equinix/equinix/latest/docs/resources/fabric_connection) or from the [Equinix Fabric Portal](https://fabric.equinix.com/dashboard)
                     items:
                       properties:
                         expiresAt:
@@ -530,8 +830,8 @@ spec:
                         id:
                           type: string
                         maxAllowedSpeed:
-                          description: Connection speed -  Values must be in the format
-                            'Mbps' or 'Gpbs', for example '100Mbps' or '50Gbps'.  Actual
+                          description: Connection speed - Values must be in the format
+                            'Mbps' or 'Gpbs', for example '100Mbps' or '50Gbps'. Actual
                             supported values will depend on the connection type and
                             whether the connection uses VLANs or VRF.
                           type: string
@@ -544,19 +844,47 @@ spec:
                           type: string
                       type: object
                     type: array
+                  speed:
+                    description: |-
+                      Connection speed - Values must be in the format 'Mbps' or 'Gpbs', for example '100Mbps' or '50Gbps'. Actual supported values will depend on the connection type and whether the connection uses VLANs or VRF.
+                      Connection speed -  Values must be in the format '<number>Mbps' or '<number>Gpbs', for example '100Mbps' or '50Gbps'.  Actual supported values will depend on the connection type and whether the connection uses VLANs or VRF.
+                    type: string
                   status:
-                    description: Status of the connection resource. Status of the
-                      connection resource
+                    description: |-
+                      Status of the connection resource.
+                      Status of the connection resource
                     type: string
+                  tags:
+                    description: |-
+                      String list of tags.
+                      Tags attached to the connection
+                    items:
+                      type: string
+                    type: array
                   token:
-                    description: (Deprecated) Fabric Token required to configure the
-                      connection in Equinix Fabric with the equinix_ecx_l2_connection
-                      resource or from the Equinix Fabric Portal. If your organization
-                      already has connection service tokens enabled, use service_tokens
-                      instead. Only used with shared connection. Fabric Token required
-                      to continue the setup process with [equinix_ecx_l2_connection](https://registry.io/providers/equinix/equinix/latest/docs/resources/equinix_ecx_l2_connection)
-                      or from the [Equinix Fabric Portal](https://ecxfabric.equinix.com/dashboard)
+                    description: |-
+                      (Deprecated) Fabric Token required to configure the connection in Equinix Fabric with the equinix_fabric_connection resource or from the Equinix Fabric Portal. If your organization already has connection service tokens enabled, use service_tokens instead.
+                      Only used with shared connection. Fabric Token required to continue the setup process with [equinix_fabric_connection](https://registry.io/providers/equinix/equinix/latest/docs/resources/fabric_connection) or from the [Equinix Fabric Portal](https://fabric.equinix.com/dashboard)
                     type: string
+                  type:
+                    description: |-
+                      Connection type - dedicated or shared.
+                      Connection type - dedicated, shared or shared_port_vlan
+                    type: string
+                  vlans:
+                    description: |-
+                      Only used with shared connection. Vlans to attach. Pass one vlan for Primary/Single connection and two vlans for Redundant connection.
+                      Only used with shared connection. VLANs to attach. Pass one vlan for Primary/Single connection and two vlans for Redundant connection
+                    items:
+                      type: number
+                    type: array
+                  vrfs:
+                    description: Only used with shared connection. VRFs to attach.
+                      Pass one VRF for Primary/Single connection and two VRFs for
+                      Redundant connection
+                    items:
+                      type: string
+                    type: array
                 type: object
               conditions:
                 description: Conditions of the resource.
@@ -564,14 +892,23 @@ spec:
                   description: A Condition that may apply to a resource.
                   properties:
                     lastTransitionTime:
-                      description: LastTransitionTime is the last time this condition
-                        transitioned from one status to another.
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
                       format: date-time
                       type: string
                     message:
-                      description: A Message containing details about this condition's
-                        last transition from one status to another, if any.
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
                       type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
                     reason:
                       description: A Reason for this condition's last transition from
                         one status to another.
@@ -581,8 +918,9 @@ spec:
                         False, or Unknown?
                       type: string
                     type:
-                      description: Type of this condition. At most one of each condition
-                        type may apply to a resource at any point in time.
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
                       type: string
                   required:
                   - lastTransitionTime
@@ -591,6 +929,16 @@ spec:
                   - type
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
             type: object
         required:
         - spec

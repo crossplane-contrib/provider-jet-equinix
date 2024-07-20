@@ -25,113 +25,269 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ChangeInitParameters struct {
+}
+
 type ChangeObservation struct {
+
+	// (String) Fabric Network URI information
 	Href *string `json:"href,omitempty" tf:"href,omitempty"`
 
+	// EVPLAN, EPLAN, IPWAN
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
+	// assigned network identifier
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
 type ChangeParameters struct {
 }
 
+type NetworkChangeLogInitParameters struct {
+}
+
 type NetworkChangeLogObservation struct {
+
+	// (String)
 	CreatedBy *string `json:"createdBy,omitempty" tf:"created_by,omitempty"`
 
+	// (String)
 	CreatedByEmail *string `json:"createdByEmail,omitempty" tf:"created_by_email,omitempty"`
 
+	// (String)
 	CreatedByFullName *string `json:"createdByFullName,omitempty" tf:"created_by_full_name,omitempty"`
 
+	// (String)
 	CreatedDateTime *string `json:"createdDateTime,omitempty" tf:"created_date_time,omitempty"`
 
+	// (String)
 	DeletedBy *string `json:"deletedBy,omitempty" tf:"deleted_by,omitempty"`
 
+	// (String)
 	DeletedByEmail *string `json:"deletedByEmail,omitempty" tf:"deleted_by_email,omitempty"`
 
+	// (String)
 	DeletedByFullName *string `json:"deletedByFullName,omitempty" tf:"deleted_by_full_name,omitempty"`
 
+	// (String)
 	DeletedDateTime *string `json:"deletedDateTime,omitempty" tf:"deleted_date_time,omitempty"`
 
+	// (String)
 	UpdatedBy *string `json:"updatedBy,omitempty" tf:"updated_by,omitempty"`
 
+	// (String)
 	UpdatedByEmail *string `json:"updatedByEmail,omitempty" tf:"updated_by_email,omitempty"`
 
+	// (String)
 	UpdatedByFullName *string `json:"updatedByFullName,omitempty" tf:"updated_by_full_name,omitempty"`
 
+	// (String)
 	UpdatedDateTime *string `json:"updatedDateTime,omitempty" tf:"updated_date_time,omitempty"`
 }
 
 type NetworkChangeLogParameters struct {
 }
 
+type NetworkInitParameters_2 struct {
+
+	// (Block Set, Max: 1) Fabric Network location (see below for nested schema)
+	// Fabric Network location
+	Location []NetworkLocationInitParameters `json:"location,omitempty" tf:"location,omitempty"`
+
+	// numeric 24 characters string which can include only hyphens and underscores
+	// Fabric Network name. An alpha-numeric 24 characters string which can include only hyphens and underscores
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block List, Min: 1) Preferences for notifications on Fabric Network configuration or status changes (see below for nested schema)
+	// Preferences for notifications on Fabric Network configuration or status changes
+	Notifications []NetworkNotificationsInitParameters `json:"notifications,omitempty" tf:"notifications,omitempty"`
+
+	// (Block Set, Min: 1) Fabric Network project (see below for nested schema)
+	// Fabric Network project
+	Project []NetworkProjectInitParameters `json:"project,omitempty" tf:"project,omitempty"`
+
+	// (String) Fabric Network scope
+	// Fabric Network scope
+	Scope *string `json:"scope,omitempty" tf:"scope,omitempty"`
+
+	// EVPLAN, EPLAN, IPWAN
+	// Supported Network types - EVPLAN, EPLAN, IPWAN
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type NetworkLocationInitParameters struct {
+
+	// (String) IBX Code
+	// IBX Code
+	Ibx *string `json:"ibx,omitempty" tf:"ibx,omitempty"`
+
+	// (String) Access point metro code
+	// Access point metro code
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// (String) Access point metro name
+	// Access point metro name
+	MetroName *string `json:"metroName,omitempty" tf:"metro_name,omitempty"`
+
+	// (String) Access point region
+	// Access point region
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+}
+
 type NetworkLocationObservation struct {
+
+	// (String) IBX Code
+	// IBX Code
+	Ibx *string `json:"ibx,omitempty" tf:"ibx,omitempty"`
+
+	// (String) Access point metro code
+	// Access point metro code
+	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
+
+	// (String) Access point metro name
+	// Access point metro name
+	MetroName *string `json:"metroName,omitempty" tf:"metro_name,omitempty"`
+
+	// (String) Access point region
+	// Access point region
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }
 
 type NetworkLocationParameters struct {
 
+	// (String) IBX Code
 	// IBX Code
 	// +kubebuilder:validation:Optional
 	Ibx *string `json:"ibx,omitempty" tf:"ibx,omitempty"`
 
+	// (String) Access point metro code
 	// Access point metro code
 	// +kubebuilder:validation:Optional
 	MetroCode *string `json:"metroCode,omitempty" tf:"metro_code,omitempty"`
 
+	// (String) Access point metro name
 	// Access point metro name
 	// +kubebuilder:validation:Optional
 	MetroName *string `json:"metroName,omitempty" tf:"metro_name,omitempty"`
 
+	// (String) Access point region
 	// Access point region
 	// +kubebuilder:validation:Optional
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }
 
+type NetworkNotificationsInitParameters struct {
+
+	// (List of String) Array of contact emails
+	// Array of contact emails
+	Emails []*string `json:"emails,omitempty" tf:"emails,omitempty"`
+
+	// (String) Send interval
+	// Send interval
+	SendInterval *string `json:"sendInterval,omitempty" tf:"send_interval,omitempty"`
+
+	// EVPLAN, EPLAN, IPWAN
+	// Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type NetworkNotificationsObservation struct {
+
+	// (List of String) Array of contact emails
+	// Array of contact emails
+	Emails []*string `json:"emails,omitempty" tf:"emails,omitempty"`
+
+	// (String) Send interval
+	// Send interval
+	SendInterval *string `json:"sendInterval,omitempty" tf:"send_interval,omitempty"`
+
+	// EVPLAN, EPLAN, IPWAN
+	// Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type NetworkNotificationsParameters struct {
 
+	// (List of String) Array of contact emails
 	// Array of contact emails
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Emails []*string `json:"emails" tf:"emails,omitempty"`
 
+	// (String) Send interval
 	// Send interval
 	// +kubebuilder:validation:Optional
 	SendInterval *string `json:"sendInterval,omitempty" tf:"send_interval,omitempty"`
 
+	// EVPLAN, EPLAN, IPWAN
 	// Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
 }
 
 type NetworkObservation_2 struct {
 
+	// (Set of Object) Information on asset change operation (see below for nested schema)
 	// Information on asset change operation
 	Change []ChangeObservation `json:"change,omitempty" tf:"change,omitempty"`
 
+	// (Set of Object) A permanent record of asset creation, modification, or deletion (see below for nested schema)
 	// A permanent record of asset creation, modification, or deletion
 	ChangeLog []NetworkChangeLogObservation `json:"changeLog,omitempty" tf:"change_log,omitempty"`
 
+	// (Number) Number of connections associated with this network
 	// Number of connections associated with this network
 	ConnectionsCount *float64 `json:"connectionsCount,omitempty" tf:"connections_count,omitempty"`
 
+	// (String) Fabric Network URI information
 	// Fabric Network URI information
 	Href *string `json:"href,omitempty" tf:"href,omitempty"`
 
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// (Block Set, Max: 1) Fabric Network location (see below for nested schema)
+	// Fabric Network location
+	Location []NetworkLocationObservation `json:"location,omitempty" tf:"location,omitempty"`
+
+	// numeric 24 characters string which can include only hyphens and underscores
+	// Fabric Network name. An alpha-numeric 24 characters string which can include only hyphens and underscores
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block List, Min: 1) Preferences for notifications on Fabric Network configuration or status changes (see below for nested schema)
+	// Preferences for notifications on Fabric Network configuration or status changes
+	Notifications []NetworkNotificationsObservation `json:"notifications,omitempty" tf:"notifications,omitempty"`
+
+	// (Set of Object) Network operation information that is associated with this Fabric Network (see below for nested schema)
 	// Network operation information that is associated with this Fabric Network
 	Operation []NetworkOperationObservation `json:"operation,omitempty" tf:"operation,omitempty"`
 
+	// (Block Set, Min: 1) Fabric Network project (see below for nested schema)
+	// Fabric Network project
+	Project []NetworkProjectObservation `json:"project,omitempty" tf:"project,omitempty"`
+
+	// (String) Fabric Network scope
+	// Fabric Network scope
+	Scope *string `json:"scope,omitempty" tf:"scope,omitempty"`
+
+	// (String) Fabric Network overall state
 	// Fabric Network overall state
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
 
+	// EVPLAN, EPLAN, IPWAN
+	// Supported Network types - EVPLAN, EPLAN, IPWAN
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// assigned network identifier
 	// Equinix-assigned network identifier
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 }
 
+type NetworkOperationInitParameters struct {
+}
+
 type NetworkOperationObservation struct {
+
+	// (String)
 	EquinixStatus *string `json:"equinixStatus,omitempty" tf:"equinix_status,omitempty"`
 }
 
@@ -140,38 +296,56 @@ type NetworkOperationParameters struct {
 
 type NetworkParameters_2 struct {
 
+	// (Block Set, Max: 1) Fabric Network location (see below for nested schema)
 	// Fabric Network location
 	// +kubebuilder:validation:Optional
 	Location []NetworkLocationParameters `json:"location,omitempty" tf:"location,omitempty"`
 
+	// numeric 24 characters string which can include only hyphens and underscores
 	// Fabric Network name. An alpha-numeric 24 characters string which can include only hyphens and underscores
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Block List, Min: 1) Preferences for notifications on Fabric Network configuration or status changes (see below for nested schema)
 	// Preferences for notifications on Fabric Network configuration or status changes
-	// +kubebuilder:validation:Required
-	Notifications []NetworkNotificationsParameters `json:"notifications" tf:"notifications,omitempty"`
+	// +kubebuilder:validation:Optional
+	Notifications []NetworkNotificationsParameters `json:"notifications,omitempty" tf:"notifications,omitempty"`
 
+	// (Block Set, Min: 1) Fabric Network project (see below for nested schema)
 	// Fabric Network project
-	// +kubebuilder:validation:Required
-	Project []NetworkProjectParameters `json:"project" tf:"project,omitempty"`
+	// +kubebuilder:validation:Optional
+	Project []NetworkProjectParameters `json:"project,omitempty" tf:"project,omitempty"`
 
+	// (String) Fabric Network scope
 	// Fabric Network scope
-	// +kubebuilder:validation:Required
-	Scope *string `json:"scope" tf:"scope,omitempty"`
+	// +kubebuilder:validation:Optional
+	Scope *string `json:"scope,omitempty" tf:"scope,omitempty"`
 
+	// EVPLAN, EPLAN, IPWAN
 	// Supported Network types - EVPLAN, EPLAN, IPWAN
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type NetworkProjectInitParameters struct {
+
+	// (String) Customer project identifier
+	// Customer project identifier
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 }
 
 type NetworkProjectObservation struct {
+
+	// (String) Customer project identifier
+	// Customer project identifier
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 }
 
 type NetworkProjectParameters struct {
 
+	// (String) Customer project identifier
 	// Customer project identifier
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId" tf:"project_id,omitempty"`
 }
 
@@ -179,6 +353,17 @@ type NetworkProjectParameters struct {
 type NetworkSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     NetworkParameters_2 `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider NetworkInitParameters_2 `json:"initProvider,omitempty"`
 }
 
 // NetworkStatus defines the observed state of Network.
@@ -188,19 +373,25 @@ type NetworkStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// Network is the Schema for the Networks API. <no value>
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
+// Network is the Schema for the Networks API. Fabric V4 API compatible resource allows creation and management of Equinix Fabric Network
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinix}
 type Network struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              NetworkSpec   `json:"spec"`
-	Status            NetworkStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.notifications) || (has(self.initProvider) && has(self.initProvider.notifications))",message="spec.forProvider.notifications is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.project) || (has(self.initProvider) && has(self.initProvider.project))",message="spec.forProvider.project is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.scope) || (has(self.initProvider) && has(self.initProvider.scope))",message="spec.forProvider.scope is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || (has(self.initProvider) && has(self.initProvider.type))",message="spec.forProvider.type is a required parameter"
+	Spec   NetworkSpec   `json:"spec"`
+	Status NetworkStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -25,8 +25,33 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type DeviceNetworkTypeInitParameters struct {
+
+	// The ID of the device on which the network type should be set
+	// +crossplane:generate:reference:type=Device
+	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
+
+	// Reference to a Device to populate deviceId.
+	// +kubebuilder:validation:Optional
+	DeviceIDRef *v1.Reference `json:"deviceIdRef,omitempty" tf:"-"`
+
+	// Selector for a Device to populate deviceId.
+	// +kubebuilder:validation:Optional
+	DeviceIDSelector *v1.Selector `json:"deviceIdSelector,omitempty" tf:"-"`
+
+	// Network type to set. Must be one of layer3, hybrid, hybrid-bonded, layer2-individual, layer2-bonded
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type DeviceNetworkTypeObservation struct {
+
+	// The ID of the device on which the network type should be set
+	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Network type to set. Must be one of layer3, hybrid, hybrid-bonded, layer2-individual, layer2-bonded
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type DeviceNetworkTypeParameters struct {
@@ -45,14 +70,25 @@ type DeviceNetworkTypeParameters struct {
 	DeviceIDSelector *v1.Selector `json:"deviceIdSelector,omitempty" tf:"-"`
 
 	// Network type to set. Must be one of layer3, hybrid, hybrid-bonded, layer2-individual, layer2-bonded
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 // DeviceNetworkTypeSpec defines the desired state of DeviceNetworkType
 type DeviceNetworkTypeSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     DeviceNetworkTypeParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider DeviceNetworkTypeInitParameters `json:"initProvider,omitempty"`
 }
 
 // DeviceNetworkTypeStatus defines the observed state of DeviceNetworkType.
@@ -62,19 +98,21 @@ type DeviceNetworkTypeStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // DeviceNetworkType is the Schema for the DeviceNetworkTypes API. <no value>
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,equinix}
 type DeviceNetworkType struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              DeviceNetworkTypeSpec   `json:"spec"`
-	Status            DeviceNetworkTypeStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || (has(self.initProvider) && has(self.initProvider.type))",message="spec.forProvider.type is a required parameter"
+	Spec   DeviceNetworkTypeSpec   `json:"spec"`
+	Status DeviceNetworkTypeStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

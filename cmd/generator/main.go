@@ -19,11 +19,13 @@ limitations under the License.
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path/filepath"
 
-	"github.com/upbound/upjet/pkg/pipeline"
+	"github.com/crossplane/upjet/pkg/pipeline"
+	"gopkg.in/alecthomas/kingpin.v2"
 
 	"github.com/crossplane-contrib/provider-jet-equinix/config"
 )
@@ -36,5 +38,7 @@ func main() {
 	if err != nil {
 		panic(fmt.Sprintf("cannot calculate the absolute path of %s", os.Args[1]))
 	}
-	pipeline.Run(config.GetProvider(), absRootDir)
+	p, err := config.GetProvider(context.Background(), true)
+	kingpin.FatalIfError(err, "Cannot initialize the provider configuration")
+	pipeline.Run(p, absRootDir)
 }

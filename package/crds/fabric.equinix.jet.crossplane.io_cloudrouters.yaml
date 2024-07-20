@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.1
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.14.0
   name: cloudrouters.fabric.equinix.jet.crossplane.io
 spec:
   group: fabric.equinix.jet.crossplane.io
@@ -20,11 +19,11 @@ spec:
   scope: Cluster
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .status.conditions[?(@.type=='Ready')].status
-      name: READY
-      type: string
     - jsonPath: .status.conditions[?(@.type=='Synced')].status
       name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
       type: string
     - jsonPath: .metadata.annotations.crossplane\.io/external-name
       name: EXTERNAL-NAME
@@ -35,17 +34,24 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: CloudRouter is the Schema for the CloudRouters API. <no value>
+        description: CloudRouter is the Schema for the CloudRouters API. Fabric V4
+          API compatible resource allows creation and management of Equinix Fabric
+          Cloud Router
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
             type: string
           metadata:
             type: object
@@ -54,9 +60,14 @@ spec:
             properties:
               deletionPolicy:
                 default: Delete
-                description: DeletionPolicy specifies what will happen to the underlying
-                  external when this managed resource is deleted - either "Delete"
-                  or "Orphan" the external resource.
+                description: |-
+                  DeletionPolicy specifies what will happen to the underlying external
+                  when this managed resource is deleted - either "Delete" or "Orphan" the
+                  external resource.
+                  This field is planned to be deprecated in favor of the ManagementPolicies
+                  field in a future release. Currently, both could be set independently and
+                  non-default values would be honored if the feature flag is enabled.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
                 enum:
                 - Orphan
                 - Delete
@@ -64,130 +75,354 @@ spec:
               forProvider:
                 properties:
                   account:
-                    description: Customer account information that is associated with
-                      this Fabric Cloud Router
+                    description: |-
+                      (Block Set, Min: 1, Max: 1) Customer account information that is associated with this Fabric Cloud Router (see below for nested schema)
+                      Customer account information that is associated with this Fabric Cloud Router
                     items:
                       properties:
                         accountNumber:
-                          description: Account Number
+                          description: |-
+                            (Number) Account Number
+                            Account Number
                           type: number
                       type: object
                     type: array
                   description:
-                    description: Customer-provided Fabric Cloud Router description
+                    description: |-
+                      provided Fabric Cloud Router description
+                      Customer-provided Fabric Cloud Router description
                     type: string
                   href:
-                    description: Fabric Cloud Router URI information
+                    description: |-
+                      (String) Fabric Cloud Router URI information
+                      Fabric Cloud Router URI information
                     type: string
                   location:
-                    description: Fabric Cloud Router location
+                    description: |-
+                      (Block Set, Min: 1, Max: 1) Fabric Cloud Router location (see below for nested schema)
+                      Fabric Cloud Router location
                     items:
                       properties:
                         ibx:
-                          description: IBX Code
+                          description: |-
+                            (String) IBX Code
+                            IBX Code
                           type: string
                         metroCode:
-                          description: Access point metro code
+                          description: |-
+                            (String) Access point metro code
+                            Access point metro code
                           type: string
                         metroName:
-                          description: Access point metro name
+                          description: |-
+                            (String) Access point metro name
+                            Access point metro name
                           type: string
                         region:
-                          description: Access point region
+                          description: |-
+                            (String) Access point region
+                            Access point region
                           type: string
                       type: object
                     type: array
                   name:
-                    description: Fabric Cloud Router name. An alpha-numeric 24 characters
-                      string which can include only hyphens and underscores
+                    description: |-
+                      numeric 24 characters string which can include only hyphens and underscores
+                      Fabric Cloud Router name. An alpha-numeric 24 characters string which can include only hyphens and underscores
                     type: string
                   notifications:
-                    description: Preferences for notifications on Fabric Cloud Router
-                      configuration or status changes
+                    description: |-
+                      (Block List, Min: 1) Preferences for notifications on Fabric Cloud Router configuration or status changes (see below for nested schema)
+                      Preferences for notifications on Fabric Cloud Router configuration or status changes
                     items:
                       properties:
                         emails:
-                          description: Array of contact emails
+                          description: |-
+                            (List of String) Array of contact emails
+                            Array of contact emails
                           items:
                             type: string
                           type: array
                         sendInterval:
-                          description: Send interval
+                          description: |-
+                            (String) Send interval
+                            Send interval
                           type: string
                         type:
-                          description: Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS,
-                            NOTIFICATIONS
+                          description: |-
+                            (String) Defines the FCR type like; XF_ROUTER
+                            Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
                           type: string
-                      required:
-                      - emails
-                      - type
                       type: object
                     type: array
                   order:
-                    description: Order information related to this Fabric Cloud Router
+                    description: |-
+                      (Block Set, Min: 1, Max: 1) Order information related to this Fabric Cloud Router (see below for nested schema)
+                      Order information related to this Fabric Cloud Router
                     items:
                       properties:
                         billingTier:
-                          description: Billing tier for connection bandwidth
+                          description: |-
+                            (String) Billing tier for connection bandwidth
+                            Billing tier for connection bandwidth
                           type: string
                         orderId:
-                          description: Order Identification
+                          description: |-
+                            (String) Order Identification
+                            Order Identification
                           type: string
                         orderNumber:
-                          description: Order Reference Number
+                          description: |-
+                            (String) Order Reference Number
+                            Order Reference Number
                           type: string
                         purchaseOrderNumber:
-                          description: Purchase order number
+                          description: |-
+                            (String) Purchase order number
+                            Purchase order number
                           type: string
                       type: object
                     type: array
                   package:
-                    description: Fabric Cloud Router Package Type
+                    description: |-
+                      (Block Set, Min: 1, Max: 1) Fabric Cloud Router Package Type (see below for nested schema)
+                      Fabric Cloud Router Package Type
                     items:
                       properties:
                         code:
-                          description: Fabric Cloud Router package code
+                          description: |-
+                            (String) Fabric Cloud Router package code
+                            Fabric Cloud Router package code
                           type: string
-                      required:
-                      - code
                       type: object
                     type: array
                   project:
-                    description: 'Customer resource hierarchy project information.
-                      Applicable to customers onboarded to Equinix Identity and Access
-                      Management. For more information see Identity and Access Management:
-                      Projects'
+                    description: |-
+                      (Block Set, Min: 1, Max: 1) Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects (see below for nested schema)
+                      Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects
                     items:
                       properties:
                         href:
-                          description: Unique Resource URL
+                          description: |-
+                            (String) Fabric Cloud Router URI information
+                            Unique Resource URL
                           type: string
                         projectId:
-                          description: Project Id
+                          description: |-
+                            (String) Project Id
+                            Project Id
                           type: string
                       type: object
                     type: array
                   type:
-                    description: Defines the FCR type like; XF_ROUTER
+                    description: |-
+                      (String) Defines the FCR type like; XF_ROUTER
+                      Defines the FCR type like; XF_ROUTER
                     type: string
                   uuid:
-                    description: Equinix-assigned Fabric Cloud Router identifier
+                    description: |-
+                      assigned Fabric Cloud Router identifier
+                      Equinix-assigned Fabric Cloud Router identifier
                     type: string
-                required:
-                - account
-                - location
-                - name
-                - notifications
-                - package
-                - project
-                - type
                 type: object
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
+                properties:
+                  account:
+                    description: |-
+                      (Block Set, Min: 1, Max: 1) Customer account information that is associated with this Fabric Cloud Router (see below for nested schema)
+                      Customer account information that is associated with this Fabric Cloud Router
+                    items:
+                      properties:
+                        accountNumber:
+                          description: |-
+                            (Number) Account Number
+                            Account Number
+                          type: number
+                      type: object
+                    type: array
+                  description:
+                    description: |-
+                      provided Fabric Cloud Router description
+                      Customer-provided Fabric Cloud Router description
+                    type: string
+                  href:
+                    description: |-
+                      (String) Fabric Cloud Router URI information
+                      Fabric Cloud Router URI information
+                    type: string
+                  location:
+                    description: |-
+                      (Block Set, Min: 1, Max: 1) Fabric Cloud Router location (see below for nested schema)
+                      Fabric Cloud Router location
+                    items:
+                      properties:
+                        ibx:
+                          description: |-
+                            (String) IBX Code
+                            IBX Code
+                          type: string
+                        metroCode:
+                          description: |-
+                            (String) Access point metro code
+                            Access point metro code
+                          type: string
+                        metroName:
+                          description: |-
+                            (String) Access point metro name
+                            Access point metro name
+                          type: string
+                        region:
+                          description: |-
+                            (String) Access point region
+                            Access point region
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: |-
+                      numeric 24 characters string which can include only hyphens and underscores
+                      Fabric Cloud Router name. An alpha-numeric 24 characters string which can include only hyphens and underscores
+                    type: string
+                  notifications:
+                    description: |-
+                      (Block List, Min: 1) Preferences for notifications on Fabric Cloud Router configuration or status changes (see below for nested schema)
+                      Preferences for notifications on Fabric Cloud Router configuration or status changes
+                    items:
+                      properties:
+                        emails:
+                          description: |-
+                            (List of String) Array of contact emails
+                            Array of contact emails
+                          items:
+                            type: string
+                          type: array
+                        sendInterval:
+                          description: |-
+                            (String) Send interval
+                            Send interval
+                          type: string
+                        type:
+                          description: |-
+                            (String) Defines the FCR type like; XF_ROUTER
+                            Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
+                          type: string
+                      type: object
+                    type: array
+                  order:
+                    description: |-
+                      (Block Set, Min: 1, Max: 1) Order information related to this Fabric Cloud Router (see below for nested schema)
+                      Order information related to this Fabric Cloud Router
+                    items:
+                      properties:
+                        billingTier:
+                          description: |-
+                            (String) Billing tier for connection bandwidth
+                            Billing tier for connection bandwidth
+                          type: string
+                        orderId:
+                          description: |-
+                            (String) Order Identification
+                            Order Identification
+                          type: string
+                        orderNumber:
+                          description: |-
+                            (String) Order Reference Number
+                            Order Reference Number
+                          type: string
+                        purchaseOrderNumber:
+                          description: |-
+                            (String) Purchase order number
+                            Purchase order number
+                          type: string
+                      type: object
+                    type: array
+                  package:
+                    description: |-
+                      (Block Set, Min: 1, Max: 1) Fabric Cloud Router Package Type (see below for nested schema)
+                      Fabric Cloud Router Package Type
+                    items:
+                      properties:
+                        code:
+                          description: |-
+                            (String) Fabric Cloud Router package code
+                            Fabric Cloud Router package code
+                          type: string
+                      type: object
+                    type: array
+                  project:
+                    description: |-
+                      (Block Set, Min: 1, Max: 1) Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects (see below for nested schema)
+                      Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects
+                    items:
+                      properties:
+                        href:
+                          description: |-
+                            (String) Fabric Cloud Router URI information
+                            Unique Resource URL
+                          type: string
+                        projectId:
+                          description: |-
+                            (String) Project Id
+                            Project Id
+                          type: string
+                      type: object
+                    type: array
+                  type:
+                    description: |-
+                      (String) Defines the FCR type like; XF_ROUTER
+                      Defines the FCR type like; XF_ROUTER
+                    type: string
+                  uuid:
+                    description: |-
+                      assigned Fabric Cloud Router identifier
+                      Equinix-assigned Fabric Cloud Router identifier
+                    type: string
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  This field is planned to replace the DeletionPolicy field in a future
+                  release. Currently, both could be set independently and non-default
+                  values would be honored if the feature flag is enabled. If both are
+                  custom, the DeletionPolicy field will be ignored.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
               providerConfigRef:
                 default:
                   name: default
-                description: ProviderConfigReference specifies how the provider that
-                  will be used to create, observe, update, and delete this managed
-                  resource should be configured.
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
                 properties:
                   name:
                     description: Name of the referenced object.
@@ -197,57 +432,21 @@ spec:
                     properties:
                       resolution:
                         default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
+                        description: |-
+                          Resolution specifies whether resolution of this reference is required.
+                          The default is 'Required', which means the reconcile will fail if the
+                          reference cannot be resolved. 'Optional' means this reference will be
+                          a no-op if it cannot be resolved.
                         enum:
                         - Required
                         - Optional
                         type: string
                       resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
-                        enum:
-                        - Always
-                        - IfNotPresent
-                        type: string
-                    type: object
-                required:
-                - name
-                type: object
-              providerRef:
-                description: 'ProviderReference specifies the provider that will be
-                  used to create, observe, update, and delete this managed resource.
-                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
-                properties:
-                  name:
-                    description: Name of the referenced object.
-                    type: string
-                  policy:
-                    description: Policies for referencing.
-                    properties:
-                      resolution:
-                        default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
-                        enum:
-                        - Required
-                        - Optional
-                        type: string
-                      resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
+                        description: |-
+                          Resolve specifies when this reference should be resolved. The default
+                          is 'IfNotPresent', which will attempt to resolve the reference only when
+                          the corresponding field is not present. Use 'Always' to resolve the
+                          reference on every reconcile.
                         enum:
                         - Always
                         - IfNotPresent
@@ -257,17 +456,19 @@ spec:
                 - name
                 type: object
               publishConnectionDetailsTo:
-                description: PublishConnectionDetailsTo specifies the connection secret
-                  config which contains a name, metadata and a reference to secret
-                  store config to which any connection details for this managed resource
-                  should be written. Connection details frequently include the endpoint,
-                  username, and password required to connect to the managed resource.
+                description: |-
+                  PublishConnectionDetailsTo specifies the connection secret config which
+                  contains a name, metadata and a reference to secret store config to
+                  which any connection details for this managed resource should be written.
+                  Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
                 properties:
                   configRef:
                     default:
                       name: default
-                    description: SecretStoreConfigRef specifies which secret store
-                      config should be used for this ConnectionSecret.
+                    description: |-
+                      SecretStoreConfigRef specifies which secret store config should be used
+                      for this ConnectionSecret.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -277,21 +478,21 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -306,21 +507,22 @@ spec:
                       annotations:
                         additionalProperties:
                           type: string
-                        description: Annotations are the annotations to be added to
-                          connection secret. - For Kubernetes secrets, this will be
-                          used as "metadata.annotations". - It is up to Secret Store
-                          implementation for others store types.
+                        description: |-
+                          Annotations are the annotations to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.annotations".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       labels:
                         additionalProperties:
                           type: string
-                        description: Labels are the labels/tags to be added to connection
-                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
-                          - It is up to Secret Store implementation for others store
-                          types.
+                        description: |-
+                          Labels are the labels/tags to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       type:
-                        description: Type is the SecretType for the connection secret.
+                        description: |-
+                          Type is the SecretType for the connection secret.
                           - Only valid for Kubernetes Secret Stores.
                         type: string
                     type: object
@@ -331,14 +533,15 @@ spec:
                 - name
                 type: object
               writeConnectionSecretToRef:
-                description: WriteConnectionSecretToReference specifies the namespace
-                  and name of a Secret to which any connection details for this managed
-                  resource should be written. Connection details frequently include
-                  the endpoint, username, and password required to connect to the
-                  managed resource. This field is planned to be replaced in a future
-                  release in favor of PublishConnectionDetailsTo. Currently, both
-                  could be set independently and connection details would be published
-                  to both without affecting each other.
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                  This field is planned to be replaced in a future release in favor of
+                  PublishConnectionDetailsTo. Currently, both could be set independently
+                  and connection details would be published to both without affecting
+                  each other.
                 properties:
                   name:
                     description: Name of the secret.
@@ -353,66 +556,271 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.account is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.account)
+                || (has(self.initProvider) && has(self.initProvider.account))'
+            - message: spec.forProvider.location is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.location)
+                || (has(self.initProvider) && has(self.initProvider.location))'
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
+            - message: spec.forProvider.notifications is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.notifications)
+                || (has(self.initProvider) && has(self.initProvider.notifications))'
+            - message: spec.forProvider.package is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.__package__)
+                || (has(self.initProvider) && has(self.initProvider.__package__))'
+            - message: spec.forProvider.project is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.project)
+                || (has(self.initProvider) && has(self.initProvider.project))'
+            - message: spec.forProvider.type is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
+                || (has(self.initProvider) && has(self.initProvider.type))'
           status:
             description: CloudRouterStatus defines the observed state of CloudRouter.
             properties:
               atProvider:
                 properties:
+                  account:
+                    description: |-
+                      (Block Set, Min: 1, Max: 1) Customer account information that is associated with this Fabric Cloud Router (see below for nested schema)
+                      Customer account information that is associated with this Fabric Cloud Router
+                    items:
+                      properties:
+                        accountNumber:
+                          description: |-
+                            (Number) Account Number
+                            Account Number
+                          type: number
+                      type: object
+                    type: array
                   bgpIpv4RoutesCount:
-                    description: Number of IPv4 BGP routes in use (including non-distinct
-                      prefixes)
+                    description: |-
+                      distinct prefixes)
+                      Number of IPv4 BGP routes in use (including non-distinct prefixes)
                     type: number
                   bgpIpv6RoutesCount:
-                    description: Number of IPv6 BGP routes in use (including non-distinct
-                      prefixes)
+                    description: |-
+                      distinct prefixes)
+                      Number of IPv6 BGP routes in use (including non-distinct prefixes)
                     type: number
                   changeLog:
-                    description: Captures Fabric Cloud Router lifecycle change information
+                    description: |-
+                      (Set of Object) Captures Fabric Cloud Router lifecycle change information (see below for nested schema)
+                      Captures Fabric Cloud Router lifecycle change information
                     items:
                       properties:
                         createdBy:
+                          description: (String)
                           type: string
                         createdByEmail:
+                          description: (String)
                           type: string
                         createdByFullName:
+                          description: (String)
                           type: string
                         createdDateTime:
+                          description: (String)
                           type: string
                         deletedBy:
+                          description: (String)
                           type: string
                         deletedByEmail:
+                          description: (String)
                           type: string
                         deletedByFullName:
+                          description: (String)
                           type: string
                         deletedDateTime:
+                          description: (String)
                           type: string
                         updatedBy:
+                          description: (String)
                           type: string
                         updatedByEmail:
+                          description: (String)
                           type: string
                         updatedByFullName:
+                          description: (String)
                           type: string
                         updatedDateTime:
+                          description: (String)
                           type: string
                       type: object
                     type: array
                   connectionsCount:
-                    description: Number of connections associated with this Fabric
-                      Cloud Router instance
+                    description: |-
+                      (Number) Number of connections associated with this Fabric Cloud Router instance
+                      Number of connections associated with this Fabric Cloud Router instance
                     type: number
+                  description:
+                    description: |-
+                      provided Fabric Cloud Router description
+                      Customer-provided Fabric Cloud Router description
+                    type: string
                   distinctIpv4PrefixesCount:
-                    description: Number of distinct IPv4 routes
+                    description: |-
+                      (Number) Number of distinct IPv4 routes
+                      Number of distinct IPv4 routes
                     type: number
                   distinctIpv6PrefixesCount:
-                    description: Number of distinct IPv6 routes
+                    description: |-
+                      (Number) Number of distinct IPv6 routes
+                      Number of distinct IPv6 routes
                     type: number
                   equinixAsn:
-                    description: Equinix ASN
+                    description: |-
+                      (Number) Equinix ASN
+                      Equinix ASN
                     type: number
-                  id:
+                  href:
+                    description: |-
+                      (String) Fabric Cloud Router URI information
+                      Fabric Cloud Router URI information
                     type: string
+                  id:
+                    description: (String) The ID of this resource.
+                    type: string
+                  location:
+                    description: |-
+                      (Block Set, Min: 1, Max: 1) Fabric Cloud Router location (see below for nested schema)
+                      Fabric Cloud Router location
+                    items:
+                      properties:
+                        ibx:
+                          description: |-
+                            (String) IBX Code
+                            IBX Code
+                          type: string
+                        metroCode:
+                          description: |-
+                            (String) Access point metro code
+                            Access point metro code
+                          type: string
+                        metroName:
+                          description: |-
+                            (String) Access point metro name
+                            Access point metro name
+                          type: string
+                        region:
+                          description: |-
+                            (String) Access point region
+                            Access point region
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: |-
+                      numeric 24 characters string which can include only hyphens and underscores
+                      Fabric Cloud Router name. An alpha-numeric 24 characters string which can include only hyphens and underscores
+                    type: string
+                  notifications:
+                    description: |-
+                      (Block List, Min: 1) Preferences for notifications on Fabric Cloud Router configuration or status changes (see below for nested schema)
+                      Preferences for notifications on Fabric Cloud Router configuration or status changes
+                    items:
+                      properties:
+                        emails:
+                          description: |-
+                            (List of String) Array of contact emails
+                            Array of contact emails
+                          items:
+                            type: string
+                          type: array
+                        sendInterval:
+                          description: |-
+                            (String) Send interval
+                            Send interval
+                          type: string
+                        type:
+                          description: |-
+                            (String) Defines the FCR type like; XF_ROUTER
+                            Notification Type - ALL,CONNECTION_APPROVAL,SALES_REP_NOTIFICATIONS, NOTIFICATIONS
+                          type: string
+                      type: object
+                    type: array
+                  order:
+                    description: |-
+                      (Block Set, Min: 1, Max: 1) Order information related to this Fabric Cloud Router (see below for nested schema)
+                      Order information related to this Fabric Cloud Router
+                    items:
+                      properties:
+                        billingTier:
+                          description: |-
+                            (String) Billing tier for connection bandwidth
+                            Billing tier for connection bandwidth
+                          type: string
+                        orderId:
+                          description: |-
+                            (String) Order Identification
+                            Order Identification
+                          type: string
+                        orderNumber:
+                          description: |-
+                            (String) Order Reference Number
+                            Order Reference Number
+                          type: string
+                        purchaseOrderNumber:
+                          description: |-
+                            (String) Purchase order number
+                            Purchase order number
+                          type: string
+                      type: object
+                    type: array
+                  package:
+                    description: |-
+                      (Block Set, Min: 1, Max: 1) Fabric Cloud Router Package Type (see below for nested schema)
+                      Fabric Cloud Router Package Type
+                    items:
+                      properties:
+                        code:
+                          description: |-
+                            (String) Fabric Cloud Router package code
+                            Fabric Cloud Router package code
+                          type: string
+                      type: object
+                    type: array
+                  project:
+                    description: |-
+                      (Block Set, Min: 1, Max: 1) Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects (see below for nested schema)
+                      Customer resource hierarchy project information. Applicable to customers onboarded to Equinix Identity and Access Management. For more information see Identity and Access Management: Projects
+                    items:
+                      properties:
+                        href:
+                          description: |-
+                            (String) Fabric Cloud Router URI information
+                            Unique Resource URL
+                          type: string
+                        projectId:
+                          description: |-
+                            (String) Project Id
+                            Project Id
+                          type: string
+                      type: object
+                    type: array
                   state:
-                    description: Fabric Cloud Router overall state
+                    description: |-
+                      (String) Fabric Cloud Router overall state
+                      Fabric Cloud Router overall state
+                    type: string
+                  type:
+                    description: |-
+                      (String) Defines the FCR type like; XF_ROUTER
+                      Defines the FCR type like; XF_ROUTER
+                    type: string
+                  uuid:
+                    description: |-
+                      assigned Fabric Cloud Router identifier
+                      Equinix-assigned Fabric Cloud Router identifier
                     type: string
                 type: object
               conditions:
@@ -421,14 +829,23 @@ spec:
                   description: A Condition that may apply to a resource.
                   properties:
                     lastTransitionTime:
-                      description: LastTransitionTime is the last time this condition
-                        transitioned from one status to another.
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
                       format: date-time
                       type: string
                     message:
-                      description: A Message containing details about this condition's
-                        last transition from one status to another, if any.
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
                       type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
                     reason:
                       description: A Reason for this condition's last transition from
                         one status to another.
@@ -438,8 +855,9 @@ spec:
                         False, or Unknown?
                       type: string
                     type:
-                      description: Type of this condition. At most one of each condition
-                        type may apply to a resource at any point in time.
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
                       type: string
                   required:
                   - lastTransitionTime
@@ -448,6 +866,16 @@ spec:
                   - type
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
             type: object
         required:
         - spec

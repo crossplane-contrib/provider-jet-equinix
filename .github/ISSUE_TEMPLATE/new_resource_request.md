@@ -23,10 +23,10 @@ Help us for prioritization of the resource support by giving more details about
 why you need it.
 -->
 
-### Would you be willing to contribute it using [Upjet](https://github.com/upbound/upjet)?
+### Would you be willing to contribute it using [Upjet](https://github.com/crossplane/upjet)?
 
 <!--
 Please take a look at code generator instructions to see whether you'd like to
 contribute the missing parts where Upjet cannot automate. See
-https://github.com/upbound/upjet#readme
+https://github.com/crossplane/upjet#readme
 -->

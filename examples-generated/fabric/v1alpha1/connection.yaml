@@ -1,0 +1,38 @@
+apiVersion: fabric.equinix.jet.crossplane.io/v1alpha1
+kind: Connection
+metadata:
+  annotations:
+    meta.upbound.io/example-id: fabric/v1alpha1/connection
+  labels:
+    testing.upbound.io/example-name: port2port
+  name: port2port
+spec:
+  forProvider:
+    aSide:
+    - accessPoint:
+      - linkProtocol:
+        - type: QINQ
+          vlanSTag: "1976"
+        port:
+        - uuid: <aside_port_uuid>
+        type: COLO
+    bandwidth: 50
+    name: ConnectionName
+    notifications:
+    - emails:
+      - example@equinix.com
+      - test1@equinix.com
+      type: ALL
+    order:
+    - purchaseOrderNumber: 1-323292
+    type: EVPL_VC
+    zSide:
+    - accessPoint:
+      - linkProtocol:
+        - type: QINQ
+          vlanSTag: "3711"
+        location:
+        - metroCode: SV
+        port:
+        - uuid: <zside_port_uuid>
+        type: COLO
