@@ -1,0 +1,149 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: k3sclusters.deployments.equinix.com
+spec:
+  writeConnectionSecretsToNamespace: crossplane-system
+  compositeTypeRef:
+    apiVersion: deployments.equinix.com/v1alpha1
+    kind: K3sCluster
+  resources:
+    - name: k3s-project
+      base:
+        apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
+        kind: Project
+      patches:
+        - type: FromCompositeFieldPath
+          fromFieldPath: metadata.name
+          toFieldPath: spec.forProvider.name
+    - name: k3s-userdata
+      base:
+        apiVersion: v1
+        kind: Secret
+        type: Opaque
+        metadata:
+          namespace: crossplane-system
+      patches:
+        - type: CombineFromComposite
+          toFieldPath: metadata.name
+          combine:
+            variables:
+              - fromFieldPath: metadata.name
+            strategy: string
+            string:
+              fmt: "k3s-userdata-%s"
+        - type: FromCompositeFieldPath
+          toFieldPath: metadata.namespace
+          fromFieldPath: spec.secretNamespace
+        - type: CombineFromComposite
+          toFieldPath: data.userdata
+          combine:
+            variables:
+              - fromFieldPath: spec.k3stoken
+            strategy: string
+            string:
+              fmt: |
+                #cloud-config
+                write_files:
+                #- permissions: '0660'
+                #  path: /etc/rancher/k3s/config.yaml
+                #  content: |
+                #    # k3s config  
+                runcmd:
+                - sudo apt update
+                - sudo apt upgrade -y
+                - curl -sfL https://get.k3s.io | \
+                  INSTALL_K3S_EXEC="server" \
+                  K3S_TOKEN="%s" sh -
+    - name: k3s-server
+      base:
+        apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
+        kind: Device
+        metadata:
+          labels:
+            k3s-server: 'true'
+        spec:
+          forProvider:
+            hostname: k3s-server
+            plan: c3.small.x86
+            operatingSystem: ubuntu_20_04
+            billingCycle: hourly
+            locked: false
+            networkType: hybrid
+            tags:
+            - crossplane
+            projectIdSelector:
+              matchControllerRef: true
+            userDataSecretRef:
+              namespace: crossplane-system
+              key: userdata
+          writeConnectionSecretToRef:
+            name: server
+            namespace: crossplane-system
+          reclaimPolicy: Delete
+      patches:
+        - type: ToCompositeFieldPath
+          fromFieldPath: status.atProvider.accessPublicIpv4
+          toFieldPath: status.serverIP
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.metro
+          toFieldPath: spec.forProvider.metro
+        - type: CombineFromComposite
+          toFieldPath: spec.forProvider.userDataSecretRef.name
+          combine:
+            variables:
+              - fromFieldPath: metadata.name
+            strategy: string
+            string:
+              fmt: "%s"
+    - name: k3s-agent
+      base:
+        apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
+        kind: Device
+        metadata:
+          labels:
+            k3s-agent: 'true'
+        spec:
+          forProvider:
+            hostname: k3s-agent
+            plan: c3.small.x86
+            operatingSystem: ubuntu_20_04
+            billingCycle: hourly
+            locked: false
+            networkType: hybrid
+            tags:
+            - crossplane
+            projectIdSelector:
+              matchControllerRef: true
+          writeConnectionSecretToRef:
+            name: crossplane-conformance
+            namespace: crossplane-system
+          reclaimPolicy: Delete
+      patches:
+        # TODO we reuse metro patches. create a 'patchtype'
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.metro
+          toFieldPath: spec.forProvider.metro
+        # - type: CombineFromComposite
+        #   toFieldPath: spec.forProvider.userData
+        #   policy:
+        #     fromFieldPath: Required
+        #   combine:
+        #     variables:
+        #       - fromFieldPath: spec.k3stoken
+        #       - fromFieldPath: status.serverIP
+        #     strategy: string
+        #     string:
+        #       fmt: |
+        #         #cloud-config
+        #         write_files:
+        #         #- permissions: '0660'
+        #         #  path: /etc/rancher/k3s/config.yaml
+        #         #  content: |
+        #         #    # k3s config  
+        #         runcmd:
+        #         - sudo apt update
+        #         - sudo apt upgrade -y
+        #         - curl -sfL https://get.k3s.io | \
+        #           K3S_TOKEN="%s" \
+        #           K3S_URL=https://%s:6443 sh -
