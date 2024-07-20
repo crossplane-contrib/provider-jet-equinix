@@ -29,7 +29,16 @@ type VirtualCircuitInitParameters struct {
 
 	// (String) UUID of Connection where the VC is scoped to.  Only used for dedicated connections
 	// UUID of Connection where the VC is scoped to.  Only used for dedicated connections
+	// +crossplane:generate:reference:type=Connection
 	ConnectionID *string `json:"connectionId,omitempty" tf:"connection_id,omitempty"`
+
+	// Reference to a Connection to populate connectionId.
+	// +kubebuilder:validation:Optional
+	ConnectionIDRef *v1.Reference `json:"connectionIdRef,omitempty" tf:"-"`
+
+	// Selector for a Connection to populate connectionId.
+	// +kubebuilder:validation:Optional
+	ConnectionIDSelector *v1.Selector `json:"connectionIdSelector,omitempty" tf:"-"`
 
 	// (String) The Customer IP address which the CSR switch will peer with. Will default to the other usable IP in the subnet.
 	// The Customer IP address which the CSR switch will peer with. Will default to the other usable IP in the subnet.
@@ -73,7 +82,16 @@ type VirtualCircuitInitParameters struct {
 
 	// (String) UUID of the Project where the VC is scoped to
 	// UUID of the Project where the VC is scoped to
+	// +crossplane:generate:reference:type=Project
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Reference to a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
+
+	// Selector for a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
 	// (String) Description of the Virtual Circuit speed. This is for information purposes and is computed when the connection type is shared.
 	// Description of the Virtual Circuit speed. This is for information purposes and is computed when the connection type is shared.
@@ -101,15 +119,42 @@ type VirtualCircuitInitParameters struct {
 
 	// (String) UUID of an existing VC to configure. Used in the case of shared interconnections where the VC has already been created.
 	// UUID of an existing VC to configure. Used in the case of shared interconnections where the VC has already been created.
+	// +crossplane:generate:reference:type=VirtualCircuit
 	VirtualCircuitID *string `json:"virtualCircuitId,omitempty" tf:"virtual_circuit_id,omitempty"`
+
+	// Reference to a VirtualCircuit to populate virtualCircuitId.
+	// +kubebuilder:validation:Optional
+	VirtualCircuitIDRef *v1.Reference `json:"virtualCircuitIdRef,omitempty" tf:"-"`
+
+	// Selector for a VirtualCircuit to populate virtualCircuitId.
+	// +kubebuilder:validation:Optional
+	VirtualCircuitIDSelector *v1.Selector `json:"virtualCircuitIdSelector,omitempty" tf:"-"`
 
 	// (String) UUID of the VLAN to associate
 	// UUID of the VLAN to associate
+	// +crossplane:generate:reference:type=Vlan
 	VlanID *string `json:"vlanId,omitempty" tf:"vlan_id,omitempty"`
+
+	// Reference to a Vlan to populate vlanId.
+	// +kubebuilder:validation:Optional
+	VlanIDRef *v1.Reference `json:"vlanIdRef,omitempty" tf:"-"`
+
+	// Selector for a Vlan to populate vlanId.
+	// +kubebuilder:validation:Optional
+	VlanIDSelector *v1.Selector `json:"vlanIdSelector,omitempty" tf:"-"`
 
 	// (String) UUID of the VRF to associate
 	// UUID of the VRF to associate
+	// +crossplane:generate:reference:type=Vrf
 	VrfID *string `json:"vrfId,omitempty" tf:"vrf_id,omitempty"`
+
+	// Reference to a Vrf to populate vrfId.
+	// +kubebuilder:validation:Optional
+	VrfIDRef *v1.Reference `json:"vrfIdRef,omitempty" tf:"-"`
+
+	// Selector for a Vrf to populate vrfId.
+	// +kubebuilder:validation:Optional
+	VrfIDSelector *v1.Selector `json:"vrfIdSelector,omitempty" tf:"-"`
 }
 
 type VirtualCircuitObservation struct {
@@ -214,8 +259,17 @@ type VirtualCircuitParameters struct {
 
 	// (String) UUID of Connection where the VC is scoped to.  Only used for dedicated connections
 	// UUID of Connection where the VC is scoped to.  Only used for dedicated connections
+	// +crossplane:generate:reference:type=Connection
 	// +kubebuilder:validation:Optional
 	ConnectionID *string `json:"connectionId,omitempty" tf:"connection_id,omitempty"`
+
+	// Reference to a Connection to populate connectionId.
+	// +kubebuilder:validation:Optional
+	ConnectionIDRef *v1.Reference `json:"connectionIdRef,omitempty" tf:"-"`
+
+	// Selector for a Connection to populate connectionId.
+	// +kubebuilder:validation:Optional
+	ConnectionIDSelector *v1.Selector `json:"connectionIdSelector,omitempty" tf:"-"`
 
 	// (String) The Customer IP address which the CSR switch will peer with. Will default to the other usable IP in the subnet.
 	// The Customer IP address which the CSR switch will peer with. Will default to the other usable IP in the subnet.
@@ -269,8 +323,17 @@ type VirtualCircuitParameters struct {
 
 	// (String) UUID of the Project where the VC is scoped to
 	// UUID of the Project where the VC is scoped to
+	// +crossplane:generate:reference:type=Project
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Reference to a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
+
+	// Selector for a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
 	// (String) Description of the Virtual Circuit speed. This is for information purposes and is computed when the connection type is shared.
 	// Description of the Virtual Circuit speed. This is for information purposes and is computed when the connection type is shared.
@@ -302,18 +365,45 @@ type VirtualCircuitParameters struct {
 
 	// (String) UUID of an existing VC to configure. Used in the case of shared interconnections where the VC has already been created.
 	// UUID of an existing VC to configure. Used in the case of shared interconnections where the VC has already been created.
+	// +crossplane:generate:reference:type=VirtualCircuit
 	// +kubebuilder:validation:Optional
 	VirtualCircuitID *string `json:"virtualCircuitId,omitempty" tf:"virtual_circuit_id,omitempty"`
 
+	// Reference to a VirtualCircuit to populate virtualCircuitId.
+	// +kubebuilder:validation:Optional
+	VirtualCircuitIDRef *v1.Reference `json:"virtualCircuitIdRef,omitempty" tf:"-"`
+
+	// Selector for a VirtualCircuit to populate virtualCircuitId.
+	// +kubebuilder:validation:Optional
+	VirtualCircuitIDSelector *v1.Selector `json:"virtualCircuitIdSelector,omitempty" tf:"-"`
+
 	// (String) UUID of the VLAN to associate
 	// UUID of the VLAN to associate
+	// +crossplane:generate:reference:type=Vlan
 	// +kubebuilder:validation:Optional
 	VlanID *string `json:"vlanId,omitempty" tf:"vlan_id,omitempty"`
 
+	// Reference to a Vlan to populate vlanId.
+	// +kubebuilder:validation:Optional
+	VlanIDRef *v1.Reference `json:"vlanIdRef,omitempty" tf:"-"`
+
+	// Selector for a Vlan to populate vlanId.
+	// +kubebuilder:validation:Optional
+	VlanIDSelector *v1.Selector `json:"vlanIdSelector,omitempty" tf:"-"`
+
 	// (String) UUID of the VRF to associate
 	// UUID of the VRF to associate
+	// +crossplane:generate:reference:type=Vrf
 	// +kubebuilder:validation:Optional
 	VrfID *string `json:"vrfId,omitempty" tf:"vrf_id,omitempty"`
+
+	// Reference to a Vrf to populate vrfId.
+	// +kubebuilder:validation:Optional
+	VrfIDRef *v1.Reference `json:"vrfIdRef,omitempty" tf:"-"`
+
+	// Selector for a Vrf to populate vrfId.
+	// +kubebuilder:validation:Optional
+	VrfIDSelector *v1.Selector `json:"vrfIdSelector,omitempty" tf:"-"`
 }
 
 // VirtualCircuitSpec defines the desired state of VirtualCircuit
@@ -353,7 +443,6 @@ type VirtualCircuit struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.portId) || (has(self.initProvider) && has(self.initProvider.portId))",message="spec.forProvider.portId is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.projectId) || (has(self.initProvider) && has(self.initProvider.projectId))",message="spec.forProvider.projectId is a required parameter"
 	Spec   VirtualCircuitSpec   `json:"spec"`
 	Status VirtualCircuitStatus `json:"status,omitempty"`
 }

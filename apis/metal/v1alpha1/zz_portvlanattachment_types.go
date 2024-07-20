@@ -28,7 +28,16 @@ import (
 type PortVlanAttachmentInitParameters struct {
 
 	// ID of device to be assigned to the VLAN
+	// +crossplane:generate:reference:type=Device
 	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
+
+	// Reference to a Device to populate deviceId.
+	// +kubebuilder:validation:Optional
+	DeviceIDRef *v1.Reference `json:"deviceIdRef,omitempty" tf:"-"`
+
+	// Selector for a Device to populate deviceId.
+	// +kubebuilder:validation:Optional
+	DeviceIDSelector *v1.Selector `json:"deviceIdSelector,omitempty" tf:"-"`
 
 	// Add port back to the bond when this resource is removed. Default is false
 	ForceBond *bool `json:"forceBond,omitempty" tf:"force_bond,omitempty"`
@@ -72,8 +81,17 @@ type PortVlanAttachmentObservation struct {
 type PortVlanAttachmentParameters struct {
 
 	// ID of device to be assigned to the VLAN
+	// +crossplane:generate:reference:type=Device
 	// +kubebuilder:validation:Optional
 	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
+
+	// Reference to a Device to populate deviceId.
+	// +kubebuilder:validation:Optional
+	DeviceIDRef *v1.Reference `json:"deviceIdRef,omitempty" tf:"-"`
+
+	// Selector for a Device to populate deviceId.
+	// +kubebuilder:validation:Optional
+	DeviceIDSelector *v1.Selector `json:"deviceIdSelector,omitempty" tf:"-"`
 
 	// Add port back to the bond when this resource is removed. Default is false
 	// +kubebuilder:validation:Optional
@@ -128,7 +146,6 @@ type PortVlanAttachmentStatus struct {
 type PortVlanAttachment struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.deviceId) || (has(self.initProvider) && has(self.initProvider.deviceId))",message="spec.forProvider.deviceId is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.portName) || (has(self.initProvider) && has(self.initProvider.portName))",message="spec.forProvider.portName is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.vlanVnid) || (has(self.initProvider) && has(self.initProvider.vlanVnid))",message="spec.forProvider.vlanVnid is a required parameter"
 	Spec   PortVlanAttachmentSpec   `json:"spec"`

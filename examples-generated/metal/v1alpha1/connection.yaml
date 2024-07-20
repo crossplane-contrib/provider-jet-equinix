@@ -11,7 +11,9 @@ spec:
     contactEmail: username@example.com
     metro: sv
     name: tf-metal-to-azure
-    projectId: ${local.project_id}
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
     redundancy: redundant
     serviceTokenType: a_side
     speed: 1000Mbps

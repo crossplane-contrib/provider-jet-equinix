@@ -15,7 +15,9 @@ spec:
     localAsn: "65000"
     metro: da
     name: example-vrf
-    projectId: ${equinix_metal_project.example.id}
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
 
 ---
 

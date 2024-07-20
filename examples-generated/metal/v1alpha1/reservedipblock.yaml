@@ -9,5 +9,7 @@ metadata:
 spec:
   forProvider:
     metro: sv
-    projectId: ${local.project_id}
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
     quantity: 2

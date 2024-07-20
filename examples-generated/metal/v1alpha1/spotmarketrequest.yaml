@@ -17,4 +17,6 @@ spec:
       plan: c3.small.x86
     maxBidPrice: 0.03
     metro: ny
-    projectId: ${local.project_id}
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

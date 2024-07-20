@@ -31,7 +31,16 @@ type IPAttachmentInitParameters struct {
 	CidrNotation *string `json:"cidrNotation,omitempty" tf:"cidr_notation,omitempty"`
 
 	// ID of device to which to assign the subnet.
+	// +crossplane:generate:reference:type=Device
 	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
+
+	// Reference to a Device to populate deviceId.
+	// +kubebuilder:validation:Optional
+	DeviceIDRef *v1.Reference `json:"deviceIdRef,omitempty" tf:"-"`
+
+	// Selector for a Device to populate deviceId.
+	// +kubebuilder:validation:Optional
+	DeviceIDSelector *v1.Selector `json:"deviceIdSelector,omitempty" tf:"-"`
 }
 
 type IPAttachmentObservation struct {
@@ -87,8 +96,17 @@ type IPAttachmentParameters struct {
 	CidrNotation *string `json:"cidrNotation,omitempty" tf:"cidr_notation,omitempty"`
 
 	// ID of device to which to assign the subnet.
+	// +crossplane:generate:reference:type=Device
 	// +kubebuilder:validation:Optional
 	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
+
+	// Reference to a Device to populate deviceId.
+	// +kubebuilder:validation:Optional
+	DeviceIDRef *v1.Reference `json:"deviceIdRef,omitempty" tf:"-"`
+
+	// Selector for a Device to populate deviceId.
+	// +kubebuilder:validation:Optional
+	DeviceIDSelector *v1.Selector `json:"deviceIdSelector,omitempty" tf:"-"`
 }
 
 // IPAttachmentSpec defines the desired state of IPAttachment
@@ -128,7 +146,6 @@ type IPAttachment struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.cidrNotation) || (has(self.initProvider) && has(self.initProvider.cidrNotation))",message="spec.forProvider.cidrNotation is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.deviceId) || (has(self.initProvider) && has(self.initProvider.deviceId))",message="spec.forProvider.deviceId is a required parameter"
 	Spec   IPAttachmentSpec   `json:"spec"`
 	Status IPAttachmentStatus `json:"status,omitempty"`
 }

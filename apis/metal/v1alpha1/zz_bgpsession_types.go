@@ -37,7 +37,16 @@ type BGPSessionInitParameters struct {
 
 	// ID of device.
 	// ID of device
+	// +crossplane:generate:reference:type=Device
 	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
+
+	// Reference to a Device to populate deviceId.
+	// +kubebuilder:validation:Optional
+	DeviceIDRef *v1.Reference `json:"deviceIdRef,omitempty" tf:"-"`
+
+	// Selector for a Device to populate deviceId.
+	// +kubebuilder:validation:Optional
+	DeviceIDSelector *v1.Selector `json:"deviceIdSelector,omitempty" tf:"-"`
 }
 
 type BGPSessionObservation struct {
@@ -75,8 +84,17 @@ type BGPSessionParameters struct {
 
 	// ID of device.
 	// ID of device
+	// +crossplane:generate:reference:type=Device
 	// +kubebuilder:validation:Optional
 	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
+
+	// Reference to a Device to populate deviceId.
+	// +kubebuilder:validation:Optional
+	DeviceIDRef *v1.Reference `json:"deviceIdRef,omitempty" tf:"-"`
+
+	// Selector for a Device to populate deviceId.
+	// +kubebuilder:validation:Optional
+	DeviceIDSelector *v1.Selector `json:"deviceIdSelector,omitempty" tf:"-"`
 }
 
 // BGPSessionSpec defines the desired state of BGPSession
@@ -116,7 +134,6 @@ type BGPSession struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.addressFamily) || (has(self.initProvider) && has(self.initProvider.addressFamily))",message="spec.forProvider.addressFamily is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.deviceId) || (has(self.initProvider) && has(self.initProvider.deviceId))",message="spec.forProvider.deviceId is a required parameter"
 	Spec   BGPSessionSpec   `json:"spec"`
 	Status BGPSessionStatus `json:"status,omitempty"`
 }

@@ -41,7 +41,16 @@ type VlanInitParameters struct {
 
 	// ID of parent project.
 	// ID of parent project
+	// +crossplane:generate:reference:type=Project
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Reference to a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
+
+	// Selector for a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
 	// VLAN ID, must be unique in metro.
 	// VLAN ID, must be unique in metro
@@ -93,8 +102,17 @@ type VlanParameters struct {
 
 	// ID of parent project.
 	// ID of parent project
+	// +crossplane:generate:reference:type=Project
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Reference to a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
+
+	// Selector for a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
 	// VLAN ID, must be unique in metro.
 	// VLAN ID, must be unique in metro
@@ -138,9 +156,8 @@ type VlanStatus struct {
 type Vlan struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.projectId) || (has(self.initProvider) && has(self.initProvider.projectId))",message="spec.forProvider.projectId is a required parameter"
-	Spec   VlanSpec   `json:"spec"`
-	Status VlanStatus `json:"status,omitempty"`
+	Spec              VlanSpec   `json:"spec"`
+	Status            VlanStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

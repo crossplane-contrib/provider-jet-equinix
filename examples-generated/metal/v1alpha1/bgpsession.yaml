@@ -9,7 +9,9 @@ metadata:
 spec:
   forProvider:
     addressFamily: ipv4
-    deviceId: ${equinix_metal_device.test.id}
+    deviceIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: test
 
 ---
 
@@ -29,7 +31,9 @@ spec:
     - ny
     operatingSystem: ubuntu_20_04
     plan: c3.small.x86
-    projectId: ${local.project_id}
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
 
 ---
 
@@ -44,5 +48,7 @@ metadata:
 spec:
   forProvider:
     metro: ny
-    projectId: ${local.project_id}
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
     quantity: 1

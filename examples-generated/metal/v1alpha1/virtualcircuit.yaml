@@ -8,11 +8,17 @@ metadata:
   name: test
 spec:
   forProvider:
-    connectionId: ${local.conn_id}
+    connectionIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
     nniVlan: 1056
     portId: ${data.equinix_metal_connection.test.ports[0].id}
-    projectId: ${local.project_id}
-    vlanId: ${equinix_metal_vlan.test.id}
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    vlanIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: test
 
 ---
 
@@ -27,4 +33,6 @@ metadata:
 spec:
   forProvider:
     metro: ${data.equinix_metal_connection.test.metro}
-    projectId: ${local.project_id}
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

@@ -93,7 +93,16 @@ type ProjectInitParameters struct {
 
 	// The UUID of organization under which you want to create the project. If you leave it out, the project will be created under your the default organization of your account.
 	// The UUID of organization under which the project is created
+	// +crossplane:generate:reference:type=Organization
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
+
+	// Reference to a Organization to populate organizationId.
+	// +kubebuilder:validation:Optional
+	OrganizationIDRef *v1.Reference `json:"organizationIdRef,omitempty" tf:"-"`
+
+	// Selector for a Organization to populate organizationId.
+	// +kubebuilder:validation:Optional
+	OrganizationIDSelector *v1.Selector `json:"organizationIdSelector,omitempty" tf:"-"`
 
 	// The UUID of payment method for this project. The payment method and the project need to belong to the same organization (passed with organization_id, or default).
 	// The UUID of payment method for this project. The payment method and the project need to belong to the same organization (passed with organization_id, or default)
@@ -153,8 +162,17 @@ type ProjectParameters struct {
 
 	// The UUID of organization under which you want to create the project. If you leave it out, the project will be created under your the default organization of your account.
 	// The UUID of organization under which the project is created
+	// +crossplane:generate:reference:type=Organization
 	// +kubebuilder:validation:Optional
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
+
+	// Reference to a Organization to populate organizationId.
+	// +kubebuilder:validation:Optional
+	OrganizationIDRef *v1.Reference `json:"organizationIdRef,omitempty" tf:"-"`
+
+	// Selector for a Organization to populate organizationId.
+	// +kubebuilder:validation:Optional
+	OrganizationIDSelector *v1.Selector `json:"organizationIdSelector,omitempty" tf:"-"`
 
 	// The UUID of payment method for this project. The payment method and the project need to belong to the same organization (passed with organization_id, or default).
 	// The UUID of payment method for this project. The payment method and the project need to belong to the same organization (passed with organization_id, or default)

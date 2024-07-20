@@ -9,5 +9,7 @@ metadata:
 spec:
   forProvider:
     description: Read-only key scoped to a projct
-    projectId: ${local.existing_project_id}
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
     readOnly: true

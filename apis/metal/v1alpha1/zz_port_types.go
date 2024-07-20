@@ -34,7 +34,16 @@ type PortInitParameters struct {
 	Layer2 *bool `json:"layer2,omitempty" tf:"layer2,omitempty"`
 
 	// UUID of native VLAN of the port
+	// +crossplane:generate:reference:type=Vlan
 	NativeVlanID *string `json:"nativeVlanId,omitempty" tf:"native_vlan_id,omitempty"`
+
+	// Reference to a Vlan to populate nativeVlanId.
+	// +kubebuilder:validation:Optional
+	NativeVlanIDRef *v1.Reference `json:"nativeVlanIdRef,omitempty" tf:"-"`
+
+	// Selector for a Vlan to populate nativeVlanId.
+	// +kubebuilder:validation:Optional
+	NativeVlanIDSelector *v1.Selector `json:"nativeVlanIdSelector,omitempty" tf:"-"`
 
 	// UUID of the port to lookup
 	PortID *string `json:"portId,omitempty" tf:"port_id,omitempty"`
@@ -111,8 +120,17 @@ type PortParameters struct {
 	Layer2 *bool `json:"layer2,omitempty" tf:"layer2,omitempty"`
 
 	// UUID of native VLAN of the port
+	// +crossplane:generate:reference:type=Vlan
 	// +kubebuilder:validation:Optional
 	NativeVlanID *string `json:"nativeVlanId,omitempty" tf:"native_vlan_id,omitempty"`
+
+	// Reference to a Vlan to populate nativeVlanId.
+	// +kubebuilder:validation:Optional
+	NativeVlanIDRef *v1.Reference `json:"nativeVlanIdRef,omitempty" tf:"-"`
+
+	// Selector for a Vlan to populate nativeVlanId.
+	// +kubebuilder:validation:Optional
+	NativeVlanIDSelector *v1.Selector `json:"nativeVlanIdSelector,omitempty" tf:"-"`
 
 	// UUID of the port to lookup
 	// +kubebuilder:validation:Optional

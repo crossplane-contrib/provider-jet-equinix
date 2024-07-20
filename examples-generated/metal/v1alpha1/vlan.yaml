@@ -10,5 +10,7 @@ spec:
   forProvider:
     description: VLAN in New Jersey
     metro: sv
-    projectId: ${local.project_id}
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
     vxlan: 1040

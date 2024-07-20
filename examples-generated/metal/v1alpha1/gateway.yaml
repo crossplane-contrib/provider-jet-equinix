@@ -9,8 +9,12 @@ metadata:
 spec:
   forProvider:
     privateIpv4SubnetSize: 8
-    projectId: ${local.project_id}
-    vlanId: ${equinix_metal_vlan.test.id}
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    vlanIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: test
 
 ---
 
@@ -26,4 +30,6 @@ spec:
   forProvider:
     description: test VLAN in SV
     metro: sv
-    projectId: ${local.project_id}
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

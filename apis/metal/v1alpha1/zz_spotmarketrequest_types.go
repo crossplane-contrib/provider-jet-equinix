@@ -165,7 +165,16 @@ type SpotMarketRequestInitParameters struct {
 
 	// Project ID.
 	// Project ID
+	// +crossplane:generate:reference:type=Project
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Reference to a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
+
+	// Selector for a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
 	// On resource creation wait until all desired devices are active. On resource destruction wait until devices are removed.
 	// On resource creation - wait until all desired devices are active, on resource destruction - wait until devices are removed
@@ -244,8 +253,17 @@ type SpotMarketRequestParameters struct {
 
 	// Project ID.
 	// Project ID
+	// +crossplane:generate:reference:type=Project
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Reference to a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
+
+	// Selector for a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
 	// On resource creation wait until all desired devices are active. On resource destruction wait until devices are removed.
 	// On resource creation - wait until all desired devices are active, on resource destruction - wait until devices are removed
@@ -293,7 +311,6 @@ type SpotMarketRequest struct {
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.devicesMin) || (has(self.initProvider) && has(self.initProvider.devicesMin))",message="spec.forProvider.devicesMin is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.instanceParameters) || (has(self.initProvider) && has(self.initProvider.instanceParameters))",message="spec.forProvider.instanceParameters is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.maxBidPrice) || (has(self.initProvider) && has(self.initProvider.maxBidPrice))",message="spec.forProvider.maxBidPrice is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.projectId) || (has(self.initProvider) && has(self.initProvider.projectId))",message="spec.forProvider.projectId is a required parameter"
 	Spec   SpotMarketRequestSpec   `json:"spec"`
 	Status SpotMarketRequestStatus `json:"status,omitempty"`
 }

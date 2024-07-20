@@ -13,4 +13,6 @@ spec:
     metro: sv
     operatingSystem: ubuntu_20_04
     plan: c3.small.x86
-    projectId: ${local.project_id}
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

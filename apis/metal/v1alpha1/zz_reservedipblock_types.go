@@ -52,7 +52,16 @@ type ReservedIPBlockInitParameters struct {
 
 	// The metal project ID where to allocate the address block.
 	// The metal project ID where to allocate the address block
+	// +crossplane:generate:reference:type=Project
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Reference to a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
+
+	// Selector for a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
 	// The number of allocated /32 addresses, a power of 2. Required when type is not vrf.
 	// The number of allocated /32 addresses, a power of 2
@@ -69,7 +78,16 @@ type ReservedIPBlockInitParameters struct {
 
 	// Only valid and required when type is vrf. VRF ID for type=vrf reservations.
 	// VRF ID for type=vrf reservations
+	// +crossplane:generate:reference:type=Vrf
 	VrfID *string `json:"vrfId,omitempty" tf:"vrf_id,omitempty"`
+
+	// Reference to a Vrf to populate vrfId.
+	// +kubebuilder:validation:Optional
+	VrfIDRef *v1.Reference `json:"vrfIdRef,omitempty" tf:"-"`
+
+	// Selector for a Vrf to populate vrfId.
+	// +kubebuilder:validation:Optional
+	VrfIDSelector *v1.Selector `json:"vrfIdSelector,omitempty" tf:"-"`
 
 	// Wait for the IP reservation block to reach a desired state on resource creation. One of: pending, created. The created state is default and recommended if the addresses are needed within the configuration. An error will be returned if a timeout or the denied state is encountered.
 	// Wait for the IP reservation block to reach a desired state on resource creation. One of: `pending`, `created`. The `created` state is default and recommended if the addresses are needed within the configuration. An error will be returned if a timeout or the `denied` state is encountered.
@@ -189,8 +207,17 @@ type ReservedIPBlockParameters struct {
 
 	// The metal project ID where to allocate the address block.
 	// The metal project ID where to allocate the address block
+	// +crossplane:generate:reference:type=Project
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Reference to a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
+
+	// Selector for a Project to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
 	// The number of allocated /32 addresses, a power of 2. Required when type is not vrf.
 	// The number of allocated /32 addresses, a power of 2
@@ -210,8 +237,17 @@ type ReservedIPBlockParameters struct {
 
 	// Only valid and required when type is vrf. VRF ID for type=vrf reservations.
 	// VRF ID for type=vrf reservations
+	// +crossplane:generate:reference:type=Vrf
 	// +kubebuilder:validation:Optional
 	VrfID *string `json:"vrfId,omitempty" tf:"vrf_id,omitempty"`
+
+	// Reference to a Vrf to populate vrfId.
+	// +kubebuilder:validation:Optional
+	VrfIDRef *v1.Reference `json:"vrfIdRef,omitempty" tf:"-"`
+
+	// Selector for a Vrf to populate vrfId.
+	// +kubebuilder:validation:Optional
+	VrfIDSelector *v1.Selector `json:"vrfIdSelector,omitempty" tf:"-"`
 
 	// Wait for the IP reservation block to reach a desired state on resource creation. One of: pending, created. The created state is default and recommended if the addresses are needed within the configuration. An error will be returned if a timeout or the denied state is encountered.
 	// Wait for the IP reservation block to reach a desired state on resource creation. One of: `pending`, `created`. The `created` state is default and recommended if the addresses are needed within the configuration. An error will be returned if a timeout or the `denied` state is encountered.
@@ -255,9 +291,8 @@ type ReservedIPBlockStatus struct {
 type ReservedIPBlock struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.projectId) || (has(self.initProvider) && has(self.initProvider.projectId))",message="spec.forProvider.projectId is a required parameter"
-	Spec   ReservedIPBlockSpec   `json:"spec"`
-	Status ReservedIPBlockStatus `json:"status,omitempty"`
+	Spec              ReservedIPBlockSpec   `json:"spec"`
+	Status            ReservedIPBlockStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

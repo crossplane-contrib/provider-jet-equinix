@@ -9,7 +9,9 @@ metadata:
 spec:
   forProvider:
     invitee: member@example.com
-    organizationId: ${var.organization_id}
+    organizationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
     projectsIds:
     - ${var.project_id}
     roles:

@@ -28,7 +28,16 @@ import (
 type DeviceNetworkTypeInitParameters struct {
 
 	// The ID of the device on which the network type should be set
+	// +crossplane:generate:reference:type=Device
 	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
+
+	// Reference to a Device to populate deviceId.
+	// +kubebuilder:validation:Optional
+	DeviceIDRef *v1.Reference `json:"deviceIdRef,omitempty" tf:"-"`
+
+	// Selector for a Device to populate deviceId.
+	// +kubebuilder:validation:Optional
+	DeviceIDSelector *v1.Selector `json:"deviceIdSelector,omitempty" tf:"-"`
 
 	// Network type to set. Must be one of layer3, hybrid, hybrid-bonded, layer2-individual, layer2-bonded
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
@@ -48,8 +57,17 @@ type DeviceNetworkTypeObservation struct {
 type DeviceNetworkTypeParameters struct {
 
 	// The ID of the device on which the network type should be set
+	// +crossplane:generate:reference:type=Device
 	// +kubebuilder:validation:Optional
 	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
+
+	// Reference to a Device to populate deviceId.
+	// +kubebuilder:validation:Optional
+	DeviceIDRef *v1.Reference `json:"deviceIdRef,omitempty" tf:"-"`
+
+	// Selector for a Device to populate deviceId.
+	// +kubebuilder:validation:Optional
+	DeviceIDSelector *v1.Selector `json:"deviceIdSelector,omitempty" tf:"-"`
 
 	// Network type to set. Must be one of layer3, hybrid, hybrid-bonded, layer2-individual, layer2-bonded
 	// +kubebuilder:validation:Optional
@@ -92,7 +110,6 @@ type DeviceNetworkTypeStatus struct {
 type DeviceNetworkType struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.deviceId) || (has(self.initProvider) && has(self.initProvider.deviceId))",message="spec.forProvider.deviceId is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || (has(self.initProvider) && has(self.initProvider.type))",message="spec.forProvider.type is a required parameter"
 	Spec   DeviceNetworkTypeSpec   `json:"spec"`
 	Status DeviceNetworkTypeStatus `json:"status,omitempty"`

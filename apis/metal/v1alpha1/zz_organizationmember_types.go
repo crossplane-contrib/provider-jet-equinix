@@ -37,7 +37,16 @@ type OrganizationMemberInitParameters struct {
 
 	// The organization to invite the user to
 	// The organization to invite the user to
+	// +crossplane:generate:reference:type=Organization
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
+
+	// Reference to a Organization to populate organizationId.
+	// +kubebuilder:validation:Optional
+	OrganizationIDRef *v1.Reference `json:"organizationIdRef,omitempty" tf:"-"`
+
+	// Selector for a Organization to populate organizationId.
+	// +kubebuilder:validation:Optional
+	OrganizationIDSelector *v1.Selector `json:"organizationIdSelector,omitempty" tf:"-"`
 
 	// Project IDs the member has access to within the organization. If the member is an 'admin', the projects list should be empty.
 	// Project IDs the member has access to within the organization. If the member is an 'owner', the projects list should be empty.
@@ -112,8 +121,17 @@ type OrganizationMemberParameters struct {
 
 	// The organization to invite the user to
 	// The organization to invite the user to
+	// +crossplane:generate:reference:type=Organization
 	// +kubebuilder:validation:Optional
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
+
+	// Reference to a Organization to populate organizationId.
+	// +kubebuilder:validation:Optional
+	OrganizationIDRef *v1.Reference `json:"organizationIdRef,omitempty" tf:"-"`
+
+	// Selector for a Organization to populate organizationId.
+	// +kubebuilder:validation:Optional
+	OrganizationIDSelector *v1.Selector `json:"organizationIdSelector,omitempty" tf:"-"`
 
 	// Project IDs the member has access to within the organization. If the member is an 'admin', the projects list should be empty.
 	// Project IDs the member has access to within the organization. If the member is an 'owner', the projects list should be empty.
@@ -165,7 +183,6 @@ type OrganizationMember struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.invitee) || (has(self.initProvider) && has(self.initProvider.invitee))",message="spec.forProvider.invitee is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.organizationId) || (has(self.initProvider) && has(self.initProvider.organizationId))",message="spec.forProvider.organizationId is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.projectsIds) || (has(self.initProvider) && has(self.initProvider.projectsIds))",message="spec.forProvider.projectsIds is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.roles) || (has(self.initProvider) && has(self.initProvider.roles))",message="spec.forProvider.roles is a required parameter"
 	Spec   OrganizationMemberSpec   `json:"spec"`
