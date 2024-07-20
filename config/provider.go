@@ -18,12 +18,18 @@ package config
 
 import (
 	// Note(turkenh): we are importing this to embed provider schema document
+	"context"
 	_ "embed"
 
-	upconfig "github.com/upbound/upjet/pkg/config"
-
-	"github.com/crossplane-contrib/provider-jet-equinix/config/ecx/l2connection"
 	"github.com/crossplane-contrib/provider-jet-equinix/config/metal/device"
+	upconfig "github.com/crossplane/upjet/pkg/config"
+	conversiontfjson "github.com/crossplane/upjet/pkg/types/conversion/tfjson"
+	"github.com/equinix/terraform-provider-equinix/equinix"
+	framework "github.com/equinix/terraform-provider-equinix/equinix/provider"
+	"github.com/equinix/terraform-provider-equinix/version"
+	tfjson "github.com/hashicorp/terraform-json"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/pkg/errors"
 )
 
 const (
@@ -37,19 +43,59 @@ var providerSchema string
 //go:embed provider-metadata.yaml
 var providerMetadata string
 
+func getProviderSchema(s string) (*schema.Provider, error) {
+	ps := tfjson.ProviderSchemas{}
+	if err := ps.UnmarshalJSON([]byte(s)); err != nil {
+		panic(err)
+	}
+	if len(ps.Schemas) != 1 {
+		return nil, errors.Errorf("there should exactly be 1 provider schema but there are %d", len(ps.Schemas))
+	}
+	var rs map[string]*tfjson.Schema
+	for _, v := range ps.Schemas {
+		rs = v.ResourceSchemas
+		break
+	}
+	return &schema.Provider{
+		ResourcesMap: conversiontfjson.GetV2ResourceMap(rs),
+	}, nil
+}
+
 // GetProvider returns provider configuration
-func GetProvider() *upconfig.Provider {
+func GetProvider(_ context.Context, generationProvider bool) (*upconfig.Provider, error) {
+	var p *schema.Provider
+	var err error
+
+	if generationProvider {
+		p, err = getProviderSchema(providerSchema)
+	} else {
+		p = equinix.Provider()
+	}
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot get the Terraform provider schema with generation mode set to %t", generationProvider)
+	}
+
+	fwProvider := framework.CreateFrameworkProvider(version.ProviderVersion)
+
 	pc := upconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
 		upconfig.WithShortName("equinix"),
 		upconfig.WithRootGroup("equinix.jet.crossplane.io"),
 		// upconfig.WithReferenceInjectors([]config.ReferenceInjector{reference.NewInjector("github.com/crossplane-contrib/provider-jet-equinix")}),
 		upconfig.WithDefaultResourceOptions(
-			KnownReferencers(),
+			// KnownReferencers(),
 			IdentifierAssignedByEquinix(),
 		),
+		upconfig.WithFeaturesPackage("internal/features"),
+		upconfig.WithTerraformProvider(p),
+		upconfig.WithTerraformPluginFrameworkProvider(fwProvider),
 		upconfig.WithIncludeList([]string{
 			".*",
 		}),
+		upconfig.WithSkipList([]string{
+			// ".*", // helpful when debugging to minimize the number of resources
+		}),
+		// config.WithTerraformPluginSDKIncludeList(resourceList(terraformSDKIncludeList)),
+		// config.WithTerraformPluginFrameworkIncludeList(resourceList(terraformPluginFrameworkExternalNameConfigs)),
 		upconfig.WithBasePackages(upconfig.BasePackages{
 			APIVersion: []string{
 				// Default package for ProviderConfig APIs
@@ -65,11 +111,11 @@ func GetProvider() *upconfig.Provider {
 	for _, configure := range []func(provider *upconfig.Provider){
 		// add custom config functions
 		device.Configure,
-		l2connection.Configure,
+		// l2connection.Configure,
 	} {
 		configure(pc)
 	}
 
 	pc.ConfigureResources()
-	return pc
+	return pc, err
 }

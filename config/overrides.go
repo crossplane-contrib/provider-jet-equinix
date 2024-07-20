@@ -21,7 +21,7 @@ import (
 	_ "embed"
 	"strings"
 
-	upconfig "github.com/upbound/upjet/pkg/config"
+	upconfig "github.com/crossplane/upjet/pkg/config"
 )
 
 // IdentifierAssignedByEquinix will work for all Equinix types because even if

@@ -21,11 +21,12 @@ import (
 	"encoding/json"
 
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/pkg/errors"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/upbound/upjet/pkg/terraform"
+	"github.com/crossplane/upjet/pkg/terraform"
 
 	"github.com/crossplane-contrib/provider-jet-equinix/apis/v1alpha1"
 )
@@ -46,17 +47,37 @@ const (
 	keyResponseMaxPageSize = "response_max_page_size"
 )
 
+type SetupConfig struct {
+	NativeProviderPath    *string
+	NativeProviderSource  *string
+	NativeProviderVersion *string
+	TerraformVersion      *string
+	DefaultScheduler      terraform.ProviderScheduler
+	TerraformProvider     *schema.Provider
+}
+
+func prepareTerraformProviderConfiguration(creds map[string]string, pc v1alpha1.ProviderConfig) map[string]any {
+	config := map[string]any{}
+	for _, key := range []string{
+		keyEndpoint,
+		keyRequestTimeout,
+		keyResponseMaxPageSize,
+		keyAuthToken,
+		keyClientID,
+		keyClientSecret,
+	} {
+		if creds[key] != "" {
+			config[key] = creds[key]
+		}
+	}
+	return config
+}
+
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
 // returns Terraform provider setup configuration
-func TerraformSetupBuilder(version, providerSource, providerVersion string) terraform.SetupFn {
+func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 	return func(ctx context.Context, client client.Client, mg resource.Managed) (terraform.Setup, error) {
-		ps := terraform.Setup{
-			Version: version,
-			Requirement: terraform.ProviderRequirement{
-				Source:  providerSource,
-				Version: providerVersion,
-			},
-		}
+		ps := terraform.Setup{}
 
 		configRef := mg.GetProviderConfigReference()
 		if configRef == nil {
@@ -81,20 +102,7 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			return ps, errors.Wrap(err, errUnmarshalCredentials)
 		}
 
-		// set credentials in Terraform provider configuration
-		ps.Configuration = map[string]interface{}{}
-		for _, key := range []string{
-			keyEndpoint,
-			keyRequestTimeout,
-			keyResponseMaxPageSize,
-			keyAuthToken,
-			keyClientID,
-			keyClientSecret,
-		} {
-			if equinixCreds[key] != "" {
-				ps.Configuration[key] = equinixCreds[key]
-			}
-		}
+		ps.Configuration = prepareTerraformProviderConfiguration(equinixCreds, *pc)
 		return ps, nil
 	}
 }

@@ -6,10 +6,12 @@ PROJECT_REPO := github.com/crossplane-contrib/$(PROJECT_NAME)
 GO_REQUIRED_VERSION ?= 1.22.5
 GOLANGCILINT_VERSION ?= 1.57.2
 
+# Do not exceed Terraform version 1.5
+# License changes from MPL to BSL in 1.6.0
+# This would be incompatible with the Crossplane ecosystem.
 export TERRAFORM_VERSION := 1.5.5
-
 export TERRAFORM_PROVIDER_SOURCE := equinix/equinix
-export TERRAFORM_PROVIDER_VERSION := 1.36.0
+export TERRAFORM_PROVIDER_VERSION := 2.2.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME := terraform-provider-equinix
 export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX := https://releases.hashicorp.com/${TERRAFORM_PROVIDER_DOWNLOAD_NAME}/${TERRAFORM_PROVIDER_VERSION}
 export TERRAFORM_NATIVE_PROVIDER_BINARY := ${TERRAFORM_PROVIDER_DOWNLOAD_NAME}_v${TERRAFORM_PROVIDER_VERSION}
@@ -121,8 +123,8 @@ pull-docs:
 	fi
 	@git -C "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" sparse-checkout set "$(TERRAFORM_DOCS_PATH)"
 	@echo "Removing examples known to cause parser errors for examples-generated"
-	@rm -f "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/equinix_metal_port_vlan_attachment.md" \
-		"$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/equinix_fabric_routing_protocol.md"
+	@rm -f "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/metal_port_vlan_attachment.md" \
+		"$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)/$(TERRAFORM_DOCS_PATH)/fabric_routing_protocol.md"
 
 
 generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
