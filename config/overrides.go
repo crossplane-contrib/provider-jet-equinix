@@ -19,7 +19,6 @@ package config
 import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
-	"fmt"
 	"strings"
 
 	upconfig "github.com/crossplane/upjet/pkg/config"
@@ -34,17 +33,17 @@ func IdentifierAssignedByEquinix() upconfig.ResourceOption {
 	}
 }
 
-var knownReferencerTypes = map[string]map[string]string{
+var knownReferencerTFResource = map[string]map[string]string{
 	"metal": {
-		"project_id":         "Project",
-		"organization_id":    "Organization",
-		"connection_id":      "Connection",
-		"device_id":          "Device",
-		"vlan_id":            "Vlan",
-		"vrf_id":             "Vrf",
-		"ip_reservation_id":  "ReservedIPBlock",
-		"virtual_circuit_id": "VirtualCircuit",
-		"gateway_id":         "Gateway",
+		"project_id":         "equinix_metal_project",
+		"organization_id":    "equinix_metal_organization",
+		"connection_id":      "equinix_metal_connection",
+		"device_id":          "equinix_metal_device",
+		"vlan_id":            "equinix_metal_vlan",
+		"vrf_id":             "equinix_metal_vrf",
+		"ip_reservation_id":  "equinix_metal_reserved_ip_block",
+		"virtual_circuit_id": "equinix_metal_virtual_circuit",
+		"gateway_id":         "equinix_metal_gateway",
 	},
 }
 
@@ -60,14 +59,13 @@ func KnownReferencers() upconfig.ResourceOption {
 			}
 
 			// Loop over knownReferencerFields and add references
-			for suffix, resource := range knownReferencerTypes[r.ShortGroup] {
+			for suffix, resource := range knownReferencerTFResource[r.ShortGroup] {
 				if !strings.HasSuffix(k, suffix) {
 					continue
 				}
 
 				r.References[k] = upconfig.Reference{
-					// Type is deprecated
-					Type: fmt.Sprintf("github.com/crossplane-contrib/provider-jet-equinix/apis/%s/%s.%s", r.ShortGroup, r.Version, resource),
+					TerraformName: resource,
 				}
 			}
 		}
