@@ -34,14 +34,14 @@ type PortInitParameters struct {
 	Layer2 *bool `json:"layer2,omitempty" tf:"layer2,omitempty"`
 
 	// UUID of native VLAN of the port
-	// +crossplane:generate:reference:type=Vlan
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Vlan
 	NativeVlanID *string `json:"nativeVlanId,omitempty" tf:"native_vlan_id,omitempty"`
 
-	// Reference to a Vlan to populate nativeVlanId.
+	// Reference to a Vlan in metal to populate nativeVlanId.
 	// +kubebuilder:validation:Optional
 	NativeVlanIDRef *v1.Reference `json:"nativeVlanIdRef,omitempty" tf:"-"`
 
-	// Selector for a Vlan to populate nativeVlanId.
+	// Selector for a Vlan in metal to populate nativeVlanId.
 	// +kubebuilder:validation:Optional
 	NativeVlanIDSelector *v1.Selector `json:"nativeVlanIdSelector,omitempty" tf:"-"`
 
@@ -120,15 +120,15 @@ type PortParameters struct {
 	Layer2 *bool `json:"layer2,omitempty" tf:"layer2,omitempty"`
 
 	// UUID of native VLAN of the port
-	// +crossplane:generate:reference:type=Vlan
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Vlan
 	// +kubebuilder:validation:Optional
 	NativeVlanID *string `json:"nativeVlanId,omitempty" tf:"native_vlan_id,omitempty"`
 
-	// Reference to a Vlan to populate nativeVlanId.
+	// Reference to a Vlan in metal to populate nativeVlanId.
 	// +kubebuilder:validation:Optional
 	NativeVlanIDRef *v1.Reference `json:"nativeVlanIdRef,omitempty" tf:"-"`
 
-	// Selector for a Vlan to populate nativeVlanId.
+	// Selector for a Vlan in metal to populate nativeVlanId.
 	// +kubebuilder:validation:Optional
 	NativeVlanIDSelector *v1.Selector `json:"nativeVlanIdSelector,omitempty" tf:"-"`
 

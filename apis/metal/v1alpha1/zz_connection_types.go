@@ -53,27 +53,27 @@ type ConnectionInitParameters struct {
 
 	// ID of the organization where the connection is scoped to.
 	// ID of the organization responsible for the connection. Applicable with type "dedicated"
-	// +crossplane:generate:reference:type=Organization
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Organization
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
 
-	// Reference to a Organization to populate organizationId.
+	// Reference to a Organization in metal to populate organizationId.
 	// +kubebuilder:validation:Optional
 	OrganizationIDRef *v1.Reference `json:"organizationIdRef,omitempty" tf:"-"`
 
-	// Selector for a Organization to populate organizationId.
+	// Selector for a Organization in metal to populate organizationId.
 	// +kubebuilder:validation:Optional
 	OrganizationIDSelector *v1.Selector `json:"organizationIdSelector,omitempty" tf:"-"`
 
 	// ID of the project where the connection is scoped to, must be set for.
 	// ID of the project where the connection is scoped to. Required with type "shared"
-	// +crossplane:generate:reference:type=Project
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Project
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
-	// Reference to a Project to populate projectId.
+	// Reference to a Project in metal to populate projectId.
 	// +kubebuilder:validation:Optional
 	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
 
-	// Selector for a Project to populate projectId.
+	// Selector for a Project in metal to populate projectId.
 	// +kubebuilder:validation:Optional
 	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
@@ -220,29 +220,29 @@ type ConnectionParameters struct {
 
 	// ID of the organization where the connection is scoped to.
 	// ID of the organization responsible for the connection. Applicable with type "dedicated"
-	// +crossplane:generate:reference:type=Organization
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Organization
 	// +kubebuilder:validation:Optional
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
 
-	// Reference to a Organization to populate organizationId.
+	// Reference to a Organization in metal to populate organizationId.
 	// +kubebuilder:validation:Optional
 	OrganizationIDRef *v1.Reference `json:"organizationIdRef,omitempty" tf:"-"`
 
-	// Selector for a Organization to populate organizationId.
+	// Selector for a Organization in metal to populate organizationId.
 	// +kubebuilder:validation:Optional
 	OrganizationIDSelector *v1.Selector `json:"organizationIdSelector,omitempty" tf:"-"`
 
 	// ID of the project where the connection is scoped to, must be set for.
 	// ID of the project where the connection is scoped to. Required with type "shared"
-	// +crossplane:generate:reference:type=Project
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Project
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
-	// Reference to a Project to populate projectId.
+	// Reference to a Project in metal to populate projectId.
 	// +kubebuilder:validation:Optional
 	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
 
-	// Selector for a Project to populate projectId.
+	// Selector for a Project in metal to populate projectId.
 	// +kubebuilder:validation:Optional
 	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 

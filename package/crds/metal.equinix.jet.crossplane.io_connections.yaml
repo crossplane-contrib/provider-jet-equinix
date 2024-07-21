@@ -108,7 +108,8 @@ spec:
                       ID of the organization responsible for the connection. Applicable with type "dedicated"
                     type: string
                   organizationIdRef:
-                    description: Reference to a Organization to populate organizationId.
+                    description: Reference to a Organization in metal to populate
+                      organizationId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -142,7 +143,8 @@ spec:
                     - name
                     type: object
                   organizationIdSelector:
-                    description: Selector for a Organization to populate organizationId.
+                    description: Selector for a Organization in metal to populate
+                      organizationId.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -187,7 +189,7 @@ spec:
                       ID of the project where the connection is scoped to. Required with type "shared"
                     type: string
                   projectIdRef:
-                    description: Reference to a Project to populate projectId.
+                    description: Reference to a Project in metal to populate projectId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -221,7 +223,7 @@ spec:
                     - name
                     type: object
                   projectIdSelector:
-                    description: Selector for a Project to populate projectId.
+                    description: Selector for a Project in metal to populate projectId.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -351,7 +353,8 @@ spec:
                       ID of the organization responsible for the connection. Applicable with type "dedicated"
                     type: string
                   organizationIdRef:
-                    description: Reference to a Organization to populate organizationId.
+                    description: Reference to a Organization in metal to populate
+                      organizationId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -385,7 +388,8 @@ spec:
                     - name
                     type: object
                   organizationIdSelector:
-                    description: Selector for a Organization to populate organizationId.
+                    description: Selector for a Organization in metal to populate
+                      organizationId.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -430,7 +434,7 @@ spec:
                       ID of the project where the connection is scoped to. Required with type "shared"
                     type: string
                   projectIdRef:
-                    description: Reference to a Project to populate projectId.
+                    description: Reference to a Project in metal to populate projectId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -464,7 +468,7 @@ spec:
                     - name
                     type: object
                   projectIdSelector:
-                    description: Selector for a Project to populate projectId.
+                    description: Selector for a Project in metal to populate projectId.
                     properties:
                       matchControllerRef:
                         description: |-

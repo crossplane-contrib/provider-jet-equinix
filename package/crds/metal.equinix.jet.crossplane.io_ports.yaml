@@ -83,7 +83,7 @@ spec:
                     description: UUID of native VLAN of the port
                     type: string
                   nativeVlanIdRef:
-                    description: Reference to a Vlan to populate nativeVlanId.
+                    description: Reference to a Vlan in metal to populate nativeVlanId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -117,7 +117,7 @@ spec:
                     - name
                     type: object
                   nativeVlanIdSelector:
-                    description: Selector for a Vlan to populate nativeVlanId.
+                    description: Selector for a Vlan in metal to populate nativeVlanId.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -201,7 +201,7 @@ spec:
                     description: UUID of native VLAN of the port
                     type: string
                   nativeVlanIdRef:
-                    description: Reference to a Vlan to populate nativeVlanId.
+                    description: Reference to a Vlan in metal to populate nativeVlanId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -235,7 +235,7 @@ spec:
                     - name
                     type: object
                   nativeVlanIdSelector:
-                    description: Selector for a Vlan to populate nativeVlanId.
+                    description: Selector for a Vlan in metal to populate nativeVlanId.
                     properties:
                       matchControllerRef:
                         description: |-

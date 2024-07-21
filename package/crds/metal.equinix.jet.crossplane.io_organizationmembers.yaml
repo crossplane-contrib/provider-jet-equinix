@@ -89,7 +89,8 @@ spec:
                       The organization to invite the user to
                     type: string
                   organizationIdRef:
-                    description: Reference to a Organization to populate organizationId.
+                    description: Reference to a Organization in metal to populate
+                      organizationId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -123,7 +124,8 @@ spec:
                     - name
                     type: object
                   organizationIdSelector:
-                    description: Selector for a Organization to populate organizationId.
+                    description: Selector for a Organization in metal to populate
+                      organizationId.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -208,7 +210,8 @@ spec:
                       The organization to invite the user to
                     type: string
                   organizationIdRef:
-                    description: Reference to a Organization to populate organizationId.
+                    description: Reference to a Organization in metal to populate
+                      organizationId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -242,7 +245,8 @@ spec:
                     - name
                     type: object
                   organizationIdSelector:
-                    description: Selector for a Organization to populate organizationId.
+                    description: Selector for a Organization in metal to populate
+                      organizationId.
                     properties:
                       matchControllerRef:
                         description: |-
