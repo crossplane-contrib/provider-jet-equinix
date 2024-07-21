@@ -19,6 +19,7 @@ package config
 import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
+	"fmt"
 	"strings"
 
 	upconfig "github.com/crossplane/upjet/pkg/config"
@@ -33,7 +34,7 @@ func IdentifierAssignedByEquinix() upconfig.ResourceOption {
 	}
 }
 
-var knownReferencerFields = map[string]map[string]string{
+var knownReferencerTypes = map[string]map[string]string{
 	"metal": {
 		"project_id":         "Project",
 		"organization_id":    "Organization",
@@ -59,12 +60,14 @@ func KnownReferencers() upconfig.ResourceOption {
 			}
 
 			// Loop over knownReferencerFields and add references
-			for suffix, resource := range knownReferencerFields[r.ShortGroup] {
+			for suffix, resource := range knownReferencerTypes[r.ShortGroup] {
 				if !strings.HasSuffix(k, suffix) {
 					continue
 				}
+
 				r.References[k] = upconfig.Reference{
-					Type: resource,
+					// Type is deprecated
+					Type: fmt.Sprintf("github.com/crossplane-contrib/provider-jet-equinix/apis/%s/%s.%s", r.ShortGroup, r.Version, resource),
 				}
 			}
 		}
