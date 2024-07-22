@@ -106,6 +106,7 @@ func GetProvider(_ context.Context, generationProvider bool) (*upconfig.Provider
 			KnownReferencers(),
 			IdentifierAssignedByEquinix(),
 			SkipOptCompLateInitialization(),
+			LongProvision(), // TODO: use this only for Device and other long-provisioning resources
 		),
 	)
 

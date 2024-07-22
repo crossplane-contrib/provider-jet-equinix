@@ -34,6 +34,13 @@ func IdentifierAssignedByEquinix() upconfig.ResourceOption {
 	}
 }
 
+// LongProvision will set the resource to be provisioned asynchronously. Use this for resources with >1m provisions
+func LongProvision() upconfig.ResourceOption {
+	return func(r *upconfig.Resource) {
+		r.UseAsync = true
+	}
+}
+
 var knownReferencerTFResource = map[string]map[string]string{
 	"metal": {
 		"project_id":          "equinix_metal_project",

@@ -21,12 +21,15 @@ import (
 	"encoding/json"
 
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
+	"github.com/crossplane/upjet/pkg/terraform"
+	equinixprovider "github.com/equinix/terraform-provider-equinix/equinix/provider"
+
+	"github.com/equinix/terraform-provider-equinix/version"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	terraformsdk "github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/pkg/errors"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/crossplane/upjet/pkg/terraform"
 
 	"github.com/crossplane-contrib/provider-jet-equinix/apis/v1alpha1"
 )
@@ -50,12 +53,10 @@ const (
 )
 
 type SetupConfig struct {
-	NativeProviderPath    *string
-	NativeProviderSource  *string
-	NativeProviderVersion *string
-	TerraformVersion      *string
-	DefaultScheduler      terraform.ProviderScheduler
-	TerraformProvider     *schema.Provider
+	ProviderSource    *string
+	ProviderVersion   *string
+	TerraformVersion  *string
+	TerraformProvider *schema.Provider
 }
 
 func prepareTerraformProviderConfiguration(creds map[string]string, pc v1alpha1.ProviderConfiguration) map[string]any {
@@ -85,9 +86,15 @@ func prepareTerraformProviderConfiguration(creds map[string]string, pc v1alpha1.
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
 // returns Terraform provider setup configuration
-func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
+func TerraformSetupBuilder(setupCfg SetupConfig) terraform.SetupFn {
 	return func(ctx context.Context, client client.Client, mg resource.Managed) (terraform.Setup, error) {
-		ps := terraform.Setup{}
+		ps := terraform.Setup{
+			Version: *setupCfg.TerraformVersion,
+			Requirement: terraform.ProviderRequirement{
+				Source:  *setupCfg.ProviderSource,
+				Version: *setupCfg.ProviderVersion,
+			},
+		}
 
 		configRef := mg.GetProviderConfigReference()
 		if configRef == nil {
@@ -113,6 +120,25 @@ func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 		}
 
 		ps.Configuration = prepareTerraformProviderConfiguration(equinixCreds, pc.Spec.Configuration)
-		return ps, nil
+		return ps, errors.Wrap(configureNoForkEquinixClient(ctx, &ps, *setupCfg.TerraformProvider), "failed to configure the no-fork equinix client")
 	}
+}
+
+func configureNoForkEquinixClient(ctx context.Context, ps *terraform.Setup, p schema.Provider) error {
+	// Please be aware that this implementation relies on the schema.Provider
+	// parameter `p` being a non-pointer. This is because normally
+	// the Terraform plugin SDK normally configures the provider
+	// only once and using a pointer argument here will cause
+	// race conditions between resources referring to different
+	// ProviderConfigs.
+	diag := p.Configure(context.WithoutCancel(ctx), &terraformsdk.ResourceConfig{
+		Config: ps.Configuration,
+	})
+	if diag != nil && diag.HasError() {
+		return errors.Errorf("failed to configure the provider: %v", diag)
+	}
+
+	fwProvider := equinixprovider.CreateFrameworkProvider(version.ProviderVersion)
+	ps.FrameworkProvider = fwProvider
+	return nil
 }
