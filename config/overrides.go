@@ -27,28 +27,39 @@ import (
 // IdentifierAssignedByEquinix will work for all Equinix types because even if
 // the ID is assigned by user, we'll see it in the TF State ID. The
 // resource-specific configurations should override this whenever possible.
+// See https://github.com/crossplane/upjet/blob/main/docs/configuring-a-resource.md#case-2-identifier-from-provider for more details.
 func IdentifierAssignedByEquinix() upconfig.ResourceOption {
 	return func(r *upconfig.Resource) {
 		r.ExternalName = upconfig.IdentifierFromProvider
 	}
 }
 
-var knownReferencerFields = map[string]map[string]string{
+var knownReferencerTFResource = map[string]map[string]string{
 	"metal": {
-		"project_id":         "Project",
-		"organization_id":    "Organization",
-		"connection_id":      "Connection",
-		"device_id":          "Device",
-		"vlan_id":            "Vlan",
-		"vrf_id":             "Vrf",
-		"ip_reservation_id":  "ReservedIPBlock",
-		"virtual_circuit_id": "VirtualCircuit",
-		"gateway_id":         "Gateway",
+		"project_id":          "equinix_metal_project",
+		"project_ids":         "equinix_metal_project",
+		"organization_id":     "equinix_metal_organization",
+		"connection_id":       "equinix_metal_connection",
+		"device_id":           "equinix_metal_device",
+		"vlan_id":             "equinix_metal_vlan",
+		"vlan_ids":            "equinix_metal_vlan",
+		"vrf_id":              "equinix_metal_vrf",
+		"ip_reservation_id":   "equinix_metal_reserved_ip_block",
+		"virtual_circuit_id":  "equinix_metal_virtual_circuit",
+		"gateway_id":          "equinix_metal_gateway",
+		"project_ssh_key_ids": "equinix_metal_project_ssh_key",
+		"user_ssh_key_ids":    "equinix_metal_ssh_key",
+		// "ssh_key_ids" // These would be ambiguously matched to the above at random, so leave them out.
+	},
+	"network": {
+		// TODO: need a way to disambiguate id from redundant_uuid. the user may want to reference both from the same equinix_network_device.
+		// "device_ids": "equinix_network_device",
 	},
 }
 
 // KnownReferencers adds referencers for fields that are known and common among
 // more than a few resources.
+// See https://github.com/crossplane/upjet/blob/main/docs/configuring-a-resource.md#cross-resource-referencing for more details.
 func KnownReferencers() upconfig.ResourceOption {
 	return func(r *upconfig.Resource) {
 		for k, s := range r.TerraformResource.Schema {
@@ -59,19 +70,23 @@ func KnownReferencers() upconfig.ResourceOption {
 			}
 
 			// Loop over knownReferencerFields and add references
-			for suffix, resource := range knownReferencerFields[r.ShortGroup] {
+			for suffix, resource := range knownReferencerTFResource[r.ShortGroup] {
 				if !strings.HasSuffix(k, suffix) {
 					continue
 				}
+
 				r.References[k] = upconfig.Reference{
-					Type: resource,
+					TerraformName: resource,
 				}
+				break // TODO: if there are multiple suffix matches, only the first processed will be handled. Go map order is random.
 			}
 		}
 	}
 }
 
 // SkipOptCompLateIntialization generalize the LateInitializer rule above to apply to allow fields that are Optional + Computed + ConflictsWith another Computed + Optional field
+// See https://github.com/crossplane/upjet/blob/main/docs/configuring-a-resource.md#further-details-on-late-initialization for details on this mutually-exclusive scenario
+// See https://github.com/crossplane/upjet/blob/main/docs/configuring-a-resource.md#overriding-terraform-resource-schema for default behavior
 func SkipOptCompLateInitialization() upconfig.ResourceOption {
 	return func(r *upconfig.Resource) {
 		for k, s := range r.TerraformResource.Schema {

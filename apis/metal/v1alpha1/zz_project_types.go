@@ -93,14 +93,14 @@ type ProjectInitParameters struct {
 
 	// The UUID of organization under which you want to create the project. If you leave it out, the project will be created under your the default organization of your account.
 	// The UUID of organization under which the project is created
-	// +crossplane:generate:reference:type=Organization
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Organization
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
 
-	// Reference to a Organization to populate organizationId.
+	// Reference to a Organization in metal to populate organizationId.
 	// +kubebuilder:validation:Optional
 	OrganizationIDRef *v1.Reference `json:"organizationIdRef,omitempty" tf:"-"`
 
-	// Selector for a Organization to populate organizationId.
+	// Selector for a Organization in metal to populate organizationId.
 	// +kubebuilder:validation:Optional
 	OrganizationIDSelector *v1.Selector `json:"organizationIdSelector,omitempty" tf:"-"`
 
@@ -162,15 +162,15 @@ type ProjectParameters struct {
 
 	// The UUID of organization under which you want to create the project. If you leave it out, the project will be created under your the default organization of your account.
 	// The UUID of organization under which the project is created
-	// +crossplane:generate:reference:type=Organization
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Organization
 	// +kubebuilder:validation:Optional
 	OrganizationID *string `json:"organizationId,omitempty" tf:"organization_id,omitempty"`
 
-	// Reference to a Organization to populate organizationId.
+	// Reference to a Organization in metal to populate organizationId.
 	// +kubebuilder:validation:Optional
 	OrganizationIDRef *v1.Reference `json:"organizationIdRef,omitempty" tf:"-"`
 
-	// Selector for a Organization to populate organizationId.
+	// Selector for a Organization in metal to populate organizationId.
 	// +kubebuilder:validation:Optional
 	OrganizationIDSelector *v1.Selector `json:"organizationIdSelector,omitempty" tf:"-"`
 

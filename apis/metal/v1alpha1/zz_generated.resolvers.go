@@ -145,6 +145,7 @@ func (mg *Device) ResolveReferences(ctx context.Context, c client.Reader) error 
 	r := reference.NewAPIResolver(c, mg)
 
 	var rsp reference.ResolutionResponse
+	var mrsp reference.MultiResolutionResponse
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
@@ -163,6 +164,38 @@ func (mg *Device) ResolveReferences(ctx context.Context, c client.Reader) error 
 	mg.Spec.ForProvider.ProjectID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.ProjectIDRef = rsp.ResolvedReference
 
+	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+		CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.ProjectSSHKeyIds),
+		Extract:       reference.ExternalName(),
+		References:    mg.Spec.ForProvider.ProjectSSHKeyIdsRefs,
+		Selector:      mg.Spec.ForProvider.ProjectSSHKeyIdsSelector,
+		To: reference.To{
+			List:    &ProjectSSHKeyList{},
+			Managed: &ProjectSSHKey{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ProjectSSHKeyIds")
+	}
+	mg.Spec.ForProvider.ProjectSSHKeyIds = reference.ToPtrValues(mrsp.ResolvedValues)
+	mg.Spec.ForProvider.ProjectSSHKeyIdsRefs = mrsp.ResolvedReferences
+
+	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+		CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.UserSSHKeyIds),
+		Extract:       reference.ExternalName(),
+		References:    mg.Spec.ForProvider.UserSSHKeyIdsRefs,
+		Selector:      mg.Spec.ForProvider.UserSSHKeyIdsSelector,
+		To: reference.To{
+			List:    &SSHKeyList{},
+			Managed: &SSHKey{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.UserSSHKeyIds")
+	}
+	mg.Spec.ForProvider.UserSSHKeyIds = reference.ToPtrValues(mrsp.ResolvedValues)
+	mg.Spec.ForProvider.UserSSHKeyIdsRefs = mrsp.ResolvedReferences
+
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.ProjectID),
 		Extract:      reference.ExternalName(),
@@ -178,6 +211,38 @@ func (mg *Device) ResolveReferences(ctx context.Context, c client.Reader) error 
 	}
 	mg.Spec.InitProvider.ProjectID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.InitProvider.ProjectIDRef = rsp.ResolvedReference
+
+	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+		CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.ProjectSSHKeyIds),
+		Extract:       reference.ExternalName(),
+		References:    mg.Spec.InitProvider.ProjectSSHKeyIdsRefs,
+		Selector:      mg.Spec.InitProvider.ProjectSSHKeyIdsSelector,
+		To: reference.To{
+			List:    &ProjectSSHKeyList{},
+			Managed: &ProjectSSHKey{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.ProjectSSHKeyIds")
+	}
+	mg.Spec.InitProvider.ProjectSSHKeyIds = reference.ToPtrValues(mrsp.ResolvedValues)
+	mg.Spec.InitProvider.ProjectSSHKeyIdsRefs = mrsp.ResolvedReferences
+
+	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+		CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.UserSSHKeyIds),
+		Extract:       reference.ExternalName(),
+		References:    mg.Spec.InitProvider.UserSSHKeyIdsRefs,
+		Selector:      mg.Spec.InitProvider.UserSSHKeyIdsSelector,
+		To: reference.To{
+			List:    &SSHKeyList{},
+			Managed: &SSHKey{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.UserSSHKeyIds")
+	}
+	mg.Spec.InitProvider.UserSSHKeyIds = reference.ToPtrValues(mrsp.ResolvedValues)
+	mg.Spec.InitProvider.UserSSHKeyIdsRefs = mrsp.ResolvedReferences
 
 	return nil
 }
@@ -419,6 +484,7 @@ func (mg *Port) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
 
 	var rsp reference.ResolutionResponse
+	var mrsp reference.MultiResolutionResponse
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
@@ -437,6 +503,22 @@ func (mg *Port) ResolveReferences(ctx context.Context, c client.Reader) error {
 	mg.Spec.ForProvider.NativeVlanID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.NativeVlanIDRef = rsp.ResolvedReference
 
+	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+		CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.VlanIds),
+		Extract:       reference.ExternalName(),
+		References:    mg.Spec.ForProvider.VlanIdsRefs,
+		Selector:      mg.Spec.ForProvider.VlanIdsSelector,
+		To: reference.To{
+			List:    &VlanList{},
+			Managed: &Vlan{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.VlanIds")
+	}
+	mg.Spec.ForProvider.VlanIds = reference.ToPtrValues(mrsp.ResolvedValues)
+	mg.Spec.ForProvider.VlanIdsRefs = mrsp.ResolvedReferences
+
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.NativeVlanID),
 		Extract:      reference.ExternalName(),
@@ -452,6 +534,22 @@ func (mg *Port) ResolveReferences(ctx context.Context, c client.Reader) error {
 	}
 	mg.Spec.InitProvider.NativeVlanID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.InitProvider.NativeVlanIDRef = rsp.ResolvedReference
+
+	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+		CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.VlanIds),
+		Extract:       reference.ExternalName(),
+		References:    mg.Spec.InitProvider.VlanIdsRefs,
+		Selector:      mg.Spec.InitProvider.VlanIdsSelector,
+		To: reference.To{
+			List:    &VlanList{},
+			Managed: &Vlan{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.VlanIds")
+	}
+	mg.Spec.InitProvider.VlanIds = reference.ToPtrValues(mrsp.ResolvedValues)
+	mg.Spec.InitProvider.VlanIdsRefs = mrsp.ResolvedReferences
 
 	return nil
 }

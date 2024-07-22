@@ -29,14 +29,14 @@ type VirtualCircuitInitParameters struct {
 
 	// (String) UUID of Connection where the VC is scoped to.  Only used for dedicated connections
 	// UUID of Connection where the VC is scoped to.  Only used for dedicated connections
-	// +crossplane:generate:reference:type=Connection
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Connection
 	ConnectionID *string `json:"connectionId,omitempty" tf:"connection_id,omitempty"`
 
-	// Reference to a Connection to populate connectionId.
+	// Reference to a Connection in metal to populate connectionId.
 	// +kubebuilder:validation:Optional
 	ConnectionIDRef *v1.Reference `json:"connectionIdRef,omitempty" tf:"-"`
 
-	// Selector for a Connection to populate connectionId.
+	// Selector for a Connection in metal to populate connectionId.
 	// +kubebuilder:validation:Optional
 	ConnectionIDSelector *v1.Selector `json:"connectionIdSelector,omitempty" tf:"-"`
 
@@ -82,14 +82,14 @@ type VirtualCircuitInitParameters struct {
 
 	// (String) UUID of the Project where the VC is scoped to
 	// UUID of the Project where the VC is scoped to
-	// +crossplane:generate:reference:type=Project
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Project
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
-	// Reference to a Project to populate projectId.
+	// Reference to a Project in metal to populate projectId.
 	// +kubebuilder:validation:Optional
 	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
 
-	// Selector for a Project to populate projectId.
+	// Selector for a Project in metal to populate projectId.
 	// +kubebuilder:validation:Optional
 	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
@@ -119,40 +119,40 @@ type VirtualCircuitInitParameters struct {
 
 	// (String) UUID of an existing VC to configure. Used in the case of shared interconnections where the VC has already been created.
 	// UUID of an existing VC to configure. Used in the case of shared interconnections where the VC has already been created.
-	// +crossplane:generate:reference:type=VirtualCircuit
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.VirtualCircuit
 	VirtualCircuitID *string `json:"virtualCircuitId,omitempty" tf:"virtual_circuit_id,omitempty"`
 
-	// Reference to a VirtualCircuit to populate virtualCircuitId.
+	// Reference to a VirtualCircuit in metal to populate virtualCircuitId.
 	// +kubebuilder:validation:Optional
 	VirtualCircuitIDRef *v1.Reference `json:"virtualCircuitIdRef,omitempty" tf:"-"`
 
-	// Selector for a VirtualCircuit to populate virtualCircuitId.
+	// Selector for a VirtualCircuit in metal to populate virtualCircuitId.
 	// +kubebuilder:validation:Optional
 	VirtualCircuitIDSelector *v1.Selector `json:"virtualCircuitIdSelector,omitempty" tf:"-"`
 
 	// (String) UUID of the VLAN to associate
 	// UUID of the VLAN to associate
-	// +crossplane:generate:reference:type=Vlan
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Vlan
 	VlanID *string `json:"vlanId,omitempty" tf:"vlan_id,omitempty"`
 
-	// Reference to a Vlan to populate vlanId.
+	// Reference to a Vlan in metal to populate vlanId.
 	// +kubebuilder:validation:Optional
 	VlanIDRef *v1.Reference `json:"vlanIdRef,omitempty" tf:"-"`
 
-	// Selector for a Vlan to populate vlanId.
+	// Selector for a Vlan in metal to populate vlanId.
 	// +kubebuilder:validation:Optional
 	VlanIDSelector *v1.Selector `json:"vlanIdSelector,omitempty" tf:"-"`
 
 	// (String) UUID of the VRF to associate
 	// UUID of the VRF to associate
-	// +crossplane:generate:reference:type=Vrf
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Vrf
 	VrfID *string `json:"vrfId,omitempty" tf:"vrf_id,omitempty"`
 
-	// Reference to a Vrf to populate vrfId.
+	// Reference to a Vrf in metal to populate vrfId.
 	// +kubebuilder:validation:Optional
 	VrfIDRef *v1.Reference `json:"vrfIdRef,omitempty" tf:"-"`
 
-	// Selector for a Vrf to populate vrfId.
+	// Selector for a Vrf in metal to populate vrfId.
 	// +kubebuilder:validation:Optional
 	VrfIDSelector *v1.Selector `json:"vrfIdSelector,omitempty" tf:"-"`
 }
@@ -259,15 +259,15 @@ type VirtualCircuitParameters struct {
 
 	// (String) UUID of Connection where the VC is scoped to.  Only used for dedicated connections
 	// UUID of Connection where the VC is scoped to.  Only used for dedicated connections
-	// +crossplane:generate:reference:type=Connection
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Connection
 	// +kubebuilder:validation:Optional
 	ConnectionID *string `json:"connectionId,omitempty" tf:"connection_id,omitempty"`
 
-	// Reference to a Connection to populate connectionId.
+	// Reference to a Connection in metal to populate connectionId.
 	// +kubebuilder:validation:Optional
 	ConnectionIDRef *v1.Reference `json:"connectionIdRef,omitempty" tf:"-"`
 
-	// Selector for a Connection to populate connectionId.
+	// Selector for a Connection in metal to populate connectionId.
 	// +kubebuilder:validation:Optional
 	ConnectionIDSelector *v1.Selector `json:"connectionIdSelector,omitempty" tf:"-"`
 
@@ -323,15 +323,15 @@ type VirtualCircuitParameters struct {
 
 	// (String) UUID of the Project where the VC is scoped to
 	// UUID of the Project where the VC is scoped to
-	// +crossplane:generate:reference:type=Project
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Project
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
-	// Reference to a Project to populate projectId.
+	// Reference to a Project in metal to populate projectId.
 	// +kubebuilder:validation:Optional
 	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
 
-	// Selector for a Project to populate projectId.
+	// Selector for a Project in metal to populate projectId.
 	// +kubebuilder:validation:Optional
 	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
@@ -365,43 +365,43 @@ type VirtualCircuitParameters struct {
 
 	// (String) UUID of an existing VC to configure. Used in the case of shared interconnections where the VC has already been created.
 	// UUID of an existing VC to configure. Used in the case of shared interconnections where the VC has already been created.
-	// +crossplane:generate:reference:type=VirtualCircuit
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.VirtualCircuit
 	// +kubebuilder:validation:Optional
 	VirtualCircuitID *string `json:"virtualCircuitId,omitempty" tf:"virtual_circuit_id,omitempty"`
 
-	// Reference to a VirtualCircuit to populate virtualCircuitId.
+	// Reference to a VirtualCircuit in metal to populate virtualCircuitId.
 	// +kubebuilder:validation:Optional
 	VirtualCircuitIDRef *v1.Reference `json:"virtualCircuitIdRef,omitempty" tf:"-"`
 
-	// Selector for a VirtualCircuit to populate virtualCircuitId.
+	// Selector for a VirtualCircuit in metal to populate virtualCircuitId.
 	// +kubebuilder:validation:Optional
 	VirtualCircuitIDSelector *v1.Selector `json:"virtualCircuitIdSelector,omitempty" tf:"-"`
 
 	// (String) UUID of the VLAN to associate
 	// UUID of the VLAN to associate
-	// +crossplane:generate:reference:type=Vlan
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Vlan
 	// +kubebuilder:validation:Optional
 	VlanID *string `json:"vlanId,omitempty" tf:"vlan_id,omitempty"`
 
-	// Reference to a Vlan to populate vlanId.
+	// Reference to a Vlan in metal to populate vlanId.
 	// +kubebuilder:validation:Optional
 	VlanIDRef *v1.Reference `json:"vlanIdRef,omitempty" tf:"-"`
 
-	// Selector for a Vlan to populate vlanId.
+	// Selector for a Vlan in metal to populate vlanId.
 	// +kubebuilder:validation:Optional
 	VlanIDSelector *v1.Selector `json:"vlanIdSelector,omitempty" tf:"-"`
 
 	// (String) UUID of the VRF to associate
 	// UUID of the VRF to associate
-	// +crossplane:generate:reference:type=Vrf
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Vrf
 	// +kubebuilder:validation:Optional
 	VrfID *string `json:"vrfId,omitempty" tf:"vrf_id,omitempty"`
 
-	// Reference to a Vrf to populate vrfId.
+	// Reference to a Vrf in metal to populate vrfId.
 	// +kubebuilder:validation:Optional
 	VrfIDRef *v1.Reference `json:"vrfIdRef,omitempty" tf:"-"`
 
-	// Selector for a Vrf to populate vrfId.
+	// Selector for a Vrf in metal to populate vrfId.
 	// +kubebuilder:validation:Optional
 	VrfIDSelector *v1.Selector `json:"vrfIdSelector,omitempty" tf:"-"`
 }

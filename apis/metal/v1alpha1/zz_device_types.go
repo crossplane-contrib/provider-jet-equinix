@@ -110,20 +110,29 @@ type DeviceInitParameters struct {
 
 	// (String) The ID of the project in which to create the device
 	// The ID of the project in which to create the device
-	// +crossplane:generate:reference:type=Project
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Project
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
-	// Reference to a Project to populate projectId.
+	// Reference to a Project in metal to populate projectId.
 	// +kubebuilder:validation:Optional
 	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
 
-	// Selector for a Project to populate projectId.
+	// Selector for a Project in metal to populate projectId.
 	// +kubebuilder:validation:Optional
 	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
 	// (List of String) Array of IDs of the project SSH keys which should be added to the device. If you specify this array, only the listed project SSH keys (and any SSH keys for the users specified in user_ssh_key_ids) will be added. If no SSH keys are specified (both user_ssh_keys_ids and project_ssh_key_ids are empty lists or omitted), all parent project keys, parent project members keys and organization members keys will be included.  Project SSH keys can be created with the equinix_metal_project_ssh_key resource
 	// Array of IDs of the project SSH keys which should be added to the device. If you specify this array, only the listed project SSH keys (and any SSH keys for the users specified in user_ssh_key_ids) will be added. If no SSH keys are specified (both user_ssh_keys_ids and project_ssh_key_ids are empty lists or omitted), all parent project keys, parent project members keys and organization members keys will be included.  Project SSH keys can be created with the [equinix_metal_project_ssh_key](equinix_metal_project_ssh_key.md) resource
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.ProjectSSHKey
 	ProjectSSHKeyIds []*string `json:"projectSshKeyIds,omitempty" tf:"project_ssh_key_ids,omitempty"`
+
+	// References to ProjectSSHKey in metal to populate projectSshKeyIds.
+	// +kubebuilder:validation:Optional
+	ProjectSSHKeyIdsRefs []v1.Reference `json:"projectSshKeyIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of ProjectSSHKey in metal to populate projectSshKeyIds.
+	// +kubebuilder:validation:Optional
+	ProjectSSHKeyIdsSelector *v1.Selector `json:"projectSshKeyIdsSelector,omitempty" tf:"-"`
 
 	// (Block List, Max: 1) (see below for nested schema)
 	Reinstall *ReinstallInitParameters `json:"reinstall,omitempty" tf:"reinstall,omitempty"`
@@ -146,7 +155,16 @@ type DeviceInitParameters struct {
 
 	// (List of String) Array of IDs of the users whose SSH keys should be added to the device. If you specify this array, only the listed users' SSH keys (and any project SSH keys specified in project_ssh_key_ids) will be added. If no SSH keys are specified (both user_ssh_keys_ids and project_ssh_key_ids are empty lists or omitted), all parent project keys, parent project members keys and organization members keys will be included. User SSH keys can be created with the equinix_metal_ssh_key resource
 	// Array of IDs of the users whose SSH keys should be added to the device. If you specify this array, only the listed users' SSH keys (and any project SSH keys specified in project_ssh_key_ids) will be added. If no SSH keys are specified (both user_ssh_keys_ids and project_ssh_key_ids are empty lists or omitted), all parent project keys, parent project members keys and organization members keys will be included. User SSH keys can be created with the [equinix_metal_ssh_key](equinix_metal_ssh_key.md) resource
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.SSHKey
 	UserSSHKeyIds []*string `json:"userSshKeyIds,omitempty" tf:"user_ssh_key_ids,omitempty"`
+
+	// References to SSHKey in metal to populate userSshKeyIds.
+	// +kubebuilder:validation:Optional
+	UserSSHKeyIdsRefs []v1.Reference `json:"userSshKeyIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of SSHKey in metal to populate userSshKeyIds.
+	// +kubebuilder:validation:Optional
+	UserSSHKeyIdsSelector *v1.Selector `json:"userSshKeyIdsSelector,omitempty" tf:"-"`
 
 	// (Boolean) Only used for devices in reserved hardware. If set, the deletion of this device will block until the hardware reservation is marked provisionable (about 4 minutes in August 2019)
 	// Only used for devices in reserved hardware. If set, the deletion of this device will block until the hardware reservation is marked provisionable (about 4 minutes in August 2019)
@@ -375,22 +393,31 @@ type DeviceParameters struct {
 
 	// (String) The ID of the project in which to create the device
 	// The ID of the project in which to create the device
-	// +crossplane:generate:reference:type=Project
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Project
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
-	// Reference to a Project to populate projectId.
+	// Reference to a Project in metal to populate projectId.
 	// +kubebuilder:validation:Optional
 	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
 
-	// Selector for a Project to populate projectId.
+	// Selector for a Project in metal to populate projectId.
 	// +kubebuilder:validation:Optional
 	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
 	// (List of String) Array of IDs of the project SSH keys which should be added to the device. If you specify this array, only the listed project SSH keys (and any SSH keys for the users specified in user_ssh_key_ids) will be added. If no SSH keys are specified (both user_ssh_keys_ids and project_ssh_key_ids are empty lists or omitted), all parent project keys, parent project members keys and organization members keys will be included.  Project SSH keys can be created with the equinix_metal_project_ssh_key resource
 	// Array of IDs of the project SSH keys which should be added to the device. If you specify this array, only the listed project SSH keys (and any SSH keys for the users specified in user_ssh_key_ids) will be added. If no SSH keys are specified (both user_ssh_keys_ids and project_ssh_key_ids are empty lists or omitted), all parent project keys, parent project members keys and organization members keys will be included.  Project SSH keys can be created with the [equinix_metal_project_ssh_key](equinix_metal_project_ssh_key.md) resource
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.ProjectSSHKey
 	// +kubebuilder:validation:Optional
 	ProjectSSHKeyIds []*string `json:"projectSshKeyIds,omitempty" tf:"project_ssh_key_ids,omitempty"`
+
+	// References to ProjectSSHKey in metal to populate projectSshKeyIds.
+	// +kubebuilder:validation:Optional
+	ProjectSSHKeyIdsRefs []v1.Reference `json:"projectSshKeyIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of ProjectSSHKey in metal to populate projectSshKeyIds.
+	// +kubebuilder:validation:Optional
+	ProjectSSHKeyIdsSelector *v1.Selector `json:"projectSshKeyIdsSelector,omitempty" tf:"-"`
 
 	// (Block List, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
@@ -418,8 +445,17 @@ type DeviceParameters struct {
 
 	// (List of String) Array of IDs of the users whose SSH keys should be added to the device. If you specify this array, only the listed users' SSH keys (and any project SSH keys specified in project_ssh_key_ids) will be added. If no SSH keys are specified (both user_ssh_keys_ids and project_ssh_key_ids are empty lists or omitted), all parent project keys, parent project members keys and organization members keys will be included. User SSH keys can be created with the equinix_metal_ssh_key resource
 	// Array of IDs of the users whose SSH keys should be added to the device. If you specify this array, only the listed users' SSH keys (and any project SSH keys specified in project_ssh_key_ids) will be added. If no SSH keys are specified (both user_ssh_keys_ids and project_ssh_key_ids are empty lists or omitted), all parent project keys, parent project members keys and organization members keys will be included. User SSH keys can be created with the [equinix_metal_ssh_key](equinix_metal_ssh_key.md) resource
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.SSHKey
 	// +kubebuilder:validation:Optional
 	UserSSHKeyIds []*string `json:"userSshKeyIds,omitempty" tf:"user_ssh_key_ids,omitempty"`
+
+	// References to SSHKey in metal to populate userSshKeyIds.
+	// +kubebuilder:validation:Optional
+	UserSSHKeyIdsRefs []v1.Reference `json:"userSshKeyIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of SSHKey in metal to populate userSshKeyIds.
+	// +kubebuilder:validation:Optional
+	UserSSHKeyIdsSelector *v1.Selector `json:"userSshKeyIdsSelector,omitempty" tf:"-"`
 
 	// (Boolean) Only used for devices in reserved hardware. If set, the deletion of this device will block until the hardware reservation is marked provisionable (about 4 minutes in August 2019)
 	// Only used for devices in reserved hardware. If set, the deletion of this device will block until the hardware reservation is marked provisionable (about 4 minutes in August 2019)

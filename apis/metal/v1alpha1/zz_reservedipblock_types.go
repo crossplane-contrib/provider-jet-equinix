@@ -52,14 +52,14 @@ type ReservedIPBlockInitParameters struct {
 
 	// The metal project ID where to allocate the address block.
 	// The metal project ID where to allocate the address block
-	// +crossplane:generate:reference:type=Project
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Project
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
-	// Reference to a Project to populate projectId.
+	// Reference to a Project in metal to populate projectId.
 	// +kubebuilder:validation:Optional
 	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
 
-	// Selector for a Project to populate projectId.
+	// Selector for a Project in metal to populate projectId.
 	// +kubebuilder:validation:Optional
 	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
@@ -78,14 +78,14 @@ type ReservedIPBlockInitParameters struct {
 
 	// Only valid and required when type is vrf. VRF ID for type=vrf reservations.
 	// VRF ID for type=vrf reservations
-	// +crossplane:generate:reference:type=Vrf
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Vrf
 	VrfID *string `json:"vrfId,omitempty" tf:"vrf_id,omitempty"`
 
-	// Reference to a Vrf to populate vrfId.
+	// Reference to a Vrf in metal to populate vrfId.
 	// +kubebuilder:validation:Optional
 	VrfIDRef *v1.Reference `json:"vrfIdRef,omitempty" tf:"-"`
 
-	// Selector for a Vrf to populate vrfId.
+	// Selector for a Vrf in metal to populate vrfId.
 	// +kubebuilder:validation:Optional
 	VrfIDSelector *v1.Selector `json:"vrfIdSelector,omitempty" tf:"-"`
 
@@ -207,15 +207,15 @@ type ReservedIPBlockParameters struct {
 
 	// The metal project ID where to allocate the address block.
 	// The metal project ID where to allocate the address block
-	// +crossplane:generate:reference:type=Project
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Project
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
-	// Reference to a Project to populate projectId.
+	// Reference to a Project in metal to populate projectId.
 	// +kubebuilder:validation:Optional
 	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
 
-	// Selector for a Project to populate projectId.
+	// Selector for a Project in metal to populate projectId.
 	// +kubebuilder:validation:Optional
 	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
@@ -237,15 +237,15 @@ type ReservedIPBlockParameters struct {
 
 	// Only valid and required when type is vrf. VRF ID for type=vrf reservations.
 	// VRF ID for type=vrf reservations
-	// +crossplane:generate:reference:type=Vrf
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Vrf
 	// +kubebuilder:validation:Optional
 	VrfID *string `json:"vrfId,omitempty" tf:"vrf_id,omitempty"`
 
-	// Reference to a Vrf to populate vrfId.
+	// Reference to a Vrf in metal to populate vrfId.
 	// +kubebuilder:validation:Optional
 	VrfIDRef *v1.Reference `json:"vrfIdRef,omitempty" tf:"-"`
 
-	// Selector for a Vrf to populate vrfId.
+	// Selector for a Vrf in metal to populate vrfId.
 	// +kubebuilder:validation:Optional
 	VrfIDSelector *v1.Selector `json:"vrfIdSelector,omitempty" tf:"-"`
 

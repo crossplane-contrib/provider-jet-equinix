@@ -78,7 +78,7 @@ spec:
                       UUID of Connection where the VC is scoped to.  Only used for dedicated connections
                     type: string
                   connectionIdRef:
-                    description: Reference to a Connection to populate connectionId.
+                    description: Reference to a Connection in metal to populate connectionId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -112,7 +112,7 @@ spec:
                     - name
                     type: object
                   connectionIdSelector:
-                    description: Selector for a Connection to populate connectionId.
+                    description: Selector for a Connection in metal to populate connectionId.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -221,7 +221,7 @@ spec:
                       UUID of the Project where the VC is scoped to
                     type: string
                   projectIdRef:
-                    description: Reference to a Project to populate projectId.
+                    description: Reference to a Project in metal to populate projectId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -255,7 +255,7 @@ spec:
                     - name
                     type: object
                   projectIdSelector:
-                    description: Selector for a Project to populate projectId.
+                    description: Selector for a Project in metal to populate projectId.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -330,7 +330,8 @@ spec:
                       UUID of an existing VC to configure. Used in the case of shared interconnections where the VC has already been created.
                     type: string
                   virtualCircuitIdRef:
-                    description: Reference to a VirtualCircuit to populate virtualCircuitId.
+                    description: Reference to a VirtualCircuit in metal to populate
+                      virtualCircuitId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -364,7 +365,8 @@ spec:
                     - name
                     type: object
                   virtualCircuitIdSelector:
-                    description: Selector for a VirtualCircuit to populate virtualCircuitId.
+                    description: Selector for a VirtualCircuit in metal to populate
+                      virtualCircuitId.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -409,7 +411,7 @@ spec:
                       UUID of the VLAN to associate
                     type: string
                   vlanIdRef:
-                    description: Reference to a Vlan to populate vlanId.
+                    description: Reference to a Vlan in metal to populate vlanId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -443,7 +445,7 @@ spec:
                     - name
                     type: object
                   vlanIdSelector:
-                    description: Selector for a Vlan to populate vlanId.
+                    description: Selector for a Vlan in metal to populate vlanId.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -488,7 +490,7 @@ spec:
                       UUID of the VRF to associate
                     type: string
                   vrfIdRef:
-                    description: Reference to a Vrf to populate vrfId.
+                    description: Reference to a Vrf in metal to populate vrfId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -522,7 +524,7 @@ spec:
                     - name
                     type: object
                   vrfIdSelector:
-                    description: Selector for a Vrf to populate vrfId.
+                    description: Selector for a Vrf in metal to populate vrfId.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -581,7 +583,7 @@ spec:
                       UUID of Connection where the VC is scoped to.  Only used for dedicated connections
                     type: string
                   connectionIdRef:
-                    description: Reference to a Connection to populate connectionId.
+                    description: Reference to a Connection in metal to populate connectionId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -615,7 +617,7 @@ spec:
                     - name
                     type: object
                   connectionIdSelector:
-                    description: Selector for a Connection to populate connectionId.
+                    description: Selector for a Connection in metal to populate connectionId.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -724,7 +726,7 @@ spec:
                       UUID of the Project where the VC is scoped to
                     type: string
                   projectIdRef:
-                    description: Reference to a Project to populate projectId.
+                    description: Reference to a Project in metal to populate projectId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -758,7 +760,7 @@ spec:
                     - name
                     type: object
                   projectIdSelector:
-                    description: Selector for a Project to populate projectId.
+                    description: Selector for a Project in metal to populate projectId.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -833,7 +835,8 @@ spec:
                       UUID of an existing VC to configure. Used in the case of shared interconnections where the VC has already been created.
                     type: string
                   virtualCircuitIdRef:
-                    description: Reference to a VirtualCircuit to populate virtualCircuitId.
+                    description: Reference to a VirtualCircuit in metal to populate
+                      virtualCircuitId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -867,7 +870,8 @@ spec:
                     - name
                     type: object
                   virtualCircuitIdSelector:
-                    description: Selector for a VirtualCircuit to populate virtualCircuitId.
+                    description: Selector for a VirtualCircuit in metal to populate
+                      virtualCircuitId.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -912,7 +916,7 @@ spec:
                       UUID of the VLAN to associate
                     type: string
                   vlanIdRef:
-                    description: Reference to a Vlan to populate vlanId.
+                    description: Reference to a Vlan in metal to populate vlanId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -946,7 +950,7 @@ spec:
                     - name
                     type: object
                   vlanIdSelector:
-                    description: Selector for a Vlan to populate vlanId.
+                    description: Selector for a Vlan in metal to populate vlanId.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -991,7 +995,7 @@ spec:
                       UUID of the VRF to associate
                     type: string
                   vrfIdRef:
-                    description: Reference to a Vrf to populate vrfId.
+                    description: Reference to a Vrf in metal to populate vrfId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -1025,7 +1029,7 @@ spec:
                     - name
                     type: object
                   vrfIdSelector:
-                    description: Selector for a Vrf to populate vrfId.
+                    description: Selector for a Vrf in metal to populate vrfId.
                     properties:
                       matchControllerRef:
                         description: |-

@@ -29,14 +29,14 @@ type GatewayInitParameters struct {
 
 	// UUID of Public or VRF IP Reservation to associate with the gateway, the reservation must be in the same metro as the VLAN, conflicts with private_ipv4_subnet_size.
 	// UUID of the Public or VRF IP Reservation to associate
-	// +crossplane:generate:reference:type=ReservedIPBlock
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.ReservedIPBlock
 	IPReservationID *string `json:"ipReservationId,omitempty" tf:"ip_reservation_id,omitempty"`
 
-	// Reference to a ReservedIPBlock to populate ipReservationId.
+	// Reference to a ReservedIPBlock in metal to populate ipReservationId.
 	// +kubebuilder:validation:Optional
 	IPReservationIDRef *v1.Reference `json:"ipReservationIdRef,omitempty" tf:"-"`
 
-	// Selector for a ReservedIPBlock to populate ipReservationId.
+	// Selector for a ReservedIPBlock in metal to populate ipReservationId.
 	// +kubebuilder:validation:Optional
 	IPReservationIDSelector *v1.Selector `json:"ipReservationIdSelector,omitempty" tf:"-"`
 
@@ -46,27 +46,27 @@ type GatewayInitParameters struct {
 
 	// UUID of the project where the gateway is scoped to.
 	// UUID of the Project where the Gateway is scoped to
-	// +crossplane:generate:reference:type=Project
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Project
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
-	// Reference to a Project to populate projectId.
+	// Reference to a Project in metal to populate projectId.
 	// +kubebuilder:validation:Optional
 	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
 
-	// Selector for a Project to populate projectId.
+	// Selector for a Project in metal to populate projectId.
 	// +kubebuilder:validation:Optional
 	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
 	// UUID of the VLAN where the gateway is scoped to.
 	// UUID of the VLAN to associate
-	// +crossplane:generate:reference:type=Vlan
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Vlan
 	VlanID *string `json:"vlanId,omitempty" tf:"vlan_id,omitempty"`
 
-	// Reference to a Vlan to populate vlanId.
+	// Reference to a Vlan in metal to populate vlanId.
 	// +kubebuilder:validation:Optional
 	VlanIDRef *v1.Reference `json:"vlanIdRef,omitempty" tf:"-"`
 
-	// Selector for a Vlan to populate vlanId.
+	// Selector for a Vlan in metal to populate vlanId.
 	// +kubebuilder:validation:Optional
 	VlanIDSelector *v1.Selector `json:"vlanIdSelector,omitempty" tf:"-"`
 }
@@ -103,15 +103,15 @@ type GatewayParameters struct {
 
 	// UUID of Public or VRF IP Reservation to associate with the gateway, the reservation must be in the same metro as the VLAN, conflicts with private_ipv4_subnet_size.
 	// UUID of the Public or VRF IP Reservation to associate
-	// +crossplane:generate:reference:type=ReservedIPBlock
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.ReservedIPBlock
 	// +kubebuilder:validation:Optional
 	IPReservationID *string `json:"ipReservationId,omitempty" tf:"ip_reservation_id,omitempty"`
 
-	// Reference to a ReservedIPBlock to populate ipReservationId.
+	// Reference to a ReservedIPBlock in metal to populate ipReservationId.
 	// +kubebuilder:validation:Optional
 	IPReservationIDRef *v1.Reference `json:"ipReservationIdRef,omitempty" tf:"-"`
 
-	// Selector for a ReservedIPBlock to populate ipReservationId.
+	// Selector for a ReservedIPBlock in metal to populate ipReservationId.
 	// +kubebuilder:validation:Optional
 	IPReservationIDSelector *v1.Selector `json:"ipReservationIdSelector,omitempty" tf:"-"`
 
@@ -122,29 +122,29 @@ type GatewayParameters struct {
 
 	// UUID of the project where the gateway is scoped to.
 	// UUID of the Project where the Gateway is scoped to
-	// +crossplane:generate:reference:type=Project
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Project
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
-	// Reference to a Project to populate projectId.
+	// Reference to a Project in metal to populate projectId.
 	// +kubebuilder:validation:Optional
 	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
 
-	// Selector for a Project to populate projectId.
+	// Selector for a Project in metal to populate projectId.
 	// +kubebuilder:validation:Optional
 	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
 
 	// UUID of the VLAN where the gateway is scoped to.
 	// UUID of the VLAN to associate
-	// +crossplane:generate:reference:type=Vlan
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Vlan
 	// +kubebuilder:validation:Optional
 	VlanID *string `json:"vlanId,omitempty" tf:"vlan_id,omitempty"`
 
-	// Reference to a Vlan to populate vlanId.
+	// Reference to a Vlan in metal to populate vlanId.
 	// +kubebuilder:validation:Optional
 	VlanIDRef *v1.Reference `json:"vlanIdRef,omitempty" tf:"-"`
 
-	// Selector for a Vlan to populate vlanId.
+	// Selector for a Vlan in metal to populate vlanId.
 	// +kubebuilder:validation:Optional
 	VlanIDSelector *v1.Selector `json:"vlanIdSelector,omitempty" tf:"-"`
 }

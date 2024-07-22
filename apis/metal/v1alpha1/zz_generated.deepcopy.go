@@ -1163,6 +1163,18 @@ func (in *DeviceInitParameters) DeepCopyInto(out *DeviceInitParameters) {
 			}
 		}
 	}
+	if in.ProjectSSHKeyIdsRefs != nil {
+		in, out := &in.ProjectSSHKeyIdsRefs, &out.ProjectSSHKeyIdsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.ProjectSSHKeyIdsSelector != nil {
+		in, out := &in.ProjectSSHKeyIdsSelector, &out.ProjectSSHKeyIdsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Reinstall != nil {
 		in, out := &in.Reinstall, &out.Reinstall
 		*out = new(ReinstallInitParameters)
@@ -1204,6 +1216,18 @@ func (in *DeviceInitParameters) DeepCopyInto(out *DeviceInitParameters) {
 				**out = **in
 			}
 		}
+	}
+	if in.UserSSHKeyIdsRefs != nil {
+		in, out := &in.UserSSHKeyIdsRefs, &out.UserSSHKeyIdsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.UserSSHKeyIdsSelector != nil {
+		in, out := &in.UserSSHKeyIdsSelector, &out.UserSSHKeyIdsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.WaitForReservationDeprovision != nil {
 		in, out := &in.WaitForReservationDeprovision, &out.WaitForReservationDeprovision
@@ -1791,6 +1815,18 @@ func (in *DeviceParameters) DeepCopyInto(out *DeviceParameters) {
 			}
 		}
 	}
+	if in.ProjectSSHKeyIdsRefs != nil {
+		in, out := &in.ProjectSSHKeyIdsRefs, &out.ProjectSSHKeyIdsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.ProjectSSHKeyIdsSelector != nil {
+		in, out := &in.ProjectSSHKeyIdsSelector, &out.ProjectSSHKeyIdsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Reinstall != nil {
 		in, out := &in.Reinstall, &out.Reinstall
 		*out = new(ReinstallParameters)
@@ -1832,6 +1868,18 @@ func (in *DeviceParameters) DeepCopyInto(out *DeviceParameters) {
 				**out = **in
 			}
 		}
+	}
+	if in.UserSSHKeyIdsRefs != nil {
+		in, out := &in.UserSSHKeyIdsRefs, &out.UserSSHKeyIdsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.UserSSHKeyIdsSelector != nil {
+		in, out := &in.UserSSHKeyIdsSelector, &out.UserSSHKeyIdsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.WaitForReservationDeprovision != nil {
 		in, out := &in.WaitForReservationDeprovision, &out.WaitForReservationDeprovision
@@ -3619,6 +3667,18 @@ func (in *PortInitParameters) DeepCopyInto(out *PortInitParameters) {
 			}
 		}
 	}
+	if in.VlanIdsRefs != nil {
+		in, out := &in.VlanIdsRefs, &out.VlanIdsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.VlanIdsSelector != nil {
+		in, out := &in.VlanIdsSelector, &out.VlanIdsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.VxlanIds != nil {
 		in, out := &in.VxlanIds, &out.VxlanIds
 		*out = make([]*float64, len(*in))
@@ -3824,6 +3884,18 @@ func (in *PortParameters) DeepCopyInto(out *PortParameters) {
 				**out = **in
 			}
 		}
+	}
+	if in.VlanIdsRefs != nil {
+		in, out := &in.VlanIdsRefs, &out.VlanIdsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.VlanIdsSelector != nil {
+		in, out := &in.VlanIdsSelector, &out.VlanIdsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.VxlanIds != nil {
 		in, out := &in.VxlanIds, &out.VxlanIds

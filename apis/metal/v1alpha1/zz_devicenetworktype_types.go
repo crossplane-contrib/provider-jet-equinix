@@ -28,14 +28,14 @@ import (
 type DeviceNetworkTypeInitParameters struct {
 
 	// The ID of the device on which the network type should be set
-	// +crossplane:generate:reference:type=Device
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Device
 	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
 
-	// Reference to a Device to populate deviceId.
+	// Reference to a Device in metal to populate deviceId.
 	// +kubebuilder:validation:Optional
 	DeviceIDRef *v1.Reference `json:"deviceIdRef,omitempty" tf:"-"`
 
-	// Selector for a Device to populate deviceId.
+	// Selector for a Device in metal to populate deviceId.
 	// +kubebuilder:validation:Optional
 	DeviceIDSelector *v1.Selector `json:"deviceIdSelector,omitempty" tf:"-"`
 
@@ -57,15 +57,15 @@ type DeviceNetworkTypeObservation struct {
 type DeviceNetworkTypeParameters struct {
 
 	// The ID of the device on which the network type should be set
-	// +crossplane:generate:reference:type=Device
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Device
 	// +kubebuilder:validation:Optional
 	DeviceID *string `json:"deviceId,omitempty" tf:"device_id,omitempty"`
 
-	// Reference to a Device to populate deviceId.
+	// Reference to a Device in metal to populate deviceId.
 	// +kubebuilder:validation:Optional
 	DeviceIDRef *v1.Reference `json:"deviceIdRef,omitempty" tf:"-"`
 
-	// Selector for a Device to populate deviceId.
+	// Selector for a Device in metal to populate deviceId.
 	// +kubebuilder:validation:Optional
 	DeviceIDSelector *v1.Selector `json:"deviceIdSelector,omitempty" tf:"-"`
 
