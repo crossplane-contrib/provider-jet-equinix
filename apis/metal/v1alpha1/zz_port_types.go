@@ -52,8 +52,17 @@ type PortInitParameters struct {
 	ResetOnDelete *bool `json:"resetOnDelete,omitempty" tf:"reset_on_delete,omitempty"`
 
 	// UUIDs VLANs to attach. To avoid jitter, use the UUID and not the VXLAN
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Vlan
 	// +listType=set
 	VlanIds []*string `json:"vlanIds,omitempty" tf:"vlan_ids,omitempty"`
+
+	// References to Vlan in metal to populate vlanIds.
+	// +kubebuilder:validation:Optional
+	VlanIdsRefs []v1.Reference `json:"vlanIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Vlan in metal to populate vlanIds.
+	// +kubebuilder:validation:Optional
+	VlanIdsSelector *v1.Selector `json:"vlanIdsSelector,omitempty" tf:"-"`
 
 	// VLAN VXLAN ids to attach (example: [1000])
 	// +listType=set
@@ -141,9 +150,18 @@ type PortParameters struct {
 	ResetOnDelete *bool `json:"resetOnDelete,omitempty" tf:"reset_on_delete,omitempty"`
 
 	// UUIDs VLANs to attach. To avoid jitter, use the UUID and not the VXLAN
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1.Vlan
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	VlanIds []*string `json:"vlanIds,omitempty" tf:"vlan_ids,omitempty"`
+
+	// References to Vlan in metal to populate vlanIds.
+	// +kubebuilder:validation:Optional
+	VlanIdsRefs []v1.Reference `json:"vlanIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Vlan in metal to populate vlanIds.
+	// +kubebuilder:validation:Optional
+	VlanIdsSelector *v1.Selector `json:"vlanIdsSelector,omitempty" tf:"-"`
 
 	// VLAN VXLAN ids to attach (example: [1000])
 	// +kubebuilder:validation:Optional
