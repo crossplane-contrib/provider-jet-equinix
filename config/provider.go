@@ -92,16 +92,6 @@ func GetProvider(_ context.Context, generationProvider bool) (*upconfig.Provider
 		// upconfig.WithSkipList([]string{".*"}), // helpful when debugging to minimize the number of resources
 		// config.WithTerraformPluginSDKIncludeList(resourceList(terraformSDKIncludeList)),
 		// config.WithTerraformPluginFrameworkIncludeList(resourceList(terraformPluginFrameworkExternalNameConfigs)),
-		upconfig.WithBasePackages(upconfig.BasePackages{
-			APIVersion: []string{
-				// Default package for ProviderConfig APIs
-				"apis/v1alpha1",
-			},
-			Controller: []string{
-				// Default package for ProviderConfig controllers
-				"internal/controller/providerconfig",
-			},
-		}),
 		upconfig.WithDefaultResourceOptions(
 			KnownReferencers(),
 			IdentifierAssignedByEquinix(),

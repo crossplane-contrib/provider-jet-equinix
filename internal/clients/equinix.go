@@ -31,7 +31,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/crossplane-contrib/provider-jet-equinix/apis/v1alpha1"
+	"github.com/crossplane-contrib/provider-jet-equinix/apis/v1beta1"
 )
 
 const (
@@ -59,7 +59,7 @@ type SetupConfig struct {
 	TerraformProvider *schema.Provider
 }
 
-func prepareTerraformProviderConfiguration(creds map[string]string, pc v1alpha1.ProviderConfiguration) map[string]any {
+func prepareTerraformProviderConfiguration(creds map[string]string, pc v1beta1.ProviderConfiguration) map[string]any {
 	config := map[string]any{}
 	config[keyMaxRetries] = pc.MaxRetries
 	config[keyMaxRetryWaitSeconds] = pc.MaxRetryWaitSeconds
@@ -100,12 +100,12 @@ func TerraformSetupBuilder(setupCfg SetupConfig) terraform.SetupFn {
 		if configRef == nil {
 			return ps, errors.New(errNoProviderConfig)
 		}
-		pc := &v1alpha1.ProviderConfig{}
+		pc := &v1beta1.ProviderConfig{}
 		if err := client.Get(ctx, types.NamespacedName{Name: configRef.Name}, pc); err != nil {
 			return ps, errors.Wrap(err, errGetProviderConfig)
 		}
 
-		t := resource.NewProviderConfigUsageTracker(client, &v1alpha1.ProviderConfigUsage{})
+		t := resource.NewProviderConfigUsageTracker(client, &v1beta1.ProviderConfigUsage{})
 		if err := t.Track(ctx, mg); err != nil {
 			return ps, errors.Wrap(err, errTrackUsage)
 		}
