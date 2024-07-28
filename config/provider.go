@@ -98,6 +98,16 @@ func GetProvider(_ context.Context, generationProvider bool) (*upconfig.Provider
 			SkipOptCompLateInitialization(),
 			LongProvision(), // TODO: use this only for Device and other long-provisioning resources
 		),
+		upconfig.WithBasePackages(upconfig.BasePackages{
+			APIVersion: []string{
+				// Default package for ProviderConfig APIs
+				"apis/v1beta1",
+			},
+			Controller: []string{
+				// Default package for ProviderConfig controllers
+				"internal/controller/providerconfig",
+			},
+		}),
 	)
 
 	for _, configure := range []func(provider *upconfig.Provider){

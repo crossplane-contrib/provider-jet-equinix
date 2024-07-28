@@ -32,6 +32,7 @@ import (
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 	"github.com/crossplane/crossplane-runtime/pkg/statemetrics"
 	upcontroller "github.com/crossplane/upjet/pkg/controller"
+	"github.com/crossplane/upjet/pkg/terraform"
 	"gopkg.in/alecthomas/kingpin.v2"
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -57,16 +58,23 @@ const (
 	tlsServerCertDir        = "/tls/server"
 )
 
+func ptr[T any](s T) *T { return &s }
+
 func main() {
 	var (
-		app                        = kingpin.New(filepath.Base(os.Args[0]), "Terraform based Crossplane provider for Equinix").DefaultEnvars()
-		debug                      = app.Flag("debug", "Run with debug logging.").Short('d').Bool()
-		syncInterval               = app.Flag("sync", "Sync interval controls how often all resources will be double checked for drift.").Short('s').Default("1h").Duration()
-		pollInterval               = app.Flag("poll", "Poll interval controls how often an individual resource should be checked for drift.").Default("10m").Duration()
-		leaderElection             = app.Flag("leader-election", "Use leader election for the controller manager.").Short('l').Default("false").OverrideDefaultFromEnvar("LEADER_ELECTION").Bool()
-		terraformVersion           = app.Flag("terraform-version", "Terraform version.").Required().Envar("TERRAFORM_VERSION").String()
-		providerSource             = app.Flag("terraform-provider-source", "Terraform provider source.").Required().Envar("TERRAFORM_PROVIDER_SOURCE").String()
-		providerVersion            = app.Flag("terraform-provider-version", "Terraform provider version.").Required().Envar("TERRAFORM_PROVIDER_VERSION").String()
+		app            = kingpin.New(filepath.Base(os.Args[0]), "Terraform based Crossplane provider for Equinix").DefaultEnvars()
+		debug          = app.Flag("debug", "Run with debug logging.").Short('d').Bool()
+		syncInterval   = app.Flag("sync", "Sync interval controls how often all resources will be double checked for drift.").Short('s').Default("1h").Duration()
+		pollInterval   = app.Flag("poll", "Poll interval controls how often an individual resource should be checked for drift.").Default("10m").Duration()
+		leaderElection = app.Flag("leader-election", "Use leader election for the controller manager.").Short('l').Default("false").OverrideDefaultFromEnvar("LEADER_ELECTION").Bool()
+		// terraformVersion           = app.Flag("terraform-version", "Terraform version.").Required().Envar("TERRAFORM_VERSION").String()
+		_ = app.Flag("terraform-version", "Terraform version.").Required().Envar("TERRAFORM_VERSION").String()
+		// providerSource = app.Flag("terraform-provider-source", "Terraform provider source.").Required().Envar("TERRAFORM_PROVIDER_SOURCE").String()
+		_ = app.Flag("terraform-provider-source", "Terraform provider source.").Required().Envar("TERRAFORM_PROVIDER_SOURCE").String()
+		// providerVersion            = app.Flag("terraform-provider-version", "Terraform provider version.").Required().Envar("TERRAFORM_PROVIDER_VERSION").String()
+		_                          = app.Flag("terraform-provider-version", "Terraform provider version.").Required().Envar("TERRAFORM_PROVIDER_VERSION").String()
+		nativeProviderPath         = app.Flag("terraform-native-provider-path", "Terraform native provider path for shared execution.").Default("").Envar("TERRAFORM_NATIVE_PROVIDER_PATH").String()
+		pluginProcessTTL           = app.Flag("provider-ttl", "TTL for the native plugin processes before they are replaced. Changing the default may increase memory consumption.").Default("100").Int()
 		pollStateMetricInterval    = app.Flag("poll-state-metric", "State metric recording interval").Default("5s").Duration()
 		maxReconcileRate           = app.Flag("max-reconcile-rate", "The global maximum rate per second at which resources may checked for drift from the desired state.").Default("10").Int()
 		namespace                  = app.Flag("namespace", "Namespace used to set as default scope in default secret store config.").Default("crossplane-system").Envar("POD_NAMESPACE").String()
@@ -152,24 +160,39 @@ func main() {
 	ctx := context.Background()
 	provider, err := config.GetProvider(ctx, false)
 	kingpin.FatalIfError(err, "Cannot initialize the provider configuration")
-
 	setupCfg := clients.SetupConfig{
-		ProviderVersion:   providerVersion,
-		TerraformVersion:  terraformVersion,
-		ProviderSource:    providerSource,
-		TerraformProvider: provider.TerraformProvider,
+		ProviderVersion:    ptr("2.2.0"),           // providerVersion,
+		TerraformVersion:   ptr("1.5.5"),           // terraformVersion,
+		ProviderSource:     ptr("equinix/equinix"), // providerSource,
+		TerraformProvider:  provider.TerraformProvider,
+		NativeProviderPath: nativeProviderPath,
 	}
+
+	// if the native Terraform provider plugin's path is not configured via
+	// the env. variable TERRAFORM_NATIVE_PROVIDER_PATH or
+	// the `--terraform-native-provider-path` command-line option,
+	// we do not use the shared gRPC server and default to the regular
+	// Terraform CLI behaviour (of forking a plugin process per invocation).
+	// This removes some complexity for setting up development environments.
+	setupCfg.DefaultScheduler = terraform.NewNoOpProviderScheduler()
+	if len(*setupCfg.NativeProviderPath) != 0 {
+		setupCfg.DefaultScheduler = terraform.NewSharedProviderScheduler(log, *pluginProcessTTL,
+			terraform.WithSharedProviderOptions(terraform.WithNativeProviderPath(*setupCfg.NativeProviderPath), terraform.WithNativeProviderName("registry.terraform.io/"+*setupCfg.ProviderSource)))
+	}
+
+	featureFlags := &feature.Flags{}
 	o := upcontroller.Options{
 		Options: xpcontroller.Options{
 			Logger:                  log,
 			GlobalRateLimiter:       ratelimiter.NewGlobal(*maxReconcileRate),
 			PollInterval:            *pollInterval,
 			MaxConcurrentReconciles: *maxReconcileRate,
-			Features:                &feature.Flags{},
+			Features:                featureFlags,
 			MetricOptions:           &mo,
 		},
 		Provider:              provider,
 		SetupFn:               clients.TerraformSetupBuilder(setupCfg),
+		WorkspaceStore:        terraform.NewWorkspaceStore(log, terraform.WithDisableInit(false), terraform.WithProcessReportInterval(*pollInterval), terraform.WithFeatures(featureFlags)),
 		PollJitter:            pollJitter,
 		OperationTrackerStore: upcontroller.NewOperationStore(log),
 		StartWebhooks:         *certsDir != "",
