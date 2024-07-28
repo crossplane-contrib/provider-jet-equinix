@@ -120,11 +120,11 @@ func TerraformSetupBuilder(setupCfg SetupConfig) terraform.SetupFn {
 		}
 
 		ps.Configuration = prepareTerraformProviderConfiguration(equinixCreds, pc.Spec.Configuration)
-		return ps, errors.Wrap(configureNoForkEquinixClient(ctx, &ps, *setupCfg.TerraformProvider), "failed to configure the no-fork equinix client")
+		return ps, errors.Wrap(configureTerraformPluginSDKEquinixClient(ctx, &ps, *setupCfg.TerraformProvider), "failed to configure the Terraform Plugin SDK Equinix client")
 	}
 }
 
-func configureNoForkEquinixClient(ctx context.Context, ps *terraform.Setup, p schema.Provider) error {
+func configureTerraformPluginSDKEquinixClient(ctx context.Context, ps *terraform.Setup, p schema.Provider) error {
 	// Please be aware that this implementation relies on the schema.Provider
 	// parameter `p` being a non-pointer. This is because normally
 	// the Terraform plugin SDK normally configures the provider
