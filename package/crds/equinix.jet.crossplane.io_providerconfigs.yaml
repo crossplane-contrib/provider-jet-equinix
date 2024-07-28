@@ -245,22 +245,22 @@ spec:
                     type: string
                   max_retries:
                     description: Maximum number of retries in case of network failure.
-                    type: boolean
+                    type: integer
                   max_retry_wait_seconds:
                     description: Maximum number of seconds to wait before retrying
                       a request.
-                    type: boolean
+                    type: integer
                   request_timeout:
                     description: The duration of time, in seconds, that the Equinix
                       Platform API Client should wait before canceling an API request.
                       Canceled requests may still result in provisioned resources.
                       (Defaults to 30)
-                    type: boolean
+                    type: integer
                   response_max_page_size:
                     description: The maximum number of records in a single response
                       for REST queries that produce paginated responses. (Default
                       is client specific)
-                    type: boolean
+                    type: integer
                 type: object
               credentials:
                 description: Credentials required to authenticate to this provider.

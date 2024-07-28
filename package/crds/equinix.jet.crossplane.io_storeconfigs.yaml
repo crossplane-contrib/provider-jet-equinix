@@ -11,7 +11,7 @@ spec:
     categories:
     - crossplane
     - store
-    - gcp
+    - equinix
     kind: StoreConfig
     listKind: StoreConfigList
     plural: storeconfigs

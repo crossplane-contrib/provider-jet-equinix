@@ -39,19 +39,19 @@ type ProviderConfiguration struct {
 
 	// Maximum number of retries in case of network failure.
 	// +kubebuilder:validation:Optional
-	MaxRetries bool `json:"max_retries"`
+	MaxRetries int `json:"max_retries"`
 
 	// Maximum number of seconds to wait before retrying a request.
 	// +kubebuilder:validation:Optional
-	MaxRetryWaitSeconds bool `json:"max_retry_wait_seconds"`
+	MaxRetryWaitSeconds int `json:"max_retry_wait_seconds"`
 
 	// The duration of time, in seconds, that the Equinix Platform API Client should wait before canceling an API request. Canceled requests may still result in provisioned resources. (Defaults to 30)
 	// +kubebuilder:validation:Optional
-	RequestTimeout bool `json:"request_timeout"`
+	RequestTimeout int `json:"request_timeout"`
 
 	// The maximum number of records in a single response for REST queries that produce paginated responses. (Default is client specific)
 	// +kubebuilder:validation:Optional
-	ResponseMaxPageSize bool `json:"response_max_page_size"`
+	ResponseMaxPageSize int `json:"response_max_page_size"`
 }
 
 // ProviderCredentials required to authenticate.
