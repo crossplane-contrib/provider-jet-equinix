@@ -10,7 +10,7 @@ spec:
   names:
     categories:
     - crossplane
-    - providerconfig
+    - provider
     - equinix
     kind: ProviderConfigUsage
     listKind: ProviderConfigUsageList
