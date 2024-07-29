@@ -1,5 +1,5 @@
 /*
-Copyright 2021 The Crossplane Authors.
+Copyright 2024 The Crossplane Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,12 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package v1alpha1
+package v1beta1
 
 import (
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
 	xpv1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // A ProviderConfigSpec defines the desired state of a ProviderConfig.
@@ -40,19 +39,19 @@ type ProviderConfiguration struct {
 
 	// Maximum number of retries in case of network failure.
 	// +kubebuilder:validation:Optional
-	MaxRetries bool `json:"max_retries"`
+	MaxRetries int `json:"max_retries"`
 
 	// Maximum number of seconds to wait before retrying a request.
 	// +kubebuilder:validation:Optional
-	MaxRetryWaitSeconds bool `json:"max_retry_wait_seconds"`
+	MaxRetryWaitSeconds int `json:"max_retry_wait_seconds"`
 
 	// The duration of time, in seconds, that the Equinix Platform API Client should wait before canceling an API request. Canceled requests may still result in provisioned resources. (Defaults to 30)
 	// +kubebuilder:validation:Optional
-	RequestTimeout bool `json:"request_timeout"`
+	RequestTimeout int `json:"request_timeout"`
 
 	// The maximum number of records in a single response for REST queries that produce paginated responses. (Default is client specific)
 	// +kubebuilder:validation:Optional
-	ResponseMaxPageSize bool `json:"response_max_page_size"`
+	ResponseMaxPageSize int `json:"response_max_page_size"`
 }
 
 // ProviderCredentials required to authenticate.
@@ -71,12 +70,13 @@ type ProviderConfigStatus struct {
 
 // +kubebuilder:object:root=true
 
-// A ProviderConfig configures a Equinix JET provider.
+// A ProviderConfig configures a Linode provider.
 // +kubebuilder:subresource:status
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:printcolumn:name="SECRET-NAME",type="string",JSONPath=".spec.credentials.secretRef.name",priority=1
 // +kubebuilder:resource:scope=Cluster
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,providerconfig,equinix}
+// +kubebuilder:storageversion
 type ProviderConfig struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
@@ -101,7 +101,8 @@ type ProviderConfigList struct {
 // +kubebuilder:printcolumn:name="CONFIG-NAME",type="string",JSONPath=".providerConfigRef.name"
 // +kubebuilder:printcolumn:name="RESOURCE-KIND",type="string",JSONPath=".resourceRef.kind"
 // +kubebuilder:printcolumn:name="RESOURCE-NAME",type="string",JSONPath=".resourceRef.name"
-// +kubebuilder:resource:scope=Cluster,categories={crossplane,provider,equinix}
+// +kubebuilder:resource:scope=Cluster,categories={crossplane,providerconfig,equinix}
+// +kubebuilder:storageversion
 type ProviderConfigUsage struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
@@ -116,56 +117,4 @@ type ProviderConfigUsageList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ProviderConfigUsage `json:"items"`
-}
-
-// A StoreConfigSpec defines the desired state of a ProviderConfig.
-type StoreConfigSpec struct {
-	xpv1.SecretStoreConfig `json:",inline"`
-}
-
-// A StoreConfigStatus represents the status of a StoreConfig.
-type StoreConfigStatus struct {
-	xpv1.ConditionedStatus `json:",inline"`
-}
-
-// +kubebuilder:object:root=true
-
-// A StoreConfig configures how Equinix controller should store connection details.
-// +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:printcolumn:name="TYPE",type="string",JSONPath=".spec.type"
-// +kubebuilder:printcolumn:name="DEFAULT-SCOPE",type="string",JSONPath=".spec.defaultScope"
-// +kubebuilder:resource:scope=Cluster,categories={crossplane,store,equinix}
-// +kubebuilder:subresource:status
-type StoreConfig struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-
-	Spec   StoreConfigSpec   `json:"spec"`
-	Status StoreConfigStatus `json:"status,omitempty"`
-}
-
-// +kubebuilder:object:root=true
-
-// StoreConfigList contains a list of StoreConfig
-type StoreConfigList struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []StoreConfig `json:"items"`
-}
-
-// Note(turkenh): To be generated with AngryJet
-
-// GetStoreConfig returns SecretStoreConfig
-func (in *StoreConfig) GetStoreConfig() xpv1.SecretStoreConfig {
-	return in.Spec.SecretStoreConfig
-}
-
-// GetCondition of this StoreConfig.
-func (in *StoreConfig) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
-	return in.Status.GetCondition(ct)
-}
-
-// SetConditions of this StoreConfig.
-func (in *StoreConfig) SetConditions(c ...xpv1.Condition) {
-	in.Status.SetConditions(c...)
 }

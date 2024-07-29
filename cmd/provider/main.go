@@ -51,20 +51,39 @@ import (
 	equinixmetrics "github.com/crossplane-contrib/provider-jet-equinix/internal/metrics"
 )
 
+const (
+	webhookTLSCertDirEnvVar = "WEBHOOK_TLS_CERT_DIR"
+	tlsServerCertDirEnvVar  = "TLS_SERVER_CERTS_DIR"
+	certsDirEnvVar          = "CERTS_DIR"
+	tlsServerCertDir        = "/tls/server"
+)
+
 func main() {
 	var (
-		app                     = kingpin.New(filepath.Base(os.Args[0]), "Terraform based Crossplane provider for Equinix").DefaultEnvars()
-		debug                   = app.Flag("debug", "Run with debug logging.").Short('d').Bool()
-		syncInterval            = app.Flag("sync", "Sync interval controls how often all resources will be double checked for drift.").Short('s').Default("1h").Duration()
-		pollInterval            = app.Flag("poll", "Poll interval controls how often an individual resource should be checked for drift.").Default("10m").Duration()
-		leaderElection          = app.Flag("leader-election", "Use leader election for the controller manager.").Short('l').Default("false").OverrideDefaultFromEnvar("LEADER_ELECTION").Bool()
-		pollStateMetricInterval = app.Flag("poll-state-metric", "State metric recording interval").Default("5s").Duration()
-		maxReconcileRate        = app.Flag("max-reconcile-rate", "The global maximum rate per second at which resources may checked for drift from the desired state.").Default("10").Int()
-
+		app                        = kingpin.New(filepath.Base(os.Args[0]), "Terraform based Crossplane provider for Equinix").DefaultEnvars()
+		debug                      = app.Flag("debug", "Run with debug logging.").Short('d').Bool()
+		syncInterval               = app.Flag("sync", "Sync interval controls how often all resources will be double checked for drift.").Short('s').Default("1h").Duration()
+		pollInterval               = app.Flag("poll", "Poll interval controls how often an individual resource should be checked for drift.").Default("10m").Duration()
+		leaderElection             = app.Flag("leader-election", "Use leader election for the controller manager.").Short('l').Default("false").OverrideDefaultFromEnvar("LEADER_ELECTION").Bool()
+		terraformVersion           = app.Flag("terraform-version", "Terraform version.").Required().Envar("TERRAFORM_VERSION").String()
+		providerSource             = app.Flag("terraform-provider-source", "Terraform provider source.").Required().Envar("TERRAFORM_PROVIDER_SOURCE").String()
+		providerVersion            = app.Flag("terraform-provider-version", "Terraform provider version.").Required().Envar("TERRAFORM_PROVIDER_VERSION").String()
+		nativeProviderPath         = app.Flag("terraform-native-provider-path", "Terraform native provider path for shared execution.").Default("").Envar("TERRAFORM_NATIVE_PROVIDER_PATH").String()
+		pluginProcessTTL           = app.Flag("provider-ttl", "TTL for the native plugin processes before they are replaced. Changing the default may increase memory consumption.").Default("100").Int()
+		pollStateMetricInterval    = app.Flag("poll-state-metric", "State metric recording interval").Default("5s").Duration()
+		maxReconcileRate           = app.Flag("max-reconcile-rate", "The global maximum rate per second at which resources may checked for drift from the desired state.").Default("10").Int()
 		namespace                  = app.Flag("namespace", "Namespace used to set as default scope in default secret store config.").Default("crossplane-system").Envar("POD_NAMESPACE").String()
 		enableExternalSecretStores = app.Flag("enable-external-secret-stores", "Enable support for ExternalSecretStores.").Default("false").Envar("ENABLE_EXTERNAL_SECRET_STORES").Bool()
 		essTLSCertsPath            = app.Flag("ess-tls-cert-dir", "Path of ESS TLS certificates.").Envar("ESS_TLS_CERTS_DIR").String()
 		enableManagementPolicies   = app.Flag("enable-management-policies", "Enable support for ManagementPolicies.").Default("true").Envar("ENABLE_MANAGEMENT_POLICIES").Bool()
+
+		certsDirSet = false
+		// we record whether the command-line option "--certs-dir" was supplied
+		// in the registered PreAction for the flag.
+		certsDir = app.Flag("certs-dir", "The directory that contains the server key and certificate.").Default(tlsServerCertDir).Envar(certsDirEnvVar).PreAction(func(_ *kingpin.ParseContext) error {
+			certsDirSet = true
+			return nil
+		}).String()
 	)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 
@@ -84,7 +103,30 @@ func main() {
 
 	cfg, err := ctrl.GetConfig()
 	kingpin.FatalIfError(err, "Cannot get API server rest config")
-	kingpin.FatalIfError(equinixmetrics.SetupMetrics(), "Cannot setup Linode metrics hook")
+
+	// Get the TLS certs directory from the environment variables set by
+	// Crossplane if they're available.
+	// In older XP versions we used WEBHOOK_TLS_CERT_DIR, in newer versions
+	// we use TLS_SERVER_CERTS_DIR. If an explicit certs dir is not supplied
+	// via the command-line options, then these environment variables are used
+	// instead.
+	if !certsDirSet {
+		// backwards-compatibility concerns
+		xpCertsDir := os.Getenv(certsDirEnvVar)
+		if xpCertsDir == "" {
+			xpCertsDir = os.Getenv(tlsServerCertDirEnvVar)
+		}
+		if xpCertsDir == "" {
+			xpCertsDir = os.Getenv(webhookTLSCertDirEnvVar)
+		}
+		// we probably don't need this condition but just to be on the
+		// safe side, if we are missing any kingpin machinery details...
+		if xpCertsDir != "" {
+			*certsDir = xpCertsDir
+		}
+	}
+
+	kingpin.FatalIfError(equinixmetrics.SetupMetrics(), "Cannot setup Equinix metrics hook")
 
 	mgr, err := ctrl.NewManager(ratelimiter.LimitRESTConfig(cfg, *maxReconcileRate), ctrl.Options{
 		LeaderElection:   *leaderElection,
@@ -113,22 +155,42 @@ func main() {
 	ctx := context.Background()
 	provider, err := config.GetProvider(ctx, false)
 	kingpin.FatalIfError(err, "Cannot initialize the provider configuration")
+	setupCfg := clients.SetupConfig{
+		ProviderVersion:    providerVersion,
+		TerraformVersion:   terraformVersion,
+		ProviderSource:     providerSource,
+		TerraformProvider:  provider.TerraformProvider,
+		NativeProviderPath: nativeProviderPath,
+	}
+
+	// if the native Terraform provider plugin's path is not configured via
+	// the env. variable TERRAFORM_NATIVE_PROVIDER_PATH or
+	// the `--terraform-native-provider-path` command-line option,
+	// we do not use the shared gRPC server and default to the regular
+	// Terraform CLI behaviour (of forking a plugin process per invocation).
+	// This removes some complexity for setting up development environments.
+	setupCfg.DefaultScheduler = terraform.NewNoOpProviderScheduler()
+	if len(*setupCfg.NativeProviderPath) != 0 {
+		setupCfg.DefaultScheduler = terraform.NewSharedProviderScheduler(log, *pluginProcessTTL,
+			terraform.WithSharedProviderOptions(terraform.WithNativeProviderPath(*setupCfg.NativeProviderPath), terraform.WithNativeProviderName("registry.terraform.io/"+*setupCfg.ProviderSource)))
+	}
+
+	featureFlags := &feature.Flags{}
 	o := upcontroller.Options{
 		Options: xpcontroller.Options{
 			Logger:                  log,
 			GlobalRateLimiter:       ratelimiter.NewGlobal(*maxReconcileRate),
 			PollInterval:            *pollInterval,
 			MaxConcurrentReconciles: *maxReconcileRate,
-			Features:                &feature.Flags{},
+			Features:                featureFlags,
 			MetricOptions:           &mo,
 		},
-		Provider: provider,
-		// use the following WorkspaceStoreOption to enable the shared gRPC mode
-		// terraform.WithProviderRunner(terraform.NewSharedProvider(log, os.Getenv("TERRAFORM_NATIVE_PROVIDER_PATH"), terraform.WithNativeProviderArgs("-debuggable")))
-		WorkspaceStore:        terraform.NewWorkspaceStore(log),
-		SetupFn:               clients.TerraformSetupBuilder(provider.TerraformProvider),
+		Provider:              provider,
+		SetupFn:               clients.TerraformSetupBuilder(setupCfg),
+		WorkspaceStore:        terraform.NewWorkspaceStore(log, terraform.WithDisableInit(false), terraform.WithProcessReportInterval(*pollInterval), terraform.WithFeatures(featureFlags)),
 		PollJitter:            pollJitter,
 		OperationTrackerStore: upcontroller.NewOperationStore(log),
+		StartWebhooks:         *certsDir != "",
 	}
 
 	if *enableManagementPolicies {

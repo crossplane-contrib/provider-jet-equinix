@@ -25,7 +25,7 @@ import (
 	v1alpha1 "github.com/crossplane-contrib/provider-jet-equinix/apis/fabric/v1alpha1"
 	v1alpha1metal "github.com/crossplane-contrib/provider-jet-equinix/apis/metal/v1alpha1"
 	v1alpha1network "github.com/crossplane-contrib/provider-jet-equinix/apis/network/v1alpha1"
-	v1alpha1apis "github.com/crossplane-contrib/provider-jet-equinix/apis/v1alpha1"
+	v1beta1 "github.com/crossplane-contrib/provider-jet-equinix/apis/v1beta1"
 )
 
 func init() {
@@ -34,7 +34,7 @@ func init() {
 		v1alpha1.SchemeBuilder.AddToScheme,
 		v1alpha1metal.SchemeBuilder.AddToScheme,
 		v1alpha1network.SchemeBuilder.AddToScheme,
-		v1alpha1apis.SchemeBuilder.AddToScheme,
+		v1beta1.SchemeBuilder.AddToScheme,
 	)
 }
 
