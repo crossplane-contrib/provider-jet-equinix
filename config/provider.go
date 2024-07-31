@@ -21,6 +21,7 @@ import (
 	"context"
 	_ "embed"
 
+	"github.com/crossplane-contrib/provider-jet-equinix/config/metal"
 	upconfig "github.com/crossplane/upjet/pkg/config"
 	"github.com/crossplane/upjet/pkg/registry/reference"
 	conversiontfjson "github.com/crossplane/upjet/pkg/types/conversion/tfjson"
@@ -102,6 +103,7 @@ func GetProvider(_ context.Context, generationProvider bool) (*upconfig.Provider
 
 	for _, configure := range []func(provider *upconfig.Provider){
 		// add custom config functions
+		metal.Configure,
 	} {
 		configure(pc)
 	}
