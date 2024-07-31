@@ -21,6 +21,7 @@ import (
 	"context"
 	_ "embed"
 
+	"github.com/crossplane-contrib/provider-jet-equinix/config/metal"
 	upconfig "github.com/crossplane/upjet/pkg/config"
 	"github.com/crossplane/upjet/pkg/registry/reference"
 	conversiontfjson "github.com/crossplane/upjet/pkg/types/conversion/tfjson"
@@ -78,6 +79,12 @@ func GetProvider(_ context.Context, generationProvider bool) (*upconfig.Provider
 	fwProvider := framework.CreateFrameworkProvider(version.ProviderVersion)
 
 	pc := upconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
+		upconfig.WithDefaultResourceOptions(
+			KnownReferencers(),
+			IdentifierAssignedByEquinix(),
+			SkipOptCompLateInitialization(),
+			LongProvision(), // TODO: use this only for Device and other long-provisioning resources
+		),
 		upconfig.WithShortName(resourcePrefix),
 		upconfig.WithRootGroup("equinix.jet.crossplane.io"),
 		upconfig.WithIncludeList([]string{
@@ -92,26 +99,11 @@ func GetProvider(_ context.Context, generationProvider bool) (*upconfig.Provider
 		// upconfig.WithSkipList([]string{".*"}), // helpful when debugging to minimize the number of resources
 		// config.WithTerraformPluginSDKIncludeList(resourceList(terraformSDKIncludeList)),
 		// config.WithTerraformPluginFrameworkIncludeList(resourceList(terraformPluginFrameworkExternalNameConfigs)),
-		upconfig.WithDefaultResourceOptions(
-			KnownReferencers(),
-			IdentifierAssignedByEquinix(),
-			SkipOptCompLateInitialization(),
-			LongProvision(), // TODO: use this only for Device and other long-provisioning resources
-		),
-		upconfig.WithBasePackages(upconfig.BasePackages{
-			APIVersion: []string{
-				// Default package for ProviderConfig APIs
-				"apis/v1beta1",
-			},
-			Controller: []string{
-				// Default package for ProviderConfig controllers
-				"internal/controller/providerconfig",
-			},
-		}),
 	)
 
 	for _, configure := range []func(provider *upconfig.Provider){
 		// add custom config functions
+		metal.Configure,
 	} {
 		configure(pc)
 	}

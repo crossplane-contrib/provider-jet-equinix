@@ -98,7 +98,7 @@ func SkipOptCompLateInitialization() upconfig.ResourceOption {
 	return func(r *upconfig.Resource) {
 		for k, s := range r.TerraformResource.Schema {
 			if s.Computed && s.Optional {
-				for _, conflict := range s.ConflictsWith {
+				for _, conflict := range append(s.ConflictsWith, s.ExactlyOneOf...) {
 					if cs := r.TerraformResource.Schema[conflict]; cs.Computed && cs.Optional {
 						r.LateInitializer.AddIgnoredCanonicalFields(conflict)
 						r.LateInitializer.AddIgnoredCanonicalFields(k)
